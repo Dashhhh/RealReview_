@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.teamnova.ej.realreview.activity.ShopAdd2">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="기본 정보 입력"
+                android:textAlignment="viewStart"
+                android:textSize="21dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/shopAdd2LinearSign"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:padding="7dp"
+                    android:src="@drawable/shopadd_title2" />
+
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/shopAdd2sign"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Shop Name"
+                    android:inputType="text"
+                    app:met_baseColor="#0056d3"
+                    app:met_errorColor="#ddaa00"
+                    app:met_floatingLabel="highlight"
+                    app:met_primaryColor="#982360" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:padding="7dp"
+                    android:src="@drawable/shopadd_address" />
+
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/shopAdd2Address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Shop Address"
+                    android:inputType="textPostalAddress"
+                    app:met_baseColor="#0056d3"
+                    app:met_errorColor="#ddaa00"
+                    app:met_floatingLabel="highlight"
+                    app:met_primaryColor="#982360" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:padding="10dp"
+                    android:src="@drawable/shopadd_phone" />
+
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/shopAdd2PhoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Call Number"
+                    android:inputType="phone"
+                    app:met_baseColor="#0056d3"
+                    app:met_errorColor="#ddaa00"
+                    app:met_floatingLabel="highlight"
+                    app:met_primaryColor="#982360" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:padding="10dp"
+                    android:src="@drawable/shopadd_www" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/shopAdd2Website"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:hint="Website"
+                    android:inputType="textWebEditText"
+                    app:met_baseColor="#0056d3"
+                    app:met_errorColor="#ddaa00"
+                    app:met_floatingLabel="highlight"
+                    app:met_primaryColor="#982360"
+
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:padding="10dp"
+                    android:src="@drawable/shop_open" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/shopAdd2OpenTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:hint="Shop Open Time (24H)"
+                    android:inputType="time"
+                    app:met_baseColor="#0056d3"
+                    app:met_errorColor="#ddaa00"
+                    app:met_floatingLabel="highlight"
+                    app:met_primaryColor="#982360"
+
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:padding="10dp"
+                    android:src="@drawable/shop_close" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/shopAdd2CloseTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:hint="Shop Close Time (24H)"
+                    android:inputType="time"
+                    app:met_baseColor="#0056d3"
+                    app:met_errorColor="#ddaa00"
+                    app:met_floatingLabel="highlight"
+                    app:met_primaryColor="#982360"
+
+                    />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="이 장소는 아래와 같이 분류 됩니다\n(등록 후 변경 가능)"
+                android:textColor="#000000"
+                android:textSize="15dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/shopAdd2PlaceType1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:text="-"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textSize="14dp" />
+
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/shopAdd2PlaceType2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:text="-"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textSize="14dp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/shopAdd2PlaceType3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:text="-"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textSize="14dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/shopAdd2PlaceType4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:text="-"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textSize="14dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/shopAdd2PlaceType5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:text="-"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textSize="14dp" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/shopAdd2Btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/border_blue"
+                android:text="다음"
+                android:textColor="#ffffff"
+                android:textSize="17dp" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

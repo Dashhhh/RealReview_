@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_nearby"
+        android:icon="@drawable/main_bottom_nearby"
+        android:title="@string/title_nearby" />
+
+    <item
+        android:id="@+id/navigation_search"
+        android:icon="@drawable/main_bottom_search"
+        android:title="@string/title_search" />
+
+    <item
+        android:id="@+id/navigation_me"
+        android:icon="@drawable/main_bottom_me"
+        android:title="@string/title_me" />
+
+</menu>
