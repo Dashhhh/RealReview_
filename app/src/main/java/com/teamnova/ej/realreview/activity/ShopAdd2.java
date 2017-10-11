@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.teamnova.ej.realreview.R;
-import com.teamnova.ej.realreview.util.AsyncShopAdd2HTTP;
+import com.teamnova.ej.realreview.Asynctask.AsyncShopAdd2HTTP;
 import com.teamnova.ej.realreview.util.Dialog_Default;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 

@@ -108,7 +108,8 @@
         <activity android:name=".activity.ShopDetail_Menu_URL" />
         <activity android:name=".activity.ShopDetail_Menu_Self" />
         <activity android:name=".activity.ShopDetail_Menu" />
-        <activity android:name=".activity.ShopDetail_Review_Viewing_2depth"></activity>
+        <activity android:name=".activity.ShopDetail_Review_Viewing_2depth" />
+        <activity android:name=".activity.Profile_Main"></activity>
     </application>
 
 </manifest>
