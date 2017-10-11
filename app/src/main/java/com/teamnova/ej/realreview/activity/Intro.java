@@ -14,6 +14,7 @@ import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 public class Intro extends AppCompatActivity {
     Handler mhandler;
     Animation anime;
+    String TestVAR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

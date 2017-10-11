@@ -24,6 +24,7 @@ public class AsyncShopAdd2HTTP extends AsyncTask<Void, Integer, Void> {
     private String params = "";
     Context mContext;
     private ProgressDialog dialog;
+    String TestVAR;
 
     public AsyncShopAdd2HTTP(String urlString, ProgressDialog dialog, Context mContext) {
         this.urlString = urlString;
