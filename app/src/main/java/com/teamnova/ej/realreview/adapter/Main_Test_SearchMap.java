@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by ej on 2017-10-12.
@@ -61,8 +63,12 @@ public class Main_Test_SearchMap extends Fragment implements OnMapReadyCallback{
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        mMap.setMinZoomPreference(16);
         Log.i("FragmentTest","Enter - Main Test");
+        LatLng myPostision = new LatLng(36.48408310967865, 126.97256952524185);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(myPostision));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
 
     }
 }

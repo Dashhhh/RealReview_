@@ -81,8 +81,6 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     public static boolean UPLOAD_FLAG = false;
 
     private Uri mImageCaptureUri;
-
-
     /**
      * filePath Upload Thread Var
      */
@@ -146,12 +144,13 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     //위치정보 장치 이름
     String provider = null;
     private MapFragment mMapFragment;
+    private double myPosition_lat;
+    private double myPosition_lng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__test);
-
 
         init();
         defineBottomNavi();
@@ -279,7 +278,8 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         };
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_nearby);
-
+        SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
+        pref.setSharedData("LOCATION_FLAG","TRUE");
     }
 
     private void init() {
@@ -368,7 +368,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        lm.requestLocationUpdates(provider, 500, 1, this);
+        lm.requestLocationUpdates(provider, 5000, 1, this);
 
 
         if (UPLOAD_FLAG) {
@@ -397,8 +397,6 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         if (mRequestingLocationUpdates) {
             startLocationUpdates();
         }
-
-
     }
 
     private void startLocationUpdates() {
@@ -443,31 +441,16 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onMapReady(GoogleMap map) {
 
+        SharedPreferenceUtil preferenceUtil = new SharedPreferenceUtil(this);
+        String locationFlag = preferenceUtil.getSharedData("LOCATION_FLAG");
+
+        if (locationFlag.equals("TRUE")){
+            navigation.setSelectedItemId(R.id.navigation_nearby);
+            preferenceUtil.setSharedData("LOCATION_FLAG","FALSE");
+        }
+
         mMap = map;
-
-        String sFarLeft = String.valueOf(mMap.getProjection().getVisibleRegion().farLeft);
-        String sNearRight  = String.valueOf(mMap.getProjection().getVisibleRegion().nearRight);
-
-        Log.d("MYLOG","FarLeft:"+sFarLeft);
-        Log.d("MYLOG","NearRight:"+sNearRight);
-
-
-//        // check if we have got the googleMap already
-//        if (mMap == null) {
-//            mMap = ((MapTouchWrapper) getSupportFragmentManager().findFragmentById(R.id.mapView)).getMap();
-//            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-//            mMap.getUiSettings().setZoomControlsEnabled(true);
-//            map_container = (ScrollView) findViewById(R.id.map_container); //parent scrollview in xml, give your scrollview id value
-//
-//            ((MapTouchWrapper) getSupportFragmentManager().findFragmentById(R.id.mapView))
-//                    .setListener(new MapTouchWrapper.OnTouchListener() {
-//                        @Override
-//                        public void onTouch() {
-//                            map_container.requestDisallowInterceptTouchEvent(true);
-//                        }
-//                    });
-//        }
-
+        mMap.setMinZoomPreference(16);
 
         LatLng officeFirst = new LatLng(37.48408310967865, 126.97256952524185);
         LatLng officeSecond = new LatLng(37.484108650390326, 126.97206526994705);
@@ -480,11 +463,20 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         abc.add(officeThird);
 
 
+        LatLng myPostision = new LatLng(myPosition_lat, myPosition_lng);
+
+
+
         mMap.addMarker(new MarkerOptions().position(abc.get(2)).title("~TEAM NOVA 3, 4사무실~"));
         mMap.addMarker(new MarkerOptions().position(abc.get(0)).title("~TEAM NOVA 1사무실~"));
         mMap.addMarker(new MarkerOptions().position(abc.get(1)).title("~TEAM NOVA 2사무실~"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(officeThird));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(myPostision));
+//        mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+        String sFarLeft = String.valueOf(mMap.getProjection().getVisibleRegion().farLeft);
+        String sNearRight  = String.valueOf(mMap.getProjection().getVisibleRegion().nearRight);
+
+        Log.d("MYLOG","FarLeft:"+sFarLeft);
+        Log.d("MYLOG","NearRight:"+sNearRight);
 
     }
 
@@ -628,21 +620,6 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 
         }
     }
-//
-//    private class fixProfileImage extends AsyncTask<String, Integer, Long> {
-//
-//
-//        public fixProfileImage() {
-//            super();
-//        }
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//
-//        }
-//
-//        @Override
 
     @Override
     protected void onPause() {
@@ -659,20 +636,25 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onLocationChanged(Location location) {
         // 위도, 경도
-        double lat = location.getLatitude();
-        double lng = location.getLongitude();
 
- /* // String이외의 데이터 형을 String으로 변환하는 메서드
+        myPosition_lat = location.getLatitude();
+        myPosition_lng = location.getLongitude();
+
+ /*
+
+  // String이외의 데이터 형을 String으로 변환하는 메서드
   tv1.setText(String.valueOf(lat));
   // String이외의 데이터 형을 String으로 변화하는 꼼수~!!
-  tv2.setText(lng +""); */
+  tv2.setText(lng +"");
+
+  */
 
         // String이외의 데이터 형을 String으로 변환하는 메서드
         // String이외의 데이터 형을 String으로 변화하는 꼼수~!!
 
-        Log.d("MYLOG","ADDRESS CHECK :"+getAddress(lat,lng));
+        Log.d("MYLOG","ADDRESS CHECK :"+getAddress(myPosition_lat,myPosition_lng));
 
-        String checkAddress = getAddress(lat,lng);
+        String checkAddress = getAddress(myPosition_lat,myPosition_lng);
         String[] splitAddress = checkAddress.split(" ",0);
         for(int a = 0;a < splitAddress.length;a++){
             Log.d("MYLOG","Address Split :"+splitAddress[a]);
