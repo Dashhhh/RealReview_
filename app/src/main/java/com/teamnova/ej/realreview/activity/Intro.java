@@ -16,6 +16,7 @@ public class Intro extends AppCompatActivity {
     Animation anime;
     String TestVAR;
 
+    public static String MYLOCATION;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -108,8 +108,6 @@ public class ShopAdd2 extends AppCompatActivity implements View.OnClickListener 
         if (!placeTypes4.isEmpty()) {
             shopAdd2PlaceType5.setText(placeTypes4);
         }
-
-
     }
 
 

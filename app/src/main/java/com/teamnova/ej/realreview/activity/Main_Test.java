@@ -3,6 +3,7 @@ package com.teamnova.ej.realreview.activity;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -51,8 +52,8 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.teamnova.ej.realreview.Asynctask.AsyncMainNearbyLatLngReceive;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.adapter.Main_Test_SearchMap;
 import com.teamnova.ej.realreview.util.Dialog_Default;
@@ -67,7 +68,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -136,9 +136,6 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
      */
 
 
-    TextView tv1 = null;
-    TextView tv2 = null;
-
     //위치정보 객체
     LocationManager lm = null;
     //위치정보 장치 이름
@@ -146,6 +143,12 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     private MapFragment mMapFragment;
     private double myPosition_lat;
     private double myPosition_lng;
+    private String resultNearRightLng;
+    private String resultNearRightLat;
+    private String resultFarLeftLat;
+    private String resultFarLeftLng;
+
+    public static String locationJson = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -279,7 +282,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_nearby);
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
-        pref.setSharedData("LOCATION_FLAG","TRUE");
+        pref.setSharedData("LOCATION_FLAG", "TRUE");
     }
 
     private void init() {
@@ -354,6 +357,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("Main_Test", "ENTER - onResume");
         //위치정보 - Activity LifrCycle 관련 메서드는 무조건 상위 메서드 호출 필요
         /** 이 화면이 불릴 때, 일시정지 해제 처리*/
 
@@ -397,6 +401,9 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         if (mRequestingLocationUpdates) {
             startLocationUpdates();
         }
+
+
+
     }
 
     private void startLocationUpdates() {
@@ -440,43 +447,82 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onMapReady(GoogleMap map) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
 
         SharedPreferenceUtil preferenceUtil = new SharedPreferenceUtil(this);
         String locationFlag = preferenceUtil.getSharedData("LOCATION_FLAG");
 
-        if (locationFlag.equals("TRUE")){
+        if (locationFlag.equals("TRUE")) {
             navigation.setSelectedItemId(R.id.navigation_nearby);
-            preferenceUtil.setSharedData("LOCATION_FLAG","FALSE");
+            preferenceUtil.setSharedData("LOCATION_FLAG", "FALSE");
         }
 
+
+
         mMap = map;
-        mMap.setMinZoomPreference(16);
+        mMap.setMyLocationEnabled(true);
+
+
 
         LatLng officeFirst = new LatLng(37.48408310967865, 126.97256952524185);
-        LatLng officeSecond = new LatLng(37.484108650390326, 126.97206526994705);
-        LatLng officeThird = new LatLng(37.48404479859481, 126.97373896837234);
-
-
-        ArrayList<LatLng> abc = new ArrayList<>();
-        abc.add(officeFirst);
-        abc.add(officeSecond);
-        abc.add(officeThird);
-
-
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(officeFirst,16));
+//        LatLng officeSecond = new LatLng(37.484108650390326, 126.97206526994705);
+//        LatLng officeThird = new LatLng(37.48404479859481, 126.97373896837234);
+//        ArrayList<LatLng> abc = new ArrayList<>();
+//        abc.add(officeFirst);
+//        abc.add(officeSecond);
+//        abc.add(officeThird);
+//        mMap.addMarker(new MarkerOptions().position(abc.get(2)).title("~TEAM NOVA 3, 4사무실~"));
+//        mMap.addMarker(new MarkerOptions().position(abc.get(0)).title("~TEAM NOVA 1사무실~"));
+//        mMap.addMarker(new MarkerOptions().position(abc.get(1)).title("~TEAM NOVA 2사무실~"));
         LatLng myPostision = new LatLng(myPosition_lat, myPosition_lng);
 
 
 
-        mMap.addMarker(new MarkerOptions().position(abc.get(2)).title("~TEAM NOVA 3, 4사무실~"));
-        mMap.addMarker(new MarkerOptions().position(abc.get(0)).title("~TEAM NOVA 1사무실~"));
-        mMap.addMarker(new MarkerOptions().position(abc.get(1)).title("~TEAM NOVA 2사무실~"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(myPostision));
+
+
 //        mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
         String sFarLeft = String.valueOf(mMap.getProjection().getVisibleRegion().farLeft);
         String sNearRight  = String.valueOf(mMap.getProjection().getVisibleRegion().nearRight);
 
+        String[] splitFarLeft = sFarLeft.split("\\(",0);
+        String[] splitNearRight = sNearRight.split("\\(",0);
+
+        String[] split2FarLeft = splitFarLeft[1].split(",",0);
+        String[] split2NearRight = splitNearRight[1].split(",",0);
+
+        String[] split3FarLeft = split2FarLeft[1].split("\\)",0);
+        String[] split3NearRight = split2NearRight[1].split("\\)",0);
+
+
+        resultFarLeftLat = split2FarLeft[0];
+        resultFarLeftLng = split3FarLeft[0];
+        resultNearRightLat = split2NearRight[0];
+        resultNearRightLng = split3NearRight[0];
+
+        Log.d("SPLIT CHECK LOCATION FAR - NEAR","split2FarLeft, SW 1 "    +  split2FarLeft[0]);
+        Log.d("SPLIT CHECK LOCATION FAR - NEAR","split2FarLeft, SW 2 "    +  split3FarLeft[0]);
+        Log.d("SPLIT CHECK LOCATION FAR - NEAR","split2NearRight, NE 1 "  +split2NearRight[0]);
+        Log.d("SPLIT CHECK LOCATION FAR - NEAR","split2NearRight, NE 2 "  +split3NearRight[0]);
         Log.d("MYLOG","FarLeft:"+sFarLeft);
         Log.d("MYLOG","NearRight:"+sNearRight);
+
+
+
+        String url = "http://222.122.203.55/realreview/Nearby/latlng.php?";
+        String urlMerge = url + "lat_start=" + resultNearRightLat+ "&lat_end=" + resultFarLeftLat  + "&lng_start=" + resultFarLeftLng + "&lng_end=" + resultNearRightLng;
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        AsyncMainNearbyLatLngReceive upload = new AsyncMainNearbyLatLngReceive(urlMerge, progressDialog, this);
+        upload.execute();
 
     }
 
