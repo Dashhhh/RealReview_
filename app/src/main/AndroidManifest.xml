@@ -11,7 +11,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />  <!--상세한 위치 권한-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> <!--대략적 위치 권한-->
 
     <application
         android:allowBackup="true"

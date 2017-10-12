@@ -1,10 +1,20 @@
 package com.teamnova.ej.realreview.activity;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,6 +23,7 @@ import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -30,13 +41,20 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.teamnova.ej.realreview.R;
+import com.teamnova.ej.realreview.adapter.Main_Test_SearchMap;
 import com.teamnova.ej.realreview.util.Dialog_Default;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
@@ -49,10 +67,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
-public class Main_Test extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
-
+public class Main_Test extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, LocationListener {
 
     public static String ID;
     public static final int PICK_FROM_CAMERA = 0;
@@ -105,9 +125,28 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     ImageView meProfileImage, followerCntImage, reviewCntImage, imageUploadCnt;
     private String imagePath;
     Button nearbyShopAdd;
+    FusedLocationProviderClient mFusedLocationClient;
+    private boolean mRequestingLocationUpdates;
+    private LocationCallback mLocationCallback;
+    private LocationRequest mLocationRequest;
 
 
     //    SupportMapFragment mapFragment;
+
+    /**
+     * Receive Location Data
+     */
+
+
+    TextView tv1 = null;
+    TextView tv2 = null;
+
+    //위치정보 객체
+    LocationManager lm = null;
+    //위치정보 장치 이름
+    String provider = null;
+    private MapFragment mMapFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,10 +156,82 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         init();
         defineBottomNavi();
         listener();
-
+        receiveLocationData();
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            // Logic to handle location object
+                        }
+                    }
+                });
 
 
     }   // onCreate
+
+    private void receiveLocationData() {
+
+        /**위치정보 객체를 생성한다.*/
+        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        /** 현재 사용가능한 위치 정보 장치 검색*/
+        //위치정보 하드웨어 목록
+        Criteria c = new Criteria();
+        //최적의 하드웨어 이름을 리턴받는다.
+        provider = lm.getBestProvider(c, true);
+
+        // 최적의 값이 없거나, 해당 장치가 사용가능한 상태가 아니라면,
+        //모든 장치 리스트에서 사용가능한 항목 얻기
+        if (provider == null || !lm.isProviderEnabled(provider)) {
+            // 모든 장치 목록
+            List<String> list = lm.getAllProviders();
+
+            for (int i = 0; i < list.size(); i++) {
+                //장치 이름 하나 얻기
+                String temp = list.get(i);
+
+                //사용 가능 여부 검사
+                if (lm.isProviderEnabled(temp)) {
+                    provider = temp;
+                    break;
+                }
+            }
+        }// (end if)위치정보 검색 끝
+
+        /**마지막으로  조회했던 위치 얻기*/
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Location location = lm.getLastKnownLocation(provider);
+
+        if (location == null) {
+            Toast.makeText(this, "사용가능한 위치 정보 제공자가 없습니다.", Toast.LENGTH_SHORT).show();
+        } else {
+            //최종 위치에서 부터 이어서 GPS 시작...
+            onLocationChanged(location);
+
+        }
+    }
 
     private void defineBottomNavi() {
 
@@ -142,9 +253,16 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
                         nearbyLinear.setVisibility(View.GONE);
                         searchLinear.setVisibility(View.VISIBLE);
                         meLinear.setVisibility(View.GONE);
-                        SupportMapFragment searchMapFragment = (SupportMapFragment) getSupportFragmentManager()
-                                .findFragmentById(R.id.mapView);
-                        searchMapFragment.getMapAsync(Main_Test.this);
+
+                        mMapFragment = MapFragment.newInstance();
+                        FragmentTransaction fragmentTransaction =
+                                getFragmentManager().beginTransaction();
+                        fragmentTransaction.add(R.id.searchLinear, mMapFragment);
+                        fragmentTransaction.commit();
+                        MapFragment searchFragment = (MapFragment) getFragmentManager()
+                                .findFragmentById(R.id.searchMap);
+                        Main_Test_SearchMap inst = new Main_Test_SearchMap(Main_Test.this);
+                        searchFragment.getMapAsync(inst);
 
                         return true;
                     case R.id.navigation_me:
@@ -165,6 +283,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     }
 
     private void init() {
+
 
         searchLinear = (LinearLayout) findViewById(R.id.searchLinear);
         nearbyLinear = (LinearLayout) findViewById(R.id.nearbyLinear);
@@ -235,6 +354,21 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     @Override
     protected void onResume() {
         super.onResume();
+        //위치정보 - Activity LifrCycle 관련 메서드는 무조건 상위 메서드 호출 필요
+        /** 이 화면이 불릴 때, 일시정지 해제 처리*/
+
+        //위치정보 객체에 이벤트 연결
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        lm.requestLocationUpdates(provider, 500, 1, this);
 
 
         if (UPLOAD_FLAG) {
@@ -260,7 +394,27 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
             UPLOAD_FLAG = false;
         }
 
+        if (mRequestingLocationUpdates) {
+            startLocationUpdates();
+        }
 
+
+    }
+
+    private void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mFusedLocationClient.requestLocationUpdates(mLocationRequest,
+                mLocationCallback,
+                null /* Looper */);
     }
 
     private void listener() {
@@ -289,8 +443,15 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onMapReady(GoogleMap map) {
 
-            mMap = map;
-            mMap = map;
+        mMap = map;
+
+        String sFarLeft = String.valueOf(mMap.getProjection().getVisibleRegion().farLeft);
+        String sNearRight  = String.valueOf(mMap.getProjection().getVisibleRegion().nearRight);
+
+        Log.d("MYLOG","FarLeft:"+sFarLeft);
+        Log.d("MYLOG","NearRight:"+sNearRight);
+
+
 //        // check if we have got the googleMap already
 //        if (mMap == null) {
 //            mMap = ((MapTouchWrapper) getSupportFragmentManager().findFragmentById(R.id.mapView)).getMap();
@@ -312,9 +473,16 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         LatLng officeSecond = new LatLng(37.484108650390326, 126.97206526994705);
         LatLng officeThird = new LatLng(37.48404479859481, 126.97373896837234);
 
-        mMap.addMarker(new MarkerOptions().position(officeThird).title("~TEAM NOVA 3, 4사무실~"));
-        mMap.addMarker(new MarkerOptions().position(officeFirst).title("~TEAM NOVA 1사무실~"));
-        mMap.addMarker(new MarkerOptions().position(officeSecond).title("~TEAM NOVA 2사무실~"));
+
+        ArrayList<LatLng> abc = new ArrayList<>();
+        abc.add(officeFirst);
+        abc.add(officeSecond);
+        abc.add(officeThird);
+
+
+        mMap.addMarker(new MarkerOptions().position(abc.get(2)).title("~TEAM NOVA 3, 4사무실~"));
+        mMap.addMarker(new MarkerOptions().position(abc.get(0)).title("~TEAM NOVA 1사무실~"));
+        mMap.addMarker(new MarkerOptions().position(abc.get(1)).title("~TEAM NOVA 2사무실~"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(officeThird));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
 
@@ -475,155 +643,98 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 //        }
 //
 //        @Override
-//        protected Long doInBackground(String... sourceFileUri) {
-////            String fileName = String.valueOf(sourceFileUri);
-////
-////            HttpURLConnection conn = null;
-////            DataOutputStream dos = null;
-////            String lineEnd = "\r\n";
-////            String twoHyphens = "--";
-////            String boundary = "*****";
-////            int bytesRead, bytesAvailable, bufferSize;
-////            byte[] buffer;
-////            int maxBufferSize = 1 * 1024 * 1024;
-////            File sourceFile = new File(String.valueOf(sourceFileUri));
-////
-////            if (!sourceFile.isFile()) {
-////
-////                Log.e("uploadFile", "Source File not exist :" + upLoadServerUri);
-////                return Long.valueOf(0);
-////
-////            } else {
-////                try {
-////
-////                    // open a URL connection to the Servlet
-////                    FileInputStream fileInputStream = new FileInputStream(sourceFile);
-////                    URL url = new URL(upLoadServerUri);
-////
-////                    // Open a HTTP  connection to  the URL
-////                    conn = (HttpURLConnection) url.openConnection();
-////                    Log.e("SERVER URL :", String.valueOf(url));
-////                    conn.setDoInput(true); // Allow Inputs
-////                    conn.setDoOutput(true); // Allow Outputs
-////                    conn.setUseCaches(false); // Don't use a Cached Copy
-////                    conn.setRequestMethod("POST");
-////                    conn.setRequestProperty("Connection", "Keep-Alive");
-////                    conn.setRequestProperty("ENCTYPE", "multipart/form-data");
-////                    conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-////                    conn.setRequestProperty("uploaded_file", fileName);
-////
-////                    dos = new DataOutputStream(conn.getOutputStream());
-////
-////                    dos.writeBytes(twoHyphens + boundary + lineEnd);
-////                    dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
-////                            + fileName + "\"" + lineEnd);
-////
-////                    dos.writeBytes(lineEnd);
-////
-////                    // create a buffer of  maximum size
-////                    bytesAvailable = fileInputStream.available();
-////
-////                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
-////                    buffer = new byte[bufferSize];
-////
-////                    // read file and write it into form...
-////                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-////
-////                    while (bytesRead > 0) {
-////
-////                        dos.write(buffer, 0, bufferSize);
-////                        bytesAvailable = fileInputStream.available();
-////                        bufferSize = Math.min(bytesAvailable, maxBufferSize);
-////                        bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-////
-////                    }
-////
-////                    // send multipart form data necesssary after file data...
-////                    dos.writeBytes(lineEnd);
-////                    dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-////
-////                    // Responses from the server (code and message)
-////                    serverResponseCode = conn.getResponseCode();
-////                    String serverResponseMessage = conn.getResponseMessage();
-////
-////                    Log.e("uploadFile", "HTTP Response is : " + serverResponseMessage + ": " + serverResponseCode);
-////
-////                    if (serverResponseCode == 200) {
-////
-////                        runOnUiThread(new Runnable() {
-////                            public void run() {
-////
-////                                String msg = "File Upload Completed.\n\n See uploaded file here : \n\n"
-////                                        + upLoadServerUri;
-////
-////                                messageText.setText(msg);
-////                                Toast.makeText(Main_Test.this, "File Upload Complete.",
-////                                        Toast.LENGTH_SHORT).show();
-////                            }
-////                        });
-////                    }
-////
-////                    //close the streams //
-////                    fileInputStream.close();
-////                    dos.flush();
-////                    dos.close();
-////
-////                } catch (MalformedURLException ex) {
-////
-////                    ex.printStackTrace();
-////
-////                    runOnUiThread(new Runnable() {
-////                        public void run() {
-////                            messageText.setText("MalformedURLException Exception : check script url.");
-////                            Toast.makeText(Main_Test.this, "MalformedURLException",
-////                                    Toast.LENGTH_SHORT).show();
-////                        }
-////                    });
-////
-////                    Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
-////                } catch (Exception e) {
-////
-////                    e.printStackTrace();
-////
-////                    runOnUiThread(new Runnable() {
-////                        public void run() {
-////                            messageText.setText("Got Exception : see logcat ");
-////                            Toast.makeText(Main_Test.this, "Got Exception : see logcat ",
-////                                    Toast.LENGTH_SHORT).show();
-////                        }
-////                    });
-////                    Log.e("Upload file to server Exception", "Exception : " + e.getMessage(), e);
-////                }
-////                return Long.valueOf(serverResponseCode);
-////
-////            } // End else block
-//////            return null;
-//
-//        }
-//
-//        @Override
-//        protected void onProgressUpdate(Integer... values) {
-//            super.onProgressUpdate(values);
-//
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Long aLong) {
-//            super.onPostExecute(aLong);
-//            Dialog_Default dial = new Dialog_Default(getApplicationContext());
-//            dial.call("Profile Image", "수정이 완료 되었습니다.");
-//
-//        }
-//
-//        @Override
-//        protected void onCancelled(Long aLong) {
-//            super.onCancelled(aLong);
-//            Dialog_Default dial = new Dialog_Default(getApplicationContext());
-//            dial.call("Profile Image", "프로필 이미지 수정에 실패했습니다.");
-//
-//        }
-//    }
 
+    @Override
+    protected void onPause() {
+        //Activity LifrCycle 관련 메서드는 무조건 상위 메서드 호출 필요
+        super.onPause();
+
+        //위치정보 객체에 이벤트 해제
+        lm.removeUpdates(this);
+    }
+
+    /**
+     * 위치가 변했을 경우 호출된다.
+     */
+    @Override
+    public void onLocationChanged(Location location) {
+        // 위도, 경도
+        double lat = location.getLatitude();
+        double lng = location.getLongitude();
+
+ /* // String이외의 데이터 형을 String으로 변환하는 메서드
+  tv1.setText(String.valueOf(lat));
+  // String이외의 데이터 형을 String으로 변화하는 꼼수~!!
+  tv2.setText(lng +""); */
+
+        // String이외의 데이터 형을 String으로 변환하는 메서드
+        // String이외의 데이터 형을 String으로 변화하는 꼼수~!!
+
+        Log.d("MYLOG","ADDRESS CHECK :"+getAddress(lat,lng));
+
+        String checkAddress = getAddress(lat,lng);
+        String[] splitAddress = checkAddress.split(" ",0);
+        for(int a = 0;a < splitAddress.length;a++){
+            Log.d("MYLOG","Address Split :"+splitAddress[a]);
+        }
+
+    }
+
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /**
+     * 위도와 경도 기반으로 주소를 리턴하는 메서드
+     */
+    public String getAddress(double lat, double lng) {
+        String address = null;
+
+        //위치정보를 활용하기 위한 구글 API 객체
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
+        //주소 목록을 담기 위한 HashMap
+        List<Address> list = null;
+
+        try {
+            list = geocoder.getFromLocation(lat, lng, 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (list == null) {
+            Log.e("getAddress", "주소 데이터 얻기 실패");
+            return null;
+        }
+
+        if (list.size() > 0) {
+            Address addr = list.get(0);
+            address = addr.getCountryName() + " "
+                    + addr.getPostalCode() + " "
+                    + addr.getLocality() + " "
+                    + addr.getThoroughfare() + " "
+                    + addr.getFeatureName();
+        }
+
+        return address;
+
+
+    }
 
     public String getPath(Uri uri) {
         // uri가 null일경우 null반환
