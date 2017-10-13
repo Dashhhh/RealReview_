@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.teamnova.ej.realreview.activity.Main_Test;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,7 +22,7 @@ import static android.content.ContentValues.TAG;
  * Created by ej on 2017-10-12.
  */
 
-public class AsyncMainNearbyLatLngReceive  extends AsyncTask<Void, Integer, Void> {
+public class AsyncMainNearbyLatLngReceive  extends AsyncTask<Void, Integer, StringBuilder> {
     public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
     private String urlString;
     private String params = "";
@@ -37,17 +39,17 @@ public class AsyncMainNearbyLatLngReceive  extends AsyncTask<Void, Integer, Void
     @Override
     protected void onPreExecute() {
 
-        dialog.setMessage("Uploading");
+        dialog.setMessage("SHOP DATA Check");
         dialog.setIndeterminate(false);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.show();
     }
     @Override
-    protected Void doInBackground(Void... params) {
+    protected StringBuilder doInBackground(Void... params) {
         // TODO Auto-generated method stub
 
             StringBuilder jsonHtml = new StringBuilder();
-
+            JSONArray jsonArray;
             try {
                 URL phpUrl = new URL(urlString);
                 Log.d("AsyncMainLatLngReceive","URL:"+urlString);
@@ -75,8 +77,8 @@ public class AsyncMainNearbyLatLngReceive  extends AsyncTask<Void, Integer, Void
             try {
                 int i = 0;
                 JSONObject jObject = new JSONObject(String.valueOf(jsonHtml));
-                JSONArray jsonArray = jObject.getJSONArray("realreview");
-                JSONObject item         = jsonArray.getJSONObject(i);
+                jsonArray = jObject.getJSONArray("realreview");
+                JSONObject item = jsonArray.getJSONObject(i);
                 int length = jsonArray.length();
 
                 Log.d("AsyncMainLatLngReceive","JSONObject jOcject:"+jObject);
@@ -108,16 +110,19 @@ public class AsyncMainNearbyLatLngReceive  extends AsyncTask<Void, Integer, Void
                 String getIndexShopAdd                   = item.getString("indexShopAdd");
                 String getPermanentlyClosed                   = item.getString("permanentlyClosed");
                 String getPriceLevel                   = item.getString("priceLevel");
+                Main_Test.HTTP_RECEIVE_SHOPDATA = jsonHtml;
 
+                return jsonHtml;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        return null;
+            return null;
     }
     @Override
-    protected void onPostExecute(Void result) {
+    protected void onPostExecute(StringBuilder result) {
         try {
             dialog.dismiss();
+
 
 //            Intent intent = new Intent(mContext, ShopAdd4.class);
 //            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

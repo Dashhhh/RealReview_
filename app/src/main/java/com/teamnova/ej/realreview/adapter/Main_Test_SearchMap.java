@@ -63,7 +63,6 @@ public class Main_Test_SearchMap extends Fragment implements OnMapReadyCallback{
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setMinZoomPreference(16);
         Log.i("FragmentTest","Enter - Main Test");
         LatLng myPostision = new LatLng(36.48408310967865, 126.97256952524185);
 

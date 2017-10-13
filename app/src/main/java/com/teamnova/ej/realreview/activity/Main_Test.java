@@ -52,12 +52,18 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.teamnova.ej.realreview.Asynctask.AsyncMainNearbyLatLngReceive;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.adapter.Main_Test_SearchMap;
 import com.teamnova.ej.realreview.util.Dialog_Default;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -68,9 +74,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class Main_Test extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, LocationListener {
 
@@ -149,6 +159,87 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     private String resultFarLeftLng;
 
     public static String locationJson = "";
+    public static double MY_POSITION_LAT;
+    public static double MY_POSITION_LNG;
+
+    public static StringBuilder HTTP_RECEIVE_SHOPDATA;
+
+    public String replaceTest = "";
+    ArrayList<String> fixShopDataList = new ArrayList<>();
+    ArrayList<String> keyShopDataList = new ArrayList<>();
+    ArrayList<String> valueShopDataList = new ArrayList<>();
+
+    private void init() {
+
+
+        searchLinear = (LinearLayout) findViewById(R.id.searchLinear);
+        nearbyLinear = (LinearLayout) findViewById(R.id.nearbyLinear);
+        meLinear = (LinearLayout) findViewById(R.id.meLinear);
+        content = (FrameLayout) findViewById(R.id.content);
+        map_container = (ScrollView) findViewById(R.id.map_container);    // onCreate Init
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        meProfileId = (TextView) findViewById(R.id.meProfileId);
+        meProfileNick = (TextView) findViewById(R.id.meProfileNick);
+        meFollowerText = (TextView) findViewById(R.id.meFollowerText);
+        meReviewText = (TextView) findViewById(R.id.meReviewText);
+        imageUploadText = (TextView) findViewById(R.id.imageUploadText);
+        meProfileImage = (ImageView) findViewById(R.id.meProfileImage);
+        followerCntImage = (ImageView) findViewById(R.id.followerCntImage);
+        reviewCntImage = (ImageView) findViewById(R.id.reviewCntImage);
+        imageUploadCnt = (ImageView) findViewById(R.id.imageUploadCnt);
+        meMyFeedListView = (ListView) findViewById(R.id.meMyFeedListView);
+        nearbyShopAdd = (Button) findViewById(R.id.nearbyShopAdd);
+    }
+
+    private void defineBottomNavi() {
+
+        BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+                = new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()) {
+                    case R.id.navigation_nearby:
+                        nearbyLinear.setVisibility(View.VISIBLE);
+                        searchLinear.setVisibility(View.GONE);
+                        meLinear.setVisibility(View.GONE);
+                        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                                .findFragmentById(R.id.mapView);
+                        mapFragment.getMapAsync(Main_Test.this);
+                        return true;
+                    case R.id.navigation_search:
+                        nearbyLinear.setVisibility(View.GONE);
+                        searchLinear.setVisibility(View.VISIBLE);
+                        meLinear.setVisibility(View.GONE);
+
+                        mMapFragment = MapFragment.newInstance();
+                        FragmentTransaction fragmentTransaction =
+                                getFragmentManager().beginTransaction();
+                        fragmentTransaction.add(R.id.searchLinear, mMapFragment);
+                        fragmentTransaction.commit();
+                        MapFragment searchFragment = (MapFragment) getFragmentManager()
+                                .findFragmentById(R.id.searchMap);
+                        Main_Test_SearchMap inst = new Main_Test_SearchMap(Main_Test.this);
+                        searchFragment.getMapAsync(inst);
+
+                        return true;
+                    case R.id.navigation_me:
+                        searchLinear.setVisibility(View.GONE);
+                        nearbyLinear.setVisibility(View.GONE);
+                        meLinear.setVisibility(View.VISIBLE);
+
+
+                        return true;
+                }
+                return false;
+            }
+
+        };
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(R.id.navigation_nearby);
+        SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
+        pref.setSharedData("LOCATION_FLAG", "TRUE");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,6 +271,16 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
                         }
                     }
                 });
+
+
+        Log.d("Main_Test - onCreate", "MY_POSITION_LAT :" + MY_POSITION_LAT);
+        Log.d("Main_Test - onCreate", "MY_POSITION_LNG :" + MY_POSITION_LNG);
+
+        String url = "http://222.122.203.55/realreview/Nearby/latlng.php?";
+        String urlMerge = url + "lat_start=" + resultNearRightLat + "&lat_end=" + resultFarLeftLat + "&lng_start=" + resultFarLeftLng + "&lng_end=" + resultNearRightLng;
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        AsyncMainNearbyLatLngReceive upload = new AsyncMainNearbyLatLngReceive(urlMerge, progressDialog, this);
+        upload.execute();
 
 
     }   // onCreate
@@ -233,78 +334,6 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
             onLocationChanged(location);
 
         }
-    }
-
-    private void defineBottomNavi() {
-
-        BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-                = new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                switch (item.getItemId()) {
-                    case R.id.navigation_nearby:
-                        nearbyLinear.setVisibility(View.VISIBLE);
-                        searchLinear.setVisibility(View.GONE);
-                        meLinear.setVisibility(View.GONE);
-                        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                                .findFragmentById(R.id.mapView);
-                        mapFragment.getMapAsync(Main_Test.this);
-                        return true;
-                    case R.id.navigation_search:
-                        nearbyLinear.setVisibility(View.GONE);
-                        searchLinear.setVisibility(View.VISIBLE);
-                        meLinear.setVisibility(View.GONE);
-
-                        mMapFragment = MapFragment.newInstance();
-                        FragmentTransaction fragmentTransaction =
-                                getFragmentManager().beginTransaction();
-                        fragmentTransaction.add(R.id.searchLinear, mMapFragment);
-                        fragmentTransaction.commit();
-                        MapFragment searchFragment = (MapFragment) getFragmentManager()
-                                .findFragmentById(R.id.searchMap);
-                        Main_Test_SearchMap inst = new Main_Test_SearchMap(Main_Test.this);
-                        searchFragment.getMapAsync(inst);
-
-                        return true;
-                    case R.id.navigation_me:
-                        searchLinear.setVisibility(View.GONE);
-                        nearbyLinear.setVisibility(View.GONE);
-                        meLinear.setVisibility(View.VISIBLE);
-
-
-                        return true;
-                }
-                return false;
-            }
-
-        };
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setSelectedItemId(R.id.navigation_nearby);
-        SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
-        pref.setSharedData("LOCATION_FLAG", "TRUE");
-    }
-
-    private void init() {
-
-
-        searchLinear = (LinearLayout) findViewById(R.id.searchLinear);
-        nearbyLinear = (LinearLayout) findViewById(R.id.nearbyLinear);
-        meLinear = (LinearLayout) findViewById(R.id.meLinear);
-        content = (FrameLayout) findViewById(R.id.content);
-        map_container = (ScrollView) findViewById(R.id.map_container);    // onCreate Init
-        navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        meProfileId = (TextView) findViewById(R.id.meProfileId);
-        meProfileNick = (TextView) findViewById(R.id.meProfileNick);
-        meFollowerText = (TextView) findViewById(R.id.meFollowerText);
-        meReviewText = (TextView) findViewById(R.id.meReviewText);
-        imageUploadText = (TextView) findViewById(R.id.imageUploadText);
-        meProfileImage = (ImageView) findViewById(R.id.meProfileImage);
-        followerCntImage = (ImageView) findViewById(R.id.followerCntImage);
-        reviewCntImage = (ImageView) findViewById(R.id.reviewCntImage);
-        imageUploadCnt = (ImageView) findViewById(R.id.imageUploadCnt);
-        meMyFeedListView = (ListView) findViewById(R.id.meMyFeedListView);
-        nearbyShopAdd = (Button) findViewById(R.id.nearbyShopAdd);
     }
 
     @Override
@@ -403,7 +432,16 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         }
 
 
+    }
 
+
+    @Override
+    protected void onPause() {
+        //Activity LifrCycle 관련 메서드는 무조건 상위 메서드 호출 필요
+        super.onPause();
+
+        //위치정보 객체에 이벤트 해제
+        lm.removeUpdates(this);
     }
 
     private void startLocationUpdates() {
@@ -421,6 +459,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
                 mLocationCallback,
                 null /* Looper */);
     }
+
 
     private void listener() {
 
@@ -445,91 +484,17 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     }
 
 
-    @Override
-    public void onMapReady(GoogleMap map) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-
-        SharedPreferenceUtil preferenceUtil = new SharedPreferenceUtil(this);
-        String locationFlag = preferenceUtil.getSharedData("LOCATION_FLAG");
-
-        if (locationFlag.equals("TRUE")) {
-            navigation.setSelectedItemId(R.id.navigation_nearby);
-            preferenceUtil.setSharedData("LOCATION_FLAG", "FALSE");
-        }
-
-
-
-        mMap = map;
-        mMap.setMyLocationEnabled(true);
-
-
-
-        LatLng officeFirst = new LatLng(37.48408310967865, 126.97256952524185);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(officeFirst,16));
-//        LatLng officeSecond = new LatLng(37.484108650390326, 126.97206526994705);
-//        LatLng officeThird = new LatLng(37.48404479859481, 126.97373896837234);
-//        ArrayList<LatLng> abc = new ArrayList<>();
-//        abc.add(officeFirst);
-//        abc.add(officeSecond);
-//        abc.add(officeThird);
-//        mMap.addMarker(new MarkerOptions().position(abc.get(2)).title("~TEAM NOVA 3, 4사무실~"));
-//        mMap.addMarker(new MarkerOptions().position(abc.get(0)).title("~TEAM NOVA 1사무실~"));
-//        mMap.addMarker(new MarkerOptions().position(abc.get(1)).title("~TEAM NOVA 2사무실~"));
-        LatLng myPostision = new LatLng(myPosition_lat, myPosition_lng);
-
-
-
-
-
-//        mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
-        String sFarLeft = String.valueOf(mMap.getProjection().getVisibleRegion().farLeft);
-        String sNearRight  = String.valueOf(mMap.getProjection().getVisibleRegion().nearRight);
-
-        String[] splitFarLeft = sFarLeft.split("\\(",0);
-        String[] splitNearRight = sNearRight.split("\\(",0);
-
-        String[] split2FarLeft = splitFarLeft[1].split(",",0);
-        String[] split2NearRight = splitNearRight[1].split(",",0);
-
-        String[] split3FarLeft = split2FarLeft[1].split("\\)",0);
-        String[] split3NearRight = split2NearRight[1].split("\\)",0);
-
-
-        resultFarLeftLat = split2FarLeft[0];
-        resultFarLeftLng = split3FarLeft[0];
-        resultNearRightLat = split2NearRight[0];
-        resultNearRightLng = split3NearRight[0];
-
-        Log.d("SPLIT CHECK LOCATION FAR - NEAR","split2FarLeft, SW 1 "    +  split2FarLeft[0]);
-        Log.d("SPLIT CHECK LOCATION FAR - NEAR","split2FarLeft, SW 2 "    +  split3FarLeft[0]);
-        Log.d("SPLIT CHECK LOCATION FAR - NEAR","split2NearRight, NE 1 "  +split2NearRight[0]);
-        Log.d("SPLIT CHECK LOCATION FAR - NEAR","split2NearRight, NE 2 "  +split3NearRight[0]);
-        Log.d("MYLOG","FarLeft:"+sFarLeft);
-        Log.d("MYLOG","NearRight:"+sNearRight);
-
-
-
-        String url = "http://222.122.203.55/realreview/Nearby/latlng.php?";
-        String urlMerge = url + "lat_start=" + resultNearRightLat+ "&lat_end=" + resultFarLeftLat  + "&lng_start=" + resultFarLeftLng + "&lng_end=" + resultNearRightLng;
-        ProgressDialog progressDialog = new ProgressDialog(this);
-        AsyncMainNearbyLatLngReceive upload = new AsyncMainNearbyLatLngReceive(urlMerge, progressDialog, this);
-        upload.execute();
-
-    }
-
     /**
      * CAMERA
      */
 
+
+//    /*
+//     * 참고 해볼곳
+//     * http://2009.hfoss.org/Tutorial:Camera_and_Gallery_Demo
+//     * http://stackoverflow.com/questions/1050297/how-to-get-the-url-of-the-captured-image
+//     * http://www.damonkohler.com/2009/02/android-recipes.html
+//     * http://www.firstclown.us/tag/android/
 
     /**
      * 카메라에서 이미지 가져오기
@@ -553,13 +518,6 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 
     }
 
-
-//    /*
-//     * 참고 해볼곳
-//     * http://2009.hfoss.org/Tutorial:Camera_and_Gallery_Demo
-//     * http://stackoverflow.com/questions/1050297/how-to-get-the-url-of-the-captured-image
-//     * http://www.damonkohler.com/2009/02/android-recipes.html
-//     * http://www.firstclown.us/tag/android/
 //     */
 
     /**
@@ -667,15 +625,6 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         }
     }
 
-    @Override
-    protected void onPause() {
-        //Activity LifrCycle 관련 메서드는 무조건 상위 메서드 호출 필요
-        super.onPause();
-
-        //위치정보 객체에 이벤트 해제
-        lm.removeUpdates(this);
-    }
-
     /**
      * 위치가 변했을 경우 호출된다.
      */
@@ -686,25 +635,21 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         myPosition_lat = location.getLatitude();
         myPosition_lng = location.getLongitude();
 
- /*
-
-  // String이외의 데이터 형을 String으로 변환하는 메서드
-  tv1.setText(String.valueOf(lat));
-  // String이외의 데이터 형을 String으로 변화하는 꼼수~!!
-  tv2.setText(lng +"");
-
-  */
 
         // String이외의 데이터 형을 String으로 변환하는 메서드
         // String이외의 데이터 형을 String으로 변화하는 꼼수~!!
 
-        Log.d("MYLOG","ADDRESS CHECK :"+getAddress(myPosition_lat,myPosition_lng));
+        Log.d("MYLOG", "ADDRESS CHECK :" + getAddress(myPosition_lat, myPosition_lng));
 
-        String checkAddress = getAddress(myPosition_lat,myPosition_lng);
-        String[] splitAddress = checkAddress.split(" ",0);
-        for(int a = 0;a < splitAddress.length;a++){
-            Log.d("MYLOG","Address Split :"+splitAddress[a]);
+        String checkAddress = getAddress(myPosition_lat, myPosition_lng);
+        String[] splitAddress = checkAddress.split(" ", 0);
+        for (int a = 0; a < splitAddress.length; a++) {
+            Log.d("MYLOG", "Address Split :" + splitAddress[a]);
         }
+
+        MY_POSITION_LAT = location.getLatitude();
+        MY_POSITION_LNG = location.getLongitude();
+
 
     }
 
@@ -863,17 +808,6 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 
                     Log.e("SERVER RESPONSE CODE", String.valueOf(serverResponseCode));
 
-//                    runOnUiThread(new Runnable() {
-//                        public void run() {
-//
-//                            String msg = "File Upload Completed.\n\n See uploaded file here : \n\n"
-//                                    + upLoadServerUri;
-//
-//                            messageText.setText(msg);
-//                            Toast.makeText(Main_Test.this, "File Upload Complete.",
-//                                    Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
                 }
 
                 //close the streams //
@@ -975,4 +909,153 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
                 .create()
                 .show();
     }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+        SharedPreferenceUtil preferenceUtil = new SharedPreferenceUtil(this);
+        String locationFlag = preferenceUtil.getSharedData("LOCATION_FLAG");
+
+        if (locationFlag.equals("TRUE")) {
+            navigation.setSelectedItemId(R.id.navigation_nearby);
+            preferenceUtil.setSharedData("LOCATION_FLAG", "FALSE");
+        }
+
+
+        mMap = map;
+        mMap.setMyLocationEnabled(true);
+
+
+        LatLng officeFirst = new LatLng(37.48408310967865, 126.97256952524185);
+
+        String cameraPosition = String.valueOf(mMap.getCameraPosition());
+        Log.d("onMapReady", "cameraPosition :" + cameraPosition);
+
+        LatLng myPosition = new LatLng(MY_POSITION_LAT, MY_POSITION_LNG);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 16));
+
+
+//        mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+        String sFarLeft = String.valueOf(mMap.getProjection().getVisibleRegion().farLeft);
+        String sNearRight = String.valueOf(mMap.getProjection().getVisibleRegion().nearRight);
+
+        String[] splitFarLeft = sFarLeft.split("\\(", 0);
+        String[] splitNearRight = sNearRight.split("\\(", 0);
+
+        String[] split2FarLeft = splitFarLeft[1].split(",", 0);
+        String[] split2NearRight = splitNearRight[1].split(",", 0);
+
+        String[] split3FarLeft = split2FarLeft[1].split("\\)", 0);
+        String[] split3NearRight = split2NearRight[1].split("\\)", 0);
+
+
+        resultFarLeftLat = split2FarLeft[0];
+        resultFarLeftLng = split3FarLeft[0];
+        resultNearRightLat = split2NearRight[0];
+        resultNearRightLng = split3NearRight[0];
+
+        Log.d("SPLIT CHECK LOCATION FAR - NEAR", "split2FarLeft " + split2FarLeft[0]);
+        Log.d("SPLIT CHECK LOCATION FAR - NEAR", "split2FarLeft " + split3FarLeft[0]);
+        Log.d("SPLIT CHECK LOCATION FAR - NEAR", "split2NearRight " + split2NearRight[0]);
+        Log.d("SPLIT CHECK LOCATION FAR - NEAR", "split2NearRight " + split3NearRight[0]);
+        Log.d("MYLOG", "FarLeft:" + sFarLeft);
+        Log.d("MYLOG", "NearRight:" + sNearRight);
+
+
+        String url = "http://222.122.203.55/realreview/Nearby/latlng.php?";
+        String urlMerge = url + "lat_start=" + resultNearRightLat + "&lat_end=" + resultFarLeftLat + "&lng_start=" + resultFarLeftLng + "&lng_end=" + resultNearRightLng;
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        StringBuilder conn = null;
+        try {
+            conn = new AsyncMainNearbyLatLngReceive(urlMerge, progressDialog, this).execute().get(1000, TimeUnit.MILLISECONDS);
+            JSONObject castingJO = new JSONObject(String.valueOf(conn));
+            Log.d("JSON_CHECK", "1 - castingJO :" + castingJO);
+            JSONArray fixJSON = castingJO.getJSONArray("realreview");
+            Log.d("JSON_CHECK", "2 - fixJSON :" + fixJSON);
+
+
+            MarkerOptions markerOptions = new MarkerOptions();
+
+            for (int i = 0; i < fixJSON.length(); i++) {
+                JSONObject item = fixJSON.getJSONObject(i);
+                fixShopDataList.add(String.valueOf(item));
+                Log.d("JSON_CHECK", "3 - item :" + i + "번 :" + item);
+
+                JSONObject item2 = new JSONObject(fixShopDataList.get(i));
+                String sLat = item2.getString("latitude");
+                String sLng = item2.getString("longtitude");
+                double dLat = Double.parseDouble(sLat);
+                double dLng = Double.parseDouble(sLng);
+                LatLng latLng = new LatLng(dLat, dLng);
+
+
+
+                markerOptions.position(latLng)
+                        .title(item2.getString("shopName"))
+                        .snippet("SHOP OPEN : " + item2.getString("shopOpen") + "\nSHOP CLOSE : " + item2.getString("shopClose"));
+
+                mMap.addMarker(markerOptions);
+
+
+                mMap.setOnInfoWindowClickListener(infoWindowClickListener);
+
+
+
+//                mMap.addMarker(new MarkerOptions()
+//                        .position(latLng)
+//                        .title(item2.getString("shopName"))
+//                        .snippet("SHOP OPEN : " + item2.getString("shopOpen") + "\nSHOP CLOSE : " + item2.getString("shopClose")));
+
+
+            }
+
+            Log.d("Main_Test, onMapReady", "connLength : " + fixJSON.length());
+
+
+        } catch (InterruptedException | ExecutionException | TimeoutException | JSONException e) {
+            e.printStackTrace();
+
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+
+                    Dialog_Default dial = new Dialog_Default(Main_Test.this);
+                    dial.call("MARKER CLICK", "TODO : SHOP DETAIL ACTIVITY");
+
+
+                    return false;
+                }
+            });
+
+        }
+
+    }
+
+    //정보창 클릭 리스너
+    GoogleMap.OnInfoWindowClickListener infoWindowClickListener = new GoogleMap.OnInfoWindowClickListener() {
+        @Override
+        public void onInfoWindowClick(Marker marker) {
+            String markerId = marker.getId();
+//            Dialog_Default dial = new Dialog_Default(Main_Test.this);
+//            dial.call("MARKER INFO WINDOW CLICK","TODO : MAKE ACTIVITY");
+
+
+            Intent intent = new Intent(Main_Test.this, ShopDetail_Main.class);
+            startActivity(intent);
+
+        }
+    };
+
+
 }
