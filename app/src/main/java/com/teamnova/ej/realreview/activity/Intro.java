@@ -53,7 +53,8 @@ public class Intro extends AppCompatActivity implements LocationListener {
         //위치정보 하드웨어 목록
         Criteria c = new Criteria();
         //최적의 하드웨어 이름을 리턴받는다.
-        provider = lm.getBestProvider(c, true);
+//        provider = lm.getBestProvider(c, true);
+        Log.d("LOCATION_PROVIDER_CHECK","provider :"+provider);
 
         // 최적의 값이 없거나, 해당 장치가 사용가능한 상태가 아니라면,
         //모든 장치 리스트에서 사용가능한 항목 얻기
@@ -64,7 +65,7 @@ public class Intro extends AppCompatActivity implements LocationListener {
             for (int i = 0; i < list.size(); i++) {
                 //장치 이름 하나 얻기
                 String temp = list.get(i);
-
+                Log.d("LOCATION_PROVIDER_CHECK","Device Name :"+temp);
                 //사용 가능 여부 검사
                 if (lm.isProviderEnabled(temp)) {
                     provider = temp;

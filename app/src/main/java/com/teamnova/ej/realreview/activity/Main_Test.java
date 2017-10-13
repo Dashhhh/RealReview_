@@ -294,7 +294,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         //위치정보 하드웨어 목록
         Criteria c = new Criteria();
         //최적의 하드웨어 이름을 리턴받는다.
-        provider = lm.getBestProvider(c, true);
+//        provider = lm.getBestProvider(c, true);
 
         // 최적의 값이 없거나, 해당 장치가 사용가능한 상태가 아니라면,
         //모든 장치 리스트에서 사용가능한 항목 얻기

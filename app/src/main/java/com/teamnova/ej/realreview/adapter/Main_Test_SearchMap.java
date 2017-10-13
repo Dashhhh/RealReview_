@@ -64,7 +64,9 @@ public class Main_Test_SearchMap extends Fragment implements OnMapReadyCallback{
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         Log.i("FragmentTest","Enter - Main Test");
-        LatLng myPostision = new LatLng(36.48408310967865, 126.97256952524185);
+        LatLng myPostision = new LatLng(37.53364562988281, 126.83870697021484);
+
+
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(myPostision));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
