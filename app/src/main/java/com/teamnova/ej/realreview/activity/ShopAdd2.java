@@ -285,4 +285,7 @@ public class ShopAdd2 extends AppCompatActivity implements View.OnClickListener 
         pref.setSharedData("SHOP_PHONENUMBER", "");
         pref.setSharedData("SHOP_WEBSITE", "");
     }
+
+    // TODO : 상점 중복 확인 -> 중복 시 ShopAdd1.class Move & 기존 ShopAdd1 정보 FLUSHING
+
 }
