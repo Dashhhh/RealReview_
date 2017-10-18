@@ -168,6 +168,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     ArrayList<String> fixShopDataList = new ArrayList<>();
     ArrayList<String> keyShopDataList = new ArrayList<>();
     ArrayList<String> valueShopDataList = new ArrayList<>();
+    private JSONObject item2;
 
     private void init() {
 
@@ -992,30 +993,75 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
                 fixShopDataList.add(String.valueOf(item));
                 Log.d("JSON_CHECK", "3 - item :" + i + "번 :" + item);
 
-                JSONObject item2 = new JSONObject(fixShopDataList.get(i));
+                item2 = new JSONObject(fixShopDataList.get(i));
                 String sLat = item2.getString("latitude");
                 String sLng = item2.getString("longtitude");
                 double dLat = Double.parseDouble(sLat);
                 double dLng = Double.parseDouble(sLng);
                 LatLng latLng = new LatLng(dLat, dLng);
-
-
-
                 markerOptions.position(latLng)
                         .title(item2.getString("shopName"))
                         .snippet("SHOP OPEN : " + item2.getString("shopOpen") + "\nSHOP CLOSE : " + item2.getString("shopClose"));
+                Marker marker = mMap.addMarker(markerOptions);
+                marker.setTag(i);
+                String markerTag = String.valueOf(marker.getTag());
+                String a0 = item2.getString("id");
+                String a1 = item2.getString("shopName");
+                String a2 = item2.getString("address");
+                String a3 = item2.getString("latitude");
+                String a4 = item2.getString("longtitude");
+                String a5 = item2.getString("viewportSouthWestLat");
+                String a6 = item2.getString("viewportSouthWestLng");
+                String a7 = item2.getString("viewportNorthEastLat");
+                String a8 = item2.getString("viewportNorthEastLng");
+                String a9 = item2.getString("shopOpen");
+                String a10 = item2.getString("shopClose");
+                String a11 = item2.getString("shopTheme1");
+                String a12 = item2.getString("shopTheme2");
+                String a13 = item2.getString("shopTheme3");
+                String a14 = item2.getString("shopTheme4");
+                String a15 = item2.getString("shopTheme5");
+                String a16 = item2.getString("callNumber");
 
-                mMap.addMarker(markerOptions);
+                SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
 
+                pref.setSharedData("ID" +           markerTag, item2.getString("id"));
+                pref.setSharedData("TITLE" +        markerTag, item2.getString("shopName"));
+                pref.setSharedData("ADDRESS" +      markerTag, item2.getString("address"));
+                pref.setSharedData("LAT" +          markerTag, item2.getString("latitude"));
+                pref.setSharedData("LNG" +          markerTag, item2.getString("longtitude"));
+                pref.setSharedData("V_SW_LAT" +     markerTag, item2.getString("viewportSouthWestLat"));
+                pref.setSharedData("V_SW_LNG" +     markerTag, item2.getString("viewportSouthWestLng"));
+                pref.setSharedData("V_NE_LAT" +     markerTag, item2.getString("viewportNorthEastLat"));
+                pref.setSharedData("V_NE_LNG" +     markerTag, item2.getString("viewportNorthEastLng"));
+                pref.setSharedData("OPEN" +         markerTag, item2.getString("shopOpen"));
+                pref.setSharedData("CLOSE" +        markerTag, item2.getString("shopClose"));
+                pref.setSharedData("THEME1" +       markerTag, item2.getString("shopTheme1"));
+                pref.setSharedData("THEME2" +       markerTag, item2.getString("shopTheme2"));
+                pref.setSharedData("THEME3" +       markerTag, item2.getString("shopTheme3"));
+                pref.setSharedData("THEME4" +       markerTag, item2.getString("shopTheme4"));
+                pref.setSharedData("THEME5" +       markerTag, item2.getString("shopTheme5"));
+                pref.setSharedData("CALL" +         markerTag, item2.getString("callNumber"));
+                pref.setSharedData("TAG" +          markerTag, String.valueOf(i));
+                if (item2.getString("webSite").isEmpty()) {
+                    pref.setSharedData("WEB" + markerTag, "");
+                } else {
+                    pref.setSharedData("WEB" + markerTag, item2.getString("webSite"));
+                }
 
                 mMap.setOnInfoWindowClickListener(infoWindowClickListener);
 
-
-
-//                mMap.addMarker(new MarkerOptions()
-//                        .position(latLng)
-//                        .title(item2.getString("shopName"))
-//                        .snippet("SHOP OPEN : " + item2.getString("shopOpen") + "\nSHOP CLOSE : " + item2.getString("shopClose")));
+//                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//                    @Override
+//                    public boolean onMarkerClick(Marker marker) {
+//
+//                        Dialog_Default dial = new Dialog_Default(Main_Test.this);
+//                        dial.call("MARKER CLICK", "TODO : SHOP DETAIL ACTIVITY");
+//
+//
+//                        return false;
+//                    }
+//                });
 
 
             }
@@ -1026,32 +1072,24 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         } catch (InterruptedException | ExecutionException | TimeoutException | JSONException e) {
             e.printStackTrace();
 
-            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-
-                    Dialog_Default dial = new Dialog_Default(Main_Test.this);
-                    dial.call("MARKER CLICK", "TODO : SHOP DETAIL ACTIVITY");
-
-
-                    return false;
-                }
-            });
-
         }
 
     }
+
 
     //정보창 클릭 리스너
     GoogleMap.OnInfoWindowClickListener infoWindowClickListener = new GoogleMap.OnInfoWindowClickListener() {
         @Override
         public void onInfoWindowClick(Marker marker) {
-            String markerId = marker.getId();
+            String markerId = String.valueOf(marker.getTag());
 //            Dialog_Default dial = new Dialog_Default(Main_Test.this);
 //            dial.call("MARKER INFO WINDOW CLICK","TODO : MAKE ACTIVITY");
 
-
+            Log.d("MARKER_TAG", "marker.getTag() :" + markerId);
+            SharedPreferenceUtil pref = new SharedPreferenceUtil(Main_Test.this);
+            pref.setSharedData("TAG",markerId);
             Intent intent = new Intent(Main_Test.this, ShopDetail_Main.class);
+            intent.putExtra("TAG", String.valueOf(marker.getTag()));
             startActivity(intent);
 
         }

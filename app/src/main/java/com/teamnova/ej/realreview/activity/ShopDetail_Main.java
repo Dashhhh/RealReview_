@@ -7,17 +7,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.teamnova.ej.realreview.R;
+import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Adapter;
+import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
-public class ShopDetail_Main extends AppCompatActivity implements View.OnClickListener {
+import java.util.ArrayList;
+
+public class ShopDetail_Main extends AppCompatActivity implements View.OnClickListener,OnMapReadyCallback {
 
 
     android.support.v4.view.ViewPager shopDetailViewPager;
@@ -25,7 +33,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     android.support.v7.widget.AppCompatRatingBar shopDetailTitleRating, shopDetailRatingReview, shopDetailRatingReview2;
     android.support.v7.widget.RecyclerView shopDetailRVTitleTag, shopDetailRVImage;
     Button shopDetailTopAddPhoto, shopDetailCheckin, shopDetailBookmark, mapAddress, shopDetailCallBtn, shopDetailDirection, shopDetailMenu, shopDetailWebsiteBtn, shopDetailMessageBtn;
-    LinearLayout shopDetailProfile, shopDetailProfile2, shopDetailProfile3;
+    LinearLayout shopDetailProfile, shopDetailProfile2, shopDetailProfile3, viewpagePageMark;
     SupportMapFragment mapFragmentDetail;
     android.support.v7.widget.AppCompatEditText shopDetailQuestion, shopDetailReview;
     ListView shopDetailLVReview;
@@ -33,16 +41,135 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
             .findFragmentById(R.id.mapFragmentDetail);
 
+    String getTag = "";
+    ArrayList<String> stringArrayList = new ArrayList<>();
+    ShopDetail_Main_Adapter viewpagerAdapter;
+    LinearLayout ll;
+    private final int MAX = 10;
+    private int mPrevPosition;
+    private int pagerCount;
+    /**
+    VIEW PAGER TEST URL
+    */
+    String u1 = "http://222.122.203.55/realreview/hard/test6.jpg";
+    String u2 = "http://222.122.203.55/realreview/hard/test7.jpg";
+    String u3 = "http://222.122.203.55/realreview/hard/test8.jpg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_detail__main);
 
+
         init();
         listener();
+        checkShopData();
+        setShopData();
+        adaptingViewPager();
+        /*
+        mPrevPosition = 0;    //���� ������ �� �ʱ�ȭ
+        addPageMark();        //���� ������ ǥ���ϴ� �� �߰�
+        viewpagePageMark.getChildAt(mPrevPosition).setBackgroundResource(R.drawable.page_not);    //���� �������� �ش��ϴ� ������ ǥ�� �̹��� ����
+        */
+
+    }
+
+    private void adaptingViewPager() {
 
 
+        SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
+        viewpagerAdapter = new ShopDetail_Main_Adapter(getSupportFragmentManager());
+        shopDetailViewPager.setAdapter(viewpagerAdapter);
+
+        pref.setSharedData("VIEWPAGER_TEST1",u1);
+        pref.setSharedData("VIEWPAGER_TEST2",u2);
+        pref.setSharedData("VIEWPAGER_TEST3",u3);
+
+        viewpagerAdapter.notifyDataSetChanged();
+        pagerCount = viewpagerAdapter.getCount();
+        shopDetailViewPager.setCurrentItem(0,true);
+        shopDetailViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+    }
+
+    private void addPageMark() {
+        ImageView iv = new ImageView(getApplicationContext());    //������ ǥ�� �̹��� �� ����
+//        iv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        iv.setBackgroundResource(R.drawable.page_not);
+        Log.d("ViewPager","addPageMark() - pagerCount"+pagerCount);
+        for (int i =0; i<pagerCount;i++){
+            viewpagePageMark.addView(iv);//LinearLayout�� �߰�
+        }
+    }
+
+    private void setShopData() {
+
+        SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
+        shopDetailTitle.setText(pref.getSharedData("TITLE"+getTag));
+        shopDetailTimeOpen.setText(pref.getSharedData("OPEN"+getTag));
+        shopDetailTimeClose.setText(pref.getSharedData("CLOSE"+getTag));
+
+
+    }
+
+    private void checkShopData() {
+
+        SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
+        Intent intent = getIntent();
+        String tagCheck = intent.getExtras().getString("TAG");
+        getTag = tagCheck;
+        String a0 =  pref.getSharedData("ID" + tagCheck);
+        String a1 =  pref.getSharedData("TITLE" + tagCheck);
+        String a2 =  pref.getSharedData("ADDRESS" + tagCheck);
+        String a3 =  pref.getSharedData("LAT" + tagCheck);
+        String a4 =  pref.getSharedData("LNG" + tagCheck);
+        String a5 =  pref.getSharedData("V_SW_LAT" + tagCheck);
+        String a6 =  pref.getSharedData("V_SW_LNG" + tagCheck);
+        String a7 =  pref.getSharedData("V_NE_LAT" + tagCheck);
+        String a8 =  pref.getSharedData("V_NE_LNG" + tagCheck);
+        String a9 =  pref.getSharedData("OPEN" + tagCheck);
+        String a10 = pref.getSharedData("CLOSE" + tagCheck);
+        String a11 = pref.getSharedData("THEME1" + tagCheck);
+        String a12 = pref.getSharedData("THEME2" + tagCheck);
+        String a13 = pref.getSharedData("THEME3" + tagCheck);
+        String a14 = pref.getSharedData("THEME4" + tagCheck);
+        String a15 = pref.getSharedData("THEME5" + tagCheck);
+        String a16 = pref.getSharedData("CALL" + tagCheck);
+        String a17 = pref.getSharedData("WEB" + tagCheck);
+
+        Log.d("MARKER_TAG", "gIntent[TAG] :" + tagCheck);
+        Log.d("MARKER_TAG", "ID :" + a0);
+        Log.d("MARKER_TAG", "TITLE :" + a1);
+        Log.d("MARKER_TAG", "ADDRESS :" + a2);
+        Log.d("MARKER_TAG", "LAT :" + a3);
+        Log.d("MARKER_TAG", "LNG :" + a4);
+        Log.d("MARKER_TAG", "V_SW_LAT :" + a5);
+        Log.d("MARKER_TAG", "V_SW_LNG :" + a6);
+        Log.d("MARKER_TAG", "V_NE_LAT :" + a7);
+        Log.d("MARKER_TAG", "V_NE_LNG :" + a8);
+        Log.d("MARKER_TAG", "OPEN :" + a9);
+        Log.d("MARKER_TAG", "CLOSE :" + a10);
+        Log.d("MARKER_TAG", "THEME1 :" + a11);
+        Log.d("MARKER_TAG", "THEME2 :" + a12);
+        Log.d("MARKER_TAG", "THEME3 :" + a13);
+        Log.d("MARKER_TAG", "THEME4 :" + a14);
+        Log.d("MARKER_TAG", "THEME5 :" + a15);
+        Log.d("MARKER_TAG", "CALL :" + a16);
+        Log.d("MARKER_TAG", "WEB :" + a17);
 
     }
 
@@ -71,6 +198,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailProfile = (LinearLayout) findViewById(R.id.shopDetailProfile);
         shopDetailProfile2 = (LinearLayout) findViewById(R.id.shopDetailProfile2);
         shopDetailProfile3 = (LinearLayout) findViewById(R.id.shopDetailProfile3);
+        viewpagePageMark = (LinearLayout) findViewById(R.id.viewpagePageMark);
         shopDetailQuestion = (AppCompatEditText) findViewById(R.id.shopDetailQuestion);
         shopDetailReview = (AppCompatEditText) findViewById(R.id.shopDetailReview);
         shopDetailLVReview = (ListView) findViewById(R.id.shopDetailLVReview);
@@ -92,7 +220,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
 
                 Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Review_Submit.class);
-                intent.putExtra("reviewRating",v);
+                intent.putExtra("reviewRating", v);
                 startActivity(intent);
 
             }
@@ -102,7 +230,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
 
                 Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Review_Submit.class);
-                intent.putExtra("reviewRating",v);
+                intent.putExtra("reviewRating", v);
                 startActivity(intent);
 
             }
@@ -112,7 +240,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
 
                 Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Review_Submit.class);
-                intent.putExtra("reviewRating",v);
+                intent.putExtra("reviewRating", v);
                 startActivity(intent);
 
             }
@@ -271,8 +399,15 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             }
 
 
-
         }
+
+    }
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+
 
     }
 }

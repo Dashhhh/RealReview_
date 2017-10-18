@@ -16,10 +16,6 @@ import java.util.ArrayList;
  */
 
 public class ShopAdd3_Adapter extends BaseAdapter {
-    String TestVAR;
-    String TestVAR2;
-    String TestVAR3;
-
 
     public ArrayList<ShopAdd3_SetData> data = new ArrayList<>();
     LayoutInflater inflater = null;

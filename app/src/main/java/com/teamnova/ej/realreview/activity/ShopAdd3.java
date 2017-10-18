@@ -72,7 +72,6 @@ public class ShopAdd3 extends AppCompatActivity implements View.OnClickListener 
 
                 int size = shopAdd3_adapter.data.size();
 
-
                 arml.shopAdd3Title = "";
                 arml.shopAdd3Description  = "";
                 arml.shopAdd3Tag="";
