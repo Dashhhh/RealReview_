@@ -2,6 +2,7 @@ package com.teamnova.ej.realreview.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
@@ -54,6 +55,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     String u1 = "http://222.122.203.55/realreview/hard/test6.jpg";
     String u2 = "http://222.122.203.55/realreview/hard/test7.jpg";
     String u3 = "http://222.122.203.55/realreview/hard/test8.jpg";
+    ArrayList<Fragment> fragmentArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
         viewpagerAdapter = new ShopDetail_Main_Adapter(getSupportFragmentManager());
         shopDetailViewPager.setAdapter(viewpagerAdapter);
+
 
         pref.setSharedData("VIEWPAGER_TEST1",u1);
         pref.setSharedData("VIEWPAGER_TEST2",u2);

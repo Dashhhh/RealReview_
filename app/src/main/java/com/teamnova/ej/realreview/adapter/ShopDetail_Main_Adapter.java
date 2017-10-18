@@ -3,6 +3,7 @@ package com.teamnova.ej.realreview.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ public class ShopDetail_Main_Adapter extends FragmentStatePagerAdapter {
 
     @Override
     public android.support.v4.app.Fragment getItem(int position) {
+        Log.d("ViewPager","Adapter - getItem() - Enter");
 
         switch (position) {
 
@@ -36,12 +38,15 @@ public class ShopDetail_Main_Adapter extends FragmentStatePagerAdapter {
         }
 
 
-        return null;
+        return ShopDetail_Viewpager_Fragment.create(position);
+
     }
 
 
     @Override
     public int getCount() {
+        Log.d("ViewPager","Adapter - getCoutn() - Enter");
+
         return fragmentArrayList == null ? 0:fragmentArrayList.size();
     }
 
