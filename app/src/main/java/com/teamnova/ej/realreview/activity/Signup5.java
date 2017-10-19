@@ -439,7 +439,6 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
 
                 // create a buffer of  maximum size
                 bytesAvailable = fileInputStream.available();
-
                 bufferSize = Math.min(bytesAvailable, maxBufferSize);
                 buffer = new byte[bufferSize];
 

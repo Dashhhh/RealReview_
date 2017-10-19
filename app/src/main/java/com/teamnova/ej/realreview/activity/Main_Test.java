@@ -979,7 +979,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         ProgressDialog progressDialog = new ProgressDialog(this);
         StringBuilder conn = null;
         try {
-            conn = new AsyncMainNearbyLatLngReceive(urlMerge, progressDialog, this).execute().get(1000, TimeUnit.MILLISECONDS);
+            conn = new AsyncMainNearbyLatLngReceive(urlMerge, progressDialog, this).execute().get(5000, TimeUnit.MILLISECONDS);
             JSONObject castingJO = new JSONObject(String.valueOf(conn));
             Log.d("JSON_CHECK", "1 - castingJO :" + castingJO);
             JSONArray fixJSON = castingJO.getJSONArray("realreview");

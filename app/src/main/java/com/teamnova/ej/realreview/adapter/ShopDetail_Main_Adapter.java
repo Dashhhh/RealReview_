@@ -32,7 +32,7 @@ public class ShopDetail_Main_Adapter extends FragmentStatePagerAdapter {
 
 
             case 2: {
-                
+
             }
 
         }

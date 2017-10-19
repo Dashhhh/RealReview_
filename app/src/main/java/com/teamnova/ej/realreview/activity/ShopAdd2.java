@@ -12,13 +12,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
-import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.Asynctask.AsyncShopAdd2HTTP;
+import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.util.Dialog_Default;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class ShopAdd2 extends AppCompatActivity implements View.OnClickListener {
 
@@ -255,10 +258,10 @@ public class ShopAdd2 extends AppCompatActivity implements View.OnClickListener 
                         Log.e("SHOPADD2, URL MERGE :",urlMerge);
 
                         ProgressDialog progressDialog = new ProgressDialog(this);
-                        AsyncShopAdd2HTTP upload = new AsyncShopAdd2HTTP(urlMerge, progressDialog, this);
-                        upload.execute();
+                        Void upload;
+                        upload= new AsyncShopAdd2HTTP(urlMerge, progressDialog, this).execute().get(1000,TimeUnit.MICROSECONDS);
 
-                    } catch (UnsupportedEncodingException e) {
+                    } catch (UnsupportedEncodingException | InterruptedException | ExecutionException | TimeoutException e) {
                         e.printStackTrace();
                     }
 

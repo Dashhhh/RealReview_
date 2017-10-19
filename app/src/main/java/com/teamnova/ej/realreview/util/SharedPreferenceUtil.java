@@ -35,7 +35,7 @@ public class SharedPreferenceUtil {
     }
 
     public String getSharedData(String test) {
-        String returnStr = sharedPreferences.getString(test, "null");
+        String returnStr = sharedPreferences.getString(test, "");
         return returnStr; // "test"는 키, "defValue"는 키에 대한 값이 없을 경우 리턴해줄 값
     }
 

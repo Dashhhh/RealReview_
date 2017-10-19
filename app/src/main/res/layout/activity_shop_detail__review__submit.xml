@@ -1,9 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.teamnova.ej.realreview.activity.ShopDetail_Review_Submit">
 
-</android.support.constraint.ConstraintLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/reviewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="123123"
+            android:textColor="#000000"
+            android:textStyle="normal"
+            android:textSize="25dp"
+            android:layout_margin="8dp"
+            />
+        <android.support.v7.widget.AppCompatRatingBar
+            android:id="@+id/reviewRating"
+            style="@style/Base.Widget.AppCompat.RatingBar.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:isIndicator="false"
+            android:max="5"
+            android:numStars="5"
+            android:rating="0"
+            android:stepSize="0.1" />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/reviewEditText"
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:background="@drawable/border"
+            android:layout_margin="10dp"
+            android:textIsSelectable="false"
+            android:textStyle="normal"
+            android:hint="Example.\n이 곳은 내가 좋아하는 스테이크 하우스 입니다. 당신이 누군가에게 잘 보이려고한다면 여기로 가면 됩니다. 서비스는 신속하지만 거친면도 있습니다. 하지만 소박한 스테이크 하우스인 이곳 문화의 하나로 보입니다. 서버는 우리에게 자세한 안내를 해줬고, 특히 스테이크와 맥주의 조합을  결정하는데에 도움이되었습니다. 위 내용은 모두 100 % 경험담입니다. 이곳은 스테이크가 메인 음식이며 갈 때마다 맛있고 육즙이 풍부합니다. 디저트를 반드시 드셔보셔야 합니다! 이 곳의 디저트 중 홈 치즈 케이크는 세계에서 가장 맛있는 음식이라고 생각합니다."
+            android:textSize="13dp"
+            android:gravity="top"
+            android:padding="10dp"
+            android:textColor="#000000"
+            />
+
+        <LinearLayout
+            android:id="@+id/reviewImageLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            >
+
+            <!--Dynamic Layout : CAMERA IMAGE -->
+            <ImageView
+                android:id="@+id/reviewImage1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                />
+
+            <ImageView
+                android:id="@+id/reviewImage2"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                />
+
+            <ImageView
+                android:id="@+id/reviewImage3"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                />
+
+            <ImageView
+                android:id="@+id/reviewImage4"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                />
+
+            <ImageView
+                android:id="@+id/reviewImage5"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/reviewCamera"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/border_alpha"
+            android:drawableStart="@drawable/t_detail_camera"
+            android:drawableEnd="@drawable/t_right"
+            android:padding="20dp"
+
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="사진 첨부하기"
+            android:textAlignment="center"
+
+            />
+        <Button
+            android:id="@+id/reviewSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_margin="10dp"
+            android:background="@drawable/border_blue"
+            android:padding="20dp"
+            android:text="완료"
+            android:textAlignment="center"
+
+            />
+
+
+    </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

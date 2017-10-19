@@ -1,9 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.teamnova.ej.realreview.activity.ShopDetail_Question_Submit">
 
-</android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/tipEditText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/border"
+            android:layout_margin="10dp"
+            android:layout_weight="26"
+            android:textIsSelectable="false"
+            android:textStyle="normal"
+            android:hint="Example.\n이곳은 내가 좋아하는 음식점이다. 우린 빠네, 트리플 맥오 치즈, 그리고 딸기 케잌을 디저트로 먹었다. 모든 것이 맛있었다!"
+            android:textSize="13dp"
+            android:gravity="top"
+            android:padding="10dp"
+            android:textColor="#000000"
+            />
+        <Button
+            android:layout_weight="4"
+            android:id="@+id/tipCamera"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/border_alpha"
+            android:drawableStart="@drawable/t_detail_camera"
+            android:drawableEnd="@drawable/t_right"
+            android:padding="20dp"
+
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="사진 첨부하기"
+            android:textAlignment="center"
+
+            />
+        <Button
+            android:layout_weight="4"
+
+            android:id="@+id/tipSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textColor="#ffffff"
+            android:layout_margin="10dp"
+            android:background="@drawable/border_blue"
+            android:padding="20dp"
+            android:text="완료"
+            android:textAlignment="center"
+
+            />
+
+
+    </LinearLayout>
+
+</LinearLayout>
