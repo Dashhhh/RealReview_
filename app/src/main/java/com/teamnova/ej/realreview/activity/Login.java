@@ -1,5 +1,6 @@
 package com.teamnova.ej.realreview.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -59,6 +60,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     String login_url = "http://222.122.203.55/realreview/signup/login.php?";
 
     String logged_url_parse = null;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +104,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         switch (view.getId()) {
 
             case R.id.loginBtn: {
+
                 Dialog_Default dial = new Dialog_Default(this);
+                dialog = new ProgressDialog(this);
+                dialog.setMessage("SHOP DATA Check");
+                dialog.setIndeterminate(false);
+                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                dialog.show();
 
                 String id = loginIdText.getText().toString();
                 String pw = loginPasswordText.getText().toString();
@@ -146,7 +154,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                             pref.setSharedData("isLogged_grade", tempGrade);
                             pref.setSharedData("isLogged_regDate", tempRegDate);
                             pref.setSharedData("isLogged_description", tempDescription);
-
+                            dialog.dismiss();
                             Toast.makeText(this, tempNick + ", Welcome Back", Toast.LENGTH_SHORT).show();
                             tempNick = "";
                             Intent intent = new Intent(getApplicationContext(), Main_Test.class);
@@ -155,14 +163,17 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 //                            dial.call("Warning", "비밀번호를 입력 후 로그인해 주시기 바랍니다.");
 //                            loginPasswordText.setText("");
                         } else if (!tempPwStr.equals(pw)) {
+                            dialog.dismiss();
                             dial.call("Warning", "로그인 정보가 틀립니다. 정보를 확인해 주시기 바랍니다.");
                             loginPasswordText.setText("");
                         }
 
                     } else {
+                        dialog.dismiss();
                         dial.call("Warning", "가입 된 ID가 없습니다. 로그인 정보를 확인해 주시기 바랍니다.");
                     }
                 } else if (id.equals("") || pw.equals("")) {
+                    dialog.dismiss();
                     dial.call("Warning", "아이디와 비밀번호를 입력 한 후 로그인 버튼을 눌러주세요.");
                 }
                 tempId = "";

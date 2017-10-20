@@ -123,6 +123,7 @@ public class AsyncMainNearbyLatLngReceive  extends AsyncTask<Void, Integer, Stri
         try {
             dialog.dismiss();
         } catch(Exception e) {
+            e.printStackTrace();
         }
 
     }

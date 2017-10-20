@@ -50,6 +50,7 @@ dependencies {
     compile 'com.zhihu.android:matisse:0.4.3'   // Gallery
     compile 'com.werb.pickphotoview:pickphotoview:0.3.0'  // Last Version
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.google.code.gson:gson:2.7'
 
     testCompile 'junit:junit:4.12'
 }

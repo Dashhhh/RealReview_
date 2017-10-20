@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -27,6 +28,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.teamnova.ej.realreview.Asynctask.AsyncShopDetailImageURLRequest;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Adapter_Backup;
+import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Review_LV_Adapter;
+import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Review_LV_Set;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
 import org.json.JSONArray;
@@ -76,6 +79,9 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     private JSONObject item2;
     private GoogleMap mMap;
 
+
+    ArrayList<ShopDetail_Main_Review_LV_Set> reviewData = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +92,14 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         listener();
         checkShopData();
         setShopData();
-        adaptingViewPager();
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.mapFragmentDetail);
+        mapFragment.getMapAsync(this);
+
+
+
+
         /*
         mPrevPosition = 0;    //���� ������ �� �ʱ�ȭ
         addPageMark();        //���� ������ ǥ���ϴ� �� �߰�
@@ -95,10 +108,18 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    private void adaptingViewPager() {
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapting();
 
 
-        StringBuilder conn;
+    }
+
+    private void adapting() {
+
+
+        StringBuilder conn = null;
         ProgressDialog progressDialog = new ProgressDialog(this);
 
 
@@ -108,23 +129,131 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         viewpagerAdapter = new ShopDetail_Main_Adapter_Backup(this);
         shopDetailViewPager.setAdapter(viewpagerAdapter);
 
+        ShopDetail_Main_Review_LV_Adapter reviewLvAdapter = new ShopDetail_Main_Review_LV_Adapter(this);
+        shopDetailLVReview.setAdapter(reviewLvAdapter);
+
         try {
+            ShopDetail_Main_Review_LV_Set dataSet = new ShopDetail_Main_Review_LV_Set();
             conn = new AsyncShopDetailImageURLRequest(urlParse, progressDialog, this).execute().get(10000, TimeUnit.MILLISECONDS);
-            JSONObject castingJO = new JSONObject(String.valueOf(conn));
-            Log.d("JSON_CHECK", "1 - castingJO :" + castingJO);
-            JSONArray fixJSON = castingJO.getJSONArray("realreview");
-            Log.d("JSON_CHECK", "2 - fixJSON :" + fixJSON);
+            String sConn = String.valueOf(conn);
+            Log.d("REVIEW_VIEWPAGER_URL", "sConn :" + sConn);
+
+
+            JSONObject castingJO = new JSONObject(String.valueOf(sConn));
+            JSONObject cc = new JSONObject();
+            Log.d("REVIEW_VIEWPAGER_URL", "1 - castingJO :" + castingJO);
+            JSONArray fixJSON = castingJO.getJSONArray("realreview");   // viewPager
+            Log.d("REVIEW_VIEWPAGER_URL", "2 - fixJSON :" + fixJSON);
+//            JSONArray fixJSON2 = castingJO.getJSONArray("imagepath");   // viewPager
+//            Log.d("REVIEW_VIEWPAGER_URL", "2 - fixJSON :" + fixJSON2);
 
             for (int i = 0; i < fixJSON.length(); i++) {
                 JSONObject item = fixJSON.getJSONObject(i);
-                shopImageIdList.add(String.valueOf(item));
-                Log.d("JSON_CHECK", "3 - item :" + i + "번 :" + item);
+                Log.d("REVIEW_VIEWPAGER_URL", "3 - item :" + i + "번 :" + item);
+//                item2 = new JSONObject(shopImageIdList.get(i));
+//                Log.d("REVIEW_VIEWPAGER_URL", "4 - item2 :" + i + "번 :" + item2);
+                String getViewpagerURL = item.getString("imagepath");
+                Log.d("REVIEW_VIEWPAGER_URL", "5 - getViewpagerURL :" + i + "번 :" + getViewpagerURL);
+                viewpagerAdapter.addItem(getViewpagerURL);
+            }
 
-                item2 = new JSONObject(shopImageIdList.get(i));
-                String id = item2.getString("imagepath");
 
-                pref.setSharedData("REVIEW_VIEWPAGER_URL" + i, item2.getString("imagepath"));
-                viewpagerAdapter.addItem(id);
+/*
+
+            class DataJson {
+
+                @SerializedName("name")
+                public String name;
+
+                @SerializedName("data")
+                public Data data;
+
+                class Data{
+                    @SerializedName("name")
+                    public String name;
+
+                    @SerializedName("age")
+                    public int age;
+
+                    @SerializedName("birth")
+                    public int birth;
+                }
+
+                @SerializedName("info")
+                public List<Info> info;
+
+                class Info{
+                    @SerializedName("review")
+                    public String review;
+
+                    @SerializedName("regDate")
+                    public int regDate;
+
+                    @SerializedName("id_user")
+                    public int id_user;
+
+                    @SerializedName("rating")
+                    public int rating;
+
+//                    @SerializedName("profileimage")
+//                    public int profileimage;
+                }
+
+            }
+            DataJson dataJson= new Gson().fromJson(sConn, DataJson.class);
+
+            for(DataJson.Info info : dataJson.info){
+
+                Log.d("REIVEW_REVIEW", "info.review :"+info.review);
+                Log.d("REIVEW_REVIEW", "info.regDate :"+info.regDate);
+                Log.d("REIVEW_REVIEW", "info.id_user :"+info.id_user);
+                Log.d("REIVEW_REVIEW", "info.rating :"+info.rating);
+//                Log.d("REIVEW_REVIEW", "info.profileimage :"+info.profileimage);
+
+            }
+
+*/
+
+            JSONObject reviewJSON = new JSONObject(sConn);
+            JSONArray reviewJSONArray = reviewJSON.getJSONArray("info");
+
+
+/*
+            JsonParser parser = new JsonParser();
+            JsonObject reviewJSON = new parser.parse(String.valueOf(conn)).getAsJsonObject();
+            Log.d("REVIEW_REVIEW","reviewJSON :"+reviewJSON);
+            JsonArray jsonArray = reviewJSON.getAsJsonArray("info");
+            Log.d("REVIEW_REVIEW","jsonArray :"+jsonArray);
+            JsonObject jsonObject1 = jsonArray.get(0).getAsJsonObject();
+            Log.d("REVIEW_REVIEW","jsonObject :"+jsonArray);*/
+            for (int i = 0; i < reviewJSONArray.length(); i++) {
+//                JSONObject infoItem = reviewJSONArray.getJSONObject(i);
+                JSONObject jsonObject1 = reviewJSONArray.getJSONObject(i);
+                Log.d("REVIEW_REVIEW", "jsonObject1 :" + jsonObject1);
+                String getReviewText = jsonObject1.getString("review");
+                Log.d("REIVEW_REVIEW", "Casting Info - review :" + i + "번 :" + getReviewText);
+                String getRegdate = jsonObject1.getString("regdate");
+                Log.d("REIVEW_REVIEW", "Casting Info - getRegdate :" + i + "번 :" + getRegdate);
+                String getUserId = jsonObject1.getString("id_user");
+                Log.d("REIVEW_REVIEW", "Casting Info - getUserId :" + i + "번 :" + getUserId);
+                String getRating = jsonObject1.getString("rating");
+                Log.d("REIVEW_REVIEW", "Casting Info - getRating :" + i + "번 :" + getRating);
+                String getProfileImageURL = jsonObject1.getString("profileimage");
+                Log.d("REIVEW_REVIEW", "Casting Info - getProfileImageURL :" + i + "번 :" + getProfileImageURL);
+
+                dataSet.reviewCnt = "0";
+                dataSet.followerCnt = "0";
+                dataSet.imageCnt = "0";
+                dataSet.reviewText = getReviewText;
+                dataSet.regdate = getRegdate;
+                dataSet.userId = getUserId;
+                dataSet.rating = getRating;
+                float ff = Float.parseFloat(getRating);
+                dataSet.fRating = ff;
+                dataSet.titleImage = getProfileImageURL;
+                reviewData.add(0, dataSet);
+                reviewLvAdapter.addItem(reviewData);
+                reviewLvAdapter.notifyDataSetChanged();
             }
 
             Log.d("Main_Test, onMapReady", "connLength : " + fixJSON.length());
@@ -244,6 +373,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     }
 
     private void init() {
+
         shopDetailViewPager = (ViewPager) findViewById(R.id.shopDetailViewPager);
         shopDetailTitle = (TextView) findViewById(R.id.shopDetailTitle);
         shopDetailTitleReviewCnt = (TextView) findViewById(R.id.shopDetailTitleReviewCnt);
@@ -272,7 +402,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailQuestion = (AppCompatEditText) findViewById(R.id.shopDetailQuestion);
         shopDetailReview = (AppCompatEditText) findViewById(R.id.shopDetailReview);
         shopDetailLVReview = (ListView) findViewById(R.id.shopDetailLVReview);
-
 
     }
 
@@ -476,6 +605,14 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
             case R.id.shopDetailReview: {
 
+                SharedPreferenceUtil pref = new SharedPreferenceUtil(ShopDetail_Main.this);
+                Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Review_Submit.class);
+                intent.putExtra("reviewTitle", title);
+                intent.putExtra("reviewShopId", a0);
+                intent.putExtra("reviewUserId", pref.getSharedData("isLogged_id"));
+                intent.putExtra("reviewUserNick", pref.getSharedData("isLogged_nick"));
+                startActivity(intent);
+
                 break;
             }
 
@@ -488,15 +625,20 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+
+        Log.d("DetailMain", "onMapReady = Enter");
         mMap = googleMap;
 
         Double lat = Double.valueOf(a3);
         Double lng = Double.valueOf(a4);
+        Log.d("DetailMain", "LAT" + a3);
+        Log.d("DetailMain", "LNG" + a4);
         LatLng latlng = new LatLng(lat, lng);
-        MarkerOptions markerOptions = null;
+        MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latlng)
                 .title(a1);
         Marker marker = mMap.addMarker(markerOptions);
-
+        mMap.addMarker(markerOptions);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 17));
     }
 }

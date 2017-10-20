@@ -6,8 +6,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -74,29 +72,30 @@ public class AsyncShopDetailImageURLRequest extends AsyncTask<Void, Integer, Str
         }
         jsonHtml.toString().trim();
         Log.e(TAG, "jsonHtml - " + jsonHtml);
-        try {
-            int i = 0;
-            JSONObject jObject = new JSONObject(String.valueOf(jsonHtml));
-            jsonArray = jObject.getJSONArray("realreview");
-            JSONObject item = jsonArray.getJSONObject(i);
-            int length = jsonArray.length();
+        int i = 0;
+//            JSONObject jObject = new JSONObject(String.valueOf(jsonHtml));
+//            jsonArray = jObject.getJSONArray("realreview");
+//            JSONObject item = jsonArray.getJSONObject(i);
+//            int length = jsonArray.length();
+//
+//
+//            String getshopImageUrl = item.getString("imagepath");
+//            String getReview = item.getString("review");
+//            String getDate = item.getString("regdate");
+//            String getUser = item.getString("id_user");
+//            String getRating = item.getString("rating");
+//
+//
+//            Log.d("AsyncShopDetailImageURLRequest", "JSONObject jOcject:" + jObject);
+//            Log.d("AsyncShopDetailImageURLRequest", "JSONArray jsonArray :" + jsonArray);
+//            Log.d("AsyncShopDetailImageURLRequest", "JSONObject item:" + item);
+//
+//            Log.d("AsyncShopDetailImageURLRequest", "JSONObject jOcject Length:" + jObject.length());
+//            Log.d("AsyncShopDetailImageURLRequest", "JSONArray jsonArray Length :" + jsonArray.length());
+//            Log.d("AsyncShopDetailImageURLRequest", "JSONArray jsonArray Length :" + item.length());
 
-            Log.d("AsyncShopDetailImageURLRequest", "JSONObject jOcject:" + jObject);
-            Log.d("AsyncShopDetailImageURLRequest", "JSONArray jsonArray :" + jsonArray);
-            Log.d("AsyncShopDetailImageURLRequest", "JSONObject item:" + item);
 
-            Log.d("AsyncShopDetailImageURLRequest", "JSONObject jOcject Length:" + jObject.length());
-            Log.d("AsyncShopDetailImageURLRequest", "JSONArray jsonArray Length :" + jsonArray.length());
-            Log.d("AsyncShopDetailImageURLRequest", "JSONArray jsonArray Length :" + item.length());
-
-
-            String getId = item.getString("imagepath");
-
-            return jsonHtml;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return jsonHtml;
     }
 
     @Override
