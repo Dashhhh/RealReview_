@@ -122,12 +122,6 @@ public class AsyncMainNearbyLatLngReceive  extends AsyncTask<Void, Integer, Stri
     protected void onPostExecute(StringBuilder result) {
         try {
             dialog.dismiss();
-
-
-//            Intent intent = new Intent(mContext, ShopAdd4.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            mContext.startActivity(intent);
         } catch(Exception e) {
         }
 

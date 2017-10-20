@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.teamnova.ej.realreview.R;
 
@@ -56,7 +55,7 @@ public class ShopDetail_Viewpager_Fragment extends android.support.v4.app.Fragme
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.activity_shop_detail__main_top_viewpager, container, false);
 
 //        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_page, container, false);
-        ((TextView) rootView.findViewById(R.id.number)).setText(mPageNumber + "");
+//        ((TextView) rootView.findViewById(R.id.number)).setText(mPageNumber + "");
         return rootView;
 /*
 

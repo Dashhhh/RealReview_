@@ -11,7 +11,6 @@ import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,6 +26,7 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
     Context mContext;
     private ProgressDialog dialog;
     String TestVAR;
+    private String reviewData;
 
     public AsyncReviewSubmit(ProgressDialog dialog, Context mContext) {
         this.dialog = dialog;
@@ -47,8 +47,23 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
         // TODO Auto-generated method stub
 
         try {
+
+            String sURL = "http://222.122.203.55/realreview/shopimage/reviewImageUpload.php";
             SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
 
+            String review0 = pref.getSharedData("HTTP_REVIEW_ID");
+            String review1 = pref.getSharedData("HTTP_REVIEW_REVIEW");
+            String review2 = pref.getSharedData("HTTP_REVIEW_USER");
+            String review3 = pref.getSharedData("HTTP_REVIEW_RATING");
+            reviewData = sURL + "?" + "reviewid=" + review0 + "&review=" + review1 + "&user=" + review2 + "&rating=" + review3;
+            Log.d("REVIEW_Image", "String review0 :" + review0);
+            Log.d("REVIEW_Image", "String review1 :" + review1);
+            Log.d("REVIEW_Image", "String review2 :" + review2);
+            Log.d("REVIEW_Image", "String review3 :" + review3);
+
+
+
+            StringBuffer postDataBuilder = new StringBuffer();
 
             String URL0 = String.valueOf(pref.getSharedData("REVIEW_IMAGE_1"));
             String URL1 = String.valueOf(pref.getSharedData("REVIEW_IMAGE_2"));
@@ -61,112 +76,151 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
             Log.d("REVIEW_Image", "String URL3 :" + URL3);
             Log.d("REVIEW_Image", "String URL4 :" + URL4);
 
-            ArrayList<String> imagePath = new ArrayList<>();
-            if (!URL0.isEmpty()) {
-                imagePath.add(0, URL0);
-                Log.d("REVIEW_Image", "imagePath add0 :" + imagePath.get(0));
-            }
-            if (!URL1.isEmpty()) {
-                imagePath.add(1, URL1);
-                Log.d("REVIEW_Image", "imagePath add1 :" + imagePath.get(1));
-            }
-            if (!URL2.isEmpty()) {
-                imagePath.add(2, URL2);
-                Log.d("REVIEW_Image", "imagePath add2 :" + imagePath.get(2));
-            }
-            if (!URL3.isEmpty()) {
-                imagePath.add(3, URL3);
-                Log.d("REVIEW_Image", "imagePath add3 :" + imagePath.get(3));
-            }
-            if (!URL4.isEmpty()) {
-                imagePath.add(4, URL4);
-                Log.d("REVIEW_Image", "imagePath add4 :" + imagePath.get(4));
-            }
 
-            Log.d("REVIEW_Image", "imagePath size :" + imagePath.size());
-
-
-            // sendID();
             String lineEnd = "\r\n";
             String twoHyphens = "--";
             String boundary = "*****";
-            String sURL = "http://222.122.203.55/realreview/shopimage/reviewImageUpload.php";
             URL connectUrl = new URL(sURL);
             Log.d("REVIEW_Image", "URL :" + String.valueOf(connectUrl));
-            File sourceFile0 = new File(imagePath.get(0));
-            File sourceFile1 = new File(imagePath.get(1));
-            File sourceFile2 = new File(imagePath.get(2));
-            File sourceFile3 = new File(imagePath.get(3));
-            File sourceFile4 = new File(imagePath.get(4));
-            String fileName0 = new File(imagePath.get(0)).getName();
-            String fileName1 = new File(imagePath.get(1)).getName();
-            String fileName2 = new File(imagePath.get(2)).getName();
-            String fileName3 = new File(imagePath.get(3)).getName();
-            String fileName4 = new File(imagePath.get(4)).getName();
-            Log.d("REVIEW_Image", "File sourceFile0 :" + sourceFile0);
-            Log.d("REVIEW_Image", "File sourceFile1 :" + sourceFile1);
-            Log.d("REVIEW_Image", "File sourceFile2 :" + sourceFile2);
-            Log.d("REVIEW_Image", "File sourceFile3 :" + sourceFile3);
-            Log.d("REVIEW_Image", "File sourceFile4 :" + sourceFile4);
-            Log.d("REVIEW_Image", "String fileName0 :" + fileName0);
-            Log.d("REVIEW_Image", "String fileName1 :" + fileName1);
-            Log.d("REVIEW_Image", "String fileName2 :" + fileName2);
-            Log.d("REVIEW_Image", "String fileName3 :" + fileName3);
-            Log.d("REVIEW_Image", "String fileName4 :" + fileName4);
+
+
+            HttpURLConnection conn = (HttpURLConnection) connectUrl.openConnection();
 
             // open connection
-            HttpURLConnection conn = (HttpURLConnection) connectUrl.openConnection();
             conn.setDoInput(true);
             conn.setDoOutput(true);
             conn.setUseCaches(false);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Connection", "Keep-Alive");
-            conn.setRequestProperty("Connection", "Keep-Alive");
             conn.setRequestProperty("ENCTYPE", "multipart/form-data");
             conn.setRequestProperty("Content-Type",
                     "multipart/form-data;boundary=" + boundary);
-            conn.setRequestProperty("uploaded_file0", fileName0);
-            conn.setRequestProperty("uploaded_file1", fileName1);
-            conn.setRequestProperty("uploaded_file2", fileName2);
-            conn.setRequestProperty("uploaded_file3", fileName3);
-            conn.setRequestProperty("uploaded_file4", fileName4);
+            conn.setConnectTimeout(10000);
+            conn.setReadTimeout(10000);
 
-
-            conn.connect();
             DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
-            FileInputStream mFileInputStream = new FileInputStream(imagePath.get(0));
 
-            OutputStream os = conn.getOutputStream();
-            String review0 = pref.getSharedData("HTTP_REVIEW_ID");
-            String review1 = pref.getSharedData("HTTP_REVIEW_REVIEW");
-            String review2 = pref.getSharedData("HTTP_REVIEW_USER");
-            String review3 = pref.getSharedData("HTTP_REVIEW_RATING");
+            ArrayList<String> imagePath = new ArrayList<>();
+            ArrayList<String> imagePathList = new ArrayList<>();
+            imagePathList.add(String.valueOf(pref.getSharedData("REVIEW_IMAGE_1")));
+            imagePathList.add(String.valueOf(pref.getSharedData("REVIEW_IMAGE_2")));
+            imagePathList.add(String.valueOf(pref.getSharedData("REVIEW_IMAGE_3")));
+            imagePathList.add(String.valueOf(pref.getSharedData("REVIEW_IMAGE_4")));
+            imagePathList.add(String.valueOf(pref.getSharedData("REVIEW_IMAGE_5")));
 
-            String reviewData = sURL + "?" + "reviewID=" + review0 + "&review=" + review1 + "&user=" + review2 + "&rating=" + review3;
-            os.write(reviewData.getBytes("UTF-8"));
+            String delimiter = "--" + boundary + "\r\n";
+            Log.d("REVIEW_Image", "imagePath size :" + imagePath.size());
+
+            // sendID();
+
+
+
             Log.d("REVIEW_Image", "OutputStream URL :" + reviewData);
+
+            postDataBuilder.append("\r\n");
+            postDataBuilder.append(delimiter);
+            postDataBuilder.append(setValue("reviewid",review0));
+            postDataBuilder.append(delimiter);
+            postDataBuilder.append(setValue("review",review1));
+            postDataBuilder.append(delimiter);
+            postDataBuilder.append(setValue("user",review2));
+            postDataBuilder.append(delimiter);
+            postDataBuilder.append(setValue("rating",review3));
+            for (int i = 0; i < imagePathList.size(); i++) {
+                if (imagePathList.get(i).equals("")) {
+                    break;
+                } else {
+                    imagePath.add(i, imagePathList.get(i));
+                    File sourceFile = new File(imagePathList.get(i));
+                    String fileName = new File(imagePathList.get(i)).getName();
+                    Log.d("REVIEW_Image", "File sourceFile " + i + "번:" + sourceFile);
+                    Log.d("REVIEW_Image", "String fileName" + i + "번:" + fileName);
+                    Log.d("REVIEW_Image", "imagePath add" + i + "번:" + imagePathList.get(i));
+//                conn.setRequestProperty("uploaded_file0", fileName0);
+                    postDataBuilder.append(delimiter);
+                    postDataBuilder.append(setFile("uploaded_file" + i, fileName));
+                    postDataBuilder.append("\r\n");
+
+                }
+            }
+
+            dos.writeUTF(postDataBuilder.toString());
+
+            String postCheck = String.valueOf(postDataBuilder);
+            Log.d("POSTDATABUILDER",postCheck);
+
+            /**
+             * REVIEW ID (SHOP ID)
+             */
+            dos.writeShort(0x0d0a);
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+            dos.writeBytes("Content-Disposition: form-data; name=");
+            dos.writeBytes("reviewid");
+            dos.writeBytes("\"");
+            dos.writeShort(0x0d0a);
+            dos.writeShort(0x0d0a);
+            dos.writeBytes(review0);
+            dos.writeShort(0x0d0a);
+            /**
+             * REVIEW (REVIEW TEXT)
+             */
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+            dos.writeBytes("Content-Disposition: form-data; name=");
+            dos.writeBytes("review");
+            dos.writeBytes("\"");
+            dos.writeShort(0x0d0a);
+            dos.writeShort(0x0d0a);
+            dos.writeBytes(review1);
+            dos.writeShort(0x0d0a);
+            /**
+             * REVIEW (USER ID)
+             */
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+            dos.writeBytes("Content-Disposition: form-data; name=");
+            dos.writeBytes("user");
+            dos.writeBytes("\"");
+            dos.writeShort(0x0d0a);
+            dos.writeShort(0x0d0a);
+            dos.writeBytes(review2);
+            dos.writeShort(0x0d0a);
+            /**
+             * REVIEW (RATING)
+             */
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+            dos.writeBytes("Content-Disposition: form-data; name=");
+            dos.writeBytes("rating");
+            dos.writeBytes("\"");
+            dos.writeShort(0x0d0a);
+            dos.writeShort(0x0d0a);
+            dos.writeBytes(review3);
+            dos.writeShort(0x0d0a);
+
+
 
 
             for (int i = 0; i < imagePath.size(); i++) {
                 // write data
+                FileInputStream mFileInputStream = new FileInputStream(imagePath.get(i));
+
+                Log.d("REVIEW_Image", "FOR COUNT :" + i);
                 dos = new DataOutputStream(conn.getOutputStream());
                 File sourceFile = new File(imagePath.get(i));
                 String fileName = new File(imagePath.get(i)).getName();
                 if (!sourceFile.isFile()) {
                     Log.d("REVIEW_Image", "sourceFile is not exist!!!! :" + imagePath.get(i));
                 }
-                mFileInputStream = new FileInputStream(sourceFile);
                 Log.d("REVIEW_Image", "mFileInputStream  is " + mFileInputStream);
 
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; name=\"uploadedfile" + i + "\";filename=\""
+                dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file" + i + "\";filename=\""
                         + fileName + "\"" + lineEnd);
+                dos.writeBytes("Content-Type: application/octet-stream");
+                dos.writeBytes(lineEnd);
                 dos.writeBytes(lineEnd);
 
                 int bytesAvailable = mFileInputStream.available();
                 int maxBufferSize = 8 * 1024 * 1024;
                 int bufferSize = Math.min(bytesAvailable, maxBufferSize);
-
                 byte[] buffer = new byte[bufferSize];
                 int bytesRead = mFileInputStream.read(buffer, 0, bufferSize);
 
@@ -179,17 +233,17 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
                     bufferSize = Math.min(bytesAvailable, maxBufferSize);
                     bytesRead = mFileInputStream.read(buffer, 0, bufferSize);
                 }
-
+                dos.writeBytes(lineEnd);
+                mFileInputStream.close();
             }
 
-            // close streams
-            dos.writeBytes(lineEnd);
             Log.e("REVIEW_Image", "File is written");
-            dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-            mFileInputStream.close();
+//            mFileInputStream.close();
+            // close streams
+//            dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+
+            dos.writeBytes("\r\n--" + boundary + "--\r\n");
             dos.flush(); // finish upload...
-            os.flush();
-            os.close();
             /*
             // get response
             int ch;
@@ -205,17 +259,37 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
             dos.close();
             int responseCode = conn.getResponseCode();
             Log.e("REVIEW_Image", "response code - " + responseCode);
-
-            pref.setSharedData("REVIEW_IMAGE_1", "");
-            pref.setSharedData("REVIEW_IMAGE_2", "");
-            pref.setSharedData("REVIEW_IMAGE_3", "");
-            pref.setSharedData("REVIEW_IMAGE_4", "");
-            pref.setSharedData("REVIEW_IMAGE_5", "");
+            conn.disconnect();
 
         } catch (Exception e) {
+            eraseSharedPref(mContext);
             Log.d("Test", "exception " + e.getMessage());
             // TODO: handle exception
         }
+
+      /*  try {
+            SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
+            String review0 = pref.getSharedData("HTTP_REVIEW_ID");
+            String review1 = pref.getSharedData("HTTP_REVIEW_REVIEW");
+            String review2 = pref.getSharedData("HTTP_REVIEW_USER");
+            String review3 = pref.getSharedData("HTTP_REVIEW_RATING");
+            String sURL = "http://222.122.203.55/realreview/shopimage/reviewImageUpload.php";
+
+            reviewData = sURL + "?" + "reviewid=" + review0 + "&review=" + review1 + "&user=" + review2 + "&rating=" + review3;
+            URL url = new URL(reviewData);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setUseCaches(false);
+            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(10000);
+            int responseCode = conn.getResponseCode();
+            Log.e("REVIEW_Image", "REVIEW INFO response code - " + responseCode);
+            conn.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
+        eraseSharedPref(mContext);
+
         return null;
     }
 
@@ -234,4 +308,40 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
 
     }
 
+
+    public void eraseSharedPref(Context mContext) {
+
+        SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
+        pref.setSharedData("REVIEW_IMAGE_1", "");
+        pref.setSharedData("REVIEW_IMAGE_2", "");
+        pref.setSharedData("REVIEW_IMAGE_3", "");
+        pref.setSharedData("REVIEW_IMAGE_4", "");
+        pref.setSharedData("REVIEW_IMAGE_5", "");
+
+
+    }
+
+    /**
+     * Map 형식으로 Key와 Value를 셋팅한다.
+     *
+     * @param key   : 서버에서 사용할 변수명
+     * @param value : 변수명에 해당하는 실제 값
+     * @return
+     */
+    public static String setValue(String key, String value) {
+        return "Content-Disposition: form-data; name=\"" + key + "\"\r\n\r\n"
+                + value + "\r\n";
+    }
+
+    /**
+     * 업로드할 파일에 대한 메타 데이터를 설정한다.
+     *
+     * @param key      : 서버에서 사용할 파일 변수명
+     * @param fileName : 서버에서 저장될 파일명
+     * @return
+     */
+    public static String setFile(String key, String fileName) {
+        return "Content-Disposition: form-data; name=\"" + key
+                + "\";filename=\"" + fileName + "\"\r\n";
+    }
 }

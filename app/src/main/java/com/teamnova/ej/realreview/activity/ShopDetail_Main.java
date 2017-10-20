@@ -1,5 +1,6 @@
 package com.teamnova.ej.realreview.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,11 +21,22 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.teamnova.ej.realreview.Asynctask.AsyncShopDetailImageURLRequest;
 import com.teamnova.ej.realreview.R;
-import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Adapter;
+import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Adapter_Backup;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class ShopDetail_Main extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
 
@@ -44,7 +56,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
     String getTag = "";
     ArrayList<String> stringArrayList = new ArrayList<>();
-    ShopDetail_Main_Adapter viewpagerAdapter;
+    ShopDetail_Main_Adapter_Backup viewpagerAdapter;
     LinearLayout ll;
     private final int MAX = 10;
     private int mPrevPosition;
@@ -59,7 +71,10 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     private String title;
 
 
-    String a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17;
+    String a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17;
+    private ArrayList<String> shopImageIdList = new ArrayList<>();
+    private JSONObject item2;
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,14 +98,58 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     private void adaptingViewPager() {
 
 
+        StringBuilder conn;
+        ProgressDialog progressDialog = new ProgressDialog(this);
+
+
+        String urlParse = "http://222.122.203.55/realreview/shopimage/viewpagerImageResponse.php?id=" + a0;
+
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
-        viewpagerAdapter = new ShopDetail_Main_Adapter(getSupportFragmentManager());
+        viewpagerAdapter = new ShopDetail_Main_Adapter_Backup(this);
         shopDetailViewPager.setAdapter(viewpagerAdapter);
+
+        try {
+            conn = new AsyncShopDetailImageURLRequest(urlParse, progressDialog, this).execute().get(10000, TimeUnit.MILLISECONDS);
+            JSONObject castingJO = new JSONObject(String.valueOf(conn));
+            Log.d("JSON_CHECK", "1 - castingJO :" + castingJO);
+            JSONArray fixJSON = castingJO.getJSONArray("realreview");
+            Log.d("JSON_CHECK", "2 - fixJSON :" + fixJSON);
+
+            for (int i = 0; i < fixJSON.length(); i++) {
+                JSONObject item = fixJSON.getJSONObject(i);
+                shopImageIdList.add(String.valueOf(item));
+                Log.d("JSON_CHECK", "3 - item :" + i + "번 :" + item);
+
+                item2 = new JSONObject(shopImageIdList.get(i));
+                String id = item2.getString("imagepath");
+
+                pref.setSharedData("REVIEW_VIEWPAGER_URL" + i, item2.getString("imagepath"));
+                viewpagerAdapter.addItem(id);
+            }
+
+            Log.d("Main_Test, onMapReady", "connLength : " + fixJSON.length());
+
+
+        } catch (InterruptedException | ExecutionException | TimeoutException | JSONException e) {
+            e.printStackTrace();
+
+        }
+
+
+
+
+
+/*
+        viewpagerAdapter.addItem("http://222.122.203.55/realreview/hard/test6.jpg");
+        viewpagerAdapter.addItem("http://222.122.203.55/realreview/hard/test6.jpg");
+        viewpagerAdapter.addItem("http://222.122.203.55/realreview/hard/test6.jpg");
+*/
 
 
         pref.setSharedData("VIEWPAGER_TEST1", u1);
         pref.setSharedData("VIEWPAGER_TEST2", u2);
         pref.setSharedData("VIEWPAGER_TEST3", u3);
+
 
         viewpagerAdapter.notifyDataSetChanged();
         pagerCount = viewpagerAdapter.getCount();
@@ -159,6 +218,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         a17 = pref.getSharedData("WEB" + tagCheck);
 
         title = a1;
+        mapAddress.setText(a2);
+
 
         Log.d("MARKER_TAG", "gIntent[TAG] :" + tagCheck);
         Log.d("MARKER_TAG", "ID :" + a0);
@@ -238,10 +299,15 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
 
 
+                SharedPreferenceUtil pref = new SharedPreferenceUtil(ShopDetail_Main.this);
                 Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Review_Submit.class);
                 intent.putExtra("reviewRating", v);
                 intent.putExtra("reviewTitle", title);
+                intent.putExtra("reviewShopId", a0);
+                intent.putExtra("reviewUserId", pref.getSharedData("isLogged_id"));
+                intent.putExtra("reviewUserNick", pref.getSharedData("isLogged_nick"));
                 startActivity(intent);
+
 
             }
         });
@@ -422,6 +488,15 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+        mMap = googleMap;
+
+        Double lat = Double.valueOf(a3);
+        Double lng = Double.valueOf(a4);
+        LatLng latlng = new LatLng(lat, lng);
+        MarkerOptions markerOptions = null;
+        markerOptions.position(latlng)
+                .title(a1);
+        Marker marker = mMap.addMarker(markerOptions);
 
     }
 }

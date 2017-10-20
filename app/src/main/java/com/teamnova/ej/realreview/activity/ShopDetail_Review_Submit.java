@@ -60,6 +60,10 @@ public class ShopDetail_Review_Submit extends AppCompatActivity implements View.
         Bundle bundle = getIntent().getExtras();
         iRating = bundle.getFloat("reviewRating");
         iTitle = bundle.getString("reviewTitle");
+        iShopId = bundle.getString("reviewShopId");
+        iUserId = bundle.getString("reviewUserId");
+        iNick = bundle.getString("reviewUserNick");
+
 
         Log.d("Check_Intent", "iRating :" + iRating);
         Log.d("Check_Intent", "iTitle :" + iTitle);
@@ -113,9 +117,10 @@ public class ShopDetail_Review_Submit extends AppCompatActivity implements View.
                 */
 
                 new PickPhotoView.Builder(ShopDetail_Review_Submit.this)
-                        .setPickPhotoSize(9)   //select max size
-                        .setShowCamera(true)   //is show camera
-                        .setSpanCount(4)       //SpanCount
+                        .setPickPhotoSize(5)   //select max size
+                        .setShowCamera(true)  //is show camera
+                        .setShowCamera(true)
+                        .setSpanCount(3)       //SpanCount
                         .setLightStatusBar(true)  // custom theme
                         .setStatusBarColor("#ffffff")   // custom statusBar
                         .setToolbarColor("#ffffff")   // custom toolbar
@@ -137,12 +142,13 @@ public class ShopDetail_Review_Submit extends AppCompatActivity implements View.
                 ProgressDialog progressDialog = new ProgressDialog(this);
                 Void conn;
                 try {
-                    conn = new AsyncReviewSubmit(progressDialog, this).execute().get(5000, TimeUnit.MILLISECONDS);
+                    conn = new AsyncReviewSubmit(progressDialog, this).execute().get(10000, TimeUnit.MILLISECONDS);
+                    Log.d("REVIEW_Image","MAIN THREAD conn Check :"+conn);
+                    finish();
                 } catch (InterruptedException | ExecutionException | TimeoutException e) {
                     e.printStackTrace();
                 }
 
-                finish();
 
                 break;
 
