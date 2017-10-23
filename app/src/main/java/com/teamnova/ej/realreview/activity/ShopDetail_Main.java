@@ -1,7 +1,12 @@
 package com.teamnova.ej.realreview.activity;
 
-import android.app.ProgressDialog;
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -9,14 +14,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,6 +34,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.pnikosis.materialishprogress.ProgressWheel;
 import com.teamnova.ej.realreview.Asynctask.AsyncShopDetailImageURLRequest;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Adapter_Backup;
@@ -58,7 +68,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             .findFragmentById(R.id.mapFragmentDetail);
 
     String getTag = "";
-    ArrayList<String> stringArrayList = new ArrayList<>();
     ShopDetail_Main_Adapter_Backup viewpagerAdapter;
     LinearLayout ll;
     private final int MAX = 10;
@@ -74,13 +83,18 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     private String title;
 
 
-    String a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17;
+    String defaultID, defaultTitle, defaultAddress, defaultLat, defaultLng, defaultVSWLat, defaultVSWLng, defaultVNELat, defaultVNELng, defaultTimeOpen, defaultTimeClose, defaultTheme1, defaultTheme2, defaultTheme3, defaultTheme4, defaultTheme5, defaultCall, defaultWeb;
     private ArrayList<String> shopImageIdList = new ArrayList<>();
     private JSONObject item2;
     private GoogleMap mMap;
 
 
     ArrayList<ShopDetail_Main_Review_LV_Set> reviewData = new ArrayList<>();
+    ShopDetail_Main_Review_LV_Set dataSet;
+    ArrayList<ShopDetail_Main_Review_LV_Set> dataSet_addList = new ArrayList<>();
+
+    float titleRatingPoint;
+    int titleRatingPersonCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +105,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         init();
         listener();
         checkShopData();
-        setShopData();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapFragmentDetail);
@@ -111,8 +124,19 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onStart() {
         super.onStart();
+        defaulDataSet();
         adapting();
+        setShopData();
 
+    }
+
+    private void setShopData() {
+
+        titleRatingPoint = titleRatingPoint/titleRatingPersonCount;
+        shopDetailTitleRating.setRating(titleRatingPoint);
+        shopDetailTitleReviewCnt.setText(String.valueOf(titleRatingPersonCount));
+        titleRatingPoint = 0;
+        titleRatingPersonCount = 0;
 
     }
 
@@ -120,20 +144,20 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
 
         StringBuilder conn = null;
-        ProgressDialog progressDialog = new ProgressDialog(this);
+        ProgressWheel progressDialog = new ProgressWheel(this);
 
 
-        String urlParse = "http://222.122.203.55/realreview/shopimage/viewpagerImageResponse.php?id=" + a0;
+        String urlParse = "http://222.122.203.55/realreview/shopimage/viewpagerImageResponse.php?id=" + defaultID;
 
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
         viewpagerAdapter = new ShopDetail_Main_Adapter_Backup(this);
         shopDetailViewPager.setAdapter(viewpagerAdapter);
 
-        ShopDetail_Main_Review_LV_Adapter reviewLvAdapter = new ShopDetail_Main_Review_LV_Adapter(this);
+        ShopDetail_Main_Review_LV_Adapter reviewLvAdapter = new ShopDetail_Main_Review_LV_Adapter(this, reviewData);
         shopDetailLVReview.setAdapter(reviewLvAdapter);
 
         try {
-            ShopDetail_Main_Review_LV_Set dataSet = new ShopDetail_Main_Review_LV_Set();
+            dataSet = new ShopDetail_Main_Review_LV_Set();
             conn = new AsyncShopDetailImageURLRequest(urlParse, progressDialog, this).execute().get(10000, TimeUnit.MILLISECONDS);
             String sConn = String.valueOf(conn);
             Log.d("REVIEW_VIEWPAGER_URL", "sConn :" + sConn);
@@ -144,14 +168,16 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             Log.d("REVIEW_VIEWPAGER_URL", "1 - castingJO :" + castingJO);
             JSONArray fixJSON = castingJO.getJSONArray("realreview");   // viewPager
             Log.d("REVIEW_VIEWPAGER_URL", "2 - fixJSON :" + fixJSON);
-//            JSONArray fixJSON2 = castingJO.getJSONArray("imagepath");   // viewPager
-//            Log.d("REVIEW_VIEWPAGER_URL", "2 - fixJSON :" + fixJSON2);
+
+            if(fixJSON.length() == 0){
+
+                viewpagerAdapter.addItem("http://222.122.203.55/realreview/shopimage/upload/default_viewpager.png");
+
+            }
 
             for (int i = 0; i < fixJSON.length(); i++) {
                 JSONObject item = fixJSON.getJSONObject(i);
                 Log.d("REVIEW_VIEWPAGER_URL", "3 - item :" + i + "번 :" + item);
-//                item2 = new JSONObject(shopImageIdList.get(i));
-//                Log.d("REVIEW_VIEWPAGER_URL", "4 - item2 :" + i + "번 :" + item2);
                 String getViewpagerURL = item.getString("imagepath");
                 Log.d("REVIEW_VIEWPAGER_URL", "5 - getViewpagerURL :" + i + "번 :" + getViewpagerURL);
                 viewpagerAdapter.addItem(getViewpagerURL);
@@ -227,7 +253,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             JsonObject jsonObject1 = jsonArray.get(0).getAsJsonObject();
             Log.d("REVIEW_REVIEW","jsonObject :"+jsonArray);*/
             for (int i = 0; i < reviewJSONArray.length(); i++) {
-//                JSONObject infoItem = reviewJSONArray.getJSONObject(i);
                 JSONObject jsonObject1 = reviewJSONArray.getJSONObject(i);
                 Log.d("REVIEW_REVIEW", "jsonObject1 :" + jsonObject1);
                 String getReviewText = jsonObject1.getString("review");
@@ -241,6 +266,20 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 String getProfileImageURL = jsonObject1.getString("profileimage");
                 Log.d("REIVEW_REVIEW", "Casting Info - getProfileImageURL :" + i + "번 :" + getProfileImageURL);
 
+
+                String titleImage = getProfileImageURL;
+                String followerCnt = "0";
+                String reviewCnt = "0";
+                String imageCnt = "0";
+                String reviewText = getReviewText;
+                String regdate = getRegdate;
+                String userId = getUserId;
+                String rating = getRating;
+                float ff = Float.parseFloat(getRating);
+                titleRatingPoint += ff;
+                if(reviewJSONArray.length() != 0) titleRatingPersonCount ++;
+
+/*
                 dataSet.reviewCnt = "0";
                 dataSet.followerCnt = "0";
                 dataSet.imageCnt = "0";
@@ -251,10 +290,16 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 float ff = Float.parseFloat(getRating);
                 dataSet.fRating = ff;
                 dataSet.titleImage = getProfileImageURL;
-                reviewData.add(0, dataSet);
-                reviewLvAdapter.addItem(reviewData);
-                reviewLvAdapter.notifyDataSetChanged();
+*/
+//                dataSet_addList.add(dataSet);
+                reviewLvAdapter.addItem(titleImage, followerCnt, reviewCnt, imageCnt, reviewText, regdate, userId, rating, ff);
+                Log.d("REIVEW_REVIEW", "Casting Info - reviewData (Array List) :" + i + "번 :" + reviewData.get(i));
             }
+            reviewLvAdapter.notifyDataSetChanged();
+            ViewGroup.LayoutParams params = shopDetailLVReview.getLayoutParams();
+            params.height = reviewData.size() * 460;
+
+//            reviewLvAdapter.addItem(reviewData);
 
             Log.d("Main_Test, onMapReady", "connLength : " + fixJSON.length());
 
@@ -263,10 +308,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             e.printStackTrace();
 
         }
-
-
-
-
 
 /*
         viewpagerAdapter.addItem("http://222.122.203.55/realreview/hard/test6.jpg");
@@ -311,7 +352,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    private void setShopData() {
+    private void defaulDataSet() {
 
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
         shopDetailTitle.setText(pref.getSharedData("TITLE" + getTag));
@@ -327,48 +368,48 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         Intent intent = getIntent();
         String tagCheck = intent.getExtras().getString("TAG");
         getTag = tagCheck;
-        a0 = pref.getSharedData("ID" + tagCheck);
-        a1 = pref.getSharedData("TITLE" + tagCheck);
-        a2 = pref.getSharedData("ADDRESS" + tagCheck);
-        a3 = pref.getSharedData("LAT" + tagCheck);
-        a4 = pref.getSharedData("LNG" + tagCheck);
-        a5 = pref.getSharedData("V_SW_LAT" + tagCheck);
-        a6 = pref.getSharedData("V_SW_LNG" + tagCheck);
-        a7 = pref.getSharedData("V_NE_LAT" + tagCheck);
-        a8 = pref.getSharedData("V_NE_LNG" + tagCheck);
-        a9 = pref.getSharedData("OPEN" + tagCheck);
-        a10 = pref.getSharedData("CLOSE" + tagCheck);
-        a11 = pref.getSharedData("THEME1" + tagCheck);
-        a12 = pref.getSharedData("THEME2" + tagCheck);
-        a13 = pref.getSharedData("THEME3" + tagCheck);
-        a14 = pref.getSharedData("THEME4" + tagCheck);
-        a15 = pref.getSharedData("THEME5" + tagCheck);
-        a16 = pref.getSharedData("CALL" + tagCheck);
-        a17 = pref.getSharedData("WEB" + tagCheck);
+        defaultID = pref.getSharedData("ID" + tagCheck);
+        defaultTitle = pref.getSharedData("TITLE" + tagCheck);
+        defaultAddress = pref.getSharedData("ADDRESS" + tagCheck);
+        defaultLat = pref.getSharedData("LAT" + tagCheck);
+        defaultLng = pref.getSharedData("LNG" + tagCheck);
+        defaultVSWLat = pref.getSharedData("V_SW_LAT" + tagCheck);
+        defaultVSWLng = pref.getSharedData("V_SW_LNG" + tagCheck);
+        defaultVNELat = pref.getSharedData("V_NE_LAT" + tagCheck);
+        defaultVNELng = pref.getSharedData("V_NE_LNG" + tagCheck);
+        defaultTimeOpen = pref.getSharedData("OPEN" + tagCheck);
+        defaultTimeClose = pref.getSharedData("CLOSE" + tagCheck);
+        defaultTheme1 = pref.getSharedData("THEME1" + tagCheck);
+        defaultTheme2 = pref.getSharedData("THEME2" + tagCheck);
+        defaultTheme3 = pref.getSharedData("THEME3" + tagCheck);
+        defaultTheme4 = pref.getSharedData("THEME4" + tagCheck);
+        defaultTheme5 = pref.getSharedData("THEME5" + tagCheck);
+        defaultCall = pref.getSharedData("CALL" + tagCheck);
+        defaultWeb = pref.getSharedData("WEB" + tagCheck);
 
-        title = a1;
-        mapAddress.setText(a2);
+        title = defaultTitle;
+        mapAddress.setText(defaultAddress);
 
 
         Log.d("MARKER_TAG", "gIntent[TAG] :" + tagCheck);
-        Log.d("MARKER_TAG", "ID :" + a0);
-        Log.d("MARKER_TAG", "TITLE :" + a1);
-        Log.d("MARKER_TAG", "ADDRESS :" + a2);
-        Log.d("MARKER_TAG", "LAT :" + a3);
-        Log.d("MARKER_TAG", "LNG :" + a4);
-        Log.d("MARKER_TAG", "V_SW_LAT :" + a5);
-        Log.d("MARKER_TAG", "V_SW_LNG :" + a6);
-        Log.d("MARKER_TAG", "V_NE_LAT :" + a7);
-        Log.d("MARKER_TAG", "V_NE_LNG :" + a8);
-        Log.d("MARKER_TAG", "OPEN :" + a9);
-        Log.d("MARKER_TAG", "CLOSE :" + a10);
-        Log.d("MARKER_TAG", "THEME1 :" + a11);
-        Log.d("MARKER_TAG", "THEME2 :" + a12);
-        Log.d("MARKER_TAG", "THEME3 :" + a13);
-        Log.d("MARKER_TAG", "THEME4 :" + a14);
-        Log.d("MARKER_TAG", "THEME5 :" + a15);
-        Log.d("MARKER_TAG", "CALL :" + a16);
-        Log.d("MARKER_TAG", "WEB :" + a17);
+        Log.d("MARKER_TAG", "ID :" + defaultID);
+        Log.d("MARKER_TAG", "TITLE :" + defaultTitle);
+        Log.d("MARKER_TAG", "ADDRESS :" + defaultAddress);
+        Log.d("MARKER_TAG", "LAT :" + defaultLat);
+        Log.d("MARKER_TAG", "LNG :" + defaultLng);
+        Log.d("MARKER_TAG", "V_SW_LAT :" + defaultVSWLat);
+        Log.d("MARKER_TAG", "V_SW_LNG :" + defaultVSWLng);
+        Log.d("MARKER_TAG", "V_NE_LAT :" + defaultVNELat);
+        Log.d("MARKER_TAG", "V_NE_LNG :" + defaultVNELng);
+        Log.d("MARKER_TAG", "OPEN :" + defaultTimeOpen);
+        Log.d("MARKER_TAG", "CLOSE :" + defaultTimeClose);
+        Log.d("MARKER_TAG", "THEME1 :" + defaultTheme1);
+        Log.d("MARKER_TAG", "THEME2 :" + defaultTheme2);
+        Log.d("MARKER_TAG", "THEME3 :" + defaultTheme3);
+        Log.d("MARKER_TAG", "THEME4 :" + defaultTheme4);
+        Log.d("MARKER_TAG", "THEME5 :" + defaultTheme5);
+        Log.d("MARKER_TAG", "CALL :" + defaultCall);
+        Log.d("MARKER_TAG", "WEB :" + defaultWeb);
 
     }
 
@@ -432,7 +473,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Review_Submit.class);
                 intent.putExtra("reviewRating", v);
                 intent.putExtra("reviewTitle", title);
-                intent.putExtra("reviewShopId", a0);
+                intent.putExtra("reviewShopId", defaultID);
                 intent.putExtra("reviewUserId", pref.getSharedData("isLogged_id"));
                 intent.putExtra("reviewUserNick", pref.getSharedData("isLogged_nick"));
                 startActivity(intent);
@@ -448,7 +489,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Review_Submit.class);
                 intent.putExtra("reviewRating", v);
                 intent.putExtra("reviewTitle", title);
-                intent.putExtra("reviewShopId", a0);
+                intent.putExtra("reviewShopId", defaultID);
                 intent.putExtra("reviewUserId", pref.getSharedData("isLogged_id"));
                 intent.putExtra("reviewUserNick", pref.getSharedData("isLogged_nick"));
                 startActivity(intent);
@@ -470,7 +511,29 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailProfile2.setOnClickListener(this);
         shopDetailProfile3.setOnClickListener(this);
         shopDetailQuestion.setOnClickListener(this);
-        shopDetailReview.setOnClickListener(this);
+        shopDetailReview.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()){
+
+
+                    case MotionEvent.ACTION_DOWN : {
+                        SharedPreferenceUtil pref = new SharedPreferenceUtil(ShopDetail_Main.this);
+                        Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Review_Submit.class);
+                        intent.putExtra("reviewTitle", title);
+                        intent.putExtra("reviewShopId", defaultID);
+                        intent.putExtra("reviewUserId", pref.getSharedData("isLogged_id"));
+                        intent.putExtra("reviewUserNick", pref.getSharedData("isLogged_nick"));
+                        startActivity(intent);
+                        break;
+                    }
+
+                }
+
+                return false;
+            }
+        });
 //        shopDetailLVReview.setOnClickListener(this);
 
     }
@@ -522,11 +585,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 break;
             }
 
-            case R.id.shopDetailTitleRating: {
-
-                break;
-            }
-
             case R.id.shopDetailRatingReview: {
 
                 break;
@@ -569,6 +627,11 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
             case R.id.shopDetailCallBtn: {
 
+                Uri uri = Uri.parse("tel:"+ defaultCall);
+                Intent callIntent = new Intent("android.intent.action.CALL");
+                callIntent.setData(uri);
+                startActivity(callIntent);
+
                 break;
             }
 
@@ -588,6 +651,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             }
             case R.id.shopDetailMessageBtn: {
 
+                sendSMS(defaultCall, "Shop Name"+defaultTitle+"Nickname :"+defaultID+"\n문의내용 : ");
+
                 break;
             }
             case R.id.shopDetailProfile: {
@@ -605,15 +670,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
             case R.id.shopDetailReview: {
 
-                SharedPreferenceUtil pref = new SharedPreferenceUtil(ShopDetail_Main.this);
-                Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Review_Submit.class);
-                intent.putExtra("reviewTitle", title);
-                intent.putExtra("reviewShopId", a0);
-                intent.putExtra("reviewUserId", pref.getSharedData("isLogged_id"));
-                intent.putExtra("reviewUserNick", pref.getSharedData("isLogged_nick"));
-                startActivity(intent);
 
-                break;
             }
 
 
@@ -629,16 +686,96 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         Log.d("DetailMain", "onMapReady = Enter");
         mMap = googleMap;
 
-        Double lat = Double.valueOf(a3);
-        Double lng = Double.valueOf(a4);
-        Log.d("DetailMain", "LAT" + a3);
-        Log.d("DetailMain", "LNG" + a4);
+        Double lat = Double.valueOf(defaultLat);
+        Double lng = Double.valueOf(defaultLng);
+        Log.d("DetailMain", "LAT" + defaultLat);
+        Log.d("DetailMain", "LNG" + defaultLng);
         LatLng latlng = new LatLng(lat, lng);
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latlng)
-                .title(a1);
+                .title(defaultTitle);
         Marker marker = mMap.addMarker(markerOptions);
         mMap.addMarker(markerOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 17));
     }
+/*
+
+        SEND && RECEIVE SMS
+
+    public void sendSMS(String smsNumber, String smsText){
+        PendingIntent sentIntent = PendingIntent.getBroadcast(this, 0, new Intent("SMS_SENT_ACTION"), 0);
+        PendingIntent deliveredIntent = PendingIntent.getBroadcast(this, 0, new Intent("SMS_DELIVERED_ACTION"), 0);
+
+
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                switch(getResultCode()){
+                    case Activity.RESULT_OK:
+                        // 전송 성공
+                        Toast.makeText(ShopDetail_Main.this, "전송 완료", Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                        // 전송 실패
+                        Toast.makeText(ShopDetail_Main.this, "전송 실패", Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_NO_SERVICE:
+                        // 서비스 지역 아님
+                        Toast.makeText(ShopDetail_Main.this, "서비스 지역이 아닙니다", Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_RADIO_OFF:
+                        // 무선 꺼짐
+                        Toast.makeText(ShopDetail_Main.this, "무선(Radio)가 꺼져있습니다", Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_NULL_PDU:
+                        // PDU 실패
+                        Toast.makeText(ShopDetail_Main.this, "PDU Null", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        }, new IntentFilter("SMS_SENT_ACTION"));
+
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                switch (getResultCode()){
+                    case Activity.RESULT_OK:
+                        // 도착 완료
+                        Toast.makeText(ShopDetail_Main.this, "SMS 도착 완료", Toast.LENGTH_SHORT).show();
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        // 도착 안됨
+                        Toast.makeText(ShopDetail_Main.this, "SMS 도착 실패", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        }, new IntentFilter("SMS_DELIVERED_ACTION"));
+
+        SmsManager mSmsManager = SmsManager.getDefault();
+        mSmsManager.sendTextMessage(smsNumber, null, smsText, sentIntent, deliveredIntent);
+    }
+    */
+    private void sendSMS(String phoneNumber, String message) {
+        String SENT = "SMS_SENT";
+        String DELIVERED = "SMS_DELIVERED";
+
+        PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(SENT), 0);
+        PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(DELIVERED), 0);
+
+        //---when the SMS has been sent---
+        registerReceiver(new BroadcastReceiver() {
+            public void onReceive(Context arg0, Intent arg1) {
+                switch (getResultCode()) {
+                    case Activity.RESULT_OK:
+                        Toast.makeText(getBaseContext(), "알림 문자 메시지가 전송되었습니다.", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        }, new IntentFilter(SENT));
+
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+    }
+
+
 }

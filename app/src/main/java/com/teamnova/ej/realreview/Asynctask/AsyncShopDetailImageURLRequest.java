@@ -1,9 +1,11 @@
 package com.teamnova.ej.realreview.Asynctask;
 
-import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.pnikosis.materialishprogress.ProgressWheel;
 
 import org.json.JSONArray;
 
@@ -23,10 +25,10 @@ public class AsyncShopDetailImageURLRequest extends AsyncTask<Void, Integer, Str
     private String urlString;
     private String params = "";
     Context mContext;
-    private ProgressDialog dialog;
+    private ProgressWheel dialog;
     String TestVAR;
 
-    public AsyncShopDetailImageURLRequest(String urlString, ProgressDialog dialog, Context mContext) {
+    public AsyncShopDetailImageURLRequest(String urlString, ProgressWheel dialog, Context mContext) {
         this.urlString = urlString;
         this.dialog = dialog;
         this.mContext = mContext;
@@ -35,10 +37,8 @@ public class AsyncShopDetailImageURLRequest extends AsyncTask<Void, Integer, Str
     @Override
     protected void onPreExecute() {
 
-        dialog.setMessage("SHOP DATA Check");
-        dialog.setIndeterminate(false);
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.show();
+        dialog.setInstantProgress(0.64f);
+        dialog.setBarColor(Color.BLUE);
     }
 
     @Override
@@ -100,10 +100,6 @@ public class AsyncShopDetailImageURLRequest extends AsyncTask<Void, Integer, Str
 
     @Override
     protected void onPostExecute(StringBuilder result) {
-        try {
-            dialog.dismiss();
-        } catch (Exception e) {
-        }
 
     }
 

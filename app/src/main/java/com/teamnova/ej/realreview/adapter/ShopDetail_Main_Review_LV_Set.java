@@ -17,5 +17,75 @@ public class ShopDetail_Main_Review_LV_Set {
     public String rating;
     public float fRating;
 
+    public String getTitleImage() {
+        return titleImage;
+    }
 
+    public void setTitleImage(String titleImage) {
+        this.titleImage = titleImage;
+    }
+
+    public String getFollowerCnt() {
+        return followerCnt;
+    }
+
+    public void setFollowerCnt(String followerCnt) {
+        this.followerCnt = followerCnt;
+    }
+
+    public String getReviewCnt() {
+        return reviewCnt;
+    }
+
+    public void setReviewCnt(String reviewCnt) {
+        this.reviewCnt = reviewCnt;
+    }
+
+    public String getImageCnt() {
+        return imageCnt;
+    }
+
+    public void setImageCnt(String imageCnt) {
+        this.imageCnt = imageCnt;
+    }
+
+    public String getReviewText() {
+        return reviewText;
+    }
+
+    public void setReviewText(String reviewText) {
+        this.reviewText = reviewText;
+    }
+
+    public String getRegdate() {
+        return regdate;
+    }
+
+    public void setRegdate(String regdate) {
+        this.regdate = regdate;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public float getfRating() {
+        return fRating;
+    }
+
+    public void setfRating(float fRating) {
+        this.fRating = fRating;
+    }
 }

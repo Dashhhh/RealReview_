@@ -132,7 +132,7 @@
 
 
         <android.support.v7.widget.AppCompatRatingBar
-            android:id="@+id/reviewRating"
+            android:id="@+id/reviewRating_inflate"
             style="@style/Base.Widget.AppCompat.RatingBar.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -151,6 +151,7 @@
             android:ellipsize="end"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+            android:minLines="3"
             android:maxLines="3"
             android:padding="10dp"
             android:text="foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar "
@@ -207,5 +208,6 @@
             />
 
     </LinearLayout>
+
 
 </LinearLayout>

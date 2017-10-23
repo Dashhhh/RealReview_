@@ -161,6 +161,7 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
             dos.writeShort(0x0d0a);
             dos.writeBytes(review0);
             dos.writeShort(0x0d0a);
+            dos.writeShort(0x0d0a);
             /**
              * REVIEW (REVIEW TEXT)
              */
@@ -171,6 +172,7 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
             dos.writeShort(0x0d0a);
             dos.writeShort(0x0d0a);
             dos.writeBytes(review1);
+            dos.writeShort(0x0d0a);
             dos.writeShort(0x0d0a);
             /**
              * REVIEW (USER ID)
@@ -183,6 +185,7 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
             dos.writeShort(0x0d0a);
             dos.writeBytes(review2);
             dos.writeShort(0x0d0a);
+            dos.writeShort(0x0d0a);
             /**
              * REVIEW (RATING)
              */
@@ -193,6 +196,7 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
             dos.writeShort(0x0d0a);
             dos.writeShort(0x0d0a);
             dos.writeBytes(review3);
+            dos.writeShort(0x0d0a);
             dos.writeShort(0x0d0a);
 
 
@@ -317,7 +321,10 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
         pref.setSharedData("REVIEW_IMAGE_3", "");
         pref.setSharedData("REVIEW_IMAGE_4", "");
         pref.setSharedData("REVIEW_IMAGE_5", "");
-
+        pref.setSharedData("HTTP_REVIEW_ID","");
+        pref.setSharedData("HTTP_REVIEW_REVIEW","");
+        pref.setSharedData("HTTP_REVIEW_USER","");
+        pref.setSharedData("HTTP_REVIEW_RATING","");
 
     }
 

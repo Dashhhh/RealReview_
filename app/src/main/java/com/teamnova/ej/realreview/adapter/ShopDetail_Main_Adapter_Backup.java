@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.teamnova.ej.realreview.R;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
  * Created by ej on 2017-10-18.
  */
 
-public class ShopDetail_Main_Adapter_Backup extends PagerAdapter{
+public class ShopDetail_Main_Adapter_Backup extends PagerAdapter {
 
     Context mContext;
     Bitmap vBitmap;
@@ -38,6 +39,7 @@ public class ShopDetail_Main_Adapter_Backup extends PagerAdapter{
         stringArrayList = new ArrayList<>();
 
     }
+
     public void addItem(String type) {
         stringArrayList.add(type);                //������ ��Ͽ� �߰�
         notifyDataSetChanged();        //�ƴ��Ϳ� ������ ����Ǿ��ٰ� �˸�. �˾Ƽ� ���ΰ�ħ
@@ -45,24 +47,24 @@ public class ShopDetail_Main_Adapter_Backup extends PagerAdapter{
 
     @Override
     public int getCount() {
-        return stringArrayList == null? 0: stringArrayList.size();
+        return stringArrayList == null ? 0 : stringArrayList.size();
     }
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        Log.d("ViewPager","isViewFromObject()");
+        Log.d("ViewPager", "isViewFromObject()");
         return view == object;
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        Log.d("ViewPager","instantiateItem()");
+        Log.d("ViewPager", "instantiateItem()");
 
         Context context = container.getContext();
         ShopDetail_Main_Adapter_Viewholder vh = new ShopDetail_Main_Adapter_Viewholder();
         View v = null;
 
-        if(v != null) {
+        if (v != null) {
             vh = (ShopDetail_Main_Adapter_Viewholder) v.getTag();
         } else {
             v = inflater.inflate(R.layout.activity_shop_detail__main_top_viewpager, container, false);
@@ -71,15 +73,13 @@ public class ShopDetail_Main_Adapter_Backup extends PagerAdapter{
         }
 
         String url = stringArrayList.get(position);
-        Log.d("ViewPager","url Check :"+url);
+        Log.d("ViewPager", "url Check :" + url);
         int arSize = getCount();
-        Glide.with(mContext).load(url).into(vh.imageView);
-
-
-
+        Glide.with(mContext).
+                load(url).
+                into(vh.imageView);
+        vh.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         container.addView(v);
-
-//        View v = ShopDetail_Main_Util.getView(stringArrayList.get(position),mContext);
 
         return v;
 
@@ -92,7 +92,7 @@ public class ShopDetail_Main_Adapter_Backup extends PagerAdapter{
 
     @Override
     public int getItemPosition(Object object) {
-        Log.d("ViewPager","getItemPosition()");
+        Log.d("ViewPager", "getItemPosition()");
         return super.getItemPosition(object);
 
     }

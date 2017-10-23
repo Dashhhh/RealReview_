@@ -12,7 +12,7 @@ import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
  * Created by ej on 2017-10-18.
  */
 
-public class ShopDetail_Main_Util {
+public class ShopDetail_Main_ViewPager_getView {
 
     public static final int ADD_VIEW = 0;
     RelativeLayout RL;

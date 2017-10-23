@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.teamnova.ej.realreview.activity.ShopDetail_Main">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:descendantFocusability="blocksDescendants">
+
+        android:fillViewport="true"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,22 +23,22 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/shopDetailViewPager"
                 android:layout_width="match_parent"
+                android:scaleX="@integer/sliding_title_lines"
                 android:layout_height="200dp" />
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:id="@+id/viewpagePageMark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-               >
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
 
@@ -687,6 +688,22 @@
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
                 android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Add Review at this Shop"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#dddddd"
+                    android:src="@drawable/border_alpha" />
 
                 <LinearLayout
                     android:id="@+id/shopDetailProfile3"
@@ -807,24 +824,37 @@
                 android:layout_height="10dp"
                 android:background="#dddddd"
                 android:src="@drawable/border_alpha" />
-
-
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Review"
+                android:textColor="#000000"
+                android:textSize="14sp" />
 
 
-                <ListView
-                    android:id="@+id/shopDetailLVReview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#dddddd"
+                android:src="@drawable/border_alpha" />
 
-                    <!--TODO inflate "activity_shop_detail__main_review_listview.xml" -->
+            <ListView
+                android:id="@+id/shopDetailLVReview"
+                android:layout_width="match_parent"
+                android:layout_height="800sp" />
+
+            <!--TODO inflate "activity_shop_detail__main_review_listview.xml" -->
 
 
-                </ListView>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#dddddd"
+                android:src="@drawable/border_alpha" />
 
-            </LinearLayout>
 
         </LinearLayout>     <!-- CONTAINER -->
     </ScrollView>
