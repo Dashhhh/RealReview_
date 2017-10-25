@@ -161,8 +161,8 @@ public class ShopAdd1 extends FragmentActivity implements OnMapReadyCallback, Go
                 String a1 = arraySplitStrPlace7[1];
                 String[] aa0 = a0.split("\\(");
                 String[] aa1 = a1.split("\\)");
-                Log.e("defaultID -> aa0[0]", aa0[0]);
-                Log.e("defaultID -> aa0[1]", aa0[1] + "\n");
+                Log.e("defaultShopID -> aa0[0]", aa0[0]);
+                Log.e("defaultShopID -> aa0[1]", aa0[1] + "\n");
                 Log.e("defaultTitle -> aa0[0]", aa1[0]);
                 String lat = aa0[1];
                 String lng = aa1[0];

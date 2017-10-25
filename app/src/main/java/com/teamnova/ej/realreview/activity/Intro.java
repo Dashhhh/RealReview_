@@ -265,7 +265,7 @@ public class Intro extends AppCompatActivity implements LocationListener {
         pref.setSharedData("40", "가구점");
         pref.setSharedData("41", "주유소");
         pref.setSharedData("42", "일반 계약자");
-        pref.setSharedData("43", "식료품 점 또는 슈퍼마켓");
+        pref.setSharedData("43", "식료품점");
         pref.setSharedData("44", "체육관");
         pref.setSharedData("45", "모발 관리");
         pref.setSharedData("46", "하드웨어 매장");

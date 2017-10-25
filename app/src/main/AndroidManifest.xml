@@ -11,8 +11,8 @@
     <uses-permission android:name="android.permission.DIAL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />  <!--상세한 위치 권한-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!--대략적 위치 권한-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 상세한 위치 권한 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 대략적 위치 권한 -->
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
@@ -106,14 +106,13 @@
         <activity android:name=".activity.ShopAdd3" />
         <activity android:name=".activity.ShopAdd4" />
         <activity android:name=".activity.ShopDetail_Main">
-
-
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <data android:scheme="mailto" />
+
                 <category android:name="android.intent.category.APP_EMAIL" />
             </intent-filter>
-
         </activity>
         <activity android:name=".activity.ShopDetail_Review_Viewing" />
         <activity android:name=".activity.ShopDetail_Review_Submit" />
@@ -123,7 +122,7 @@
         <activity android:name=".activity.ShopDetail_Menu_Self" />
         <activity android:name=".activity.ShopDetail_Menu" />
         <activity android:name=".activity.ShopDetail_Review_Viewing_2depth" />
-        <activity android:name=".activity.Profile_Main"></activity>
+        <activity android:name=".activity.Profile_Main" />
 
         <provider
             android:name="com.werb.pickphotoview.provider.PickProvider"
@@ -134,6 +133,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/pick_file_paths" />
         </provider>
+
+        <activity android:name=".activity.ShopDetail_Tip_Submit"></activity>
     </application>
 
 </manifest>

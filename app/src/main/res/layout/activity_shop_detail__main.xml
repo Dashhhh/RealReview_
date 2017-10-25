@@ -9,9 +9,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        android:fillViewport="true"
-        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,12 +18,11 @@
             android:background="#ffffff"
             android:orientation="vertical">
 
-
             <android.support.v4.view.ViewPager
                 android:id="@+id/shopDetailViewPager"
                 android:layout_width="match_parent"
-                android:scaleX="@integer/sliding_title_lines"
-                android:layout_height="200dp" />
+                android:layout_height="200dp"
+                android:scaleX="@integer/sliding_title_lines" />
 
             <LinearLayout
                 android:id="@+id/viewpagePageMark"
@@ -34,11 +32,173 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
 
             </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="What's yout TIP in this Place"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#dddddd"
+                    android:src="@drawable/border_alpha" />
+
+
+                <LinearLayout
+                    android:id="@+id/shopDetailTipProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_margin="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="123"
+                            android:textSize="16sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="6dp"
+                                android:src="@drawable/ic_group_black_24dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="5dp"
+                                android:text="folllowers" />
+
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="6dp"
+                                android:background="@drawable/ic_chat_black_24dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="5dp"
+                                android:text="reviews"
+
+                                />
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="6dp"
+                                android:src="@drawable/ic_camera_alt_black_24dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="5dp"
+                                android:text="images"
+
+                                />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/shopDetailTip"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_topbottom_alpha"
+                    android:hint="e.g.) 오후 3시에 가면 사람이 한산 할 줄 알았지만 되려 사람이 더 많았습니다. 예약하고 이용하는게 더 도움이 될 것으로 보입니다."
+                    android:minLines="3"
+                    android:padding="14dp"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#dddddd"
+                android:src="@drawable/border_alpha" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="TIP"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#dddddd"
+                    android:src="@drawable/border_alpha" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/shopDetailTipRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:contentDescription="SHOP TAG"
+                    android:padding="10dp"/>
+                <!--TODO INFLATE : 외곽선-->
+
+
+            </LinearLayout>
+
+
 
             <LinearLayout
 
@@ -108,7 +268,8 @@
                         android:id="@+id/shopDetailRVTitleTag"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"
                         android:contentDescription="SHOP TAG"
                         android:padding="10dp"
                         app:layoutManager="StaggeredGridLayoutManager"
@@ -123,13 +284,17 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_margin="10dp"
+                    >
 
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
+                        android:textColor="#000000"
+                        android:textSize="15sp"
                         android:text="OPEN  " />
 
                     <TextView
@@ -137,12 +302,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
+                        android:textColor="#000000"
+                        android:textSize="15sp"
                         android:text="set Text" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="40dp"
+                        android:textColor="#000000"
+                        android:textSize="15sp"
                         android:text="CLOSE" />
 
                     <TextView
@@ -150,6 +319,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
+                        android:textColor="#000000"
+                        android:textSize="15sp"
                         android:text="set Text" />
 
 
@@ -394,8 +565,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layoutManager="StaggeredGridLayoutManager"
-                    app:spanCount="1">
+
+                    >
 
 
                     <!--TODO inflate "activity_shop_detail__main_photo_recycler.xml"-->
@@ -403,6 +574,12 @@
 
 
             </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#dddddd"
+                android:src="@drawable/border_alpha" />
 
 
             <LinearLayout
@@ -422,11 +599,36 @@
 
             </LinearLayout>
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#dddddd"
+                android:src="@drawable/border_alpha" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
                 android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Question"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#dddddd"
+                    android:src="@drawable/border_alpha" />
+
 
                 <LinearLayout
                     android:id="@+id/shopDetailProfile"
@@ -456,10 +658,11 @@
                             android:layout_height="match_parent">
 
                             <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
                                 android:layout_margin="6dp"
-                                android:src="@drawable/t_detail_followers" />
+                                android:src="@drawable/ic_group_black_24dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -470,10 +673,11 @@
 
 
                             <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
                                 android:layout_margin="6dp"
-                                android:background="@drawable/t_detail_review" />
+                                android:background="@drawable/ic_chat_black_24dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -485,10 +689,11 @@
                                 />
 
                             <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
                                 android:layout_margin="6dp"
-                                android:src="@drawable/t_detail_camera" />
+                                android:src="@drawable/ic_camera_alt_black_24dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -500,6 +705,7 @@
                                 />
 
                         </LinearLayout>
+
 
                     </LinearLayout>
 
@@ -598,10 +804,11 @@
                                 android:layout_height="match_parent">
 
                                 <ImageView
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
+                                    android:layout_width="15dp"
+                                    android:layout_height="15dp"
+                                    android:layout_gravity="center"
                                     android:layout_margin="6dp"
-                                    android:src="@drawable/t_detail_followers" />
+                                    android:src="@drawable/ic_group_black_24dp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -612,10 +819,11 @@
 
 
                                 <ImageView
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
+                                    android:layout_width="15dp"
+                                    android:layout_height="15dp"
+                                    android:layout_gravity="center"
                                     android:layout_margin="6dp"
-                                    android:src="@drawable/t_detail_review" />
+                                    android:background="@drawable/ic_chat_black_24dp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -627,10 +835,11 @@
                                     />
 
                                 <ImageView
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
+                                    android:layout_width="15dp"
+                                    android:layout_height="15dp"
+                                    android:layout_gravity="center"
                                     android:layout_margin="6dp"
-                                    android:src="@drawable/t_detail_camera" />
+                                    android:src="@drawable/ic_camera_alt_black_24dp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -642,6 +851,7 @@
                                     />
 
                             </LinearLayout>
+
 
                         </LinearLayout>
 
@@ -688,6 +898,7 @@
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
                 android:orientation="vertical">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -733,12 +944,14 @@
                             android:layout_height="match_parent">
 
                             <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
                                 android:layout_margin="6dp"
-                                android:src="@drawable/t_detail_followers" />
+                                android:src="@drawable/ic_group_black_24dp" />
 
                             <TextView
+                                android:id="@+id/reviewUserFollower"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -747,12 +960,14 @@
 
 
                             <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
                                 android:layout_margin="6dp"
-                                android:src="@drawable/t_detail_review" />
+                                android:background="@drawable/ic_chat_black_24dp" />
 
                             <TextView
+                                android:id="@+id/reviewReviewCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -762,12 +977,14 @@
                                 />
 
                             <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
                                 android:layout_margin="6dp"
-                                android:src="@drawable/t_detail_camera" />
+                                android:src="@drawable/ic_camera_alt_black_24dp" />
 
                             <TextView
+                                android:id="@+id/reviewImageCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -777,6 +994,7 @@
                                 />
 
                         </LinearLayout>
+
 
                     </LinearLayout>
 
@@ -824,6 +1042,7 @@
                 android:layout_height="10dp"
                 android:background="#dddddd"
                 android:src="@drawable/border_alpha" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -846,6 +1065,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="800sp" />
 
+
+
+            <Button
+                android:id="@+id/reviewPagingBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="See All Review"
+                android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
+                />
             <!--TODO inflate "activity_shop_detail__main_review_listview.xml" -->
 
 

@@ -180,4 +180,10 @@ public class ShopDetail_Main_Review_LV_Adapter extends BaseAdapter {
 
     }
 
+    public void clearItem () {
+
+        this.data.clear();
+
+    }
+
 }

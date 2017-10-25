@@ -1036,6 +1036,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
                 pref.setSharedData("V_NE_LNG" +     markerTag, item2.getString("viewportNorthEastLng"));
                 pref.setSharedData("OPEN" +         markerTag, item2.getString("shopOpen"));
                 pref.setSharedData("CLOSE" +        markerTag, item2.getString("shopClose"));
+                pref.setSharedData("MARKERTAG" +        markerTag, item2.getString("shopClose"));
                 pref.setSharedData("THEME1" +       markerTag, item2.getString("shopTheme1"));
                 pref.setSharedData("THEME2" +       markerTag, item2.getString("shopTheme2"));
                 pref.setSharedData("THEME3" +       markerTag, item2.getString("shopTheme3"));

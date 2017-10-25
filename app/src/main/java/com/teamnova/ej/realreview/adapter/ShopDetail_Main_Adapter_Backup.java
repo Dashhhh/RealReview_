@@ -75,10 +75,10 @@ public class ShopDetail_Main_Adapter_Backup extends PagerAdapter {
         String url = stringArrayList.get(position);
         Log.d("ViewPager", "url Check :" + url);
         int arSize = getCount();
+        vh.imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         Glide.with(mContext).
                 load(url).
                 into(vh.imageView);
-        vh.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         container.addView(v);
 
         return v;
