@@ -1,5 +1,6 @@
 package com.teamnova.ej.realreview.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -21,7 +22,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -29,6 +29,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,12 +39,15 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.teamnova.ej.realreview.Asynctask.AsyncShopDetailImageURLRequest;
+import com.teamnova.ej.realreview.Asynctask.AsyncTipRequest;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.adapter.ShopDetail_MainReview_RV_Theme_Adapter;
 import com.teamnova.ej.realreview.adapter.ShopDetail_MainReview_RV_Theme_Set;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Adapter_Backup;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_Photo_Adapter;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_Photo_Set;
+import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_Tip_Adapter;
+import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_Tip_Set;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Review_LV_Adapter;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Review_LV_Set;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
@@ -63,12 +67,14 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     android.support.v4.view.ViewPager shopDetailViewPager;
     TextView shopDetailTitle, shopDetailTitleReviewCnt, shopDetailTimeOpen, shopDetailTimeClose, shopDetailQuestion_Question, shopDetailQuestion_Answer;
     android.support.v7.widget.AppCompatRatingBar shopDetailTitleRating, shopDetailRatingReview, shopDetailRatingReview2;
-    android.support.v7.widget.RecyclerView shopDetailRVTitleTag, shopDetailRVImage;
+    android.support.v7.widget.RecyclerView shopDetailRVTitleTag, shopDetailRVImage, shopDetailTipRV;
     Button shopDetailTopAddPhoto, shopDetailCheckin, shopDetailBookmark, mapAddress, shopDetailCallBtn, shopDetailDirection, shopDetailMenu, shopDetailWebsiteBtn, shopDetailMessageBtn;
-    LinearLayout shopDetailProfile, shopDetailProfile2, shopDetailProfile3, viewpagePageMark, shopDetailTipProfile;
+    LinearLayout shopDetailProfile, shopDetailProfile2, shopDetailProfile3, shopDetailTipProfile;
     SupportMapFragment mapFragmentDetail;
     android.support.v7.widget.AppCompatEditText shopDetailQuestion, shopDetailReview, shopDetailTip;
     ListView shopDetailLVReview;
+    me.relex.circleindicator.CircleIndicator shopDetailIndicator;
+
 
     SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
             .findFragmentById(R.id.mapFragmentDetail);
@@ -105,6 +111,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     private ArrayList<ShopDetail_Main_RV_Photo_Set> imageRVList = new ArrayList<>();
     Button reviewPagingBtn;
     private ArrayList<ShopDetail_MainReview_RV_Theme_Set> themeList = new ArrayList<>();
+    private ArrayList<ShopDetail_Main_RV_Tip_Set> tipList = new ArrayList<>();
 
 
     @Override
@@ -122,21 +129,60 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         mapFragment.getMapAsync(this);
 
 
+    }
 
+    private void init() {
 
-        /*
-        mPrevPosition = 0;    //���� ������ �� �ʱ�ȭ
-        addPageMark();        //���� ������ ǥ���ϴ� �� �߰�
-        viewpagePageMark.getChildAt(mPrevPosition).setBackgroundResource(R.drawable.page_not);    //���� �������� �ش��ϴ� ������ ǥ�� �̹��� ����
-        */
-
+        shopDetailViewPager = (ViewPager) findViewById(R.id.shopDetailViewPager);
+        shopDetailTitle = (TextView) findViewById(R.id.shopDetailTitle);
+        shopDetailTitleReviewCnt = (TextView) findViewById(R.id.shopDetailTitleReviewCnt);
+        shopDetailTimeOpen = (TextView) findViewById(R.id.shopDetailTimeOpen);
+        shopDetailTimeClose = (TextView) findViewById(R.id.shopDetailTimeClose);
+        shopDetailQuestion_Question = (TextView) findViewById(R.id.shopDetailQuestion_Question);
+        shopDetailQuestion_Answer = (TextView) findViewById(R.id.shopDetailQuestion_Answer);
+        shopDetailTitleRating = (AppCompatRatingBar) findViewById(R.id.shopDetailTitleRating);
+        shopDetailRatingReview = (AppCompatRatingBar) findViewById(R.id.shopDetailRatingReview);
+        shopDetailRatingReview2 = (AppCompatRatingBar) findViewById(R.id.shopDetailRatingReview2);
+        shopDetailRVTitleTag = (RecyclerView) findViewById(R.id.shopDetailRVTitleTag);
+        shopDetailRVImage = (RecyclerView) findViewById(R.id.shopDetailRVImage);
+        shopDetailTopAddPhoto = (Button) findViewById(R.id.shopDetailTopAddPhoto);
+        shopDetailCheckin = (Button) findViewById(R.id.shopDetailCheckin);
+        shopDetailBookmark = (Button) findViewById(R.id.shopDetailBookmark);
+        mapAddress = (Button) findViewById(R.id.mapAddress);
+        shopDetailCallBtn = (Button) findViewById(R.id.shopDetailCallBtn);
+        shopDetailDirection = (Button) findViewById(R.id.shopDetailDirection);
+        shopDetailMenu = (Button) findViewById(R.id.shopDetailMenu);
+        shopDetailWebsiteBtn = (Button) findViewById(R.id.shopDetailWebsiteBtn);
+        shopDetailMessageBtn = (Button) findViewById(R.id.shopDetailMessageBtn);
+        shopDetailProfile = (LinearLayout) findViewById(R.id.shopDetailProfile);
+        shopDetailProfile2 = (LinearLayout) findViewById(R.id.shopDetailProfile2);
+        shopDetailProfile3 = (LinearLayout) findViewById(R.id.shopDetailProfile3);
+        shopDetailQuestion = (AppCompatEditText) findViewById(R.id.shopDetailQuestion);
+        shopDetailReview = (AppCompatEditText) findViewById(R.id.shopDetailReview);
+        shopDetailLVReview = (ListView) findViewById(R.id.shopDetailLVReview);
+        reviewPagingBtn = (Button) findViewById(R.id.reviewPagingBtn);
+        reviewPagingBtn.setVisibility(View.GONE);
+        shopDetailTip = (AppCompatEditText) findViewById(R.id.shopDetailTip);
+        shopDetailTipProfile = (LinearLayout) findViewById(R.id.shopDetailTipProfile);
+        shopDetailTipRV = (RecyclerView) findViewById(R.id.shopDetailTipRV);
+        shopDetailIndicator = findViewById(R.id.shopDetailIndicator);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         defaulDataSet();
-        adapting();
+        try {
+            adapting();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         setShopData();
 
     }
@@ -151,7 +197,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    private void adapting() {
+    private void adapting() throws InterruptedException, ExecutionException, TimeoutException, JSONException {
 
 
         StringBuilder conn = null;
@@ -163,6 +209,9 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
         viewpagerAdapter = new ShopDetail_Main_Adapter_Backup(this);
         shopDetailViewPager.setAdapter(viewpagerAdapter);
+        shopDetailViewPager.setPageTransformer(true, new CubeOutTransformer());
+        shopDetailIndicator.setViewPager(shopDetailViewPager);
+        viewpagerAdapter.registerDataSetObserver(shopDetailIndicator.getDataSetObserver());
 
         ShopDetail_Main_Review_LV_Adapter reviewLvAdapter = new ShopDetail_Main_Review_LV_Adapter(this, reviewData);
         shopDetailLVReview.setAdapter(reviewLvAdapter);
@@ -177,13 +226,12 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
         StaggeredGridLayoutManager mStaggeredGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
         shopDetailRVImage.setLayoutManager(mStaggeredGridLayoutManager);
-        shopDetailRVImage.setAdapter(imageRVAdater);
 
         //
 
         try {
             dataSet = new ShopDetail_Main_Review_LV_Set();
-            conn = new AsyncShopDetailImageURLRequest(urlParse, progressDialog, this).execute().get(10000, TimeUnit.MILLISECONDS);
+            conn = new AsyncShopDetailImageURLRequest(urlParse, progressDialog).execute().get(10000, TimeUnit.MILLISECONDS);
             String sConn = String.valueOf(conn);
             Log.d("REVIEW_VIEWPAGER_URL", "sConn :" + sConn);
 
@@ -214,6 +262,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             }
 
             imageRVAdater.notifyDataSetChanged();
+            shopDetailRVImage.setAdapter(imageRVAdater);
 
 
 /*
@@ -418,6 +467,43 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             }
         }
 
+
+        tipList.clear();
+        StaggeredGridLayoutManager tipLayoutSet = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+        ShopDetail_Main_RV_Tip_Adapter shopDetailRVTipAdapter = new ShopDetail_Main_RV_Tip_Adapter(this, tipList);
+        shopDetailTipRV.setHasFixedSize(true);
+        shopDetailTipRV.setLayoutManager(tipLayoutSet);
+        shopDetailTipRV.setAdapter(shopDetailRVTipAdapter);
+
+        String tipURL = "http://222.122.203.55/realreview/tip/tipRequest.php";
+        JSONObject tipConn = null;
+        ProgressWheel progressWheel = new ProgressWheel(this);
+        tipConn = new AsyncTipRequest(tipURL, progressWheel, this).execute().get(10000, TimeUnit.MILLISECONDS);
+        Log.d("TIP_ASYNC", "Async excute Complete - result JSONObject : " + tipConn);
+
+        JSONArray jsonArray = tipConn.getJSONArray("tipresult");
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+
+            JSONObject getArray = jsonArray.getJSONObject(i);
+            String shopid = getArray.getString("shopid");
+            String userid = getArray.getString("userid");
+            String tip = getArray.getString("tip");
+            String regdate = getArray.getString("regdate");
+            String nearby = getArray.getString("nearby");
+            String nick = getArray.getString("nick");
+            ShopDetail_Main_RV_Tip_Set adapterSet = new ShopDetail_Main_RV_Tip_Set("", "0", "0", "0", tip, regdate, nick, nearby);
+            Log.d("TIP_ASYNC", "JSON Parsing...shopid  : " + shopid);
+            Log.d("TIP_ASYNC", "JSON Parsing...userid  : " + userid);
+            Log.d("TIP_ASYNC", "JSON Parsing...tip     : " + tip);
+            Log.d("TIP_ASYNC", "JSON Parsing...regdate : " + regdate);
+            Log.d("TIP_ASYNC", "JSON Parsing...nearby  : " + nearby);
+            Log.d("TIP_ASYNC", "JSON Parsing...nick    : " + nick);
+
+            tipList.add(0, adapterSet);
+
+        }
+
     }
 
     public void setListViewHeightBasedOnItems(ListView listView) {
@@ -444,16 +530,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         params.height = totalItemsHeight + totalDividersHeight;
         listView.setLayoutParams(params);
         listView.requestLayout();
-    }
-
-    private void addPageMark() {
-        ImageView iv = new ImageView(getApplicationContext());
-//        iv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        iv.setBackgroundResource(R.drawable.page_not);
-        Log.d("ViewPager", "addPageMark() - pagerCount" + pagerCount);
-        for (int i = 0; i < pagerCount; i++) {
-            viewpagePageMark.addView(iv);//LinearLayout
-        }
     }
 
     private void defaulDataSet() {
@@ -518,42 +594,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    private void init() {
-
-        shopDetailViewPager = (ViewPager) findViewById(R.id.shopDetailViewPager);
-        shopDetailTitle = (TextView) findViewById(R.id.shopDetailTitle);
-        shopDetailTitleReviewCnt = (TextView) findViewById(R.id.shopDetailTitleReviewCnt);
-        shopDetailTimeOpen = (TextView) findViewById(R.id.shopDetailTimeOpen);
-        shopDetailTimeClose = (TextView) findViewById(R.id.shopDetailTimeClose);
-        shopDetailQuestion_Question = (TextView) findViewById(R.id.shopDetailQuestion_Question);
-        shopDetailQuestion_Answer = (TextView) findViewById(R.id.shopDetailQuestion_Answer);
-        shopDetailTitleRating = (AppCompatRatingBar) findViewById(R.id.shopDetailTitleRating);
-        shopDetailRatingReview = (AppCompatRatingBar) findViewById(R.id.shopDetailRatingReview);
-        shopDetailRatingReview2 = (AppCompatRatingBar) findViewById(R.id.shopDetailRatingReview2);
-        shopDetailRVTitleTag = (RecyclerView) findViewById(R.id.shopDetailRVTitleTag);
-        shopDetailRVImage = (RecyclerView) findViewById(R.id.shopDetailRVImage);
-        shopDetailTopAddPhoto = (Button) findViewById(R.id.shopDetailTopAddPhoto);
-        shopDetailCheckin = (Button) findViewById(R.id.shopDetailCheckin);
-        shopDetailBookmark = (Button) findViewById(R.id.shopDetailBookmark);
-        mapAddress = (Button) findViewById(R.id.mapAddress);
-        shopDetailCallBtn = (Button) findViewById(R.id.shopDetailCallBtn);
-        shopDetailDirection = (Button) findViewById(R.id.shopDetailDirection);
-        shopDetailMenu = (Button) findViewById(R.id.shopDetailMenu);
-        shopDetailWebsiteBtn = (Button) findViewById(R.id.shopDetailWebsiteBtn);
-        shopDetailMessageBtn = (Button) findViewById(R.id.shopDetailMessageBtn);
-        shopDetailProfile = (LinearLayout) findViewById(R.id.shopDetailProfile);
-        shopDetailProfile2 = (LinearLayout) findViewById(R.id.shopDetailProfile2);
-        shopDetailProfile3 = (LinearLayout) findViewById(R.id.shopDetailProfile3);
-        viewpagePageMark = (LinearLayout) findViewById(R.id.viewpagePageMark);
-        shopDetailQuestion = (AppCompatEditText) findViewById(R.id.shopDetailQuestion);
-        shopDetailReview = (AppCompatEditText) findViewById(R.id.shopDetailReview);
-        shopDetailLVReview = (ListView) findViewById(R.id.shopDetailLVReview);
-        reviewPagingBtn = (Button) findViewById(R.id.reviewPagingBtn);
-        reviewPagingBtn.setVisibility(View.GONE);
-        shopDetailTip = (AppCompatEditText) findViewById(R.id.shopDetailTip);
-        shopDetailTipProfile = (LinearLayout) findViewById(R.id.shopDetailTipProfile);
-    }
-
+    @SuppressLint("ClickableViewAccessibility")
     private void listener() {
 
         shopDetailViewPager.setOnClickListener(this);
@@ -619,6 +660,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailProfile2.setOnClickListener(this);
         shopDetailProfile3.setOnClickListener(this);
         shopDetailQuestion.setOnClickListener(this);
+
         shopDetailReview.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -641,10 +683,38 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
                 return false;
             }
+
+
         });
-//        shopDetailLVReview.setOnClickListener(this);
+
+        shopDetailTip.setOnTouchListener(new View.OnTouchListener() {
+
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN: {
+                        SharedPreferenceUtil pref = new SharedPreferenceUtil(ShopDetail_Main.this);
+                        Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Tip_Submit.class);
+                        intent.putExtra("reviewTitle", title);
+                        intent.putExtra("reviewShopId", defaultShopID);
+                        intent.putExtra("reviewUserId", pref.getSharedData("isLogged_id"));
+                        intent.putExtra("reviewUserNick", pref.getSharedData("isLogged_nick"));
+                        startActivity(intent);
+                        break;
+
+                    }
+
+                }
+
+                return false;
+            }
+        });
 
     }
+
 
     @Override
     public void onClick(View view) {
@@ -781,16 +851,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 break;
             }
 
-            case R.id.shopDetailReview: {
-
-
-            }
-
-            case R.id.shopDetailTip : {
-
-
-
-            }
 
         }
 

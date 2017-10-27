@@ -1,6 +1,5 @@
 package com.teamnova.ej.realreview.Asynctask;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -24,14 +23,12 @@ public class AsyncShopDetailImageURLRequest extends AsyncTask<Void, Integer, Str
     public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
     private String urlString;
     private String params = "";
-    Context mContext;
-    private ProgressWheel dialog;
+    ProgressWheel dialog;
     String TestVAR;
 
-    public AsyncShopDetailImageURLRequest(String urlString, ProgressWheel dialog, Context mContext) {
+    public AsyncShopDetailImageURLRequest(String urlString, ProgressWheel dialog) {
         this.urlString = urlString;
         this.dialog = dialog;
-        this.mContext = mContext;
     }
 
     @Override

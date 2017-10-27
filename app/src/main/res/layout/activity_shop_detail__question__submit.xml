@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/tipEditText"
+            android:id="@+id/questionSubmitText"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@drawable/border"
@@ -21,8 +21,8 @@
             android:layout_weight="26"
             android:textIsSelectable="false"
             android:textStyle="normal"
-            android:hint="Example.\n이곳은 내가 좋아하는 음식점이다. 우린 빠네, 트리플 맥오 치즈, 그리고 딸기 케잌을 디저트로 먹었다. 모든 것이 맛있었다!"
-            android:textSize="13dp"
+            android:hint="이 상점에 대해 알고 싶은 것이 무엇인가요?"
+            android:textSize="13sp"
             android:gravity="top"
             android:padding="10dp"
             android:textColor="#000000"
@@ -46,7 +46,7 @@
         <Button
             android:layout_weight="4"
 
-            android:id="@+id/tipSubmit"
+            android:id="@+id/questionSubmitBtn"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:textColor="#ffffff"

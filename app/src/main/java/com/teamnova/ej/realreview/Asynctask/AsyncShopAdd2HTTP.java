@@ -1,11 +1,12 @@
 package com.teamnova.ej.realreview.Asynctask;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.pnikosis.materialishprogress.ProgressWheel;
 import com.teamnova.ej.realreview.activity.ShopAdd4;
 
 import java.io.IOException;
@@ -23,10 +24,10 @@ public class AsyncShopAdd2HTTP extends AsyncTask<Void, Integer, Void> {
     private String urlString;
     private String params = "";
     Context mContext;
-    private ProgressDialog dialog;
+    private ProgressWheel dialog;
     String TestVAR;
 
-    public AsyncShopAdd2HTTP(String urlString, ProgressDialog dialog, Context mContext) {
+    public AsyncShopAdd2HTTP(String urlString, ProgressWheel dialog, Context mContext) {
         this.urlString = urlString;
         this.dialog = dialog;
         this.mContext = mContext;
@@ -35,10 +36,8 @@ public class AsyncShopAdd2HTTP extends AsyncTask<Void, Integer, Void> {
     @Override
     protected void onPreExecute() {
 
-        dialog.setMessage("Uploading");
-        dialog.setIndeterminate(false);
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.show();
+        dialog.setInstantProgress(0.64f);
+        dialog.setBarColor(Color.BLUE);
     }
     @Override
     protected Void doInBackground(Void... params) {
@@ -52,9 +51,7 @@ public class AsyncShopAdd2HTTP extends AsyncTask<Void, Integer, Void> {
             int responseCode = conn.getResponseCode();
             Log.e(TAG, "SHOP ADD response code - " + responseCode);
 
-            Thread.sleep(1500);
-
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -140,7 +137,6 @@ public class AsyncShopAdd2HTTP extends AsyncTask<Void, Integer, Void> {
     @Override
     protected void onPostExecute(Void result) {
         try {
-            dialog.dismiss();
 
             Intent intent = new Intent(mContext, ShopAdd4.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

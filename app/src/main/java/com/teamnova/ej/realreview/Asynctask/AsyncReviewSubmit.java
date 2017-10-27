@@ -1,11 +1,12 @@
 package com.teamnova.ej.realreview.Asynctask;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.pnikosis.materialishprogress.ProgressWheel;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
 import java.io.DataOutputStream;
@@ -24,11 +25,11 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
     private String urlString;
     private String params = "";
     Context mContext;
-    private ProgressDialog dialog;
+    private ProgressWheel dialog;
     String TestVAR;
     private String reviewData;
 
-    public AsyncReviewSubmit(ProgressDialog dialog, Context mContext) {
+    public AsyncReviewSubmit(ProgressWheel dialog, Context mContext) {
         this.dialog = dialog;
         this.mContext = mContext;
     }
@@ -36,10 +37,8 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
     @Override
     protected void onPreExecute() {
 
-        dialog.setMessage("Uploading");
-        dialog.setIndeterminate(false);
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.show();
+        dialog.setInstantProgress(0.64f);
+        dialog.setBarColor(Color.BLUE);
     }
 
     @Override
@@ -300,8 +299,6 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
     @Override
     protected void onPostExecute(Void result) {
         try {
-            dialog.dismiss();
-
             Intent intent = new Intent();
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

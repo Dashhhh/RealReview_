@@ -3,7 +3,6 @@ package com.teamnova.ej.realreview.activity;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -55,6 +54,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.pnikosis.materialishprogress.ProgressWheel;
 import com.teamnova.ej.realreview.Asynctask.AsyncMainNearbyLatLngReceive;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.adapter.Main_Test_SearchMap;
@@ -89,6 +89,13 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     public static final int PICK_FROM_ALBUM = 1;
     public static final int CROP_FROM_CAMERA = 2;
     public static boolean UPLOAD_FLAG = false;
+
+    public static double LOCATION_USER_LAT       = 0;
+    public static double LOCATION_USER_LNG       = 0;
+    public static double LOCATION_FAR_LEFT_LAT   = 0;
+    public static double LOCATION_FAR_LEFT_LNG   = 0;
+    public static double LOCATION_NEAR_RIGHT_LAT = 0;
+    public static double LOCATION_NEAR_RIGHT_LNG = 0;
 
     private Uri mImageCaptureUri;
     /**
@@ -277,9 +284,14 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         Log.d("Main_Test - onCreate", "MY_POSITION_LAT :" + MY_POSITION_LAT);
         Log.d("Main_Test - onCreate", "MY_POSITION_LNG :" + MY_POSITION_LNG);
 
+        LOCATION_USER_LAT = MY_POSITION_LAT;
+        LOCATION_USER_LNG = MY_POSITION_LNG;
+
+
+
         String url = "http://222.122.203.55/realreview/Nearby/latlng.php?";
         String urlMerge = url + "lat_start=" + resultNearRightLat + "&lat_end=" + resultFarLeftLat + "&lng_start=" + resultFarLeftLng + "&lng_end=" + resultNearRightLng;
-        ProgressDialog progressDialog = new ProgressDialog(this);
+        ProgressWheel progressDialog = new ProgressWheel(this);
         AsyncMainNearbyLatLngReceive upload = new AsyncMainNearbyLatLngReceive(urlMerge, progressDialog, this);
         upload.execute();
 
@@ -973,10 +985,15 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         Log.d("MYLOG", "FarLeft:" + sFarLeft);
         Log.d("MYLOG", "NearRight:" + sNearRight);
 
+        LOCATION_FAR_LEFT_LAT = Double.parseDouble(split2FarLeft[0]);
+        LOCATION_FAR_LEFT_LNG = Double.parseDouble(split3FarLeft[0]);
+        LOCATION_NEAR_RIGHT_LAT = Double.parseDouble(split2NearRight[0]);
+        LOCATION_NEAR_RIGHT_LNG = Double.parseDouble(split3NearRight[0]);
+
 
         String url = "http://222.122.203.55/realreview/Nearby/latlng.php?";
         String urlMerge = url + "lat_start=" + resultNearRightLat + "&lat_end=" + resultFarLeftLat + "&lng_start=" + resultFarLeftLng + "&lng_end=" + resultNearRightLng;
-        ProgressDialog progressDialog = new ProgressDialog(this);
+        ProgressWheel progressDialog = new ProgressWheel(this);
         StringBuilder conn = null;
         try {
             conn = new AsyncMainNearbyLatLngReceive(urlMerge, progressDialog, this).execute().get(5000, TimeUnit.MILLISECONDS);
@@ -1025,25 +1042,25 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 
                 SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
 
-                pref.setSharedData("ID" +           markerTag, item2.getString("id"));
-                pref.setSharedData("TITLE" +        markerTag, item2.getString("shopName"));
-                pref.setSharedData("ADDRESS" +      markerTag, item2.getString("address"));
-                pref.setSharedData("LAT" +          markerTag, item2.getString("latitude"));
-                pref.setSharedData("LNG" +          markerTag, item2.getString("longtitude"));
-                pref.setSharedData("V_SW_LAT" +     markerTag, item2.getString("viewportSouthWestLat"));
-                pref.setSharedData("V_SW_LNG" +     markerTag, item2.getString("viewportSouthWestLng"));
-                pref.setSharedData("V_NE_LAT" +     markerTag, item2.getString("viewportNorthEastLat"));
-                pref.setSharedData("V_NE_LNG" +     markerTag, item2.getString("viewportNorthEastLng"));
-                pref.setSharedData("OPEN" +         markerTag, item2.getString("shopOpen"));
-                pref.setSharedData("CLOSE" +        markerTag, item2.getString("shopClose"));
-                pref.setSharedData("MARKERTAG" +        markerTag, item2.getString("shopClose"));
-                pref.setSharedData("THEME1" +       markerTag, item2.getString("shopTheme1"));
-                pref.setSharedData("THEME2" +       markerTag, item2.getString("shopTheme2"));
-                pref.setSharedData("THEME3" +       markerTag, item2.getString("shopTheme3"));
-                pref.setSharedData("THEME4" +       markerTag, item2.getString("shopTheme4"));
-                pref.setSharedData("THEME5" +       markerTag, item2.getString("shopTheme5"));
-                pref.setSharedData("CALL" +         markerTag, item2.getString("callNumber"));
-                pref.setSharedData("TAG" +          markerTag, String.valueOf(i));
+                pref.setSharedData("ID" + markerTag, item2.getString("id"));
+                pref.setSharedData("TITLE" + markerTag, item2.getString("shopName"));
+                pref.setSharedData("ADDRESS" + markerTag, item2.getString("address"));
+                pref.setSharedData("LAT" + markerTag, item2.getString("latitude"));
+                pref.setSharedData("LNG" + markerTag, item2.getString("longtitude"));
+                pref.setSharedData("V_SW_LAT" + markerTag, item2.getString("viewportSouthWestLat"));
+                pref.setSharedData("V_SW_LNG" + markerTag, item2.getString("viewportSouthWestLng"));
+                pref.setSharedData("V_NE_LAT" + markerTag, item2.getString("viewportNorthEastLat"));
+                pref.setSharedData("V_NE_LNG" + markerTag, item2.getString("viewportNorthEastLng"));
+                pref.setSharedData("OPEN" + markerTag, item2.getString("shopOpen"));
+                pref.setSharedData("CLOSE" + markerTag, item2.getString("shopClose"));
+                pref.setSharedData("MARKERTAG" + markerTag, item2.getString("shopClose"));
+                pref.setSharedData("THEME1" + markerTag, item2.getString("shopTheme1"));
+                pref.setSharedData("THEME2" + markerTag, item2.getString("shopTheme2"));
+                pref.setSharedData("THEME3" + markerTag, item2.getString("shopTheme3"));
+                pref.setSharedData("THEME4" + markerTag, item2.getString("shopTheme4"));
+                pref.setSharedData("THEME5" + markerTag, item2.getString("shopTheme5"));
+                pref.setSharedData("CALL" + markerTag, item2.getString("callNumber"));
+                pref.setSharedData("TAG" + markerTag, String.valueOf(i));
                 if (item2.getString("webSite").isEmpty()) {
                     pref.setSharedData("WEB" + markerTag, "");
                 } else {
@@ -1088,7 +1105,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 
             Log.d("MARKER_TAG", "marker.getTag() :" + markerId);
             SharedPreferenceUtil pref = new SharedPreferenceUtil(Main_Test.this);
-            pref.setSharedData("TAG",markerId);
+            pref.setSharedData("TAG", markerId);
             Intent intent = new Intent(Main_Test.this, ShopDetail_Main.class);
             intent.putExtra("TAG", String.valueOf(marker.getTag()));
             startActivity(intent);

@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.teamnova.ej.realreview">
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -16,7 +15,6 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:allowBackup="true"
@@ -134,7 +132,10 @@
                 android:resource="@xml/pick_file_paths" />
         </provider>
 
-        <activity android:name=".activity.ShopDetail_Tip_Submit"></activity>
+        <activity android:name=".activity.ShopDetail_Tip_Submit" />
+        <activity
+            android:name=".activity.ShopDetail_Main_Direction"
+            android:label="@string/title_activity_shop_detail__main__direction"></activity>
     </application>
 
 </manifest>

@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.teamnova.ej.realreview.Asynctask.AsyncDirectionRequest;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.util.Dialog_Default;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
@@ -26,6 +27,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
@@ -69,6 +73,20 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         init();
         listener();
+
+
+        JSONObject aa;
+        try {
+            aa = new AsyncDirectionRequest("asd","aasda",this).execute().get(10000, TimeUnit.MILLISECONDS);
+            Log.d("DIRECTION", "전송결과 : " + aa);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
 
 
     }

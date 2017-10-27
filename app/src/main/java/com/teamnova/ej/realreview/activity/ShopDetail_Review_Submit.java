@@ -1,6 +1,5 @@
 package com.teamnova.ej.realreview.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.pnikosis.materialishprogress.ProgressWheel;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.teamnova.ej.realreview.Asynctask.AsyncReviewSubmit;
 import com.teamnova.ej.realreview.R;
@@ -139,7 +139,7 @@ public class ShopDetail_Review_Submit extends AppCompatActivity implements View.
                 pref.setSharedData("HTTP_REVIEW_REVIEW", text);
                 pref.setSharedData("HTTP_REVIEW_USER",iUserId);
                 pref.setSharedData("HTTP_REVIEW_RATING", String.valueOf(iRating));
-                ProgressDialog progressDialog = new ProgressDialog(this);
+                ProgressWheel progressDialog = new ProgressWheel(this);
                 Void conn;
                 try {
                     conn = new AsyncReviewSubmit(progressDialog, this).execute().get(10000, TimeUnit.MILLISECONDS);

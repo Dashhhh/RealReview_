@@ -1,7 +1,6 @@
 package com.teamnova.ej.realreview.activity;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.pnikosis.materialishprogress.ProgressWheel;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.teamnova.ej.realreview.Asynctask.AsyncShopAdd2HTTP;
 import com.teamnova.ej.realreview.R;
@@ -257,14 +257,13 @@ public class ShopAdd2 extends AppCompatActivity implements View.OnClickListener 
 
                         Log.e("SHOPADD2, URL MERGE :",urlMerge);
 
-                        ProgressDialog progressDialog = new ProgressDialog(this);
+                        ProgressWheel progressDialog = new ProgressWheel(this);
                         Void upload;
                         upload= new AsyncShopAdd2HTTP(urlMerge, progressDialog, this).execute().get(1000,TimeUnit.MICROSECONDS);
 
                     } catch (UnsupportedEncodingException | InterruptedException | ExecutionException | TimeoutException e) {
                         e.printStackTrace();
                     }
-
 
                 }
 

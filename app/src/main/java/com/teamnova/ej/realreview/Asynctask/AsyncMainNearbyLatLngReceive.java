@@ -1,10 +1,11 @@
 package com.teamnova.ej.realreview.Asynctask;
 
-import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.pnikosis.materialishprogress.ProgressWheel;
 import com.teamnova.ej.realreview.activity.Main_Test;
 
 import org.json.JSONArray;
@@ -27,10 +28,10 @@ public class AsyncMainNearbyLatLngReceive  extends AsyncTask<Void, Integer, Stri
     private String urlString;
     private String params = "";
     Context mContext;
-    private ProgressDialog dialog;
+    private ProgressWheel dialog;
     String TestVAR;
 
-    public AsyncMainNearbyLatLngReceive(String urlString, ProgressDialog dialog, Context mContext) {
+    public AsyncMainNearbyLatLngReceive(String urlString, ProgressWheel dialog, Context mContext) {
         this.urlString = urlString;
         this.dialog = dialog;
         this.mContext = mContext;
@@ -38,11 +39,10 @@ public class AsyncMainNearbyLatLngReceive  extends AsyncTask<Void, Integer, Stri
 
     @Override
     protected void onPreExecute() {
+        super.onPreExecute();
+        dialog.setInstantProgress(0.64f);
+        dialog.setBarColor(Color.BLUE);
 
-        dialog.setMessage("SHOP DATA Check");
-        dialog.setIndeterminate(false);
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.show();
     }
     @Override
     protected StringBuilder doInBackground(Void... params) {
@@ -120,11 +120,6 @@ public class AsyncMainNearbyLatLngReceive  extends AsyncTask<Void, Integer, Stri
     }
     @Override
     protected void onPostExecute(StringBuilder result) {
-        try {
-            dialog.dismiss();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
 
     }
 

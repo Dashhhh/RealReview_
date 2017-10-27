@@ -24,180 +24,16 @@
                 android:layout_height="200dp"
                 android:scaleX="@integer/sliding_title_lines" />
 
-            <LinearLayout
-                android:id="@+id/viewpagePageMark"
+            <me.relex.circleindicator.CircleIndicator
+                android:id="@+id/shopDetailIndicator"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#ffffff"
-                android:orientation="vertical">
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="What's yout TIP in this Place"
-                    android:textColor="#000000"
-                    android:textSize="14sp" />
-
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="#dddddd"
-                    android:src="@drawable/border_alpha" />
-
-
-                <LinearLayout
-                    android:id="@+id/shopDetailTipProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_margin="10dp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="123"
-                            android:textSize="16sp" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <ImageView
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
-                                android:layout_gravity="center"
-                                android:layout_margin="6dp"
-                                android:src="@drawable/ic_group_black_24dp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginEnd="5dp"
-                                android:text="folllowers" />
-
-
-                            <ImageView
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
-                                android:layout_gravity="center"
-                                android:layout_margin="6dp"
-                                android:background="@drawable/ic_chat_black_24dp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginEnd="5dp"
-                                android:text="reviews"
-
-                                />
-
-                            <ImageView
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
-                                android:layout_gravity="center"
-                                android:layout_margin="6dp"
-                                android:src="@drawable/ic_camera_alt_black_24dp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginEnd="5dp"
-                                android:text="images"
-
-                                />
-
-                        </LinearLayout>
-
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/shopDetailTip"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/border_topbottom_alpha"
-                    android:hint="e.g.) 오후 3시에 가면 사람이 한산 할 줄 알았지만 되려 사람이 더 많았습니다. 예약하고 이용하는게 더 도움이 될 것으로 보입니다."
-                    android:minLines="3"
-                    android:padding="14dp"
-                    android:textSize="14sp" />
-
-
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="#dddddd"
-                android:src="@drawable/border_alpha" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#ffffff"
-                android:orientation="vertical">
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="TIP"
-                    android:textColor="#000000"
-                    android:textSize="14sp" />
-
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="#dddddd"
-                    android:src="@drawable/border_alpha" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/shopDetailTipRV"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:contentDescription="SHOP TAG"
-                    android:padding="10dp"/>
-                <!--TODO INFLATE : 외곽선-->
-
-
-            </LinearLayout>
-
+                android:layout_height="20dp"
+                android:background="#ffd5d5"
+                app:ci_orientation="horizontal"
+                app:ci_gravity="center"
+                app:ci_drawable="@drawable/page_not"
+                app:ci_drawable_unselected="@drawable/page_select"
+                />
 
 
             <LinearLayout
@@ -1082,6 +918,173 @@
                 android:layout_height="10dp"
                 android:background="#dddddd"
                 android:src="@drawable/border_alpha" />
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="What's yout TIP in this Place"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#dddddd"
+                    android:src="@drawable/border_alpha" />
+
+
+                <LinearLayout
+                    android:id="@+id/shopDetailTipProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_margin="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="123"
+                            android:textSize="16sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="6dp"
+                                android:src="@drawable/ic_group_black_24dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="5dp"
+                                android:text="folllowers" />
+
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="6dp"
+                                android:background="@drawable/ic_chat_black_24dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="5dp"
+                                android:text="reviews"
+
+                                />
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="6dp"
+                                android:src="@drawable/ic_camera_alt_black_24dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="5dp"
+                                android:text="images"
+
+                                />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/shopDetailTip"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_topbottom_alpha"
+                    android:hint="e.g.) 오후 3시에 가면 사람이 한산 할 줄 알았지만 되려 사람이 더 많았습니다. 예약하고 이용하는게 더 도움이 될 것으로 보입니다."
+                    android:minLines="3"
+                    android:padding="14dp"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#dddddd"
+                android:src="@drawable/border_alpha" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="TIP"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#dddddd"
+                    android:src="@drawable/border_alpha" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/shopDetailTipRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:contentDescription="tipList"
+                    android:padding="10dp"/>
+                <!--TODO INFLATE : 외곽선-->
+
+
+            </LinearLayout>
 
 
         </LinearLayout>     <!-- CONTAINER -->
