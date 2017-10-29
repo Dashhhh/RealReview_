@@ -465,8 +465,10 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             } else {
                 break;
             }
-        }
 
+
+
+        }
 
         tipList.clear();
         StaggeredGridLayoutManager tipLayoutSet = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
