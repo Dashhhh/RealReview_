@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,7 +39,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.pnikosis.materialishprogress.ProgressWheel;
+import com.tangxiaolv.telegramgallery.GalleryActivity;
+import com.tangxiaolv.telegramgallery.GalleryConfig;
+import com.teamnova.ej.realreview.Asynctask.AsyncReviewSubmit;
 import com.teamnova.ej.realreview.Asynctask.AsyncShopDetailImageURLRequest;
+import com.teamnova.ej.realreview.Asynctask.AsyncShopPhotoSubmit;
 import com.teamnova.ej.realreview.Asynctask.AsyncTipRequest;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.adapter.ShopDetail_MainReview_RV_Theme_Adapter;
@@ -57,9 +62,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
 
 public class ShopDetail_Main extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
 
@@ -112,7 +119,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     Button reviewPagingBtn;
     private ArrayList<ShopDetail_MainReview_RV_Theme_Set> themeList = new ArrayList<>();
     private ArrayList<ShopDetail_Main_RV_Tip_Set> tipList = new ArrayList<>();
-
+    private ArrayList<Uri> topPhotoUriList;
+    private int reqCode = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,7 +220,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailViewPager.setPageTransformer(true, new CubeOutTransformer());
         shopDetailIndicator.setViewPager(shopDetailViewPager);
         viewpagerAdapter.registerDataSetObserver(shopDetailIndicator.getDataSetObserver());
-
         ShopDetail_Main_Review_LV_Adapter reviewLvAdapter = new ShopDetail_Main_Review_LV_Adapter(this, reviewData);
         shopDetailLVReview.setAdapter(reviewLvAdapter);
         reviewLvAdapter.clearItem();
@@ -773,6 +780,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             case R.id.shopDetailRatingReview2: {
 
                 break;
+
             }
 
             case R.id.shopDetailRVTitleTag: {
@@ -786,6 +794,16 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             }
 
             case R.id.shopDetailTopAddPhoto: {
+//open album
+                GalleryConfig config = new GalleryConfig.Build()
+                        .limitPickPhoto(5)
+                        .singlePhoto(false)
+//                        .hintOfPick("")
+                        .filterMimeTypes(new String[]{"image/jpeg"})
+                        .build();
+                GalleryActivity.openActivity(ShopDetail_Main.this, reqCode, config);
+
+
 
                 break;
             }
@@ -816,6 +834,9 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             }
 
             case R.id.shopDetailDirection: {
+
+                Intent intent = new Intent(this, ShopDetail_Main_Direction.class);
+                startActivity(intent);
 
                 break;
             }
@@ -958,5 +979,66 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
     }
 
+    //process result
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //list of photos of selece
+        List<String> photos = (List<String>) data.getSerializableExtra(GalleryActivity.PHOTOS);
 
+        for(int i=0;i<photos.size();i++)
+            Log.d("imagePickCheck","List URI :"+photos+i);
+
+        //list of videos of seleced
+        List<String> vides = (List<String>) data.getSerializableExtra(GalleryActivity.VIDEO);
+        SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
+        for (int i=0;i<photos.size();i++){
+            Log.d("imagePickCheck", "for - count :"+i);
+            String a = photos.get(i);
+//                imagePath.add(0, a);
+            if (i == 0) {
+                Log.d("imagePickCheck", "Case-1 :" + a);
+                pref.setSharedData("ShopPhoto_Image_0",a);
+            } else if (i == 1) {
+
+                Log.d("imagePickCheck", "Case-2 :" + a);
+                pref.setSharedData("ShopPhoto_Image_1",a);
+            } else if (i == 2) {
+                Log.d("imagePickCheck", "Case-3 :" + a);
+                pref.setSharedData("ShopPhoto_Image_2",a);
+            } else if (i == 3) {
+                Log.d("imagePickCheck", "Case-4 :" + a);
+                pref.setSharedData("ShopPhoto_Image_3",a);
+            } else if (i == 4) {
+                Log.d("imagePickCheck", "Case-5 :" + a);
+                pref.setSharedData("ShopPhoto_Image_4",a);
+            }
+        }
+
+        String tag = pref.getSharedData("TAG");
+        String iShopId = pref.getSharedData("ID" + tag);
+
+
+        String iUserId = pref.getSharedData("isLogged_id");
+        pref.setSharedData("HTTP_REVIEW_ID",iShopId);
+        pref.setSharedData("HTTP_REVIEW_USER",iUserId);
+        Log.d("imagePickCheck","tag :"+tag);
+        Log.d("imagePickCheck","shopID :"+iShopId);
+        Log.d("imagePickCheck","userId :" + iUserId);
+
+
+
+        ProgressWheel progressDialog = new ProgressWheel(this);
+        Void conn;
+        try {
+            conn = new AsyncShopPhotoSubmit(progressDialog, this).execute().get(10000,TimeUnit.MILLISECONDS);
+            Log.d("imagePickCheck","MAIN THREAD conn Check :"+conn);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

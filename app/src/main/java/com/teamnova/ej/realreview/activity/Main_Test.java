@@ -287,7 +287,11 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         LOCATION_USER_LAT = MY_POSITION_LAT;
         LOCATION_USER_LNG = MY_POSITION_LNG;
 
-
+        SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
+        pref.setSharedData("DIRECTION_USER_LAT", String.valueOf(LOCATION_USER_LAT));
+        pref.setSharedData("DIRECTION_USER_LNG", String.valueOf(LOCATION_USER_LNG));
+        Log.d("DIRECTION_USER", "DIRECTION_USER_LAT :" + pref.getSharedData("DIRECTION_USER_LAT"));
+        Log.d("DIRECTION_USER", "DIRECTION_USER_LNG :" + pref.getSharedData("DIRECTION_USER_LNG"));
 
         String url = "http://222.122.203.55/realreview/Nearby/latlng.php?";
         String urlMerge = url + "lat_start=" + resultNearRightLat + "&lat_end=" + resultFarLeftLat + "&lng_start=" + resultFarLeftLng + "&lng_end=" + resultNearRightLng;

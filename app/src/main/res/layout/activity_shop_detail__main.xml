@@ -18,22 +18,28 @@
             android:background="#ffffff"
             android:orientation="vertical">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/shopDetailViewPager"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:scaleX="@integer/sliding_title_lines" />
+                android:layout_height="match_parent">
 
-            <me.relex.circleindicator.CircleIndicator
-                android:id="@+id/shopDetailIndicator"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:background="#ffd5d5"
-                app:ci_orientation="horizontal"
-                app:ci_gravity="center"
-                app:ci_drawable="@drawable/page_not"
-                app:ci_drawable_unselected="@drawable/page_select"
-                />
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/shopDetailViewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleX="@integer/sliding_title_lines" />
+                <me.relex.circleindicator.CircleIndicator
+                    android:id="@+id/shopDetailIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:background="#79ffd5d5"
+                    app:ci_orientation="horizontal"
+                    app:ci_gravity="center"
+                    app:ci_drawable="@drawable/page_not"
+                    app:ci_drawable_unselected="@drawable/page_select"
+                    android:layout_alignParentBottom="true"
+
+                    />
+            </RelativeLayout>
 
 
             <LinearLayout

@@ -74,21 +74,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         init();
         listener();
 
-
-        JSONObject aa;
-        try {
-            aa = new AsyncDirectionRequest("asd","aasda",this).execute().get(10000, TimeUnit.MILLISECONDS);
-            Log.d("DIRECTION", "전송결과 : " + aa);
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
-            e.printStackTrace();
-        }
-
-
     }
 
     private void listener() {
