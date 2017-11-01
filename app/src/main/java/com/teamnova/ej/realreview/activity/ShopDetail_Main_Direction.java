@@ -10,16 +10,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.maps.android.PolyUtil;
 import com.teamnova.ej.realreview.Asynctask.AsyncDirectionRequest;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -56,13 +54,19 @@ public class ShopDetail_Main_Direction extends FragmentActivity implements OnMap
         JSONObject aa;
         try {
             aa = new AsyncDirectionRequest(userLat, userLng, shopLat, shopLng, this).execute().get(10000, TimeUnit.MILLISECONDS);
-            Log.d("DIRECTION", "전송결과 : " + aa);
+            Log.e("DIRECTION", "전송결과 : " + aa);
+            JSONArray aaJSONObject = aa.getJSONArray("routes");
+            Log.e("DIRECTION", "전송결과 aaJSONObject: " + aaJSONObject);
+            JSONObject aaaJSONArray = aaJSONObject.getJSONObject(0);
+            Log.e("DIRECTION", "전송결과 aaaJSONArray : " + aaaJSONArray);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 

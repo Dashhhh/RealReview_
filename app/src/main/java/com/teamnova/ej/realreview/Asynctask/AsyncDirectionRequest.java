@@ -50,10 +50,8 @@ public class AsyncDirectionRequest extends AsyncTask<Void, Integer, JSONObject> 
 
     @Override
     protected JSONObject doInBackground(Void... voids) {
-//        String directionURL = "https://maps.googleapis.com/maps/api/directions/json?origin="+ directionOriginLat +","+directionOriginLng+"&destination="+directionDestination+"&mode=transit&key=AIzaSyCH9Jr6Ag9BwAmV5qw3BcHTnJ3qgqHmWtk";
-        String directionURL = "https://maps.googleapis.com/maps/api/directions/json?origin="+ directionOriginLat +","+directionOriginLng+"&destination="+directionDestinationLat+","+directionDestinationLng+"&region=kr&mode=transit&key=AIzaSyCH9Jr6Ag9BwAmV5qw3BcHTnJ3qgqHmWtk";
-//        String directionURL = "https://maps.googleapis.com/maps/api/directions/json?origin="+ "ChIJVbgo3TSgfDUR_O9v_hqCwPw"+"&destination="+directionDestinationLat+","+directionDestinationLng+"&region=kr&key=AIzaSyCH9Jr6Ag9BwAmV5qw3BcHTnJ3qgqHmWtk";
-//        String directionURL = "https://maps.googleapis.com/maps/api/directions/json?origin="+ "place_id:ChIJVbgo3TSgfDUR_O9v_hqCwPw"+"&destination="+"37.5665350,126.9779690"+"&mode=transit&key=AIzaSyCH9Jr6Ag9BwAmV5qw3BcHTnJ3qgqHmWtk";
+//        String directionURL = "https://maps.googleapis.com/maps/api/directions/json?origin="+ directionOriginLat +","+directionOriginLng+"&destination="+directionDestinationLat+","+directionDestinationLng+"&region=kr&mode=transit&key=AIzaSyCH9Jr6Ag9BwAmV5qw3BcHTnJ3qgqHmWtk";
+        String directionURL = "https://maps.googleapis.com/maps/api/directions/json?origin="+ directionOriginLat +","+directionOriginLng+"&destination=37.5608743,126.8551612"+"&region=kr&mode=transit&key=AIzaSyCH9Jr6Ag9BwAmV5qw3BcHTnJ3qgqHmWtk";
         JSONObject jsonObject = new JSONObject();
         String result = "";
         String okUrl = "";
