@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
+import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -125,6 +126,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TypefaceProvider.registerDefaultIconSets();
         setContentView(R.layout.activity_shop_detail__main);
 
 
@@ -174,6 +176,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailTipProfile = (LinearLayout) findViewById(R.id.shopDetailTipProfile);
         shopDetailTipRV = (RecyclerView) findViewById(R.id.shopDetailTipRV);
         shopDetailIndicator = findViewById(R.id.shopDetailIndicator);
+
+
     }
 
     @Override

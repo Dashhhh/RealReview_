@@ -163,21 +163,21 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                             Intent intent = new Intent(getApplicationContext(), Main_Test.class);
                             startActivity(intent);
 //                        } else if (!tempIdStr.isEmpty() && tempPwStr.equals("")) {
-//                            dial.call("Warning", "비밀번호를 입력 후 로그인해 주시기 바랍니다.");
+//                            dial.tempCall("Warning", "비밀번호를 입력 후 로그인해 주시기 바랍니다.");
 //                            loginPasswordText.setText("");
                         } else if (!tempPwStr.equals(pw)) {
                             dialog.dismiss();
-                            dial.call("Warning", "로그인 정보가 틀립니다. 정보를 확인해 주시기 바랍니다.");
+                            dial.tempCall("Warning", "로그인 정보가 틀립니다. 정보를 확인해 주시기 바랍니다.");
                             loginPasswordText.setText("");
                         }
 
                     } else {
                         dialog.dismiss();
-                        dial.call("Warning", "가입 된 ID가 없습니다. 로그인 정보를 확인해 주시기 바랍니다.");
+                        dial.tempCall("Warning", "가입 된 ID가 없습니다. 로그인 정보를 확인해 주시기 바랍니다.");
                     }
                 } else if (id.equals("") || pw.equals("")) {
                     dialog.dismiss();
-                    dial.call("Warning", "아이디와 비밀번호를 입력 한 후 로그인 버튼을 눌러주세요.");
+                    dial.tempCall("Warning", "아이디와 비밀번호를 입력 한 후 로그인 버튼을 눌러주세요.");
                 }
                 tempId = "";
                 tempIdStr = "";

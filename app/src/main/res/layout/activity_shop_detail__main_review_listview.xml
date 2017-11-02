@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/reviewRootLinear"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,9 +9,8 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:background="#eeeeee"
-        />
+        android:layout_height="13dp"
+        android:background="#eeeeee" />
 
 
     <LinearLayout
@@ -41,25 +41,24 @@
                     android:id="@+id/reviewUserId"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_margin="10dp"
-                    android:text="123"
-                    android:textStyle="bold"
                     android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_weight="2"
+                    android:text="123"
                     android:textColor="#000000"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
 
                 <TextView
                     android:id="@+id/reviewRegdate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_margin="10dp"
+                    android:layout_weight="1"
                     android:gravity="end"
                     android:text="123"
                     android:textSize="10sp" />
-
 
 
             </LinearLayout>
@@ -71,8 +70,8 @@
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:layout_margin="6dp"
                     android:layout_gravity="center"
+                    android:layout_margin="6dp"
                     android:src="@drawable/ic_group_black_24dp" />
 
                 <TextView
@@ -87,8 +86,8 @@
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:layout_margin="6dp"
                     android:layout_gravity="center"
+                    android:layout_margin="6dp"
                     android:background="@drawable/ic_chat_black_24dp" />
 
                 <TextView
@@ -104,8 +103,8 @@
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:layout_margin="6dp"
                     android:layout_gravity="center"
+                    android:layout_margin="6dp"
                     android:src="@drawable/ic_camera_alt_black_24dp" />
 
                 <TextView
@@ -165,54 +164,103 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_marginLeft="5dp"
+        android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
         android:layout_marginRight="5dp"
         android:orientation="horizontal">
 
-        <Button
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
             android:id="@+id/reviewUsefulBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:background="@drawable/common_google_signin_btn_text_light_normal_background"
             android:drawableStart="@drawable/ic_lightbulb_outline_black_24dp"
-            android:text="유용해요"
-            android:paddingStart="20dp"
-            android:paddingEnd="10dp"
-            android:textAlignment="center"
+            app:bootstrapText="유용해요"
+            app:bootstrapBrand="warning"
+            app:bootstrapSize="md"
+            app:buttonMode="checkbox"
+            app:roundedCorners="true"
+            app:showOutline="true" />
 
-            />
-
-        <Button
+        <com.beardedhen.androidbootstrap.BootstrapButton
             android:id="@+id/reviewNiceBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:background="@drawable/common_google_signin_btn_text_light_normal_background"
             android:drawableStart="@drawable/ic_thumb_up_black_24dp"
-            android:text="멋져요"
-            android:paddingStart="20dp"
-            android:paddingEnd="10dp"
-            android:textAlignment="center"
+            app:bootstrapBrand="success"
+            app:bootstrapSize="md"
+            app:bootstrapText="멋있어요"
+            app:buttonMode="checkbox"
+            app:roundedCorners="true"
+            app:showOutline="true" />
 
-            />
-
-        <Button
+        <com.beardedhen.androidbootstrap.BootstrapButton
             android:id="@+id/reviewCoolBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:background="@drawable/common_google_signin_btn_text_light_normal_background"
             android:drawableStart="@drawable/ic_sentiment_neutral_black_24dp"
-            android:text="냉정해요"
-            android:paddingStart="20dp"
-            android:paddingEnd="10dp"
-            android:textAlignment="center"
+            app:bootstrapText="냉정해요"
+            app:bootstrapBrand="primary"
+            app:bootstrapSize="md"
+            app:buttonMode="checkbox"
+            app:roundedCorners="true"
+            app:showOutline="true" />
 
-            />
+
+        <!--<Button-->
+        <!--android:id="@+id/reviewUsefulBtn"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1"-->
+        <!--android:background="@drawable/common_google_signin_btn_text_light_normal_background"-->
+        <!--android:drawableStart="@drawable/ic_lightbulb_outline_black_24dp"-->
+        <!--android:text="유용해요"-->
+        <!--android:paddingStart="20dp"-->
+        <!--android:paddingEnd="10dp"-->
+        <!--android:textAlignment="center"-->
+        <!--/>-->
+        <!---->
+        <!--<Button-->
+        <!--android:id="@+id/reviewNiceBtn"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1"-->
+        <!--android:background="@drawable/common_google_signin_btn_text_light_normal_background"-->
+        <!--android:drawableStart="@drawable/ic_thumb_up_black_24dp"-->
+        <!--android:text="멋져요"-->
+        <!--android:paddingStart="20dp"-->
+        <!--android:paddingEnd="10dp"-->
+        <!--android:textAlignment="center"-->
+        <!--/>-->
+
+        <!--<Button-->
+        <!--android:id="@+id/reviewCoolBtn"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1"-->
+        <!--android:background="@drawable/common_google_signin_btn_text_light_normal_background"-->
+        <!--android:drawableStart="@drawable/ic_sentiment_neutral_black_24dp"-->
+        <!--android:text="냉정해요"-->
+        <!--android:paddingStart="20dp"-->
+        <!--android:paddingEnd="10dp"-->
+        <!--android:textAlignment="center"-->
+        <!--/>-->
 
     </LinearLayout>
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="#eeeeee" />
 
 </LinearLayout>

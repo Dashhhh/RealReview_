@@ -17,7 +17,7 @@ public class ShopDetail_Main_RV_Tip_Viewholder extends RecyclerView.ViewHolder {
     LinearLayout tipRootLinear;
     LinearLayout tipTextLayout, tipProfileLayout;
     ImageView    tipUserImage;
-    ImageView    tipCertify;
+    com.beardedhen.androidbootstrap.BootstrapLabel    tipCertify;
     TextView     tipUserNick;
     TextView     tipUserFollower;
     TextView     tipReviewCount;

@@ -302,56 +302,6 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 
     }   // onCreate
 
-    private void receiveLocationData() {
-
-        /**위치정보 객체를 생성한다.*/
-        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        /** 현재 사용가능한 위치 정보 장치 검색*/
-        //위치정보 하드웨어 목록
-        Criteria c = new Criteria();
-        //최적의 하드웨어 이름을 리턴받는다.
-//        provider = lm.getBestProvider(c, true);
-
-        // 최적의 값이 없거나, 해당 장치가 사용가능한 상태가 아니라면,
-        //모든 장치 리스트에서 사용가능한 항목 얻기
-        if (provider == null || !lm.isProviderEnabled(provider)) {
-            // 모든 장치 목록
-            List<String> list = lm.getAllProviders();
-
-            for (int i = 0; i < list.size(); i++) {
-                //장치 이름 하나 얻기
-                String temp = list.get(i);
-
-                //사용 가능 여부 검사
-                if (lm.isProviderEnabled(temp)) {
-                    provider = temp;
-                    break;
-                }
-            }
-        }// (end if)위치정보 검색 끝
-
-        /**마지막으로  조회했던 위치 얻기*/
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Location location = lm.getLastKnownLocation(provider);
-
-        if (location == null) {
-            Toast.makeText(this, "사용가능한 위치 정보 제공자가 없습니다.", Toast.LENGTH_SHORT).show();
-        } else {
-            //최종 위치에서 부터 이어서 GPS 시작...
-            onLocationChanged(location);
-
-        }
-    }
 
     @Override
     public void onClick(View view) {
@@ -478,6 +428,142 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     }
 
 
+    private void receiveLocationData() {
+
+        /**위치정보 객체를 생성한다.*/
+        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        /** 현재 사용가능한 위치 정보 장치 검색*/
+        //위치정보 하드웨어 목록
+        Criteria c = new Criteria();
+        //최적의 하드웨어 이름을 리턴받는다.
+        provider = lm.getBestProvider(c, true);
+
+        // 최적의 값이 없거나, 해당 장치가 사용가능한 상태가 아니라면,
+        //모든 장치 리스트에서 사용가능한 항목 얻기
+        if (provider == null || !lm.isProviderEnabled(provider)) {
+            // 모든 장치 목록
+            List<String> list = lm.getAllProviders();
+
+            for (int i = 0; i < list.size(); i++) {
+                //장치 이름 하나 얻기
+                String temp = list.get(i);
+
+                //사용 가능 여부 검사
+                if (lm.isProviderEnabled(temp)) {
+                    provider = temp;
+                    break;
+                }
+            }
+        }// (end if)위치정보 검색 끝
+
+        /**마지막으로  조회했던 위치 얻기*/
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Location location = lm.getLastKnownLocation(provider);
+
+        if (location == null) {
+            Toast.makeText(this, "사용가능한 위치 정보 제공자가 없습니다.", Toast.LENGTH_SHORT).show();
+        } else {
+            //최종 위치에서 부터 이어서 GPS 시작...
+            onLocationChanged(location);
+
+        }
+    }
+    /**
+     * 위치가 변했을 경우 호출된다.
+     */
+    @Override
+    public void onLocationChanged(Location location) {
+        // 위도, 경도
+
+        myPosition_lat = location.getLatitude();
+        myPosition_lng = location.getLongitude();
+
+
+        // String이외의 데이터 형을 String으로 변환하는 메서드
+        // String이외의 데이터 형을 String으로 변화하는 꼼수~!!
+
+        Log.d("MYLOG", "ADDRESS CHECK :" + getAddress(myPosition_lat, myPosition_lng));
+
+        String checkAddress = getAddress(myPosition_lat, myPosition_lng);
+        String[] splitAddress = checkAddress.split(" ", 0);
+        for (int a = 0; a < splitAddress.length; a++) {
+            Log.d("MYLOG", "Address Split :" + splitAddress[a]);
+        }
+
+        MY_POSITION_LAT = location.getLatitude();
+        MY_POSITION_LNG = location.getLongitude();
+
+        LOCATION_USER_LAT = MY_POSITION_LAT;
+        LOCATION_USER_LNG = MY_POSITION_LNG;
+
+
+    }
+
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /**
+     * 위도와 경도 기반으로 주소를 리턴하는 메서드
+     */
+    public String getAddress(double lat, double lng) {
+        String address = null;
+
+        //위치정보를 활용하기 위한 구글 API 객체
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
+        //주소 목록을 담기 위한 HashMap
+        List<Address> list = null;
+
+        try {
+            list = geocoder.getFromLocation(lat, lng, 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (list == null) {
+            Log.e("getAddress", "주소 데이터 얻기 실패");
+            return null;
+        }
+
+        if (list.size() > 0) {
+            Address addr = list.get(0);
+            address = addr.getCountryName() + " "
+                    + addr.getPostalCode() + " "
+                    + addr.getLocality() + " "
+                    + addr.getThoroughfare() + " "
+                    + addr.getFeatureName();
+        }
+
+        return address;
+
+
+    }
     private void listener() {
 
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
@@ -642,89 +728,6 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         }
     }
 
-    /**
-     * 위치가 변했을 경우 호출된다.
-     */
-    @Override
-    public void onLocationChanged(Location location) {
-        // 위도, 경도
-
-        myPosition_lat = location.getLatitude();
-        myPosition_lng = location.getLongitude();
-
-
-        // String이외의 데이터 형을 String으로 변환하는 메서드
-        // String이외의 데이터 형을 String으로 변화하는 꼼수~!!
-
-        Log.d("MYLOG", "ADDRESS CHECK :" + getAddress(myPosition_lat, myPosition_lng));
-
-        String checkAddress = getAddress(myPosition_lat, myPosition_lng);
-        String[] splitAddress = checkAddress.split(" ", 0);
-        for (int a = 0; a < splitAddress.length; a++) {
-            Log.d("MYLOG", "Address Split :" + splitAddress[a]);
-        }
-
-        MY_POSITION_LAT = location.getLatitude();
-        MY_POSITION_LNG = location.getLongitude();
-
-
-    }
-
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        // TODO Auto-generated method stub
-
-    }
-
-    /**
-     * 위도와 경도 기반으로 주소를 리턴하는 메서드
-     */
-    public String getAddress(double lat, double lng) {
-        String address = null;
-
-        //위치정보를 활용하기 위한 구글 API 객체
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-
-        //주소 목록을 담기 위한 HashMap
-        List<Address> list = null;
-
-        try {
-            list = geocoder.getFromLocation(lat, lng, 1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (list == null) {
-            Log.e("getAddress", "주소 데이터 얻기 실패");
-            return null;
-        }
-
-        if (list.size() > 0) {
-            Address addr = list.get(0);
-            address = addr.getCountryName() + " "
-                    + addr.getPostalCode() + " "
-                    + addr.getLocality() + " "
-                    + addr.getThoroughfare() + " "
-                    + addr.getFeatureName();
-        }
-
-        return address;
-
-
-    }
 
     public String getPath(Uri uri) {
         // uri가 null일경우 null반환

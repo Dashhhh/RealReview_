@@ -19,8 +19,8 @@ public class ShopDetail_Main_Review_LV_ViewHolder {
     TextView reviewImageCount;
     TextView reviewText;
     TextView reviewRegdate;
-    Button reviewUsefulBtn;
-    Button reviewNiceBtn;
-    Button reviewCoolBtn;
+    com.beardedhen.androidbootstrap.BootstrapButton reviewUsefulBtn;
+    com.beardedhen.androidbootstrap.BootstrapButton reviewNiceBtn;
+    com.beardedhen.androidbootstrap.BootstrapButton reviewCoolBtn;
     android.support.v7.widget.AppCompatRatingBar reviewRating;
 }

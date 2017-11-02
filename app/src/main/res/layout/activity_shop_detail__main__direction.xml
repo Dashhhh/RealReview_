@@ -1,8 +1,210 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/directionMap"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.teamnova.ej.realreview.activity.ShopDetail_Main_Direction" />
+    android:orientation="vertical"
+    tools:context="com.teamnova.ej.realreview.activity.ShopDetail_Main_Direction">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:textAlignment="textStart"
+            android:textSize="20sp"
+            app:bootstrapBrand="regular"
+            android:padding="8dp"
+            app:bootstrapText="{md_directions_car} How do get there?"
+            app:materialIcon="md_directions_car" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:bootstrapBrand="info"
+            app:bootstrapText="{md_access_time} 출발시간" />
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:id="@+id/directionDepartureTime"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:bootstrapBrand="regular"
+            app:bootstrapText="123123123123123123"
+            app:fontAwesomeIcon="fa_black_tie" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:bootstrapBrand="info"
+            app:bootstrapText="{fa_hourglass_end} 도착시간"
+            app:fontAwesomeIcon="fa_hourglass_end" />
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:id="@+id/directionArrivalTime"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:bootstrapBrand="regular"
+            app:bootstrapText="123123123123123123"
+            app:fontAwesomeIcon="fa_black_tie" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:bootstrapBrand="info"
+            app:bootstrapText="{fa_times} 소요시간"
+            app:fontAwesomeIcon="fa_times" />
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:id="@+id/directionDuration"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:bootstrapBrand="regular"
+            app:bootstrapText="123123123123123123"
+            app:fontAwesomeIcon="fa_black_tie" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:bootstrapBrand="info"
+            app:bootstrapText="{fa_street_view} 거리"
+            app:fontAwesomeIcon="fa_street_view" />
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:id="@+id/directionDistance"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:bootstrapBrand="regular"
+            app:bootstrapText="123123123123123123"
+            app:fontAwesomeIcon="fa_black_tie" />
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#939292"
+        android:src="@drawable/border_alpha" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+
+        >
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:paddingLeft="70dp"
+            app:bootstrapBrand="info"
+            app:bootstrapText="{fa_map_pin} 출발지"
+            app:fontAwesomeIcon="fa_map_pin" />
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:id="@+id/directionStartAddress"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:bootstrapBrand="regular"
+            app:bootstrapText="123123123123123123"
+            app:fontAwesomeIcon="fa_black_tie" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:paddingLeft="70dp"
+            app:bootstrapBrand="info"
+            app:bootstrapText="{fa_map_signs} 도착지"
+            app:fontAwesomeIcon="fa_map_signs" />
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:id="@+id/directionEndAddress"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:bootstrapBrand="regular"
+            app:bootstrapText="123123123123123123"
+            app:fontAwesomeIcon="fa_black_tie" />
+
+
+    </LinearLayout>
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/directionMap"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="70"
+        tools:context="com.teamnova.ej.realreview.activity.ShopDetail_Main_Direction" />
+
+
+</LinearLayout>
