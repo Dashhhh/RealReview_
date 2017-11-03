@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.pnikosis.materialishprogress.ProgressWheel;
-import com.teamnova.ej.realreview.activity.Main_Test;
 import com.teamnova.ej.realreview.activity.ShopDetail_Tip_Submit;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
@@ -20,6 +19,13 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_FAR_LEFT_LAT;
+import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_FAR_LEFT_LNG;
+import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_NEAR_RIGHT_LAT;
+import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_NEAR_RIGHT_LNG;
+import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_USER_LAT;
+import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_USER_LNG;
 
 /**
  * Created by ej on 2017-10-26.
@@ -57,159 +63,28 @@ public class AsyncTipSubmit extends AsyncTask<Void, Integer, Void> {
          * USER LOCATION, VIEW PORT 내에 들어오는 조건
          */
 
-        if (Main_Test.LOCATION_USER_LAT > Main_Test.LOCATION_NEAR_RIGHT_LAT &&
-                Main_Test.LOCATION_USER_LAT < Main_Test.LOCATION_FAR_LEFT_LAT &&
-                Main_Test.LOCATION_USER_LNG > Main_Test.LOCATION_FAR_LEFT_LNG &&
-                Main_Test.LOCATION_USER_LNG < Main_Test.LOCATION_NEAR_RIGHT_LNG)
+        if (    LOCATION_USER_LAT > LOCATION_NEAR_RIGHT_LAT &&
+                LOCATION_USER_LAT < LOCATION_FAR_LEFT_LAT   &&
+                LOCATION_USER_LNG > LOCATION_FAR_LEFT_LNG    &&
+                LOCATION_USER_LNG < LOCATION_NEAR_RIGHT_LNG  )
+        {
             userLocationCheckResult = "1";    // TRUE
+            Log.d("ASYNC_TIP", "Nearby True" );
+        }
 
-        else userLocationCheckResult = "0";    // FALSE
+        else {
+            userLocationCheckResult = "0";    // FALSE
+            Log.d("ASYNC_TIP", "Nearby False" );
+        }
 
+        Log.d("ASYNC_TIP", "LOCATION_USER_LAT :" + LOCATION_USER_LAT  +">"+  LOCATION_NEAR_RIGHT_LAT );
+        Log.d("ASYNC_TIP", "LOCATION_USER_LAT :" + LOCATION_USER_LAT  +"<"+  LOCATION_FAR_LEFT_LAT   );
+        Log.d("ASYNC_TIP", "LOCATION_USER_LNG :" + LOCATION_USER_LNG  +">"+  LOCATION_FAR_LEFT_LNG    );
+        Log.d("ASYNC_TIP", "LOCATION_USER_LNG :" + LOCATION_USER_LNG  +"<"+  LOCATION_NEAR_RIGHT_LNG  );
         SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
         StringBuilder jsonhtml = new StringBuilder();
         StringBuffer postDataBuilder = new StringBuffer();
         JSONArray jsonArray;
-
-/*
-        try {
-            String lineEnd = "\r\n";
-            String twoHyphens = "--";
-            String boundary = "*****";
-            String delimiter = "--" + boundary + "\r\n";
-
-            URL url = new URL(urlString);
-            Log.d("ASYNC_TIP","urlString :" + urlString);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            int responseCode = conn.getResponseCode();
-            Log.d("ASYNC_TIP","responseCode :" + responseCode);
-
-            conn.setUseCaches(false);
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Connection", "Keep-Alive");
-            conn.setRequestProperty("ENCTYPE", "multipart/form-data");
-            conn.setRequestProperty("Content-Type",
-                    "multipart/form-data;boundary=" + boundary);
-            conn.setConnectTimeout(10000);
-            conn.setReadTimeout(10000);
-
-
-            DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
-
-            postDataBuilder.append("\r\n");
-            postDataBuilder.append(delimiter);
-            postDataBuilder.append(setValue("shopid", ShopDetail_Tip_Submit.TIP_SHOPID));
-            postDataBuilder.append(delimiter);
-            postDataBuilder.append(setValue("userid", ShopDetail_Tip_Submit.TIP_USERID));
-            postDataBuilder.append(delimiter);
-            postDataBuilder.append(setValue("tip", ShopDetail_Tip_Submit.TIP_TEXT));
-            postDataBuilder.append(delimiter);
-            postDataBuilder.append(setValue("nearby", userLocationCheckResult));
-            postDataBuilder.append("\r\n");
-
-            Log.d("ASYNC_TIP","postDataBuilder" + postDataBuilder);
-
-            dos.writeUTF(postDataBuilder.toString());
-
-            *//**
-             * REVIEW ID (SHOP ID)
-             *//*
-            dos.writeShort(0x0d0a);
-            dos.writeBytes(twoHyphens + boundary + lineEnd);
-            dos.writeBytes("Content-Disposition: form-data; name=");
-            dos.writeBytes("shopid");
-            dos.writeBytes("\"");
-            dos.writeShort(0x0d0a);
-            dos.writeShort(0x0d0a);
-            dos.writeBytes(ShopDetail_Tip_Submit.TIP_SHOPID);
-            dos.writeShort(0x0d0a);
-            dos.writeShort(0x0d0a);
-            *//**
-             * REVIEW (REVIEW TEXT)
-             *//*
-            dos.writeBytes(twoHyphens + boundary + lineEnd);
-            dos.writeBytes("Content-Disposition: form-data; name=");
-            dos.writeBytes("userid");
-            dos.writeBytes("\"");
-            dos.writeShort(0x0d0a);
-            dos.writeShort(0x0d0a);
-            dos.writeBytes(ShopDetail_Tip_Submit.TIP_USERID);
-            dos.writeShort(0x0d0a);
-            dos.writeShort(0x0d0a);
-            *//**
-             * REVIEW (USER ID)
-             *//*
-            dos.writeBytes(twoHyphens + boundary + lineEnd);
-            dos.writeBytes("Content-Disposition: form-data; name=");
-            dos.writeBytes("tip");
-            dos.writeBytes("\"");
-            dos.writeShort(0x0d0a);
-            dos.writeShort(0x0d0a);
-            dos.writeBytes(ShopDetail_Tip_Submit.TIP_TEXT);
-            dos.writeShort(0x0d0a);
-            dos.writeShort(0x0d0a);
-            *//**
-             * REVIEW (RATING)
-             *//*
-            dos.writeBytes (twoHyphens + boundary + lineEnd);
-            dos.writeBytes("Content-Disposition: form-data; name=");
-            dos.writeBytes("nearby");
-            dos.writeBytes("\"");
-            dos.writeShort(0x0d0a);
-            dos.writeShort(0x0d0a);
-            dos.writeBytes(userLocationCheckResult);
-            dos.writeShort(0x0d0a);
-            dos.writeShort(0x0d0a);
-
-
-                // write data
-                FileInputStream mFileInputStream = new FileInputStream(imagePath.get(i));
-
-                Log.d("REVIEW_Image", "FOR COUNT :" + i);
-                dos = new DataOutputStream(conn.getOutputStream());
-                File sourceFile = new File(imagePath.get(i));
-                String fileName = new File(imagePath.get(i)).getName();
-                if (!sourceFile.isFile()) {
-                    Log.d("REVIEW_Image", "sourceFile is not exist!!!! :" + imagePath.get(i));
-                }
-                Log.d("REVIEW_Image", "mFileInputStream  is " + mFileInputStream);
-
-                dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file" + i + "\";filename=\""
-                        + fileName + "\"" + lineEnd);
-                dos.writeBytes("Content-Type: application/octet-stream");
-                dos.writeBytes(lineEnd);
-                dos.writeBytes(lineEnd);
-
-                int bytesAvailable = mFileInputStream.available();
-                int maxBufferSize = 8 * 1024 * 1024;
-                int bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                byte[] buffer = new byte[bufferSize];
-                int bytesRead = mFileInputStream.read(buffer, 0, bufferSize);
-
-                Log.d("REVIEW_Image", "image byte is " + bytesRead);
-
-                // read image
-                while (bytesRead > 0) {
-                    dos.write(buffer, 0, bufferSize);
-                    bytesAvailable = mFileInputStream.available();
-                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                    bytesRead = mFileInputStream.read(buffer, 0, bufferSize);
-                }
-                dos.writeBytes(lineEnd);
-                mFileInputStream.close();
-
-
-
-            dos.writeBytes("\r\n--" + boundary + "--\r\n");
-            dos.flush(); // finish upload...
-            dos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        */
 
 
         try {
@@ -233,6 +108,7 @@ public class AsyncTipSubmit extends AsyncTask<Void, Integer, Void> {
             buffer.append("tip").append("=").append(ShopDetail_Tip_Submit.TIP_TEXT).append("&");
             buffer.append("nearby").append("=").append(userLocationCheckResult).append("&");
             buffer.append("nick").append("=").append(ShopDetail_Tip_Submit.TIP_USERNICK);
+            Log.d("ASYNC_TIP", "userLocationCheckResult : "+userLocationCheckResult   );
 
             // 서버로 전송
             OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "UTF-8");
@@ -248,7 +124,7 @@ public class AsyncTipSubmit extends AsyncTask<Void, Integer, Void> {
                 builder.append(str + "\n");
             }
             String result = builder.toString();
-            Log.d("TIP_ASYNC", "전송결과 : " + result);
+            Log.d("ASYNC_TIP", "전송결과 : " + result);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();

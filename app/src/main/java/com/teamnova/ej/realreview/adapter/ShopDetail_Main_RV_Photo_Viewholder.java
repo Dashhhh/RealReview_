@@ -20,6 +20,7 @@ public class ShopDetail_Main_RV_Photo_Viewholder extends RecyclerView.ViewHolder
         recyclerviewCard = itemView.findViewById(R.id.recyclerviewCard);
         recyclerviewRootLayout = itemView.findViewById(R.id.recyclerviewRootLayout);
         iv = itemView.findViewById(R.id.recyclerviewImageInflate);
+
     }
 
 }

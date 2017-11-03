@@ -16,30 +16,30 @@ public class ShopDetail_Main_RV_Tip_Viewholder extends RecyclerView.ViewHolder {
 
     LinearLayout tipRootLinear;
     LinearLayout tipTextLayout, tipProfileLayout;
-    ImageView    tipUserImage;
-    com.beardedhen.androidbootstrap.BootstrapLabel    tipCertify;
-    TextView     tipUserNick;
-    TextView     tipUserFollower;
-    TextView     tipReviewCount;
-    TextView     tipImageCount;
-    TextView     tipText;
-    TextView     tipRegdate;
+    ImageView tipUserImage;
+    com.beardedhen.androidbootstrap.BootstrapLabel tipCertify;
+    TextView tipUserNick;
+    TextView tipUserFollower;
+    TextView tipReviewCount;
+    TextView tipImageCount;
+    TextView tipText;
+    TextView tipRegdate;
 
 
     public ShopDetail_Main_RV_Tip_Viewholder(View itemView) {
         super(itemView);
 
-        tipRootLinear   = itemView.findViewById(R.id.tipRootLinear  );
-        tipTextLayout   = itemView.findViewById(R.id.tipTextLayout  );
-        tipProfileLayout   = itemView.findViewById(R.id.tipProfileLayout  );
-        tipUserImage    = itemView.findViewById(R.id.tipUserImage   );
-        tipUserNick     = itemView.findViewById(R.id.tipUserNick    );
+        tipRootLinear = itemView.findViewById(R.id.tipRootLinear);
+        tipTextLayout = itemView.findViewById(R.id.tipTextLayout);
+        tipProfileLayout = itemView.findViewById(R.id.tipProfileLayout);
+        tipUserImage = itemView.findViewById(R.id.tipUserImage);
+        tipUserNick = itemView.findViewById(R.id.tipUserNick);
         tipUserFollower = itemView.findViewById(R.id.tipUserFollower);
-        tipReviewCount  = itemView.findViewById(R.id.tipReviewCount );
-        tipImageCount   = itemView.findViewById(R.id.tipImageCount  );
-        tipText         = itemView.findViewById(R.id.tipText        );
-        tipRegdate      = itemView.findViewById(R.id.tipRegdate     );
-        tipCertify      = itemView.findViewById(R.id.tipCertify     );
+        tipReviewCount = itemView.findViewById(R.id.tipReviewCount);
+        tipImageCount = itemView.findViewById(R.id.tipImageCount);
+        tipText = itemView.findViewById(R.id.tipText);
+        tipRegdate = itemView.findViewById(R.id.tipRegdate);
+        tipCertify = itemView.findViewById(R.id.tipCertify);
 
     }
 }

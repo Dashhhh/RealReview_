@@ -50,7 +50,9 @@ public class ShopDetail_Main_RV_Tip_Adapter extends RecyclerView.Adapter<ShopDet
         holder.tipUserNick.setText(dataSet.getUserNick());
         Glide.with(mContext).load("http://222.122.203.55/realreview/signup/profiledefault/homeme_default.jpg").into(holder.tipUserImage);
 
+        Log.d("ASYNC_TIP", "dataSet.nearby : "+dataSet.nearby   );
         if(dataSet.nearby.equals("1")){
+            Log.d("ASYNC_TIP", "dataSet.nearby TRUE(1) : "+dataSet.nearby   );
             holder.tipCertify.setVisibility(View.VISIBLE);
 //            holder.tipTextLayout.setBackgroundResource(R.drawable.shape_bg_pink_rounded_rect);
 //            holder.tipProfileLayout.setBackgroundResource(R.drawable.shape_bg_pink_rounded_rect);
@@ -60,6 +62,10 @@ public class ShopDetail_Main_RV_Tip_Adapter extends RecyclerView.Adapter<ShopDet
 //            holder.tipUserFollower.setTextColor(Color.parseColor("#ffffff"));
 //            holder.tipReviewCount.setTextColor(Color.parseColor("#ffffff"));
 //            holder.tipImageCount.setTextColor(Color.parseColor("#ffffff"));
+        } else {
+            Log.d("ASYNC_TIP", "dataSet.nearby FALSE(0) : "+dataSet.nearby   );
+            holder.tipCertify.setVisibility(View.GONE);
+
         }
 
 
