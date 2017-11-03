@@ -39,6 +39,9 @@
                     android:layout_alignParentBottom="true"
 
                     />
+
+
+
             </RelativeLayout>
 
 
@@ -573,7 +576,31 @@
                 android:background="#dddddd"
                 android:src="@drawable/border_alpha" />
 
+
             <LinearLayout
+                android:id="@+id/shopDetailQuestionAllRoot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:id="@+id/shopDetailQuestionAllBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    app:bootstrapText="{fa-search-plus} 모든 질문보기"
+                    app:bootstrapBrand="info"
+                    app:bootstrapSize="lg"
+                    app:buttonMode="regular"
+                    app:roundedCorners="true"
+                    app:showOutline="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/shopDetailQuestionRoot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#ffffff"

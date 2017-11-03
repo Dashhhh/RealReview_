@@ -22,26 +22,10 @@
             android:textIsSelectable="false"
             android:textStyle="normal"
             android:hint="이 상점에 대해 알고 싶은 것이 무엇인가요?"
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:gravity="top"
             android:padding="10dp"
             android:textColor="#000000"
-            />
-        <Button
-            android:layout_weight="4"
-            android:id="@+id/tipCamera"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@drawable/border_alpha"
-            android:drawableStart="@drawable/t_detail_camera"
-            android:drawableEnd="@drawable/t_right"
-            android:padding="20dp"
-
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:text="사진 첨부하기"
-            android:textAlignment="center"
-
             />
         <Button
             android:layout_weight="4"

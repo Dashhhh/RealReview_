@@ -103,8 +103,7 @@
         <activity android:name=".activity.ShopAdd2" />
         <activity android:name=".activity.ShopAdd3" />
         <activity android:name=".activity.ShopAdd4" />
-        <activity android:name=".activity.ShopDetail_Main"
-            >
+        <activity android:name=".activity.ShopDetail_Main">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -114,8 +113,6 @@
             </intent-filter>
         </activity>
         <activity android:name="com.tangxiaolv.telegramgallery.GalleryActivity" />
-
-
         <activity android:name=".activity.ShopDetail_Review_Viewing" />
         <activity android:name=".activity.ShopDetail_Review_Submit" />
         <activity android:name=".activity.ShopDetail_Question_Viewing" />
@@ -139,7 +136,8 @@
         <activity android:name=".activity.ShopDetail_Tip_Submit" />
         <activity
             android:name=".activity.ShopDetail_Main_Direction"
-            android:label="@string/title_activity_shop_detail__main__direction"></activity>
+            android:label="@string/title_activity_shop_detail__main__direction" />
+        <activity android:name=".activity.ShopDetail_Question_All"></activity>
     </application>
 
 </manifest>

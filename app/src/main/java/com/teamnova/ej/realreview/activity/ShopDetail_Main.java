@@ -1,6 +1,5 @@
 package com.teamnova.ej.realreview.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -31,7 +30,6 @@ import android.widget.Toast;
 
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
-import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,7 +40,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.tangxiaolv.telegramgallery.GalleryActivity;
 import com.tangxiaolv.telegramgallery.GalleryConfig;
-import com.teamnova.ej.realreview.Asynctask.AsyncReviewSubmit;
 import com.teamnova.ej.realreview.Asynctask.AsyncShopDetailImageURLRequest;
 import com.teamnova.ej.realreview.Asynctask.AsyncShopPhotoSubmit;
 import com.teamnova.ej.realreview.Asynctask.AsyncTipRequest;
@@ -77,7 +74,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     android.support.v7.widget.AppCompatRatingBar shopDetailTitleRating, shopDetailRatingReview, shopDetailRatingReview2;
     android.support.v7.widget.RecyclerView shopDetailRVTitleTag, shopDetailRVImage, shopDetailTipRV;
     Button shopDetailTopAddPhoto, shopDetailCheckin, shopDetailBookmark, mapAddress, shopDetailCallBtn, shopDetailDirection, shopDetailMenu, shopDetailWebsiteBtn, shopDetailMessageBtn;
-    LinearLayout shopDetailProfile, shopDetailProfile2, shopDetailProfile3, shopDetailTipProfile;
+    LinearLayout shopDetailProfile, shopDetailProfile2, shopDetailProfile3, shopDetailTipProfile, shopDetailQuestionRoot, shopDetailQuestionAllRoot;
     SupportMapFragment mapFragmentDetail;
     android.support.v7.widget.AppCompatEditText shopDetailQuestion, shopDetailReview, shopDetailTip;
     ListView shopDetailLVReview;
@@ -122,6 +119,9 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     private ArrayList<ShopDetail_Main_RV_Tip_Set> tipList = new ArrayList<>();
     private ArrayList<Uri> topPhotoUriList;
     private int reqCode = 1;
+    com.beardedhen.androidbootstrap.BootstrapButton shopDetailQuestionAllBtn;
+    public static String TITLE;
+    public static String SHOP_ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +133,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         init();
         listener();
         checkShopData();
+
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapFragmentDetail);
@@ -176,8 +177,16 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailTipProfile = (LinearLayout) findViewById(R.id.shopDetailTipProfile);
         shopDetailTipRV = (RecyclerView) findViewById(R.id.shopDetailTipRV);
         shopDetailIndicator = findViewById(R.id.shopDetailIndicator);
+        shopDetailQuestionRoot = findViewById(R.id.shopDetailQuestionRoot);
 
+        /**
+         * Question & Answer Layout GONE !!
+         * If you want this Contents Visibility, set The 'Question & Answer'
+         */
+        shopDetailQuestionRoot.setVisibility(View.GONE);
 
+        shopDetailQuestionAllRoot = findViewById(R.id.shopDetailQuestionAllRoot);
+        shopDetailQuestionAllBtn = findViewById(R.id.shopDetailQuestionAllBtn);
     }
 
     @Override
@@ -581,6 +590,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         defaultCall = pref.getSharedData("CALL" + tagCheck);
         defaultWeb = pref.getSharedData("WEB" + tagCheck);
 
+        TITLE = defaultTitle;
+        SHOP_ID = defaultShopID;
         title = defaultTitle;
         mapAddress.setText(defaultAddress);
 
@@ -607,8 +618,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private void listener() {
+
 
         shopDetailViewPager.setOnClickListener(this);
         shopDetailTitle.setOnClickListener(this);
@@ -617,6 +628,43 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailTimeClose.setOnClickListener(this);
         shopDetailQuestion_Question.setOnClickListener(this);
         shopDetailQuestion_Answer.setOnClickListener(this);
+        shopDetailQuestion.setOnTouchListener(new View.OnTouchListener() {
+
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+
+                switch (motionEvent.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN : {
+
+                        if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+
+                        } else {
+                            break;
+                        }
+
+                    }
+                    case MotionEvent.ACTION_UP: {
+
+                        SharedPreferenceUtil pref = new SharedPreferenceUtil(ShopDetail_Main.this);
+                        Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Question_Submit.class);
+                        intent.putExtra("reviewTitle", title);
+                        intent.putExtra("reviewShopId", defaultShopID);
+                        intent.putExtra("reviewUserId", pref.getSharedData("isLogged_id"));
+                        intent.putExtra("reviewUserNick", pref.getSharedData("isLogged_nick"));
+                        startActivity(intent);
+                        break;
+                    }
+
+                }
+
+                return false;
+            }
+        });
+
+
         /*  Title Rating Bar -> Only used for Display
         shopDetailTitleRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -682,6 +730,17 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
 
                     case MotionEvent.ACTION_DOWN: {
+
+                        if (event.getAction() == MotionEvent.ACTION_UP){
+
+                        } else {
+                            break;
+                        }
+
+                        break;
+                    }
+
+                    case MotionEvent.ACTION_UP: {
                         SharedPreferenceUtil pref = new SharedPreferenceUtil(ShopDetail_Main.this);
                         Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Review_Submit.class);
                         intent.putExtra("reviewTitle", title);
@@ -709,6 +768,17 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN: {
+
+                        if (event.getAction() == MotionEvent.ACTION_UP){
+
+                        } else {
+                            break;
+                        }
+
+
+                    }
+
+                    case MotionEvent.ACTION_UP: {
                         SharedPreferenceUtil pref = new SharedPreferenceUtil(ShopDetail_Main.this);
                         Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Tip_Submit.class);
                         intent.putExtra("reviewTitle", title);
@@ -717,8 +787,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                         intent.putExtra("reviewUserNick", pref.getSharedData("isLogged_nick"));
                         startActivity(intent);
                         break;
-
                     }
+
 
                 }
 
@@ -726,6 +796,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             }
         });
 
+
+        shopDetailQuestionAllBtn.setOnClickListener(this);
     }
 
 
@@ -873,11 +945,14 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
                 break;
             }
-            case R.id.shopDetailQuestion: {
 
-                break;
+            case R.id.shopDetailQuestionAllBtn: {
+
+                Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Question_All.class);
+                intent.putExtra("SHOPID",defaultShopID);
+                startActivity(intent);
+
             }
-
 
         }
 

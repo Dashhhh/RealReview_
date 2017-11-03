@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.teamnova.ej.realreview.activity.ShopDetail_Question_All">
+
+    <android.support.v7.widget.RecyclerView
+    android:id="@+id/questionAllRV"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/questionAllNoQuestionRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="bottom"
+            android:textSize="100sp"
+            android:textAlignment="center"
+            app:bootstrapBrand="warning"
+            app:bootstrapText="{fa_exclamation_circle}"
+            app:fontAwesomeIcon="fa_exclamation_circle"
+            app:typicon="ty_anchor"
+            />
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="bottom"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            app:bootstrapBrand="warning"
+            app:bootstrapText="현재 질문이 없습니다.\n질문을 한번 남겨 보시겠나요?"
+            app:fontAwesomeIcon="fa_exclamation_circle"
+            app:typicon="ty_anchor"
+            />
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/questionAllNoQuestionButton"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            app:bootstrapBrand="primary"
+            app:bootstrapSize="lg"
+            app:bootstrapText="{fa-sign-out}    글 쓰러 가기"
+            app:buttonMode="regular"
+            app:roundedCorners="true"
+            app:showOutline="false" />
+    </LinearLayout>
+
+</LinearLayout>
