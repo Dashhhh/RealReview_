@@ -5,8 +5,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
 
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -19,10 +17,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
-import com.orhanobut.dialogplus.OnItemClickListener;
-import com.pnikosis.materialishprogress.ProgressWheel;
 import com.teamnova.ej.realreview.Asynctask.AsyncDirectionRequest;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.util.Dialog_Default;
@@ -299,7 +293,10 @@ public class ShopDetail_Main_Direction extends FragmentActivity implements OnMap
         for (; latLngBounds == null; ) {
         }
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 0));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 80));
+//        mMap.moveCamera(CameraUpdateFactory.zoomOut());
+//        mMap.setLatLngBoundsForCameraTarget(latLngBounds);
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngBounds.getCenter(), 11));
 
 
         List<LatLng> poly = PolyUtil.decode(polyline2);
