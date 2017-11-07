@@ -896,6 +896,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
             case R.id.mapAddress: {
 
+                Intent intent = new Intent (ShopDetail_Main.this, ShopDetail_Overview_Map.class);
+                startActivity(intent);
                 break;
             }
 
