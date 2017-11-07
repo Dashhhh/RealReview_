@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -13,6 +16,7 @@ import com.teamnova.ej.realreview.Asynctask.AsyncQuestionRequest;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_QuestionAll_Adapter;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_QuestionAll_Set;
+import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_QuestionAll_Viewholder;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
 import org.json.JSONArray;
@@ -28,12 +32,14 @@ public class ShopDetail_Question_All extends AppCompatActivity {
     android.support.v7.widget.RecyclerView questionAllRV;
     ArrayList<ShopDetail_Main_RV_QuestionAll_Set> data = new ArrayList<>();
     LinearLayout questionAllNoQuestionRoot;
-    com.beardedhen.androidbootstrap.BootstrapButton questionAllNoQuestionButton;
+    com.beardedhen.androidbootstrap.BootstrapButton questionAllNoQuestionButton, questionAllAnswer, questionAllStar;
 
     String questionRequestURL = "http://222.122.203.55/realreview/question/questionRequestAll.php";
     private JSONObject jsonObject;
     private String shopId;
     private JSONArray a0;
+    private ClickListener clickListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +47,7 @@ public class ShopDetail_Question_All extends AppCompatActivity {
         TypefaceProvider.registerDefaultIconSets();
         setContentView(R.layout.activity_shop_detail__question__all);
 
-
-        Bundle bundle = getIntent().getExtras();
-        shopId = bundle.getString("SHOPID");
+        shopId = ShopDetail_Main.SHOP_ID;
         init();
         listener();
         initializingData();
@@ -131,7 +135,6 @@ public class ShopDetail_Question_All extends AppCompatActivity {
             Log.d("QUESTION_ASYNC", "a1 " + a1);
 
 
-
         } catch (JSONException e) {
             Log.d("QUESTION_ASYNC", "ENTER CATCH ");
             e.printStackTrace();
@@ -139,10 +142,60 @@ public class ShopDetail_Question_All extends AppCompatActivity {
         }
         Log.d("QUESTION_ASYNC", "a0.length() " + a0.length());
 
-        if(a0.length() ==1) {
+        if (a0.length() == 1) {
             questionAllRV.setVisibility(View.GONE);
             questionAllNoQuestionRoot.setVisibility(View.VISIBLE);
         }
 
+        final GestureDetector gestureDetector = new GestureDetector(ShopDetail_Question_All.this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                /*
+                   버튼 눌렀다가 떼었을때만 TRUE
+                 */
+                return true;
+            }
+        });
+
+        questionAllRV.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                View v = rv.findChildViewUnder(e.getX(), e.getY());
+
+                if (v != null && gestureDetector.onTouchEvent(e)) {
+
+                    Log.d("addOnItemTouchListener", "rv.getChildAdapterPosition(v) :" + rv.getChildAdapterPosition(v));
+                    Log.d("addOnItemTouchListener", "rv.getChildItemId(v) :" + rv.getChildItemId(v));
+                    Log.d("addOnItemTouchListener", "rv.getChildViewHolder(v) :" + rv.getChildViewHolder(v));
+                    Log.d("addOnItemTouchListener", "rv.getChildLayoutPosition(v) :" + rv.getChildLayoutPosition(v));
+
+                    String aa = String.valueOf(rv.getChildViewHolder(v));
+                    Log.d("addOnItemTouchListener", "aa :" + aa);
+
+                }
+
+                switch (v.getId()) {
+
+                }
+
+
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+                Log.d("addOnItemTouchListener", "onTouchEvent");
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+                Log.d("addOnItemTouchListener", "onRequestDisallowInterceptTouchEvent");
+
+            }
+        });
+
     }
+
 }
+

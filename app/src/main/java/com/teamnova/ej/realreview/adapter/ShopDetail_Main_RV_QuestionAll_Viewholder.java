@@ -1,11 +1,14 @@
 package com.teamnova.ej.realreview.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.teamnova.ej.realreview.R;
 
 /**
@@ -24,10 +27,11 @@ public class ShopDetail_Main_RV_QuestionAll_Viewholder extends RecyclerView.View
     TextView questionAllImageCount;
     TextView questionAllText;
     TextView questionAllRegdate;
-
+    com.beardedhen.androidbootstrap.BootstrapButton questionAllStar, questionAllAnswer;
 
     public ShopDetail_Main_RV_QuestionAll_Viewholder(View itemView) {
         super(itemView);
+        TypefaceProvider.registerDefaultIconSets();
 
         questionAllRootLinear = itemView.findViewById(R.id.questionAllRootLinear);
         questionAllTextLayout = itemView.findViewById(R.id.questionAllTextLayout);
@@ -39,7 +43,32 @@ public class ShopDetail_Main_RV_QuestionAll_Viewholder extends RecyclerView.View
         questionAllImageCount = itemView.findViewById(R.id.questionAllImageCount);
         questionAllText = itemView.findViewById(R.id.questionAllText);
         questionAllRegdate = itemView.findViewById(R.id.questionAllRegdate);
+        questionAllStar = itemView.findViewById(R.id.questionAllStar);
+
+
+
+/*
+
+        questionAllStar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("RecyclerTestClick","Enter Click Listener");
+
+            }
+        });
+
+
+        questionAllAnswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("RecyclerTestClick","Enter Click Listener");
+            }
+        });
+*/
 
     }
+
+
+
 
 }

@@ -487,7 +487,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             }
 
 
-
         }
 
         tipList.clear();
@@ -637,9 +636,9 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
                 switch (motionEvent.getAction()) {
 
-                    case MotionEvent.ACTION_DOWN : {
+                    case MotionEvent.ACTION_DOWN: {
 
-                        if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                        if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
 
                         } else {
                             break;
@@ -731,7 +730,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
                     case MotionEvent.ACTION_DOWN: {
 
-                        if (event.getAction() == MotionEvent.ACTION_UP){
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
 
                         } else {
                             break;
@@ -769,7 +768,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
                     case MotionEvent.ACTION_DOWN: {
 
-                        if (event.getAction() == MotionEvent.ACTION_UP){
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
 
                         } else {
                             break;
@@ -880,7 +879,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 GalleryActivity.openActivity(ShopDetail_Main.this, reqCode, config);
 
 
-
                 break;
             }
 
@@ -896,7 +894,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
             case R.id.mapAddress: {
 
-                Intent intent = new Intent (ShopDetail_Main.this, ShopDetail_Overview_Map.class);
+                Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Overview_Map.class);
                 startActivity(intent);
                 break;
             }
@@ -930,9 +928,9 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             }
             case R.id.shopDetailMessageBtn: {
 
-//                sendSMS(defaultCall, "Shop Name"+defaultTitle+"Nickname :"+defaultShopID+"\n문의내용 : ");
+//                sendSMS(defaultCall, "ShopDetail_Question_Answer_Submit Name"+defaultTitle+"Nickname :"+defaultShopID+"\n문의내용 : ");
                 Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-                String smsBody = "Shop Name :" + defaultTitle + "\nNickname :" + defaulUserId + "\n문의내용 : ";
+                String smsBody = "ShopDetail_Question_Answer_Submit Name :" + defaultTitle + "\nNickname :" + defaulUserId + "\n문의내용 : ";
                 sendIntent.putExtra("sms_body", smsBody); // 보낼 문자
                 sendIntent.putExtra("address", defaultCall); // 받는사람 번호
                 sendIntent.setType("vnd.android-dir/mms-sms");
@@ -951,7 +949,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             case R.id.shopDetailQuestionAllBtn: {
 
                 Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Question_All.class);
-                intent.putExtra("SHOPID",defaultShopID);
+                intent.putExtra("SHOPID", defaultShopID);
                 startActivity(intent);
 
             }
@@ -1064,62 +1062,75 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //list of photos of selece
-        List<String> photos = (List<String>) data.getSerializableExtra(GalleryActivity.PHOTOS);
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        } else {
+            Log.d("imagePickCheck", "requestCode :" + requestCode);
+            Log.d("imagePickCheck", "resultCode :" + resultCode);
+            Log.d("imagePickCheck", "getBytes :" + GalleryActivity.PHOTOS.getBytes());
+            List<String> photos = (List<String>) data.getSerializableExtra(GalleryActivity.PHOTOS);
 
-        for(int i=0;i<photos.size();i++)
-            Log.d("imagePickCheck","List URI :"+photos+i);
 
-        //list of videos of seleced
-        List<String> vides = (List<String>) data.getSerializableExtra(GalleryActivity.VIDEO);
-        SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
-        for (int i=0;i<photos.size();i++){
-            Log.d("imagePickCheck", "for - count :"+i);
-            String a = photos.get(i);
+            for (int i = 0; i < photos.size(); i++)
+                Log.d("imagePickCheck", "List URI :" + photos + i);
+
+            //list of videos of seleced
+            List<String> vides = (List<String>) data.getSerializableExtra(GalleryActivity.VIDEO);
+            SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
+            for (int i = 0; i < photos.size(); i++) {
+                Log.d("imagePickCheck", "for - count :" + i);
+                String a = photos.get(i);
 //                imagePath.add(0, a);
-            if (i == 0) {
-                Log.d("imagePickCheck", "Case-1 :" + a);
-                pref.setSharedData("ShopPhoto_Image_0",a);
-            } else if (i == 1) {
-
-                Log.d("imagePickCheck", "Case-2 :" + a);
-                pref.setSharedData("ShopPhoto_Image_1",a);
-            } else if (i == 2) {
-                Log.d("imagePickCheck", "Case-3 :" + a);
-                pref.setSharedData("ShopPhoto_Image_2",a);
-            } else if (i == 3) {
-                Log.d("imagePickCheck", "Case-4 :" + a);
-                pref.setSharedData("ShopPhoto_Image_3",a);
-            } else if (i == 4) {
-                Log.d("imagePickCheck", "Case-5 :" + a);
-                pref.setSharedData("ShopPhoto_Image_4",a);
+                if (i == 0) {
+                    Log.d("imagePickCheck", "Case-1 :" + a);
+                    pref.setSharedData("ShopPhoto_Image_1", a);
+                }
+                if (i == 1) {
+                    Log.d("imagePickCheck", "Case-2 :" + a);
+                    pref.setSharedData("ShopPhoto_Image_2", a);
+                }
+                if (i == 2) {
+                    Log.d("imagePickCheck", "Case-3 :" + a);
+                    pref.setSharedData("ShopPhoto_Image_3", a);
+                }
+                if (i == 3) {
+                    Log.d("imagePickCheck", "Case-4 :" + a);
+                    pref.setSharedData("ShopPhoto_Image_4", a);
+                }
+                if (i == 4) {
+                    Log.d("imagePickCheck", "Case-5 :" + a);
+                    pref.setSharedData("ShopPhoto_Image_5", a);
+                }
             }
+
+            String tag = pref.getSharedData("TAG");
+            String iShopId = pref.getSharedData("ID" + tag);
+
+
+            String iUserId = pref.getSharedData("isLogged_id");
+            pref.setSharedData("HTTP_REVIEW_ID", iShopId);
+            pref.setSharedData("HTTP_REVIEW_USER", iUserId);
+            Log.d("imagePickCheck", "tag :" + tag);
+            Log.d("imagePickCheck", "shopID :" + iShopId);
+            Log.d("imagePickCheck", "userId :" + iUserId);
+
+
+            ProgressWheel progressDialog = new ProgressWheel(this);
+            Void conn;
+            try {
+                conn = new AsyncShopPhotoSubmit(progressDialog, this).execute().get(10000, TimeUnit.MILLISECONDS);
+                Log.d("imagePickCheck", "MAIN THREAD conn Check :" + conn);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (TimeoutException e) {
+                e.printStackTrace();
+            }
+
         }
 
-        String tag = pref.getSharedData("TAG");
-        String iShopId = pref.getSharedData("ID" + tag);
-
-
-        String iUserId = pref.getSharedData("isLogged_id");
-        pref.setSharedData("HTTP_REVIEW_ID",iShopId);
-        pref.setSharedData("HTTP_REVIEW_USER",iUserId);
-        Log.d("imagePickCheck","tag :"+tag);
-        Log.d("imagePickCheck","shopID :"+iShopId);
-        Log.d("imagePickCheck","userId :" + iUserId);
-
-
-
-        ProgressWheel progressDialog = new ProgressWheel(this);
-        Void conn;
-        try {
-            conn = new AsyncShopPhotoSubmit(progressDialog, this).execute().get(10000,TimeUnit.MILLISECONDS);
-            Log.d("imagePickCheck","MAIN THREAD conn Check :"+conn);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
-            e.printStackTrace();
-        }
 
     }
 }

@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.pnikosis.materialishprogress.ProgressWheel;
+import com.teamnova.ej.realreview.activity.ShopDetail_Main;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
 import org.json.JSONException;
@@ -83,7 +84,7 @@ public class AsyncQuestionRequest extends AsyncTask<Void, Integer, JSONObject> {
             SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
             // 전송값 설정
             StringBuffer buffer = new StringBuffer();
-            buffer.append("shop_id").append("=").append(QUESTION_SHOPID);
+            buffer.append("shop_id").append("=").append(ShopDetail_Main.SHOP_ID);
 
             // 서버로 전송
             OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "UTF-8");
