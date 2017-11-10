@@ -6,9 +6,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.pnikosis.materialishprogress.ProgressWheel;
-import com.teamnova.ej.realreview.activity.ShopDetail_Main;
-import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,29 +20,29 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static com.teamnova.ej.realreview.activity.ShopDetail_Question_Submit.QUESTION_SHOPID;
-
 /**
- * Created by ej on 2017-10-26.
+ * Created by ej on 2017-11-04.
  */
 
-public class AsyncQuestionRequest extends AsyncTask<Void, Integer, JSONObject> {
+public class AsyncSeeAllAnswerRequest extends AsyncTask<Void, Integer, JSONObject> {
 
-
-    public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
-    private String urlString;
-    private String params = "";
     private ProgressWheel dialog;
+    private String params = "";
     String TestVAR;
     private Context mContext;
-    private String shopId;
+    private String iShopID, iIdx, iNick;
+    private String userLocationCheckResult;
+    String parseUrlParameter = "http://222.122.203.55/realreview/answer/seeAllAnswer.php?";
+    private JSONObject jsonObject;
 
-    public AsyncQuestionRequest(String urlString, String shopId, Context mContext) {
-        this.urlString = urlString;
+
+    public AsyncSeeAllAnswerRequest(String iShopID, String iIdx, String iNick, Context mContext) {
+        this.iShopID = iShopID;
+        this.iIdx = iIdx;
+        this.iNick = iNick;
         this.mContext = mContext;
-        this.shopId = shopId;
         dialog = new ProgressWheel(mContext);
-
+        
     }
 
     @Override
@@ -51,26 +50,24 @@ public class AsyncQuestionRequest extends AsyncTask<Void, Integer, JSONObject> {
 
         dialog.setInstantProgress(0.64f);
         dialog.setBarColor(Color.BLUE);
-        dialog.spin();
     }
 
     @Override
     protected JSONObject doInBackground(Void... params) {
         // TODO Auto-generated method stub
-        JSONObject jsonObject = new JSONObject();
-        String result = "";
 
-        /**
-         * CONDITION - below if
-         * USER LOCATION, VIEW PORT 내에 들어오는 조건
-         */
+        StringBuilder jsonhtml = new StringBuilder();
+        StringBuffer postDataBuilder = new StringBuffer();
+        JSONArray jsonArray;
+
+
         try {
             // URL설정, 접속
-
-
-            URL url = new URL(urlString);
+            String parameterCheck = "shopid=" + iShopID + "&" + "idx=" + iIdx + "&" + "nick=" + iNick;
+            URL url = new URL(parseUrlParameter);
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
-            Log.d("QUESTION_REQUEST_ASYNC", "URL : " + url);
+            Log.d("AsyncAnswerSubmit", "parseUrlParameter : " + parameterCheck);
+            Log.d("AsyncAnswerSubmit", "url : " + url);
 
             // 전송모드 설정(일반적인 POST방식)
             http.setDefaultUseCaches(false);
@@ -81,18 +78,18 @@ public class AsyncQuestionRequest extends AsyncTask<Void, Integer, JSONObject> {
             // content-type 설정
             http.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
 
-            SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
             // 전송값 설정
             StringBuffer buffer = new StringBuffer();
-            buffer.append("id_user").append("=").append(pref.getSharedData("isLogged_id")).append("&");
-            buffer.append("shop_id").append("=").append(ShopDetail_Main.SHOP_ID);
+            buffer.append("shopid").append("=").append(iShopID).append("&");
+            buffer.append("nick").append("=").append(iNick).append("&");
+            buffer.append("question_idx").append("=").append(iIdx);
 
             // 서버로 전송
             OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "UTF-8");
             PrintWriter writer = new PrintWriter(outStream);
             writer.write(buffer.toString());
             writer.flush();
-
+            
             // 전송 결과값 받기
             InputStreamReader inputStream = new InputStreamReader(http.getInputStream(), "UTF-8");
             BufferedReader bufferReader = new BufferedReader(inputStream);
@@ -101,12 +98,11 @@ public class AsyncQuestionRequest extends AsyncTask<Void, Integer, JSONObject> {
             while ((str = bufferReader.readLine()) != null) {
                 builder.append(str + "\n");
             }
-            result = builder.toString();
-            Log.d("QUESTION_REQUEST_ASYNC", "전송결과 : " + result);
-            Log.d("QUESTION_REQUEST_ASYNC", "http.getResponseCode() : " + http.getResponseCode());
-            Log.d("QUESTION_REQUEST_ASYNC", "http.getResponseMessage() : " + http.getResponseMessage());
-
+            String result = builder.toString();
+            Log.d("AsyncAnswerSubmit", "전송결과 : " + result);
             jsonObject = new JSONObject(result);
+
+            http.disconnect();
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -115,14 +111,13 @@ public class AsyncQuestionRequest extends AsyncTask<Void, Integer, JSONObject> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
         return jsonObject;
 
     }
 
     @Override
     protected void onPostExecute(JSONObject result) {
+
 
     }
 
@@ -149,5 +144,4 @@ public class AsyncQuestionRequest extends AsyncTask<Void, Integer, JSONObject> {
         return "Content-Disposition: form-data; name=\"" + key
                 + "\";filename=\"" + fileName + "\"\r\n";
     }
-
 }

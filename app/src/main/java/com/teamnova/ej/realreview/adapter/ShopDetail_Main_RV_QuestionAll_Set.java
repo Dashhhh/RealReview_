@@ -14,12 +14,16 @@ public class ShopDetail_Main_RV_QuestionAll_Set {
     String reviewText;
     String regdate;
     String userNick;
-
+    String idx;
+    String answerCount;
+    String metooCount;
+    boolean curious;
+    String imagepath;
 
     public ShopDetail_Main_RV_QuestionAll_Set() {
     }
 
-    public ShopDetail_Main_RV_QuestionAll_Set(String titleImage, String followerCnt, String reviewCnt, String imageCnt, String reviewText, String regdate, String userNick) {
+    public ShopDetail_Main_RV_QuestionAll_Set(String titleImage, String followerCnt, String reviewCnt, String imageCnt, String reviewText, String regdate, String userNick, String idx, String answerCount, String metooCount, boolean curious, String imagepath) {
         this.titleImage = titleImage;
         this.followerCnt = followerCnt;
         this.reviewCnt = reviewCnt;
@@ -27,6 +31,11 @@ public class ShopDetail_Main_RV_QuestionAll_Set {
         this.reviewText = reviewText;
         this.regdate = regdate;
         this.userNick = userNick;
+        this.idx = idx;
+        this.answerCount = answerCount;
+        this.metooCount = metooCount;
+        this.curious = curious;
+        this.imagepath = imagepath;
     }
 
     public String getTitleImage() {
@@ -85,5 +94,43 @@ public class ShopDetail_Main_RV_QuestionAll_Set {
         this.userNick = userNick;
     }
 
+    public String getIdx() {
+        return idx;
+    }
 
+    public void setIdx(String idx) {
+        this.idx = idx;
+    }
+
+    public String getAnswerCount() {
+        return answerCount;
+    }
+
+    public void setAnswerCount(String answerCount) {
+        this.answerCount = answerCount;
+    }
+
+    public String getMetooCount() {
+        return metooCount;
+    }
+
+    public void setMetooCount(String metooCount) {
+        this.metooCount = metooCount;
+    }
+
+    public boolean isCurious() {
+        return curious;
+    }
+
+    public void setCurious(boolean curious) {
+        this.curious = curious;
+    }
+
+    public String getImagepath() {
+        return imagepath;
+    }
+
+    public void setImagepath(String imagepath) {
+        this.imagepath = imagepath;
+    }
 }

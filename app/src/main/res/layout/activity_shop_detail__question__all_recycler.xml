@@ -21,11 +21,16 @@
         android:padding="10dp"
         android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
         >
+
+
         <LinearLayout
             android:id="@+id/questionAllProfileLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingBottom="5dp"
             android:layout_marginRight="5dp"
             android:orientation="horizontal">
 
@@ -33,54 +38,51 @@
                 android:id="@+id/questionAllUserImage"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_margin="5dp" />
+                android:layout_gravity="center"
+                android:scaleType="fitXY"
+                android:layout_marginEnd="9dp"
+                />
+
+
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
+                    >
                     <TextView
                         android:id="@+id/questionAllUserNick"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="10dp"
-                        android:layout_weight="2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="left"
                         android:text="123"
                         android:textColor="#000000"
                         android:textSize="14sp"
                         android:textStyle="bold" />
-
-
-                    <TextView
-                        android:id="@+id/questionAllRegdate"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="1"
-                        android:gravity="end"
-                        android:text="123"
-                        android:textSize="10sp" />
-
-
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="6dp"
-                        android:src="@drawable/ic_group_black_24dp" />
+                    <com.beardedhen.androidbootstrap.AwesomeTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:bootstrapBrand="primary"
+                        app:fontAwesomeIcon="fa_android"
+                        app:typicon="ty_anchor"
+                        app:bootstrapText="{fa-users} "
+                        />
 
                     <TextView
                         android:id="@+id/questionAllUserFollower"
@@ -88,32 +90,42 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginEnd="5dp"
+                        android:layout_marginStart="5dp"
                         android:text="0" />
 
 
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="6dp"
-                        android:background="@drawable/ic_chat_black_24dp" />
+
+                    <com.beardedhen.androidbootstrap.AwesomeTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:bootstrapBrand="primary"
+                        app:fontAwesomeIcon="fa_android"
+                        app:typicon="ty_anchor"
+                        app:bootstrapText="{fa-commenting} "
+                        />
+
+
 
                     <TextView
                         android:id="@+id/questionAllReviewCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginStart="5dp"
                         android:layout_marginEnd="5dp"
                         android:text="0"
 
                         />
 
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="6dp"
-                        android:src="@drawable/ic_camera_alt_black_24dp" />
+                    <com.beardedhen.androidbootstrap.AwesomeTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:bootstrapBrand="primary"
+                        app:fontAwesomeIcon="fa_android"
+                        app:typicon="ty_anchor"
+                        app:bootstrapText="{fa-camera-retro} "
+                        />
+
 
                     <TextView
                         android:id="@+id/questionAllImageCount"
@@ -121,25 +133,152 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginEnd="5dp"
+                        android:layout_marginStart="5dp"
                         android:text="0"
 
                         />
-                    <!--<ImageView-->
-                    <!--android:id="@+id/questionAllCertify"-->
-                    <!--android:layout_width="15dp"-->
-                    <!--android:layout_height="15dp"-->
-                    <!--android:layout_margin="6dp"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:src="@drawable/ic_stars_black_24dp"-->
-                    <!--android:visibility="gone"/>-->
-
 
                 </LinearLayout>
 
 
             </LinearLayout>
 
+
+            <TextView
+                android:id="@+id/questionAllRegdate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:layout_gravity="center_vertical"
+                android:text="123123123123123123"
+                android:textSize="10sp" />
+
+
+
         </LinearLayout>
+
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/questionAllProfileLayout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/questionAllUserImage"-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_margin="5dp" />-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:orientation="vertical">-->
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal">-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/questionAllUserNick"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_margin="10dp"-->
+                        <!--android:layout_weight="3"-->
+                        <!--android:text="123"-->
+                        <!--android:textColor="#000000"-->
+                        <!--android:textSize="14sp"-->
+                        <!--android:textStyle="bold" />-->
+
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/questionAllRegdate"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_margin="10dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:gravity="end"-->
+                        <!--android:text="123"-->
+                        <!--android:textSize="10sp" />-->
+
+
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent">-->
+
+                    <!--<ImageView-->
+                        <!--android:layout_width="15dp"-->
+                        <!--android:layout_height="15dp"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_margin="6dp"-->
+                        <!--android:src="@drawable/ic_group_black_24dp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/questionAllUserFollower"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_marginEnd="5dp"-->
+                        <!--android:text="0" />-->
+
+
+                    <!--<ImageView-->
+                        <!--android:layout_width="15dp"-->
+                        <!--android:layout_height="15dp"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_margin="6dp"-->
+                        <!--android:background="@drawable/ic_chat_black_24dp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/questionAllReviewCount"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_marginEnd="5dp"-->
+                        <!--android:text="0"-->
+
+                        <!--/>-->
+
+                    <!--<ImageView-->
+                        <!--android:layout_width="11dp"-->
+                        <!--android:layout_height="15dp"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_margin="6dp"-->
+                        <!--android:src="@drawable/ic_camera_alt_black_24dp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/questionAllImageCount"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_marginEnd="5dp"-->
+                        <!--android:text="0"-->
+
+                        <!--/>-->
+                    <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:id="@+id/questionAllCertify"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_width="15dp"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_height="15dp"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_margin="6dp"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_gravity="center"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:src="@drawable/ic_stars_black_24dp"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:visibility="gone"/>&ndash;&gt;-->
+
+
+                <!--</LinearLayout>-->
+
+
+            <!--</LinearLayout>-->
+
+        <!--</LinearLayout>-->
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -166,9 +305,28 @@
                 android:text="foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar "
                 android:textColor="#000000" />
 
+
+
+            <com.beardedhen.androidbootstrap.BootstrapButton
+                android:id="@+id/questionAllReplyBtn"
+                android:layout_marginBottom="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                app:bootstrapBrand="primary"
+                app:bootstrapSize="md"
+                app:bootstrapText="{fa-wechat}   전체 답변보기"
+                app:buttonMode="regular"
+                app:roundedCorners="true"
+                app:showOutline="true"
+                app:typicon="ty_lightbulb" />
+
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/questionAllButtonRoot"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_marginLeft="5dp"
@@ -182,7 +340,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="1dp"
                 android:layout_weight="1"
                 app:bootstrapBrand="primary"
                 app:bootstrapSize="md"
@@ -196,7 +354,7 @@
                 android:id="@+id/questionAllAnswer"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="1dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 app:bootstrapBrand="danger"

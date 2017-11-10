@@ -18,7 +18,7 @@ public class ShopDetail_Question_Viewing extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shop_detail__question_viewing);
+        setContentView(R.layout.activity_shop_detail__answer_viewing);
 
         init();
 

@@ -113,14 +113,14 @@
             </intent-filter>
         </activity>
         <activity android:name="com.tangxiaolv.telegramgallery.GalleryActivity" />
-        <activity android:name=".activity.ShopDetail_Review_Viewing" />
+        <activity android:name=".activity.ShopDetail_Answer_Viewing" />
         <activity android:name=".activity.ShopDetail_Review_Submit" />
         <activity android:name=".activity.ShopDetail_Question_Viewing" />
         <activity android:name=".activity.ShopDetail_Question_Submit" />
         <activity android:name=".activity.ShopDetail_Menu_URL" />
         <activity android:name=".activity.ShopDetail_Menu_Self" />
         <activity android:name=".activity.ShopDetail_Menu" />
-        <activity android:name=".activity.ShopDetail_Review_Viewing_2depth" />
+        <activity android:name=".activity.ShopDetail_Answer_Viewing_2depth" />
         <activity android:name=".activity.Profile_Main" />
 
         <provider

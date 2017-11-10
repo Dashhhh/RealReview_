@@ -17,7 +17,7 @@ import com.teamnova.ej.realreview.R;
 
 public class ShopDetail_Main_RV_QuestionAll_Viewholder extends RecyclerView.ViewHolder {
 
-    LinearLayout questionAllRootLinear;
+    LinearLayout questionAllRootLinear, questionAllButtonRoot;
     LinearLayout questionAllTextLayout, questionAllProfileLayout;
     ImageView questionAllUserImage;
     com.beardedhen.androidbootstrap.BootstrapLabel questionAllCertify;
@@ -27,7 +27,7 @@ public class ShopDetail_Main_RV_QuestionAll_Viewholder extends RecyclerView.View
     TextView questionAllImageCount;
     TextView questionAllText;
     TextView questionAllRegdate;
-    com.beardedhen.androidbootstrap.BootstrapButton questionAllStar, questionAllAnswer;
+    com.beardedhen.androidbootstrap.BootstrapButton questionAllStar, questionAllAnswer, questionAllReplyBtn;
 
     public ShopDetail_Main_RV_QuestionAll_Viewholder(View itemView) {
         super(itemView);
@@ -44,6 +44,9 @@ public class ShopDetail_Main_RV_QuestionAll_Viewholder extends RecyclerView.View
         questionAllText = itemView.findViewById(R.id.questionAllText);
         questionAllRegdate = itemView.findViewById(R.id.questionAllRegdate);
         questionAllStar = itemView.findViewById(R.id.questionAllStar);
+        questionAllAnswer = itemView.findViewById(R.id.questionAllAnswer);
+        questionAllButtonRoot = itemView.findViewById(R.id.questionAllButtonRoot);
+        questionAllReplyBtn = itemView.findViewById(R.id.questionAllReplyBtn);
 
 
 

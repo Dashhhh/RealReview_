@@ -5,11 +5,11 @@ import android.os.Bundle;
 
 import com.teamnova.ej.realreview.R;
 
-public class ShopDetail_Review_Viewing_2depth extends AppCompatActivity {
+public class ShopDetail_Answer_Viewing_2depth extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shop_detail__review__viewing_2depth);
+        setContentView(R.layout.activity_shop_detail__answer_viewing_2depth);
     }
 }

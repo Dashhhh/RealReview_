@@ -21,6 +21,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -30,6 +31,9 @@ import android.widget.Toast;
 
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -70,7 +74,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
 
     android.support.v4.view.ViewPager shopDetailViewPager;
-    TextView shopDetailTitle, shopDetailTitleReviewCnt, shopDetailTimeOpen, shopDetailTimeClose, shopDetailQuestion_Question, shopDetailQuestion_Answer;
+    TextView shopDetailTitle, shopDetailTitleReviewCnt, shopDetailTimeOpen, shopDetailTimeClose, shopDetailQuestion_Question, shopDetailQuestion_Answer, shopDetailQuestionImageCount, shopDetailQuestionReviewCount, shopDetailQuestionFollower, shopDetailQuestionNick;
+    TextView shopDetailReviewAddImageCount, shopDetailReviewAddReviewCount, shopDetailReviewAddFollower, shopDetailReviewAddUserID;
     android.support.v7.widget.AppCompatRatingBar shopDetailTitleRating, shopDetailRatingReview, shopDetailRatingReview2;
     android.support.v7.widget.RecyclerView shopDetailRVTitleTag, shopDetailRVImage, shopDetailTipRV;
     Button shopDetailTopAddPhoto, shopDetailCheckin, shopDetailBookmark, mapAddress, shopDetailCallBtn, shopDetailDirection, shopDetailMenu, shopDetailWebsiteBtn, shopDetailMessageBtn;
@@ -79,7 +84,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     android.support.v7.widget.AppCompatEditText shopDetailQuestion, shopDetailReview, shopDetailTip;
     ListView shopDetailLVReview;
     me.relex.circleindicator.CircleIndicator shopDetailIndicator;
-
+    ImageView shopDetailQuestionUserImage, shopDetailAddReviewUserProfile, shopDetailReviewAddUserImage;
 
     SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
             .findFragmentById(R.id.mapFragmentDetail);
@@ -144,6 +149,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
     private void init() {
 
+        SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
+
         shopDetailViewPager = (ViewPager) findViewById(R.id.shopDetailViewPager);
         shopDetailTitle = (TextView) findViewById(R.id.shopDetailTitle);
         shopDetailTitleReviewCnt = (TextView) findViewById(R.id.shopDetailTitleReviewCnt);
@@ -167,7 +174,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailMessageBtn = (Button) findViewById(R.id.shopDetailMessageBtn);
         shopDetailProfile = (LinearLayout) findViewById(R.id.shopDetailProfile);
         shopDetailProfile2 = (LinearLayout) findViewById(R.id.shopDetailProfile2);
-        shopDetailProfile3 = (LinearLayout) findViewById(R.id.shopDetailProfile3);
+//        shopDetailProfile3 = (LinearLayout) findViewById(R.id.shopDetailProfile3);
         shopDetailQuestion = (AppCompatEditText) findViewById(R.id.shopDetailQuestion);
         shopDetailReview = (AppCompatEditText) findViewById(R.id.shopDetailReview);
         shopDetailLVReview = (ListView) findViewById(R.id.shopDetailLVReview);
@@ -178,13 +185,52 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailTipRV = (RecyclerView) findViewById(R.id.shopDetailTipRV);
         shopDetailIndicator = findViewById(R.id.shopDetailIndicator);
         shopDetailQuestionRoot = findViewById(R.id.shopDetailQuestionRoot);
+        shopDetailQuestionUserImage = findViewById(R.id.shopDetailQuestionUserImage);
+        shopDetailQuestionNick = findViewById(R.id.shopDetailQuestionUserID);
+        shopDetailQuestionImageCount = findViewById(R.id.shopDetailQuestionImageCount);
+        shopDetailQuestionReviewCount = findViewById(R.id.shopDetailQuestionReviewCount);
+        shopDetailQuestionFollower = findViewById(R.id.shopDetailQuestionFollower);
+
+
+        /**
+         * Add Question Layout Setting
+         */
+
+        Glide.with(this).load(pref.getSharedData("isLogged_profileImagePath")).thumbnail(0.5f)
+                .apply(RequestOptions.bitmapTransform(new CircleCrop(this)))
+                .into(shopDetailQuestionUserImage);
+
+        shopDetailQuestionNick.setText(pref.getSharedData("isLogged_nick"));
+        shopDetailQuestionImageCount.setText(pref.getSharedData("isLogged_imageCnt"));
+        shopDetailQuestionReviewCount.setText(pref.getSharedData("isLogged_reviewCnt"));
+        shopDetailQuestionFollower.setText(pref.getSharedData("isLogged_followerCnt"));
+
+
+        /**
+         *  Add Review Layout Setting
+         */
+
+
+        shopDetailReviewAddUserImage = findViewById(R.id.shopDetailReviewAddUserImage);
+
+        shopDetailReviewAddImageCount = findViewById(R.id.shopDetailReviewAddImageCount);
+        shopDetailReviewAddReviewCount = findViewById(R.id.shopDetailReviewAddReviewCount);
+        shopDetailReviewAddFollower = findViewById(R.id.shopDetailReviewAddFollower);
+        shopDetailReviewAddUserID = findViewById(R.id.shopDetailReviewAddUserID);
+
+        shopDetailReviewAddImageCount.setText(pref.getSharedData("isLogged_imageCnt"));
+        shopDetailReviewAddReviewCount.setText(pref.getSharedData("isLogged_reviewCnt"));
+        shopDetailReviewAddFollower.setText(pref.getSharedData("isLogged_followerCnt"));
+
+        Glide.with(this).load(pref.getSharedData("isLogged_profileImagePath")).thumbnail(0.5f)
+                .apply(RequestOptions.bitmapTransform(new CircleCrop(this)))
+                .into(shopDetailReviewAddUserImage);
 
         /**
          * Question & Answer Layout GONE !!
          * If you want this Contents Visibility, set The 'Question & Answer'
          */
         shopDetailQuestionRoot.setVisibility(View.GONE);
-
         shopDetailQuestionAllRoot = findViewById(R.id.shopDetailQuestionAllRoot);
         shopDetailQuestionAllBtn = findViewById(R.id.shopDetailQuestionAllBtn);
     }
@@ -718,7 +764,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailMessageBtn.setOnClickListener(this);
         shopDetailProfile.setOnClickListener(this);
         shopDetailProfile2.setOnClickListener(this);
-        shopDetailProfile3.setOnClickListener(this);
         shopDetailQuestion.setOnClickListener(this);
 
         shopDetailReview.setOnTouchListener(new View.OnTouchListener() {

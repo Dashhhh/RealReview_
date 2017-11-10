@@ -38,7 +38,6 @@ public class ShopDetail_Question_All extends AppCompatActivity {
     private JSONObject jsonObject;
     private String shopId;
     private JSONArray a0;
-    private ClickListener clickListener;
 
 
     @Override
@@ -46,20 +45,16 @@ public class ShopDetail_Question_All extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         TypefaceProvider.registerDefaultIconSets();
         setContentView(R.layout.activity_shop_detail__question__all);
-
         shopId = ShopDetail_Main.SHOP_ID;
         init();
         listener();
         initializingData();
-
     }
 
     private void init() {
-
         questionAllNoQuestionRoot = findViewById(R.id.questionAllNoQuestionRoot);
         questionAllNoQuestionRoot.setVisibility(View.GONE);
         questionAllNoQuestionButton = findViewById(R.id.questionAllNoQuestionButton);
-
     }
 
     private void listener() {
@@ -78,8 +73,6 @@ public class ShopDetail_Question_All extends AppCompatActivity {
                 finish();
             }
         });
-
-
     }
 
     private void initializingData() {
@@ -113,18 +106,31 @@ public class ShopDetail_Question_All extends AppCompatActivity {
 
             for (int i = 0; i < a0.length(); i++) {
 
-
                 JSONObject getArray = a0.getJSONObject(i);
+
+                boolean curious = getArray.getBoolean("curious");
+                Log.d("QUESTION_RV", "JSON Parsing...curious    : " + curious);
+
                 String regdate = getArray.getString("regdate");
                 String shopid = getArray.getString("shopid");
                 String userid = getArray.getString("userid");
                 String question = getArray.getString("question");
                 String nick = getArray.getString("nick");
-                ShopDetail_Main_RV_QuestionAll_Set adapterSet = new ShopDetail_Main_RV_QuestionAll_Set("", "0", "0", "0", question, regdate, nick);
-                Log.d("TIP_ASYNC", "JSON Parsing...shopid  : " + shopid);
-                Log.d("TIP_ASYNC", "JSON Parsing...userid  : " + userid);
-                Log.d("TIP_ASYNC", "JSON Parsing...regdate : " + regdate);
-                Log.d("TIP_ASYNC", "JSON Parsing...nick    : " + nick);
+                String idx = getArray.getString("idx");
+                String answerCount = getArray.getString("answerCount");
+                String metooCount = getArray.getString("metooCount");
+                String imagepath = getArray.getString("imagepath");
+                ShopDetail_Main_RV_QuestionAll_Set adapterSet = new ShopDetail_Main_RV_QuestionAll_Set
+                        ("", "0", "0", "0", question, regdate, nick, idx,
+                                answerCount, metooCount, curious, imagepath);
+                Log.d("QUESTION_RV", "JSON Parsing...shopid  : " + shopid);
+                Log.d("QUESTION_RV", "JSON Parsing...userid  : " + userid);
+                Log.d("QUESTION_RV", "JSON Parsing...regdate : " + regdate);
+                Log.d("QUESTION_RV", "JSON Parsing...nick    : " + nick);
+                Log.d("QUESTION_RV", "JSON Parsing...idx    : " + idx);
+                Log.d("QUESTION_RV", "JSON Parsing...answerCount    : " + answerCount);
+                Log.d("QUESTION_RV", "JSON Parsing...metooCount    : " + metooCount);
+                Log.d("QUESTION_RV", "JSON Parsing...imagepath    : " + imagepath);
 
                 data.add(0, adapterSet);
 
@@ -146,35 +152,75 @@ public class ShopDetail_Question_All extends AppCompatActivity {
             questionAllRV.setVisibility(View.GONE);
             questionAllNoQuestionRoot.setVisibility(View.VISIBLE);
         }
+/*
 
         final GestureDetector gestureDetector = new GestureDetector(ShopDetail_Question_All.this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
-                /*
+                */
+/*
                    버튼 눌렀다가 떼었을때만 TRUE
-                 */
+                 *//*
+
                 return true;
             }
         });
 
+
         questionAllRV.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+
+
+                long l = 0;
+                int p = 0;
                 View v = rv.findChildViewUnder(e.getX(), e.getY());
+                View vv = rv.findContainingItemView(v);
+                View vvv = rv.findViewById(vv.getId());
+                RecyclerView.ViewHolder vvvv = rv.findViewHolderForItemId(l);
+                Log.d("addOnItemTouchListener", " v :"   +v);
+                Log.d("addOnItemTouchListener", " vv :"  +vv);
+                Log.d("addOnItemTouchListener", " vvv :" +vvv);
+                Log.d("addOnItemTouchListener", " vvvv :" +vvvv);
+
 
                 if (v != null && gestureDetector.onTouchEvent(e)) {
+                    Log.d("addOnItemTouchListener", " rv.getChildAdapterPosition(v)); :" + rv.getChildAdapterPosition(v));
+                    Log.d("addOnItemTouchListener", " rv.getChildItemId(v)); : " + rv.getChildItemId(v));
+                    Log.d("addOnItemTouchListener", " rv.getChildViewHolder(v)); :     " + rv.getChildViewHolder(v));
+                    Log.d("addOnItemTouchListener", " rv.getChildLayoutPosition(v)); :" + rv.getChildLayoutPosition(v));
+                    Log.d("addOnItemTouchListener", " rv.getChildAdapterPosition(v)); :" + rv.getChildAdapterPosition(v));
+                    Log.d("addOnItemTouchListener", " rv.getTransitionName()); :" + rv.getTransitionName());
+                    Log.d("addOnItemTouchListener", " rv.getScrollState()); :" + rv.getScrollState());
+                    Log.d("addOnItemTouchListener", " rv.findViewHolderForAdapterPosition(p)); :" + rv.findViewHolderForAdapterPosition(p));
+                    Log.d("addOnItemTouchListener", " rv.findViewHolderForItemId(l)); :" + rv.findViewHolderForItemId(l));
 
-                    Log.d("addOnItemTouchListener", "rv.getChildAdapterPosition(v) :" + rv.getChildAdapterPosition(v));
-                    Log.d("addOnItemTouchListener", "rv.getChildItemId(v) :" + rv.getChildItemId(v));
-                    Log.d("addOnItemTouchListener", "rv.getChildViewHolder(v) :" + rv.getChildViewHolder(v));
-                    Log.d("addOnItemTouchListener", "rv.getChildLayoutPosition(v) :" + rv.getChildLayoutPosition(v));
-
-                    String aa = String.valueOf(rv.getChildViewHolder(v));
+                    String aa = String.valueOf(rv.getChildItemId(v));
                     Log.d("addOnItemTouchListener", "aa :" + aa);
+                    Log.d("addOnItemTouchListener", "aa :" + v.getId());
+
+
+                    // TODO : Move to Main -> Adapter
 
                 }
 
                 switch (v.getId()) {
+
+                    case R.id.questionAllText: {
+                        Log.d("RECYCLER_POSITION", "TEXT : rv.getChildAdapterPosition(v)" + rv.getChildAdapterPosition(v));
+                        Log.d("RECYCLER_POSITION", "Text : v.getId()" + v.getId());
+                        break;
+                    }
+
+                    case R.id.questionAllStar: {
+                        Log.d("RECYCLER_POSITION", "Star : rv.getChildAdapterPosition(v)" + rv.getChildAdapterPosition(v));
+                        break;
+                    }
+
+                    case R.id.questionAllAnswer: {
+                        Log.d("RECYCLER_POSITION", "Answer : rv.getChildAdapterPosition(v)" + rv.getChildAdapterPosition(v));
+                        break;
+                    }
 
                 }
 
@@ -194,6 +240,7 @@ public class ShopDetail_Question_All extends AppCompatActivity {
 
             }
         });
+*/
 
     }
 

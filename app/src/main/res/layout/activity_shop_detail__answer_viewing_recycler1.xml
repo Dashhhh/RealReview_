@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/questionViewProfileLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp">
+
+        <ImageView
+            android:id="@+id/questionViewUserImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp" />
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="4"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/questionViewUserNick"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:gravity="center_vertical"
+                    android:text="123"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!--<ImageView-->
+                <!--android:layout_width="15dp"-->
+                <!--android:layout_height="15dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginLeft="6dp"-->
+                <!--android:src="@drawable/ic_group_black_24dp" />-->
+
+                <com.beardedhen.androidbootstrap.AwesomeTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:bootstrapBrand="primary"
+                    app:bootstrapText="{fa-users}"
+                     />
+
+                <TextView
+                    android:id="@+id/questionViewUserFollower"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:text="0" />
+
+
+                <!--<ImageView-->
+                <!--android:layout_width="15dp"-->
+                <!--android:layout_height="15dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginLeft="6dp"-->
+                <!--android:layout_marginRight="6dp"-->
+                <!--android:background="@drawable/ic_chat_black_24dp" />-->
+
+                <com.beardedhen.androidbootstrap.AwesomeTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:bootstrapBrand="primary"
+                    android:layout_marginStart="10dp"
+                    app:bootstrapText="{fa-commenting}"
+                   />
+
+
+                <TextView
+                    android:id="@+id/questionViewReviewCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:text="0"
+
+                    />
+
+                <!--<ImageView-->
+                <!--android:layout_width="11dp"-->
+                <!--android:layout_height="15dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginLeft="6dp"-->
+                <!--android:layout_marginRight="6dp"-->
+                <!--android:src="@drawable/ic_camera_alt_black_24dp" />-->
+
+
+                <com.beardedhen.androidbootstrap.AwesomeTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:bootstrapBrand="primary"
+                    app:bootstrapText="{fa-camera-retro} "
+                    android:layout_marginStart="10dp"
+
+                    />
+
+
+                <TextView
+                    android:id="@+id/questionViewImageCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:text="0"
+
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--<com.beardedhen.androidbootstrap.BootstrapButton-->
+            <!--android:id="@+id/questionAllStar"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:layout_marginRight="15dp"-->
+            <!--android:layout_weight="2"-->
+            <!--android:visibility="gone"-->
+            <!--app:bootstrapBrand="primary"-->
+            <!--app:bootstrapSize="md"-->
+            <!--app:bootstrapText="{fa-reply} 답글달기"-->
+            <!--app:buttonMode="checkbox"-->
+            <!--app:roundedCorners="true"-->
+            <!--app:showOutline="true"-->
+            <!--app:typicon="ty_lightbulb" />-->
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="#dddddd" />
+        <TextView
+            android:id="@+id/questionViewText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:paddingEnd="10dp"
+            android:text="Lorem ipsum dolor sit amet, cosectetur adipiscing elit. Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan. Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna. Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus. Vestibulum commodo. Ut rhoncus gravida arcu. "
+            android:textColor="#000000" />
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:id="@+id/questionViewRegdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginBottom="7dp"
+            android:layout_marginRight="10dp"
+            android:textSize="11sp"
+            app:bootstrapBrand="info"
+            app:bootstrapText="{fa-clock-o} 123123"
+            app:fontAwesomeIcon="fa_android"
+            app:typicon="ty_anchor" />
+
+
+    </LinearLayout>
+</LinearLayout>
