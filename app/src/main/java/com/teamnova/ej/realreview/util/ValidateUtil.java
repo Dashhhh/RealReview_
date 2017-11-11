@@ -32,5 +32,16 @@ public class ValidateUtil {
         return matcher.matches();
     }
 
+    //HTTP 정규식
+//    public static final Pattern VALID_HTTP_REGEX = Pattern.compile("/^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})([/\\w_.-]*)*/?$/"); // 4자리 ~ 16자리까지 가능
+    public static final Pattern VALID_HTTP_REGEX = Pattern.compile("/^(https?:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([\\/\\w_\\.-]*)*\\/?$/"); // 4자리 ~ 16자리까지 가능
+    public static boolean validateHttp(String httpStr) {
+        Matcher matcher = VALID_HTTP_REGEX.matcher(httpStr);
+        return matcher.matches();
+    }
+
+
+
+
 
 }

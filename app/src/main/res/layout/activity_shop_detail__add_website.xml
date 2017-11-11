@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.teamnova.ej.realreview.activity.ShopDetail_AddWebsite">
+
+
+    <LinearLayout
+        android:id="@+id/questionAllNoQuestionRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="bottom"
+            android:textAlignment="center"
+            android:textSize="80sp"
+            app:bootstrapBrand="warning"
+            app:bootstrapText="{fa-link}" />
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:bootstrapBrand="warning"
+            app:bootstrapText="상점의 주소를 남겨주세요."
+            app:fontAwesomeIcon="fa_exclamation_circle"
+            app:typicon="ty_anchor" />
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="bottom"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            app:bootstrapBrand="info"
+            app:bootstrapText="예) 'http://www.naver.com'"
+            app:fontAwesomeIcon="fa_exclamation_circle"
+            app:typicon="ty_anchor" />
+
+        <com.beardedhen.androidbootstrap.BootstrapEditText
+            android:id="@+id/addWebText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:bootstrapSize="md"
+            app:bootstrapBrand="info"
+            app:roundedCorners="true"
+
+            />
+
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/addWebSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:bootstrapBrand="primary"
+            app:bootstrapSize="md"
+            app:bootstrapText="{fa-sign-out} 저장하기"
+            app:buttonMode="regular"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:roundedCorners="true"
+            app:showOutline="false" />
+    </LinearLayout>
+
+
+</LinearLayout>

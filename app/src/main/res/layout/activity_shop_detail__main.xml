@@ -27,7 +27,8 @@
                     android:id="@+id/shopDetailViewPager"
                     android:layout_width="match_parent"
                     android:layout_height="350dp"
-                    android:scaleX="@integer/sliding_title_lines" />
+                    android:scaleType="fitStart" />
+
                 <me.relex.circleindicator.CircleIndicator
                     android:id="@+id/shopDetailIndicator"
                     android:layout_width="match_parent"
@@ -697,13 +698,11 @@
 
             </LinearLayout>
 
-
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
                 android:background="#dddddd"
                 android:src="@drawable/border_alpha" />
-
 
             <LinearLayout
                 android:id="@+id/shopDetailQuestionAllRoot"
@@ -720,7 +719,7 @@
                     android:layout_marginRight="5dp"
                     app:bootstrapText="{fa-search-plus} 모든 질문보기"
                     app:bootstrapBrand="info"
-                    app:bootstrapSize="lg"
+                    app:bootstrapSize="md"
                     app:buttonMode="regular"
                     app:roundedCorners="true"
                     app:showOutline="false" />
@@ -741,7 +740,6 @@
                     android:text="Question / Answers"
                     android:textColor="#000000"
                     android:textSize="14sp" />
-
 
                 <ImageView
                     android:layout_width="match_parent"

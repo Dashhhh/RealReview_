@@ -19,9 +19,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -45,6 +48,27 @@ public class Intro extends AppCompatActivity implements LocationListener {
 
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
 
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+
+                Log.d("TEDPermission","onPermissionGranted");
+
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Log.d("TEDPermission","onPermissionDenied");
+            }
+
+
+        };
+
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                .check();
 
         /**위치정보 객체를 생성한다.*/
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -128,8 +152,12 @@ public class Intro extends AppCompatActivity implements LocationListener {
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
             return;
+        } else{
+
+            lm.requestLocationUpdates(provider, 2000, 1, this);
         }
-        lm.requestLocationUpdates(provider, 2000, 1, this);
+
+
 
     }
 
@@ -351,6 +379,7 @@ public class Intro extends AppCompatActivity implements LocationListener {
         pref.setSharedData("1030", "대중 교통 역");
 
     }
+
 
 
 }

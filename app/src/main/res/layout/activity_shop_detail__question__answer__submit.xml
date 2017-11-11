@@ -86,9 +86,9 @@
                 android:gravity="top"
 
                 android:hint="이 곳에 답변을 남겨주세요"
-                android:minLines="18"
+                android:minLines="10"
                 app:bootstrapBrand="info"
-                app:bootstrapSize="xl" />
+                app:bootstrapSize="lg" />
 
             <com.beardedhen.androidbootstrap.BootstrapButton
                 android:id="@+id/shopDetailQuestion_Answer_Submit"

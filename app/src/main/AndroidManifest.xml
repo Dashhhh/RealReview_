@@ -139,7 +139,8 @@
             android:label="@string/title_activity_shop_detail__main__direction" />
         <activity android:name=".activity.ShopDetail_Question_All" />
         <activity android:name=".activity.ShopDetail_Overview_Map" />
-        <activity android:name=".activity.ShopDetail_Question_Answer_Submit"></activity>
+        <activity android:name=".activity.ShopDetail_Question_Answer_Submit" />
+        <activity android:name=".activity.ShopDetail_AddWebsite"></activity>
     </application>
 
 </manifest>

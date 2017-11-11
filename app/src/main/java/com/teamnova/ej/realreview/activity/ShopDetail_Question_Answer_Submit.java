@@ -1,8 +1,7 @@
 package com.teamnova.ej.realreview.activity;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
@@ -87,8 +86,6 @@ public class ShopDetail_Question_Answer_Submit extends AppCompatActivity impleme
 
                     try {
                         conn = new AsyncAnswerSubmit(iShopID, iUserID, answer, iIdx, iNick,this).execute().get(10000, TimeUnit.MILLISECONDS);
-                        Intent intent = new Intent(ShopDetail_Question_Answer_Submit.this, ShopDetail_Question_All.class);
-                        startActivity(intent);
                         finish();
 
                     } catch (InterruptedException | ExecutionException | TimeoutException e) {

@@ -1,9 +1,11 @@
 package com.teamnova.ej.realreview.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
@@ -58,6 +60,7 @@ import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_Tip_Set;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Review_LV_Adapter;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Review_LV_Set;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
+import com.teamnova.ej.realreview.util.ValidateUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -968,6 +971,67 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             }
 
             case R.id.shopDetailWebsiteBtn: {
+
+                SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
+                String tag = pref.getSharedData("TAG");
+                String webSite = pref.getSharedData("WEB" + tag);
+                String webSite2 = String.valueOf(webSite);
+                Log.d("Website_Check", "tag :" + tag);
+                Log.d("Website_Check", "webSite :" + webSite);
+
+                if (webSite2.equals("") || webSite2.isEmpty() || webSite2.equals(null)) {
+                    final AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
+                    localBuilder.setTitle("OOPS!")
+                            .setMessage("해당 상점은 Web Site 정보가 없습니다. 설정해 보시겠나요?")
+                            .setPositiveButton("아니요", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt) {
+
+                                }
+                            }).setNegativeButton("계속하기", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt) {
+
+                            Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_AddWebsite.class);
+                            startActivity(intent);
+
+                        }
+                    })
+                            .create()
+                            .show();
+                } else {
+                    Log.d("Website_Check", "NON - NULL");
+
+                    boolean check = ValidateUtil.validateHttp(webSite2);
+                    Log.d("Website_Check", "check :" + check);
+
+                    if (check) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(webSite2));
+                        startActivity(intent);
+                    } else {
+                        Log.d("Website_Check", "else");
+
+                        DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_AddWebsite.class);
+                                startActivity(intent);
+                            }
+                        };
+                        DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        };
+                        new AlertDialog.Builder(this)
+                                .setTitle("해당 상점은 Web Site 정보가 잘못되었습니다.")
+                                .setMessage(pref.getSharedData("isLogged_nick") + "님 께서 다시 제안해 보시겠나요?")
+                                .setPositiveButton("좋아요", cameraListener)
+                                .setNegativeButton("취소", cancelListener)
+                                .show();
+                    }
+
+                }
+
 
                 break;
             }
