@@ -18,7 +18,7 @@
             android:layout_height="0dp"
             android:background="@drawable/border"
             android:layout_margin="10dp"
-            android:layout_weight="26"
+            android:layout_weight="7"
             android:textIsSelectable="false"
             android:textStyle="normal"
             android:hint="이 상점에 대해 알고 싶은 것이 무엇인가요?"
@@ -28,13 +28,11 @@
             android:textColor="#000000"
             />
         <Button
-            android:layout_weight="4"
-
+            android:layout_weight="1"
             android:id="@+id/questionSubmitBtn"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:textColor="#ffffff"
-            android:layout_margin="10dp"
             android:background="@drawable/border_blue"
             android:padding="20dp"
             android:text="완료"

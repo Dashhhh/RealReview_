@@ -9,7 +9,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="30">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,14 +51,26 @@
             android:textSize="13dp"
             android:gravity="top"
             android:padding="10dp"
+            android:minLines="30"
             android:textColor="#000000"
             />
+
+    </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="13"
+        >
+
 
         <LinearLayout
             android:id="@+id/reviewImageLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:orientation="horizontal"
             >
 
@@ -112,14 +125,11 @@
         <Button
             android:id="@+id/reviewCamera"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:background="@drawable/border_alpha"
             android:drawableStart="@drawable/t_detail_camera"
             android:drawableEnd="@drawable/t_right"
-            android:padding="20dp"
-
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:padding="10dp"
             android:text="사진 첨부하기"
             android:textAlignment="center"
 
@@ -127,18 +137,20 @@
         <Button
             android:id="@+id/reviewSubmit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:textColor="#ffffff"
-            android:layout_margin="10dp"
             android:background="@drawable/border_blue"
-            android:padding="20dp"
             android:text="완료"
             android:textAlignment="center"
 
             />
 
 
+
     </LinearLayout>
 
-    </ScrollView>
+
+
+
+
 </LinearLayout>

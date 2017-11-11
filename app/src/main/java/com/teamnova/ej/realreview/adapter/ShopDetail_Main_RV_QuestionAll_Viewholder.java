@@ -26,7 +26,7 @@ public class ShopDetail_Main_RV_QuestionAll_Viewholder extends RecyclerView.View
     TextView questionAllReviewCount;
     TextView questionAllImageCount;
     TextView questionAllText;
-    TextView questionAllRegdate;
+    com.beardedhen.androidbootstrap.AwesomeTextView questionAllRegdate;
     com.beardedhen.androidbootstrap.BootstrapButton questionAllStar, questionAllAnswer, questionAllReplyBtn;
 
     public ShopDetail_Main_RV_QuestionAll_Viewholder(View itemView) {

@@ -65,7 +65,7 @@
                         android:layout_gravity="left"
                         android:text="123"
                         android:textColor="#000000"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -144,16 +144,16 @@
             </LinearLayout>
 
 
-            <TextView
-                android:id="@+id/questionAllRegdate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:layout_gravity="center_vertical"
-                android:text="123123123123123123"
-                android:textSize="10sp" />
+            <!--<TextView-->
+                <!--android:id="@+id/questionAllRegdate"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="3dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="end"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:text="123123123123123123"-->
+                <!--android:textSize="10sp" />-->
 
 
 
@@ -305,18 +305,30 @@
                 android:text="foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar "
                 android:textColor="#000000" />
 
+            <com.beardedhen.androidbootstrap.AwesomeTextView
+                android:id="@+id/questionAllRegdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginBottom="7dp"
+                android:layout_marginRight="10dp"
+                android:textSize="11sp"
+                app:bootstrapBrand="info"
+                app:bootstrapText="{fa-clock-o} 123123"
+                app:fontAwesomeIcon="fa_android"
+                app:typicon="ty_anchor" />
 
 
             <com.beardedhen.androidbootstrap.BootstrapButton
                 android:id="@+id/questionAllReplyBtn"
                 android:layout_marginBottom="3dp"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 app:bootstrapBrand="primary"
-                app:bootstrapSize="md"
+                app:bootstrapSize="sm"
                 app:bootstrapText="{fa-wechat}   전체 답변보기"
                 app:buttonMode="regular"
                 app:roundedCorners="true"
@@ -338,12 +350,12 @@
             <com.beardedhen.androidbootstrap.BootstrapButton
                 android:id="@+id/questionAllStar"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
                 app:bootstrapBrand="primary"
-                app:bootstrapSize="md"
+                app:bootstrapSize="sm"
                 app:bootstrapText="{fa-star}   나도 궁금해요"
                 app:buttonMode="checkbox"
                 app:roundedCorners="true"
@@ -353,12 +365,12 @@
             <com.beardedhen.androidbootstrap.BootstrapButton
                 android:id="@+id/questionAllAnswer"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 app:bootstrapBrand="danger"
-                app:bootstrapSize="md"
+                app:bootstrapSize="sm"
                 app:bootstrapText="{fa-reply-all}   답변달기"
                 app:buttonMode="regular"
                 app:roundedCorners="true"

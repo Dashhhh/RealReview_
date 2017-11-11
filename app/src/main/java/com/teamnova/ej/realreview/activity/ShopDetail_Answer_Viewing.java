@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -109,7 +110,7 @@ public class ShopDetail_Answer_Viewing extends AppCompatActivity {
 
         data.clear();
         ShopDetail_Answer_Viewing_Adapter adapter = new ShopDetail_Answer_Viewing_Adapter(this, data);
-        LinearLayoutManager themeLayoutSet = new LinearLayoutManager(this);
+        StaggeredGridLayoutManager themeLayoutSet = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         questionViewRV.setHasFixedSize(true);
         questionViewRV.setLayoutManager(themeLayoutSet);
 /*

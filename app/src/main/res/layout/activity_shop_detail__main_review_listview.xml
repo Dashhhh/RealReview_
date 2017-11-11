@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,6 +26,7 @@
             android:layout_marginRight="5dp"
             android:orientation="horizontal"
             android:paddingBottom="5dp"
+            android:padding="5dp"
             android:paddingLeft="14dp"
             android:paddingRight="14dp">
 
@@ -131,16 +133,16 @@
             </LinearLayout>
 
 
-            <TextView
-                android:id="@+id/reviewRegdate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:text="123123123123123123"
-                android:textSize="10sp" />
+            <!--<TextView-->
+                <!--android:id="@+id/reviewRegdate"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_margin="3dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="end"-->
+                <!--android:text="123123123123123123"-->
+                <!--android:textSize="10sp" />-->
 
 
         </LinearLayout>
@@ -185,14 +187,28 @@
                 android:text="foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar "
                 android:textColor="#000000" />
 
+            <com.beardedhen.androidbootstrap.AwesomeTextView
+                android:id="@+id/reviewRegdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginBottom="7dp"
+                android:layout_marginRight="10dp"
+                android:textSize="11sp"
+                app:bootstrapBrand="info"
+                app:bootstrapText="{fa-clock-o} 123123"
+                app:fontAwesomeIcon="fa_android"
+                app:typicon="ty_anchor" />
+
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="7dp"
             android:orientation="horizontal">
 
 
@@ -204,7 +220,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 app:bootstrapBrand="warning"
-                app:bootstrapSize="md"
+                app:bootstrapSize="sm"
                 app:bootstrapText="{ty_lightbulb} 유용해요"
                 app:buttonMode="checkbox"
                 app:roundedCorners="true"
@@ -219,7 +235,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 app:bootstrapBrand="success"
-                app:bootstrapSize="md"
+                app:bootstrapSize="sm"
                 app:bootstrapText="{md_thumb_up} 멋있어요"
                 app:buttonMode="checkbox"
                 app:roundedCorners="true"
@@ -233,7 +249,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 app:bootstrapBrand="primary"
-                app:bootstrapSize="md"
+                app:bootstrapSize="sm"
                 app:bootstrapText="{fa_meh_o} 냉정해요"
                 app:buttonMode="checkbox"
                 app:roundedCorners="true"

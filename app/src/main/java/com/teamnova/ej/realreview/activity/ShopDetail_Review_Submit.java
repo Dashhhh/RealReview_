@@ -139,6 +139,7 @@ public class ShopDetail_Review_Submit extends AppCompatActivity implements View.
                 pref.setSharedData("HTTP_REVIEW_REVIEW", text);
                 pref.setSharedData("HTTP_REVIEW_USER",iUserId);
                 pref.setSharedData("HTTP_REVIEW_RATING", String.valueOf(iRating));
+                pref.setSharedData("HTTP_REVIEW_RATING", String.valueOf(iNick));
                 ProgressWheel progressDialog = new ProgressWheel(this);
                 Void conn;
                 try {

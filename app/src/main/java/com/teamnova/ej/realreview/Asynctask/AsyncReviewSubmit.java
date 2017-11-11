@@ -12,6 +12,7 @@ import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -54,11 +55,13 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
             String review1 = pref.getSharedData("HTTP_REVIEW_REVIEW");
             String review2 = pref.getSharedData("HTTP_REVIEW_USER");
             String review3 = pref.getSharedData("HTTP_REVIEW_RATING");
-            reviewData = sURL + "?" + "reviewid=" + review0 + "&review=" + review1 + "&user=" + review2 + "&rating=" + review3;
+            String review4 = pref.getSharedData("HTTP_REVIEW_NICK");
+            reviewData = sURL + "?" + "reviewid=" + review0 + "&review=" + review1 + "&user=" + review2 + "&rating=" + review3 + "&nick=" + review4 ;
             Log.d("REVIEW_Image", "String review0 :" + review0);
             Log.d("REVIEW_Image", "String review1 :" + review1);
             Log.d("REVIEW_Image", "String review2 :" + review2);
             Log.d("REVIEW_Image", "String review3 :" + review3);
+            Log.d("REVIEW_Image", "String review4 :" + review4);
 
 
 
@@ -124,6 +127,8 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
             postDataBuilder.append(delimiter);
             postDataBuilder.append(setValue("user",review2));
             postDataBuilder.append(delimiter);
+            postDataBuilder.append(setValue("nick",review4));
+            postDataBuilder.append(delimiter);
             postDataBuilder.append(setValue("rating",review3));
             for (int i = 0; i < imagePathList.size(); i++) {
                 if (imagePathList.get(i).equals("")) {
@@ -146,7 +151,7 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
             dos.writeUTF(postDataBuilder.toString());
 
             String postCheck = String.valueOf(postDataBuilder);
-            Log.d("POSTDATABUILDER",postCheck);
+            Log.d("REVIEW_Image",postCheck);
 
             /**
              * REVIEW ID (SHOP ID)
@@ -183,6 +188,18 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
             dos.writeShort(0x0d0a);
             dos.writeShort(0x0d0a);
             dos.writeBytes(review2);
+            dos.writeShort(0x0d0a);
+            dos.writeShort(0x0d0a);
+            /**
+             * REVIEW (USER ID)
+             */
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+            dos.writeBytes("Content-Disposition: form-data; name=");
+            dos.writeBytes("nick");
+            dos.writeBytes("\"");
+            dos.writeShort(0x0d0a);
+            dos.writeShort(0x0d0a);
+            dos.writeBytes(review4);
             dos.writeShort(0x0d0a);
             dos.writeShort(0x0d0a);
             /**
@@ -247,7 +264,6 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
 
             dos.writeBytes("\r\n--" + boundary + "--\r\n");
             dos.flush(); // finish upload...
-            /*
             // get response
             int ch;
             InputStream is = conn.getInputStream();
@@ -257,8 +273,11 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
             }
             String s = b.toString();
             Log.e("REVIEW_Image", "result = " + s);
+
+
+
+
             // mEdityEntry.setText(s);
-            */
             dos.close();
             int responseCode = conn.getResponseCode();
             Log.e("REVIEW_Image", "response code - " + responseCode);
@@ -322,6 +341,7 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
         pref.setSharedData("HTTP_REVIEW_REVIEW","");
         pref.setSharedData("HTTP_REVIEW_USER","");
         pref.setSharedData("HTTP_REVIEW_RATING","");
+        pref.setSharedData("HTTP_REVIEW_NICK","");
 
     }
 

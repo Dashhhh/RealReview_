@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.pnikosis.materialishprogress.ProgressWheel;
-import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
 import org.json.JSONArray;
 
@@ -23,6 +22,7 @@ import static com.teamnova.ej.realreview.activity.ShopDetail_Question_Submit.QUE
 import static com.teamnova.ej.realreview.activity.ShopDetail_Question_Submit.QUESTION_TEXT;
 import static com.teamnova.ej.realreview.activity.ShopDetail_Question_Submit.QUESTION_USERID;
 import static com.teamnova.ej.realreview.activity.ShopDetail_Question_Submit.QUESTION_USERNICK;
+
 
 /**
  * Created by ej on 2017-11-04.
@@ -115,20 +115,6 @@ public class AsyncQuestionSubmit extends AsyncTask<Void, Integer, Void> {
     }
 
 
-    private void eraseSharedPref(Context mContext) {
-
-        SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
-        pref.setSharedData("REVIEW_IMAGE_1", "");
-        pref.setSharedData("REVIEW_IMAGE_2", "");
-        pref.setSharedData("REVIEW_IMAGE_3", "");
-        pref.setSharedData("REVIEW_IMAGE_4", "");
-        pref.setSharedData("REVIEW_IMAGE_5", "");
-        pref.setSharedData("HTTP_REVIEW_ID", "");
-        pref.setSharedData("HTTP_REVIEW_REVIEW", "");
-        pref.setSharedData("HTTP_REVIEW_USER", "");
-        pref.setSharedData("HTTP_REVIEW_RATING", "");
-
-    }
 
     /**
      * Map 형식으로 Key와 Value를 셋팅한다.

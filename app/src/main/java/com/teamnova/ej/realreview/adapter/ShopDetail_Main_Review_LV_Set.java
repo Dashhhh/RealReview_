@@ -16,6 +16,7 @@ public class ShopDetail_Main_Review_LV_Set {
     public String userId;
     public String rating;
     public float fRating;
+    public String nick;
 
     public String getTitleImage() {
         return titleImage;
@@ -87,5 +88,13 @@ public class ShopDetail_Main_Review_LV_Set {
 
     public void setfRating(float fRating) {
         this.fRating = fRating;
+    }
+
+    public String getNick() {
+        return nick;
+    }
+
+    public void setNick(String nick) {
+        this.nick = nick;
     }
 }

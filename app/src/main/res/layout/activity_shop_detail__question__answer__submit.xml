@@ -5,13 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-
     tools:context="com.teamnova.ej.realreview.activity.ShopDetail_Question_Answer_Submit">
-
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="20">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -78,32 +76,32 @@
             <com.beardedhen.androidbootstrap.BootstrapEditText
                 android:id="@+id/shopDetailQuestion_Answer_Text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginBottom="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:gravity="top"
-
                 android:hint="이 곳에 답변을 남겨주세요"
-                android:minLines="10"
-                app:bootstrapBrand="info"
-                app:bootstrapSize="lg" />
-
-            <com.beardedhen.androidbootstrap.BootstrapButton
-                android:id="@+id/shopDetailQuestion_Answer_Submit"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="15dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                app:bootstrapBrand="primary"
-                app:bootstrapSize="lg"
-                app:bootstrapText="{fa_send}   제출"
-                app:buttonMode="regular"
+                android:minLines="20"
                 app:roundedCorners="true"
-                app:showOutline="false"
-                app:typicon="ty_lightbulb" />
+                android:focusable="false"
+                app:bootstrapBrand="info"
+                app:bootstrapSize="md" />
+
+
         </LinearLayout>
     </ScrollView>
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/shopDetailQuestion_Answer_Submit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:bootstrapBrand="primary"
+        app:bootstrapSize="lg"
+        app:bootstrapText="{fa_send}   제출"
+        app:buttonMode="regular"
+        app:roundedCorners="false"
+        app:showOutline="false"
+        app:typicon="ty_lightbulb" />
 </LinearLayout>

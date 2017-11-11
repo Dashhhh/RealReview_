@@ -595,104 +595,18 @@
                                 />
 
                         </LinearLayout>
-
-
                     </LinearLayout>
-
-
                 </LinearLayout>
 
-
-                <!--<LinearLayout-->
-                    <!--android:id="@+id/shopDetailProfile"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:orientation="horizontal">-->
-
-                    <!--<ImageView-->
-                        <!--android:id="@+id/shopDetailQuestionUserImage"-->
-                        <!--android:layout_width="50dp"-->
-                        <!--android:layout_height="50dp"-->
-                        <!--android:layout_margin="10dp" />-->
-
-                    <!--<LinearLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:orientation="vertical">-->
-
-                        <!--<TextView-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_margin="10dp"-->
-                            <!--android:text="123"-->
-                            <!--android:textSize="16sp" />-->
-
-                        <!--<LinearLayout-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="match_parent">-->
-
-                            <!--<ImageView-->
-                                <!--android:layout_width="15dp"-->
-                                <!--android:layout_height="15dp"-->
-                                <!--android:layout_gravity="center"-->
-                                <!--android:layout_margin="6dp"-->
-                                <!--android:src="@drawable/ic_group_black_24dp" />-->
-
-                            <!--<TextView-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_gravity="center"-->
-                                <!--android:layout_marginEnd="5dp"-->
-                                <!--android:text="folllowers" />-->
-
-
-                            <!--<ImageView-->
-                                <!--android:layout_width="15dp"-->
-                                <!--android:layout_height="15dp"-->
-                                <!--android:layout_gravity="center"-->
-                                <!--android:layout_margin="6dp"-->
-                                <!--android:background="@drawable/ic_chat_black_24dp" />-->
-
-                            <!--<TextView-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_gravity="center"-->
-                                <!--android:layout_marginEnd="5dp"-->
-                                <!--android:text="reviews"-->
-
-                                <!--/>-->
-
-                            <!--<ImageView-->
-                                <!--android:layout_width="15dp"-->
-                                <!--android:layout_height="15dp"-->
-                                <!--android:layout_gravity="center"-->
-                                <!--android:layout_margin="6dp"-->
-                                <!--android:src="@drawable/ic_camera_alt_black_24dp" />-->
-
-                            <!--<TextView-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_gravity="center"-->
-                                <!--android:layout_marginEnd="5dp"-->
-                                <!--android:text="images"-->
-
-                                <!--/>-->
-
-                        <!--</LinearLayout>-->
-
-
-                    <!--</LinearLayout>-->
-
-                <!--</LinearLayout>-->
 
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/shopDetailQuestion"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/border_topbottom_alpha"
                     android:hint=" Ask a Question...."
-                    android:minLines="3"
-                    android:padding="10dp"
+                    android:minLines="2"
+                    android:paddingLeft="10dp"
                     android:textSize="15sp" />
 
 
@@ -771,208 +685,123 @@
                         android:background="#939292"
                         android:src="@drawable/border_alpha" />
 
-
-                    <!--<LinearLayout-->
-                        <!--android:id="@+id/shopDetailProfile2"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginLeft="5dp"-->
-                        <!--android:paddingLeft="26dp"-->
-                        <!--android:paddingRight="14dp"-->
-                        <!--android:paddingBottom="7dp"-->
-                        <!--android:paddingTop="10dp"-->
-                        <!--android:layout_marginRight="5dp"-->
-                        <!--android:orientation="horizontal">-->
-
-                        <!--<ImageView-->
-                            <!--android:id="@+id/shopDetailReviewAddUserImage"-->
-                            <!--android:layout_width="50dp"-->
-                            <!--android:layout_height="50dp"-->
-                            <!--android:layout_gravity="center"-->
-                            <!--android:scaleType="fitXY"-->
-                            <!--android:layout_marginEnd="9dp"-->
-                            <!--/>-->
-
-
-
-                        <!--<LinearLayout-->
-                            <!--android:layout_width="0dp"-->
-                            <!--android:layout_height="match_parent"-->
-                            <!--android:layout_weight="4"-->
-                            <!--android:layout_gravity="center_vertical"-->
-                            <!--android:orientation="vertical">-->
-
-                            <!--<LinearLayout-->
-                                <!--android:layout_width="match_parent"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_gravity="center_vertical"-->
-
-                                <!--&gt;-->
-                                <!--<TextView-->
-                                    <!--android:id="@+id/shopDetailReviewAddUserID"-->
-                                    <!--android:layout_width="match_parent"-->
-                                    <!--android:layout_height="match_parent"-->
-                                    <!--android:gravity="center_vertical"-->
-                                    <!--android:layout_gravity="left"-->
-                                    <!--android:text="123"-->
-                                    <!--android:textColor="#000000"-->
-                                    <!--android:textSize="14sp"-->
-                                    <!--android:textStyle="bold" />-->
-                            <!--</LinearLayout>-->
-
-                            <!--<LinearLayout-->
-                                <!--android:layout_width="match_parent"-->
-                                <!--android:layout_height="match_parent"-->
-                                <!--android:gravity="center_vertical"-->
-                                <!--android:orientation="horizontal">-->
-
-                                <!--<com.beardedhen.androidbootstrap.AwesomeTextView-->
-                                    <!--android:layout_width="wrap_content"-->
-                                    <!--android:layout_height="wrap_content"-->
-                                    <!--app:bootstrapBrand="success"-->
-                                    <!--app:fontAwesomeIcon="fa_android"-->
-                                    <!--app:typicon="ty_anchor"-->
-                                    <!--app:bootstrapText="{fa-users} "-->
-                                    <!--/>-->
-
-                                <!--<TextView-->
-                                    <!--android:id="@+id/shopDetailReviewAddFollower"-->
-                                    <!--android:layout_width="wrap_content"-->
-                                    <!--android:layout_height="wrap_content"-->
-                                    <!--android:layout_gravity="center"-->
-                                    <!--android:text="0" />-->
-
-
-
-                                <!--<com.beardedhen.androidbootstrap.AwesomeTextView-->
-                                    <!--android:layout_width="wrap_content"-->
-                                    <!--android:layout_height="wrap_content"-->
-                                    <!--app:bootstrapBrand="success"-->
-                                    <!--app:fontAwesomeIcon="fa_android"-->
-                                    <!--app:typicon="ty_anchor"-->
-                                    <!--android:layout_marginLeft="12dp"-->
-                                    <!--app:bootstrapText="{fa-commenting} "-->
-                                    <!--/>-->
-
-
-
-                                <!--<TextView-->
-                                    <!--android:id="@+id/shopDetailReviewAddReviewCount"-->
-                                    <!--android:layout_width="wrap_content"-->
-                                    <!--android:layout_height="wrap_content"-->
-                                    <!--android:layout_gravity="center"-->
-                                    <!--android:text="0"-->
-
-                                    <!--/>-->
-
-                                <!--<com.beardedhen.androidbootstrap.AwesomeTextView-->
-                                    <!--android:layout_width="wrap_content"-->
-                                    <!--android:layout_height="wrap_content"-->
-                                    <!--app:bootstrapBrand="success"-->
-                                    <!--app:fontAwesomeIcon="fa_android"-->
-                                    <!--android:layout_marginLeft="12dp"-->
-                                    <!--app:typicon="ty_anchor"-->
-                                    <!--app:bootstrapText="{fa-camera-retro} "-->
-                                    <!--/>-->
-
-
-                                <!--<TextView-->
-                                    <!--android:id="@+id/shopDetailReviewAddImageCount"-->
-                                    <!--android:layout_width="wrap_content"-->
-                                    <!--android:layout_height="wrap_content"-->
-                                    <!--android:layout_gravity="center"-->
-                                    <!--android:text="0"-->
-
-                                    <!--/>-->
-
-                            <!--</LinearLayout>-->
-
-
-                        <!--</LinearLayout>-->
-
-
-                    <!--</LinearLayout>-->
-
-
                     <LinearLayout
-                        android:id="@+id/shopDetailProfile2"
+                        android:id="@+id/questionAllProfileLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:paddingLeft="14dp"
+                        android:paddingRight="14dp"
+                        android:paddingBottom="5dp"
+                        android:layout_marginRight="5dp"
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/questionAllUserImage"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
-                            android:layout_margin="10dp" />
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:layout_marginEnd="9dp"
+                            />
+
+
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_weight="4"
+                            android:layout_gravity="center"
+                            android:gravity="center"
                             android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="123"
-                                android:textSize="16sp" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="wrap_content"
+                                >
+                                <TextView
+                                    android:id="@+id/questionAllUserNick"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center_vertical"
+                                    android:layout_gravity="left"
+                                    android:text="123"
+                                    android:textColor="#000000"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
 
-                                <ImageView
-                                    android:layout_width="15dp"
-                                    android:layout_height="15dp"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="6dp"
-                                    android:src="@drawable/ic_group_black_24dp" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <com.beardedhen.androidbootstrap.AwesomeTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:bootstrapBrand="primary"
+                                    app:fontAwesomeIcon="fa_android"
+                                    app:typicon="ty_anchor"
+                                    app:bootstrapText="{fa-users} "
+                                    />
 
                                 <TextView
+                                    android:id="@+id/questionAllUserFollower"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:layout_marginEnd="5dp"
-                                    android:text="folllowers" />
+                                    android:layout_marginStart="5dp"
+                                    android:text="0" />
 
 
-                                <ImageView
-                                    android:layout_width="15dp"
-                                    android:layout_height="15dp"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="6dp"
-                                    android:background="@drawable/ic_chat_black_24dp" />
+
+                                <com.beardedhen.androidbootstrap.AwesomeTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:bootstrapBrand="primary"
+                                    app:fontAwesomeIcon="fa_android"
+                                    app:typicon="ty_anchor"
+                                    app:bootstrapText="{fa-commenting} "
+                                    />
+
+
 
                                 <TextView
+                                    android:id="@+id/questionAllReviewCount"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
+                                    android:layout_marginStart="5dp"
                                     android:layout_marginEnd="5dp"
-                                    android:text="reviews"
+                                    android:text="0"
 
                                     />
 
-                                <ImageView
-                                    android:layout_width="15dp"
-                                    android:layout_height="15dp"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="6dp"
-                                    android:src="@drawable/ic_camera_alt_black_24dp" />
+                                <com.beardedhen.androidbootstrap.AwesomeTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:bootstrapBrand="primary"
+                                    app:fontAwesomeIcon="fa_android"
+                                    app:typicon="ty_anchor"
+                                    app:bootstrapText="{fa-camera-retro} "
+                                    />
+
 
                                 <TextView
+                                    android:id="@+id/questionAllImageCount"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:layout_marginEnd="5dp"
-                                    android:text="images"
+                                    android:layout_marginStart="5dp"
+                                    android:text="0"
 
                                     />
 
                             </LinearLayout>
-
-
                         </LinearLayout>
-
                     </LinearLayout>
 
                     <ImageView
@@ -1036,6 +865,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/shopDetailProfile2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -1078,7 +908,7 @@
                                 android:layout_gravity="left"
                                 android:text="123"
                                 android:textColor="#000000"
-                                android:textSize="14sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
@@ -1149,98 +979,9 @@
                                 />
 
                         </LinearLayout>
-
-
                     </LinearLayout>
-
-
                 </LinearLayout>
 
-                <!--<LinearLayout-->
-                    <!--android:id="@+id/shopDetailProfile3"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:orientation="horizontal">-->
-
-                    <!--<ImageView-->
-                        <!--android:id="@+id/shopDetailAddReviewUserProfile"-->
-                        <!--android:layout_width="50dp"-->
-                        <!--android:layout_height="50dp"-->
-                        <!--android:layout_margin="10dp" />-->
-
-                    <!--<LinearLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:orientation="vertical">-->
-
-                        <!--<TextView-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_margin="10dp"-->
-                            <!--android:text="123"-->
-                            <!--android:textSize="16sp" />-->
-
-                        <!--<LinearLayout-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="match_parent">-->
-
-                            <!--<ImageView-->
-                                <!--android:layout_width="15dp"-->
-                                <!--android:layout_height="15dp"-->
-                                <!--android:layout_gravity="center"-->
-                                <!--android:layout_margin="6dp"-->
-                                <!--android:src="@drawable/ic_group_black_24dp" />-->
-
-                            <!--<TextView-->
-                                <!--android:id="@+id/reviewUserFollower"-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_gravity="center"-->
-                                <!--android:layout_marginEnd="5dp"-->
-                                <!--android:text="folllowers" />-->
-
-
-                            <!--<ImageView-->
-                                <!--android:layout_width="15dp"-->
-                                <!--android:layout_height="15dp"-->
-                                <!--android:layout_gravity="center"-->
-                                <!--android:layout_margin="6dp"-->
-                                <!--android:background="@drawable/ic_chat_black_24dp" />-->
-
-                            <!--<TextView-->
-                                <!--android:id="@+id/reviewReviewCount"-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_gravity="center"-->
-                                <!--android:layout_marginEnd="5dp"-->
-                                <!--android:text="reviews"-->
-
-                                <!--/>-->
-
-                            <!--<ImageView-->
-                                <!--android:layout_width="15dp"-->
-                                <!--android:layout_height="15dp"-->
-                                <!--android:layout_gravity="center"-->
-                                <!--android:layout_margin="6dp"-->
-                                <!--android:src="@drawable/ic_camera_alt_black_24dp" />-->
-
-                            <!--<TextView-->
-                                <!--android:id="@+id/reviewImageCount"-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_gravity="center"-->
-                                <!--android:layout_marginEnd="5dp"-->
-                                <!--android:text="images"-->
-
-                                <!--/>-->
-
-                        <!--</LinearLayout>-->
-
-
-                    <!--</LinearLayout>-->
-
-
-                <!--</LinearLayout>-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1352,98 +1093,128 @@
 
 
                 <LinearLayout
-                    android:id="@+id/shopDetailTipProfile"
+                    android:id="@+id/shopDetailTipPro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingBottom="5dp"
+                    android:layout_marginRight="5dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_margin="10dp" />
+                        android:layout_gravity="center"
+                        android:scaleType="fitXY"
+                        android:layout_marginEnd="9dp"
+                        />
+
+
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"
                         android:layout_gravity="center"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="123"
-                            android:textSize="16sp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            >
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:layout_gravity="left"
+                                android:text="123"
+                                android:textColor="#000000"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
-                            <ImageView
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
-                                android:layout_gravity="center"
-                                android:layout_margin="6dp"
-                                android:src="@drawable/ic_group_black_24dp" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <com.beardedhen.androidbootstrap.AwesomeTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:bootstrapBrand="primary"
+                                app:fontAwesomeIcon="fa_android"
+                                app:typicon="ty_anchor"
+                                app:bootstrapText="{fa-users} "
+                                />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginEnd="5dp"
-                                android:text="folllowers" />
+                                android:layout_marginStart="5dp"
+                                android:text="0" />
 
 
-                            <ImageView
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
-                                android:layout_gravity="center"
-                                android:layout_margin="6dp"
-                                android:background="@drawable/ic_chat_black_24dp" />
+
+                            <com.beardedhen.androidbootstrap.AwesomeTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:bootstrapBrand="primary"
+                                app:fontAwesomeIcon="fa_android"
+                                app:typicon="ty_anchor"
+                                app:bootstrapText="{fa-commenting} "
+                                />
+
+
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:layout_marginStart="5dp"
                                 android:layout_marginEnd="5dp"
-                                android:text="reviews"
+                                android:text="0"
 
                                 />
 
-                            <ImageView
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
-                                android:layout_gravity="center"
-                                android:layout_margin="6dp"
-                                android:src="@drawable/ic_camera_alt_black_24dp" />
+                            <com.beardedhen.androidbootstrap.AwesomeTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:bootstrapBrand="primary"
+                                app:fontAwesomeIcon="fa_android"
+                                app:typicon="ty_anchor"
+                                app:bootstrapText="{fa-camera-retro} "
+                                />
+
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginEnd="5dp"
-                                android:text="images"
+                                android:layout_marginStart="5dp"
+                                android:text="0"
 
                                 />
 
                         </LinearLayout>
-
-
                     </LinearLayout>
-
                 </LinearLayout>
 
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/shopDetailTip"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/border_topbottom_alpha"
                     android:hint="e.g.) 오후 3시에 가면 사람이 한산 할 줄 알았지만 되려 사람이 더 많았습니다. 예약하고 이용하는게 더 도움이 될 것으로 보입니다."
                     android:minLines="3"
-                    android:padding="14dp"
+                    android:padding="10dp"
                     android:textSize="14sp" />
 
 
@@ -1459,6 +1230,7 @@
 
 
             <LinearLayout
+                android:id="@+id/shopDetailTipRVLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
@@ -1489,7 +1261,7 @@
                     android:layout_gravity="center"
                     android:textAlignment="center"
                     android:contentDescription="tipList"
-                    android:padding="10dp"/>
+                    />
                 <!--TODO INFLATE : 외곽선-->
 
 

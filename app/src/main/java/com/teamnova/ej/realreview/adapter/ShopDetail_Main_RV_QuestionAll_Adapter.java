@@ -59,7 +59,7 @@ public class ShopDetail_Main_RV_QuestionAll_Adapter extends RecyclerView.Adapter
         holder.questionAllImageCount.setText("0");
         holder.questionAllReviewCount.setText("0");
         holder.questionAllUserFollower.setText("0");
-        holder.questionAllRegdate.setText(dataSet.getRegdate());
+        holder.questionAllRegdate.setMarkdownText("{fa-clock-o} "+dataSet.getRegdate());
         holder.questionAllText.setText(dataSet.getReviewText());
         holder.questionAllUserNick.setText(dataSet.getUserNick());
         holder.questionAllReplyBtn.setMarkdownText("{fa-wechat}   전체 답변보기(" + dataSet.getAnswerCount() + ")");

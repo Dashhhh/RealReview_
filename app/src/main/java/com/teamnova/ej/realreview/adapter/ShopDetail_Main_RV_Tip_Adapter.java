@@ -45,7 +45,7 @@ public class ShopDetail_Main_RV_Tip_Adapter extends RecyclerView.Adapter<ShopDet
         holder.tipImageCount.setText("0");
         holder.tipReviewCount.setText("0");
         holder.tipUserFollower.setText("0");
-        holder.tipRegdate.setText(dataSet.getRegdate());
+        holder.tipRegdate.setMarkdownText("{fa-clock-o} "+dataSet.getRegdate());
         holder.tipText.setText(dataSet.getReviewText());
         holder.tipUserNick.setText(dataSet.getUserNick());
         Glide.with(mContext).load("http://222.122.203.55/realreview/signup/profiledefault/homeme_default.jpg").into(holder.tipUserImage);

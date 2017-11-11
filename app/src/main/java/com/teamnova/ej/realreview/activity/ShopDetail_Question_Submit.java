@@ -33,7 +33,7 @@ public class ShopDetail_Question_Submit extends AppCompatActivity implements Vie
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle  savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_detail__question__submit);
 

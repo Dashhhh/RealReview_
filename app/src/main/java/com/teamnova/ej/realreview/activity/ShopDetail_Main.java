@@ -184,7 +184,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         reviewPagingBtn = (Button) findViewById(R.id.reviewPagingBtn);
         reviewPagingBtn.setVisibility(View.GONE);
         shopDetailTip = (AppCompatEditText) findViewById(R.id.shopDetailTip);
-        shopDetailTipProfile = (LinearLayout) findViewById(R.id.shopDetailTipProfile);
+        shopDetailTipProfile = (LinearLayout) findViewById(R.id.shopDetailTipRVLayout);
         shopDetailTipRV = (RecyclerView) findViewById(R.id.shopDetailTipRV);
         shopDetailIndicator = findViewById(R.id.shopDetailIndicator);
         shopDetailQuestionRoot = findViewById(R.id.shopDetailQuestionRoot);
@@ -221,6 +221,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailReviewAddFollower = findViewById(R.id.shopDetailReviewAddFollower);
         shopDetailReviewAddUserID = findViewById(R.id.shopDetailReviewAddUserID);
 
+        shopDetailReviewAddUserID.setText(pref.getSharedData("isLogged_nick"));
         shopDetailReviewAddImageCount.setText(pref.getSharedData("isLogged_imageCnt"));
         shopDetailReviewAddReviewCount.setText(pref.getSharedData("isLogged_reviewCnt"));
         shopDetailReviewAddFollower.setText(pref.getSharedData("isLogged_followerCnt"));

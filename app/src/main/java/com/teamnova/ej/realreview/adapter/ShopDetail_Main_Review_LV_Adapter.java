@@ -85,12 +85,11 @@ public class ShopDetail_Main_Review_LV_Adapter extends BaseAdapter {
         Log.d("REVIEW_VIEWING", "Adapter ArrayList Adater " + position + "번 :" + data.get(position));
 
         Glide.with(context).load("http://222.122.203.55/realreview/signup/profiledefault/default_food.png").into(vh.reviewUserImage);
-        vh.reviewRegdate.setText(setData.regdate);
-        vh.reviewUserId.setText(setData.userId);
+        vh.reviewRegdate.setMarkdownText("{fa-clock-o} "+setData.regdate);
+        vh.reviewUserId.setText(setData.getNick());
         vh.reviewReviewCount.setText(setData.reviewCnt);
-        vh.reviewReviewCount.setText("0");
-        vh.reviewUserFollower.setText("0");
-        vh.reviewImageCount.setText("0");
+        vh.reviewUserFollower.setText(setData.getFollowerCnt());
+        vh.reviewImageCount.setText(setData.getImageCnt());
         vh.reviewText.setText(setData.reviewText);
         vh.reviewRating.setRating(setData.fRating);
 /*

@@ -11,14 +11,15 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        >
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -47,7 +48,7 @@
 
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:gravity="center"
                         android:layout_weight="4"
@@ -60,12 +61,12 @@
                             <TextView
                                 android:id="@+id/questionViewUserNick"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:gravity="center_vertical"
                                 android:text="123"
                                 android:textColor="#000000"
-                                android:textSize="14sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
@@ -163,16 +164,16 @@
                     </LinearLayout>
 
 
-                    <TextView
-                        android:id="@+id/questionViewRegdate"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="3dp"
-                        android:layout_weight="1"
-                        android:gravity="end"
-                        android:text="123123123123123123"
-                        android:textSize="10sp" />
+                    <!--<TextView-->
+                        <!--android:id="@+id/questionViewRegdate"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center_vertical"-->
+                        <!--android:layout_margin="3dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:gravity="end"-->
+                        <!--android:text="123123123123123123"-->
+                        <!--android:textSize="10sp" />-->
 
 
                 </LinearLayout>
@@ -192,6 +193,20 @@
                     android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan. Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna. Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus. Vestibulum commodo. Ut rhoncus gravida arcu. "
                     android:textColor="#000000"
                     android:textSize="16sp" />
+
+                <com.beardedhen.androidbootstrap.AwesomeTextView
+                    android:id="@+id/questionViewRegdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginBottom="7dp"
+                    android:layout_marginRight="10dp"
+                    android:textSize="11sp"
+                    app:bootstrapBrand="info"
+                    app:bootstrapText="{fa-clock-o} 123123"
+                    app:fontAwesomeIcon="fa_android"
+                    app:typicon="ty_anchor" />
+
 
 
             </LinearLayout>
