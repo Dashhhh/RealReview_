@@ -3,12 +3,14 @@ package com.teamnova.ej.realreview.activity;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -16,6 +18,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -55,7 +58,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.pnikosis.materialishprogress.ProgressWheel;
-import com.teamnova.ej.realreview.Asynctask.AsyncMainNearbyLatLngReceive;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.adapter.Main_Test_SearchMap;
 import com.teamnova.ej.realreview.util.Dialog_Default;
@@ -65,9 +67,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -296,7 +300,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         String url = "http://222.122.203.55/realreview/Nearby/latlng.php?";
         String urlMerge = url + "lat_start=" + resultNearRightLat + "&lat_end=" + resultFarLeftLat + "&lng_start=" + resultFarLeftLng + "&lng_end=" + resultNearRightLng;
         ProgressWheel progressDialog = new ProgressWheel(this);
-        AsyncMainNearbyLatLngReceive upload = new AsyncMainNearbyLatLngReceive(urlMerge, progressDialog, this);
+        AsyncMainNearbyLatLngReceive upload = new AsyncMainNearbyLatLngReceive(urlMerge, this);
         upload.execute();
 
 
@@ -855,6 +859,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     }
 
 
+
     public class filePathThread extends Thread {
 
         public filePathThread() throws UnsupportedEncodingException {
@@ -945,6 +950,11 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
             return;
         }
 
+        ProgressWheel dial = new ProgressWheel(this);
+        dial.setBackgroundColor(Color.WHITE);
+        dial.spin();
+
+
         SharedPreferenceUtil preferenceUtil = new SharedPreferenceUtil(this);
         String locationFlag = preferenceUtil.getSharedData("LOCATION_FLAG");
 
@@ -1005,7 +1015,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         ProgressWheel progressDialog = new ProgressWheel(this);
         StringBuilder conn = null;
         try {
-            conn = new AsyncMainNearbyLatLngReceive(urlMerge, progressDialog, this).execute().get(5000, TimeUnit.MILLISECONDS);
+            conn = new AsyncMainNearbyLatLngReceive(urlMerge, this).execute().get(5000, TimeUnit.MILLISECONDS);
             JSONObject castingJO = new JSONObject(String.valueOf(conn));
             Log.d("JSON_CHECK", "1 - castingJO :" + castingJO);
             JSONArray fixJSON = castingJO.getJSONArray("realreview");
@@ -1101,7 +1111,11 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 
         }
 
+        dial.stopSpinning();
+
     }
+
+
 
 
     //정보창 클릭 리스너
@@ -1123,4 +1137,103 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     };
 
 
+    /**
+     * Created by ej on 2017-10-12.
+     */
+
+    public static class AsyncMainNearbyLatLngReceive extends AsyncTask<Void, Integer, StringBuilder> {
+        public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
+        private String urlString;
+        private String params = "";
+        String TestVAR;
+
+        AsyncMainNearbyLatLngReceive(String urlString, Context mContext) {
+            this.urlString = urlString;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected StringBuilder doInBackground(Void... params) {
+            // TODO Auto-generated method stub
+
+            StringBuilder jsonHtml = new StringBuilder();
+            JSONArray jsonArray;
+            try {
+                URL phpUrl = new URL(urlString);
+                Log.d("AsyncMainLatLngReceive", "URL:" + urlString);
+
+                HttpURLConnection conn = (HttpURLConnection) phpUrl.openConnection();
+                conn.setUseCaches(false);
+                int responseStatusCode = conn.getResponseCode();
+                Log.e(ContentValues.TAG, "response code - " + responseStatusCode);
+                if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                    while (true) {
+                        String line = br.readLine();
+                        if (line == null)
+                            break;
+                        jsonHtml.append(line + "\n");
+                    }
+                    br.close();
+                }
+                conn.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            jsonHtml.toString().trim();
+            Log.e(ContentValues.TAG, "jsonHtml - " + jsonHtml);
+            try {
+                int i = 0;
+                JSONObject jObject = new JSONObject(String.valueOf(jsonHtml));
+                jsonArray = jObject.getJSONArray("realreview");
+                JSONObject item = jsonArray.getJSONObject(i);
+                int length = jsonArray.length();
+
+                Log.d("AsyncMainLatLngReceive", "JSONObject jOcject:" + jObject);
+                Log.d("AsyncMainLatLngReceive", "JSONArray jsonArray :" + jsonArray);
+                Log.d("AsyncMainLatLngReceive", "JSONObject item:" + item);
+
+                Log.d("AsyncMainLatLngReceive", "JSONObject jOcject Length:" + jObject.length());
+                Log.d("AsyncMainLatLngReceive", "JSONArray jsonArray Length :" + jsonArray.length());
+                Log.d("AsyncMainLatLngReceive", "JSONArray jsonArray Length :" + item.length());
+
+
+                String getId = item.getString("id");
+                String getAddress = item.getString("address");
+                String getLat = item.getString("latitude");
+                String getLng = item.getString("longtitude");
+                String getviewportSouthWestLat = item.getString("viewportSouthWestLat");
+                String getViewportSouthWestLng = item.getString("viewportSouthWestLng");
+                String getViewportNorthEastLat = item.getString("viewportNorthEastLat");
+                String getViewportNorthEastLng = item.getString("viewportNorthEastLng");
+                String getShopName = item.getString("shopName");
+                String getShopOpen = item.getString("shopOpen");
+                String getShopClose = item.getString("shopClose");
+                String getShopTheme1 = item.getString("shopTheme1");
+                String getShopTheme2 = item.getString("shopTheme2");
+                String getShopTheme3 = item.getString("shopTheme3");
+                String getShopTheme4 = item.getString("shopTheme4");
+                String getShopTheme5 = item.getString("shopTheme5");
+                String getCallNumber = item.getString("callNumber");
+                String getIndexShopAdd = item.getString("indexShopAdd");
+                String getPermanentlyClosed = item.getString("permanentlyClosed");
+                String getPriceLevel = item.getString("priceLevel");
+                HTTP_RECEIVE_SHOPDATA = jsonHtml;
+
+                return jsonHtml;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(StringBuilder result) {
+        }
+
+    }
 }

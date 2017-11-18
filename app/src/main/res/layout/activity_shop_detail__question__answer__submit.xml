@@ -85,7 +85,6 @@
                 android:hint="이 곳에 답변을 남겨주세요"
                 android:minLines="20"
                 app:roundedCorners="true"
-                android:focusable="false"
                 app:bootstrapBrand="info"
                 app:bootstrapSize="md" />
 

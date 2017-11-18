@@ -31,7 +31,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
@@ -61,6 +60,7 @@ import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Review_LV_Adapter;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Review_LV_Set;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 import com.teamnova.ej.realreview.util.ValidateUtil;
+import com.xgc1986.parallaxPagerTransformer.ParallaxPagerTransformer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -88,7 +88,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     ListView shopDetailLVReview;
     me.relex.circleindicator.CircleIndicator shopDetailIndicator;
     ImageView shopDetailQuestionUserImage, shopDetailAddReviewUserProfile, shopDetailReviewAddUserImage;
-
     SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
             .findFragmentById(R.id.mapFragmentDetail);
 
@@ -280,9 +279,13 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
         viewpagerAdapter = new ShopDetail_Main_Adapter_Backup(this);
         shopDetailViewPager.setAdapter(viewpagerAdapter);
-        shopDetailViewPager.setPageTransformer(true, new CubeOutTransformer());
+//        shopDetailViewPager.setPageTransformer(false, new ParallaxPagerTransformer(R.id.blurred_background_image_view));
+        shopDetailViewPager.setPageTransformer(true, new ParallaxPagerTransformer(R.id.shopDetailViewPagerImage));
         shopDetailIndicator.setViewPager(shopDetailViewPager);
         viewpagerAdapter.registerDataSetObserver(shopDetailIndicator.getDataSetObserver());
+
+
+
         ShopDetail_Main_Review_LV_Adapter reviewLvAdapter = new ShopDetail_Main_Review_LV_Adapter(this, reviewData);
         shopDetailLVReview.setAdapter(reviewLvAdapter);
         reviewLvAdapter.clearItem();
@@ -1225,11 +1228,9 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             Log.d("imagePickCheck", "shopID :" + iShopId);
             Log.d("imagePickCheck", "userId :" + iUserId);
 
-
-            ProgressWheel progressDialog = new ProgressWheel(this);
             Void conn;
             try {
-                conn = new AsyncShopPhotoSubmit(progressDialog, this).execute().get(10000, TimeUnit.MILLISECONDS);
+                conn = new AsyncShopPhotoSubmit(this).execute().get(10000, TimeUnit.MILLISECONDS);
                 Log.d("imagePickCheck", "MAIN THREAD conn Check :" + conn);
             } catch (InterruptedException e) {
                 e.printStackTrace();

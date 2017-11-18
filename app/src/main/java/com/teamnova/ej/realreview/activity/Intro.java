@@ -38,13 +38,30 @@ public class Intro extends AppCompatActivity implements LocationListener {
     //위치정보 장치 이름
     String provider = null;
 
+    com.wang.avi.AVLoadingIndicatorView introProgress;
 
     public static String MYLOCATION;
+    void startAnim(){
+        introProgress = findViewById(R.id.introProgress);
+        introProgress.show();
+        // or avi.smoothToShow();
+    }
 
+
+    void stopAnim(){
+        introProgress.hide();
+        // or avi.smoothToHide();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
+        startAnim();
+
+
+
+
+
 
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
 
@@ -129,6 +146,7 @@ public class Intro extends AppCompatActivity implements LocationListener {
         mhandler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                stopAnim();
                 Intent i = new Intent(Intro.this, Signin.class);
                 startActivity(i);
                 finish();

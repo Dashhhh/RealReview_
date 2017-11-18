@@ -2,7 +2,6 @@ package com.teamnova.ej.realreview.Asynctask;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -25,20 +24,22 @@ public class AsyncShopPhotoSubmit extends AsyncTask<Void, Integer, Void> {
     private String urlString;
     private String params = "";
     Context mContext;
-    private ProgressWheel dialog;
     String TestVAR;
     private String reviewData;
+    ProgressWheel shopDetailSpinner;
 
-    public AsyncShopPhotoSubmit(ProgressWheel dialog, Context mContext) {
-        this.dialog = dialog;
+    public AsyncShopPhotoSubmit(Context mContext) {
         this.mContext = mContext;
     }
 
     @Override
     protected void onPreExecute() {
 
-        dialog.setInstantProgress(0.64f);
-        dialog.setBarColor(Color.BLUE);
+         shopDetailSpinner = new ProgressWheel(mContext);
+        
+
+
+
     }
 
     @Override

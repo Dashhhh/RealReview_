@@ -1,10 +1,8 @@
 package com.teamnova.ej.realreview.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,10 +13,7 @@ import com.bumptech.glide.Glide;
 import com.teamnova.ej.realreview.Asynctask.AsyncSeeAllAnswerRequest;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Answer_Viewing_Adapter;
-import com.teamnova.ej.realreview.adapter.ShopDetail_Answer_Viewing_Divider;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Answer_Viewing_Set;
-import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_QuestionAll_Adapter;
-import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_QuestionAll_Set;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
 import org.json.JSONArray;
@@ -110,9 +105,10 @@ public class ShopDetail_Answer_Viewing extends AppCompatActivity {
 
         data.clear();
         ShopDetail_Answer_Viewing_Adapter adapter = new ShopDetail_Answer_Viewing_Adapter(this, data);
-        StaggeredGridLayoutManager themeLayoutSet = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-        questionViewRV.setHasFixedSize(true);
+        LinearLayoutManager themeLayoutSet = new LinearLayoutManager(this);
+        themeLayoutSet.setReverseLayout(true);
         questionViewRV.setLayoutManager(themeLayoutSet);
+        questionViewRV.setVerticalScrollBarEnabled(false);
 /*
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(getApplicationContext(), new LinearLayoutManager(this).getOrientation());
@@ -121,6 +117,7 @@ public class ShopDetail_Answer_Viewing extends AppCompatActivity {
         questionViewRV.addItemDecoration(dividerItemDecoration);
 */
 
+        questionViewRV.setHasFixedSize(false);
         questionViewRV.setAdapter(adapter);
 
         JSONObject conn = new JSONObject();
@@ -173,6 +170,5 @@ public class ShopDetail_Answer_Viewing extends AppCompatActivity {
 
 
     }
-
 
 }

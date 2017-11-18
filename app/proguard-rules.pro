@@ -32,3 +32,5 @@
 
 -dontwarn com.squareup.picasso.**
 -dontwarn com.bumptech.glide.**
+-keep class com.wang.avi.** { *; }
+-keep class com.wang.avi.indicators.** { *; }
