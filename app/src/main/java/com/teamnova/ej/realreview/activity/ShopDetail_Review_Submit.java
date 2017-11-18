@@ -1,5 +1,6 @@
 package com.teamnova.ej.realreview.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.teamnova.ej.realreview.Asynctask.AsyncReviewSubmit;
@@ -102,6 +105,28 @@ public class ShopDetail_Review_Submit extends AppCompatActivity implements View.
         switch (v.getId()) {
 
             case R.id.reviewCamera: {
+
+                PermissionListener permissionlistener = new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+
+                        Log.d("TEDPermission","onPermissionGranted");
+
+                    }
+
+                    @Override
+                    public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                        Log.d("TEDPermission","onPermissionDenied");
+                    }
+
+
+                };
+
+                TedPermission.with(this)
+                        .setPermissionListener(permissionlistener)
+                        .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                        .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
+                        .check();
                 /*
                 Matisse.from(ShopDetail_Review_Submit.this)
                         .choose(MimeType.allOf())
@@ -139,7 +164,7 @@ public class ShopDetail_Review_Submit extends AppCompatActivity implements View.
                 pref.setSharedData("HTTP_REVIEW_REVIEW", text);
                 pref.setSharedData("HTTP_REVIEW_USER",iUserId);
                 pref.setSharedData("HTTP_REVIEW_RATING", String.valueOf(iRating));
-                pref.setSharedData("HTTP_REVIEW_RATING", String.valueOf(iNick));
+                pref.setSharedData("HTTP_REVIEW_NICK", String.valueOf(iNick));
                 ProgressWheel progressDialog = new ProgressWheel(this);
                 Void conn;
                 try {

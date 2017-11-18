@@ -1,6 +1,7 @@
 package com.teamnova.ej.realreview.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.teamnova.ej.realreview.R;
+import com.teamnova.ej.realreview.activity.ShopDetail_PhotoView;
 
 import java.util.ArrayList;
 
@@ -43,13 +45,24 @@ public class ShopDetail_Main_RV_Photo_Adapter extends RecyclerView.Adapter<ShopD
     public void onBindViewHolder(ShopDetail_Main_RV_Photo_Viewholder holder, int position) {
         Log.d("RecyclerView(Image)", "onBindViewHolder - Enter");
 
-        ShopDetail_Main_RV_Photo_Set setUrl = data.get(position);
+        final int fPosition = position;
+        final ShopDetail_Main_RV_Photo_Set setUrl = data.get(position);
         Log.d("RecyclerView(Image)", "data size :" + String.valueOf(data.size()));
         Log.d("RecyclerView(Image)", "data get position :" + String.valueOf(data.get(position)));
         Log.d("RecyclerView(Image)", "setUrl :" + setUrl);
         Log.d("RecyclerView(Image)", "setUrl :" + setUrl.imageUrl);
         Glide.with(mContext).load(setUrl.imageUrl).into(holder.iv);
 
+        holder.iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String imageURL = setUrl.imageUrl;
+                Intent intent = new Intent(mContext, ShopDetail_PhotoView.class);
+                intent.putExtra("imageURL", imageURL);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override

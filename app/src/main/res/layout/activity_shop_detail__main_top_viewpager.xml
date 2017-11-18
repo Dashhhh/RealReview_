@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/viewpagerRelative"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/viewpagerRelative"
     android:orientation="vertical">
 
     <ImageView
         android:layout_width="2dp"
         android:layout_height="match_parent"
-        android:background="#83000000"
         android:layout_alignParentLeft="true"
-        />
+        android:background="#83000000" />
 
     <ImageView
         android:id="@+id/shopDetailViewPagerImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-        />
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp" />
 
     <ImageView
         android:layout_width="2dp"
         android:layout_height="match_parent"
-        android:background="#98000000"
         android:layout_alignParentRight="true"
-        />
+        android:background="#98000000" />
 
 </RelativeLayout>

@@ -151,7 +151,7 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
             dos.writeUTF(postDataBuilder.toString());
 
             String postCheck = String.valueOf(postDataBuilder);
-            Log.d("REVIEW_Image",postCheck);
+            Log.d("REVIEW_Image","postCheck :"+postCheck);
 
             /**
              * REVIEW ID (SHOP ID)

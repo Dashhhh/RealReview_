@@ -180,6 +180,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     ArrayList<String> keyShopDataList = new ArrayList<>();
     ArrayList<String> valueShopDataList = new ArrayList<>();
     private JSONObject item2;
+    private String modifyProfileImagePath;
 
     private void init() {
 
@@ -841,6 +842,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
                 dos.flush();
                 dos.close();
 
+
             } catch (MalformedURLException ex) {
 
                 ex.printStackTrace();
@@ -891,17 +893,40 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
                 HttpURLConnection conn = (HttpURLConnection) phpUrl.openConnection();
 //                conn.setConnectTimeout(10000);
                 conn.setUseCaches(false);
-                Log.e("phpURL", "phpURL:" + phpUrl);
-                Log.e("urlParse", "urlParse:" + urlParse);
+                Log.e("filePathThread", "phpURL:" + phpUrl);
+                Log.e("filePathThread", "urlParse:" + urlParse);
                 conn.connect();
                 int responseStatusCode = conn.getResponseCode();
-                Log.e(TAG, "response code - " + responseStatusCode);
+                Log.e("filePathThread", "response code - " + responseStatusCode);
                 conn.disconnect();
                 strAnd = "&";
                 strId = "id=";
                 strPw = "pw=";
                 strNick = "nick=";
                 strPath = "profile_image_path=";
+
+                // 전송 결과값 받기
+                InputStreamReader inputStream = new InputStreamReader(conn.getInputStream(), "UTF-8");
+                BufferedReader bufferReader = new BufferedReader(inputStream);
+                StringBuilder builder = new StringBuilder();
+                String str;
+                while ((str = bufferReader.readLine()) != null) {
+                    builder.append(str).append("\n");
+                }
+                String result = builder.toString();
+                Log.d("filePathThread", "전송결과 : " + result);
+                Log.d("filePathThread", "conn.getResponseCode() : " + conn.getResponseCode());
+                Log.d("filePathThread", "conn.getResponseMessage() : " + conn.getResponseMessage());
+
+                JSONObject jsonObject = new JSONObject(result);
+                Log.d("filePathThread", "jsonObject : " + jsonObject);
+                JSONArray jsonArray = jsonObject.getJSONArray("profilePath");
+                JSONObject jsonString = jsonArray.getJSONObject(0);
+                modifyProfileImagePath = jsonString.getString("imagepath");
+                Log.d("filePathThread", "imagePathResponse : " + modifyProfileImagePath);
+                SharedPreferenceUtil pref = new SharedPreferenceUtil(Main_Test.this);
+                pref.setSharedData("isLogged_profileImagePath", modifyProfileImagePath);
+
 
             } catch (Exception e) {
                 e.printStackTrace();

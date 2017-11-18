@@ -31,6 +31,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
@@ -79,15 +80,19 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     android.support.v4.view.ViewPager shopDetailViewPager;
     TextView shopDetailTitle, shopDetailTitleReviewCnt, shopDetailTimeOpen, shopDetailTimeClose, shopDetailQuestion_Question, shopDetailQuestion_Answer, shopDetailQuestionImageCount, shopDetailQuestionReviewCount, shopDetailQuestionFollower, shopDetailQuestionNick;
     TextView shopDetailReviewAddImageCount, shopDetailReviewAddReviewCount, shopDetailReviewAddFollower, shopDetailReviewAddUserID;
+    TextView shopDetailUserFollowerCount, shopDetailUserReviewCount, shopDetailTipuserImageCount, shopDetailTipUserNick;
+    ImageView shopDetailTipUserImage;
     android.support.v7.widget.AppCompatRatingBar shopDetailTitleRating, shopDetailRatingReview, shopDetailRatingReview2;
     android.support.v7.widget.RecyclerView shopDetailRVTitleTag, shopDetailRVImage, shopDetailTipRV;
     Button shopDetailTopAddPhoto, shopDetailCheckin, shopDetailBookmark, mapAddress, shopDetailCallBtn, shopDetailDirection, shopDetailMenu, shopDetailWebsiteBtn, shopDetailMessageBtn;
-    LinearLayout shopDetailProfile, shopDetailProfile2, shopDetailProfile3, shopDetailTipProfile, shopDetailQuestionRoot, shopDetailQuestionAllRoot;
+    LinearLayout shopDetailProfile, shopDetailProfile2, shopDetailProfile3, shopDetailTipProfileLayout, shopDetailQuestionRoot, shopDetailQuestionAllRoot;
     SupportMapFragment mapFragmentDetail;
     android.support.v7.widget.AppCompatEditText shopDetailQuestion, shopDetailReview, shopDetailTip;
     ListView shopDetailLVReview;
     me.relex.circleindicator.CircleIndicator shopDetailIndicator;
     ImageView shopDetailQuestionUserImage, shopDetailAddReviewUserProfile, shopDetailReviewAddUserImage;
+
+
     SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
             .findFragmentById(R.id.mapFragmentDetail);
 
@@ -183,7 +188,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         reviewPagingBtn = (Button) findViewById(R.id.reviewPagingBtn);
         reviewPagingBtn.setVisibility(View.GONE);
         shopDetailTip = (AppCompatEditText) findViewById(R.id.shopDetailTip);
-        shopDetailTipProfile = (LinearLayout) findViewById(R.id.shopDetailTipRVLayout);
+        shopDetailTipProfileLayout = (LinearLayout) findViewById(R.id.shopDetailTipRVLayout);
         shopDetailTipRV = (RecyclerView) findViewById(R.id.shopDetailTipRV);
         shopDetailIndicator = findViewById(R.id.shopDetailIndicator);
         shopDetailQuestionRoot = findViewById(R.id.shopDetailQuestionRoot);
@@ -192,6 +197,27 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailQuestionImageCount = findViewById(R.id.shopDetailQuestionImageCount);
         shopDetailQuestionReviewCount = findViewById(R.id.shopDetailQuestionReviewCount);
         shopDetailQuestionFollower = findViewById(R.id.shopDetailQuestionFollower);
+        shopDetailTipUserImage = findViewById(R.id.shopDetailTipUserImage);
+        shopDetailUserFollowerCount = findViewById(R.id.shopDetailUserFollowerCount);
+        shopDetailUserReviewCount = findViewById(R.id.shopDetailUserReviewCount);
+        shopDetailTipuserImageCount = findViewById(R.id.shopDetailTipuserImageCount);
+        shopDetailTipUserNick = findViewById(R.id.shopDetailTipUserNick);
+
+        /**
+         * Tip User Layout Setting
+         */
+
+
+        Glide.with(this).load(pref.getSharedData("isLogged_profileImagePath")).thumbnail(0.5f)
+                .apply(RequestOptions.bitmapTransform(new CircleCrop(this)))
+                .into(shopDetailTipUserImage);
+
+        shopDetailTipUserNick.setText(pref.getSharedData("isLogged_nick"));
+        shopDetailTipuserImageCount.setText(pref.getSharedData("isLogged_imageCnt"));
+        shopDetailUserReviewCount.setText(pref.getSharedData("isLogged_reviewCnt"));
+        shopDetailUserFollowerCount.setText(pref.getSharedData("isLogged_followerCnt"));
+
+
 
 
         /**
@@ -274,18 +300,14 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         ProgressWheel progressDialog = new ProgressWheel(this);
 
 
-        String urlParse = "http://222.122.203.55/realreview/shopimage/viewpagerImageResponse.php?id=" + defaultShopID;
+        String urlParse = "http://222.122.203.55/realreview/shopimage/viewpagerImageResponse.php?id=" + defaultShopID + "&userid="+ defaulUserId;
 
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
         viewpagerAdapter = new ShopDetail_Main_Adapter_Backup(this);
         shopDetailViewPager.setAdapter(viewpagerAdapter);
-//        shopDetailViewPager.setPageTransformer(false, new ParallaxPagerTransformer(R.id.blurred_background_image_view));
         shopDetailViewPager.setPageTransformer(true, new ParallaxPagerTransformer(R.id.shopDetailViewPagerImage));
         shopDetailIndicator.setViewPager(shopDetailViewPager);
         viewpagerAdapter.registerDataSetObserver(shopDetailIndicator.getDataSetObserver());
-
-
-
         ShopDetail_Main_Review_LV_Adapter reviewLvAdapter = new ShopDetail_Main_Review_LV_Adapter(this, reviewData);
         shopDetailLVReview.setAdapter(reviewLvAdapter);
         reviewLvAdapter.clearItem();
@@ -415,6 +437,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 Log.d("REIVEW_REVIEW", "Casting Info - getRegdate :" + i + "번 :" + getRegdate);
                 String getUserId = jsonObject1.getString("id_user");
                 Log.d("REIVEW_REVIEW", "Casting Info - getUserId :" + i + "번 :" + getUserId);
+                String getNick = jsonObject1.getString("nick");
+                Log.d("REIVEW_REVIEW", "Casting Info - nick :" + i + "번 :" + getNick);
                 String getRating = jsonObject1.getString("rating");
                 Log.d("REIVEW_REVIEW", "Casting Info - getRating :" + i + "번 :" + getRating);
                 String getProfileImageURL = jsonObject1.getString("profileimage");
@@ -426,10 +450,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                     String followerCnt = "0";
                     String reviewCnt = "0";
                     String imageCnt = "0";
-                    String reviewText = getReviewText;
-                    String regdate = getRegdate;
-                    String userId = getUserId;
-                    String rating = getRating;
                     float ff = Float.parseFloat(getRating);
                     titleRatingPoint += ff;
                     if (reviewJSONArray.length() != 0) titleRatingPersonCount++;
@@ -446,7 +466,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 dataSet.titleImage = getProfileImageURL;
 */
 //                dataSet_addList.add(dataSet);
-                    reviewLvAdapter.addItem(titleImage, followerCnt, reviewCnt, imageCnt, reviewText, regdate, userId, rating, ff);
+                    reviewLvAdapter.addItem(titleImage, followerCnt, reviewCnt, imageCnt, getReviewText, getRegdate, getUserId, getRating, getNick, ff, getProfileImageURL);
                     Log.d("REIVEW_REVIEW", "Casting Info - reviewData (Array List) :" + i + "번 :" + reviewData.get(i));
                 }
             }
@@ -1220,7 +1240,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             String tag = pref.getSharedData("TAG");
             String iShopId = pref.getSharedData("ID" + tag);
 
-
             String iUserId = pref.getSharedData("isLogged_id");
             pref.setSharedData("HTTP_REVIEW_ID", iShopId);
             pref.setSharedData("HTTP_REVIEW_USER", iUserId);
@@ -1239,9 +1258,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             } catch (TimeoutException e) {
                 e.printStackTrace();
             }
-
         }
-
-
     }
 }

@@ -140,7 +140,10 @@
         <activity android:name=".activity.ShopDetail_Question_All" />
         <activity android:name=".activity.ShopDetail_Overview_Map" />
         <activity android:name=".activity.ShopDetail_Question_Answer_Submit" />
-        <activity android:name=".activity.ShopDetail_AddWebsite"></activity>
+        <activity android:name=".activity.ShopDetail_AddWebsite" />
+        <activity android:name=".activity.ShopDetail_PhotoView" />
+        <activity android:name=".activity.ShopDetail_Review_Viewing" />
+        <activity android:name=".activity.ShopDetail_Review_Modify"></activity>
     </application>
 
 </manifest>

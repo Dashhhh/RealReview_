@@ -1,6 +1,7 @@
 package com.teamnova.ej.realreview.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.view.PagerAdapter;
@@ -12,6 +13,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.teamnova.ej.realreview.R;
+import com.teamnova.ej.realreview.activity.ShopDetail_Main;
+import com.teamnova.ej.realreview.activity.ShopDetail_PhotoView;
 
 import java.util.ArrayList;
 
@@ -60,6 +63,7 @@ public class ShopDetail_Main_Adapter_Backup extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         Log.d("ViewPager", "instantiateItem()");
 
+        final int fPosition = position;
         Context context = container.getContext();
         ShopDetail_Main_Adapter_Viewholder vh = new ShopDetail_Main_Adapter_Viewholder();
         View v = null;
@@ -82,6 +86,21 @@ public class ShopDetail_Main_Adapter_Backup extends PagerAdapter {
                 load(url).
                 into(vh.imageView);
         container.addView(v);
+
+
+        vh.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(mContext, ShopDetail_PhotoView.class);
+
+                intent.putExtra("imageURL",stringArrayList.get(fPosition));
+
+                mContext.startActivity(intent);
+
+            }
+        });
+
 
         return v;
 

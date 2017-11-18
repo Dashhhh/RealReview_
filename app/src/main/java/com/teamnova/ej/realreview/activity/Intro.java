@@ -65,28 +65,6 @@ public class Intro extends AppCompatActivity implements LocationListener {
 
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
 
-        PermissionListener permissionlistener = new PermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-
-                Log.d("TEDPermission","onPermissionGranted");
-
-            }
-
-            @Override
-            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-                Log.d("TEDPermission","onPermissionDenied");
-            }
-
-
-        };
-
-        TedPermission.with(this)
-                .setPermissionListener(permissionlistener)
-                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION)
-                .check();
-
         /**위치정보 객체를 생성한다.*/
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -147,9 +125,35 @@ public class Intro extends AppCompatActivity implements LocationListener {
             @Override
             public void run() {
                 stopAnim();
-                Intent i = new Intent(Intro.this, Signin.class);
-                startActivity(i);
-                finish();
+
+                PermissionListener permissionlistener = new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+
+                        Log.d("TEDPermission","onPermissionGranted");
+
+                        Intent i = new Intent(Intro.this, Signin.class);
+                        startActivity(i);
+                        finish();
+
+                    }
+
+                    @Override
+                    public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                        Log.d("TEDPermission","onPermissionDenied");
+
+
+                    }
+
+
+                };
+
+                TedPermission.with(Intro.this)
+                        .setPermissionListener(permissionlistener)
+                        .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                        .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .check();
+
             }
         }, 800);
 

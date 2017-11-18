@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 
 import com.bumptech.glide.Glide;
 import com.teamnova.ej.realreview.R;
+import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
 import java.util.ArrayList;
 
@@ -58,7 +59,13 @@ public class ShopDetail_Main_Review_LV_Adapter extends BaseAdapter {
 
         Log.d("REIVEW_REVIEW", "getView :" + position);
         Context context = viewGroup.getContext();
+        ShopDetail_Main_Review_LV_Set setData = data.get(position);
         ShopDetail_Main_Review_LV_ViewHolder vh = new ShopDetail_Main_Review_LV_ViewHolder();
+        SharedPreferenceUtil pref = new SharedPreferenceUtil(context);
+        String checkUser = pref.getSharedData("isLogged_nick");
+        Log.d("REVIEW_VIEWING", "checkUser :" + checkUser);
+        Log.d("REVIEW_VIEWING", "pref.getSharedData - isLogged_nick :" + pref.getSharedData("isLogged_nick"));
+        Log.d("REVIEW_VIEWING", "pref.getSharedData - isLogged_nick :" + pref.getSharedData("isLogged_nick"));
 
         if (view == null) {
 
@@ -75,16 +82,26 @@ public class ShopDetail_Main_Review_LV_Adapter extends BaseAdapter {
             vh.reviewUsefulBtn = view.findViewById(R.id.reviewUsefulBtn);
             vh.reviewNiceBtn = view.findViewById(R.id.reviewNiceBtn);
             vh.reviewCoolBtn = view.findViewById(R.id.reviewCoolBtn);
+            vh.reviewLayoutForLoginUser = view.findViewById(R.id.reviewLayoutForLoginUser);
+            vh.reviewModify = view.findViewById(R.id.reviewModify);
+            vh.reviewDelete = view.findViewById(R.id.reviewDelete);
+
+
             view.setTag(vh);
         } else {
             vh = (ShopDetail_Main_Review_LV_ViewHolder) view.getTag();
         }
 
-        ShopDetail_Main_Review_LV_Set setData = data.get(position);
         Log.d("REVIEW_VIEWING", "Adaptr setData(Instance) :" + setData);
         Log.d("REVIEW_VIEWING", "Adapter ArrayList Adater " + position + "번 :" + data.get(position));
 
-        Glide.with(context).load("http://222.122.203.55/realreview/signup/profiledefault/default_food.png").into(vh.reviewUserImage);
+        if(!setData.titleImage.equals("")){
+            Glide.with(context).load(setData.titleImage).into(vh.reviewUserImage);
+
+        } else {
+            Glide.with(context).load("http://222.122.203.55/realreview/signup/profiledefault/default_food.png").into(vh.reviewUserImage);
+
+        }
         vh.reviewRegdate.setMarkdownText("{fa-clock-o} "+setData.regdate);
         vh.reviewUserId.setText(setData.getNick());
         vh.reviewReviewCount.setText(setData.reviewCnt);
@@ -92,6 +109,20 @@ public class ShopDetail_Main_Review_LV_Adapter extends BaseAdapter {
         vh.reviewImageCount.setText(setData.getImageCnt());
         vh.reviewText.setText(setData.reviewText);
         vh.reviewRating.setRating(setData.fRating);
+
+        if (checkUser.equals(setData.getNick())) {
+
+            // TODO - Setting onClickListener for User Layout
+
+//            vh.reviewLayoutForLoginUser = view.findViewById(R.id.reviewLayoutForLoginUser);
+//            vh.reviewModify = view.findViewById(R.id.reviewModify);
+//            vh.reviewDelete = view.findViewById(R.id.reviewDelete);
+        } else {
+            vh.reviewLayoutForLoginUser.setVisibility(View.GONE);
+        }
+
+
+
 /*
 
         if(!setData.titleImage.isEmpty()){
@@ -146,7 +177,9 @@ public class ShopDetail_Main_Review_LV_Adapter extends BaseAdapter {
                         String regdate,
                         String userId,
                         String rating,
-                        float fRating) {
+                        String nick,
+                        float fRating,
+                        String profileImageURL) {
         ShopDetail_Main_Review_LV_Set addSetData = new ShopDetail_Main_Review_LV_Set();
 
         addSetData.titleImage = titleImage;
@@ -157,8 +190,9 @@ public class ShopDetail_Main_Review_LV_Adapter extends BaseAdapter {
         addSetData.regdate = regdate;
         addSetData.userId = userId;
         addSetData.rating = rating;
+        addSetData.nick = nick;
         addSetData.fRating = fRating;
-
+        addSetData.titleImage = profileImageURL;
 
 //        this.data.addAll(data);
         this.data.add(0, addSetData);

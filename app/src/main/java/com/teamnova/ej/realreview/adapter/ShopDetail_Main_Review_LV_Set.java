@@ -18,6 +18,7 @@ public class ShopDetail_Main_Review_LV_Set {
     public float fRating;
     public String nick;
 
+
     public String getTitleImage() {
         return titleImage;
     }

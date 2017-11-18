@@ -59,7 +59,6 @@ public class AsyncQuestionSubmit extends AsyncTask<Void, Integer, Void> {
         StringBuffer postDataBuilder = new StringBuffer();
         JSONArray jsonArray;
 
-
         try {
             // URL설정, 접속
             URL url = new URL(urlString);
