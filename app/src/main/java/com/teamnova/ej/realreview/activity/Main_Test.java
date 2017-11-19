@@ -57,6 +57,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.adapter.Main_Test_SearchMap;
@@ -94,10 +96,10 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     public static final int CROP_FROM_CAMERA = 2;
     public static boolean UPLOAD_FLAG = false;
 
-    public static double LOCATION_USER_LAT       = 0;
-    public static double LOCATION_USER_LNG       = 0;
-    public static double LOCATION_FAR_LEFT_LAT   = 0;
-    public static double LOCATION_FAR_LEFT_LNG   = 0;
+    public static double LOCATION_USER_LAT = 0;
+    public static double LOCATION_USER_LNG = 0;
+    public static double LOCATION_FAR_LEFT_LAT = 0;
+    public static double LOCATION_FAR_LEFT_LNG = 0;
     public static double LOCATION_NEAR_RIGHT_LAT = 0;
     public static double LOCATION_NEAR_RIGHT_LNG = 0;
 
@@ -427,6 +429,26 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Log.d("TEDPermission","onPermissionDenied");
+            }
+
+
+        };
+
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                .check();
+
         mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                 mLocationCallback,
                 null /* Looper */);
@@ -483,6 +505,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 
         }
     }
+
     /**
      * 위치가 변했을 경우 호출된다.
      */
@@ -510,12 +533,10 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 
         LOCATION_USER_LAT = MY_POSITION_LAT;
         LOCATION_USER_LNG = MY_POSITION_LNG;
-        Log.d("MYLOG", "MY_POSITION_LAT :" + MY_POSITION_LAT+","+MY_POSITION_LNG);
-        Log.d("MYLOG", "LOCATION_USER_LAT :" + LOCATION_USER_LAT+","+LOCATION_USER_LNG);
-
+        Log.d("MYLOG", "MY_POSITION_LAT :" + MY_POSITION_LAT + "," + MY_POSITION_LNG);
+        Log.d("MYLOG", "LOCATION_USER_LAT :" + LOCATION_USER_LAT + "," + LOCATION_USER_LNG);
 
     }
-
 
     @Override
     public void onProviderDisabled(String provider) {
@@ -571,6 +592,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 
 
     }
+
     private void listener() {
 
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
@@ -861,7 +883,6 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     }
 
 
-
     public class filePathThread extends Thread {
 
         public filePathThread() throws UnsupportedEncodingException {
@@ -1139,8 +1160,6 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         dial.stopSpinning();
 
     }
-
-
 
 
     //정보창 클릭 리스너

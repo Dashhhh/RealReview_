@@ -8,6 +8,7 @@ import android.view.View;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.teamnova.ej.realreview.Asynctask.AsyncAnswerSubmit;
 import com.teamnova.ej.realreview.R;
+import com.teamnova.ej.realreview.util.Dialog_Default;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
 import java.util.concurrent.ExecutionException;
@@ -79,7 +80,9 @@ public class ShopDetail_Question_Answer_Submit extends AppCompatActivity impleme
 
             case R.id.shopDetailQuestion_Answer_Submit: {
 
-                if (!shopDetailQuestion_Answer_Text.equals("")) {
+                if (!shopDetailQuestion_Answer_Text.getText().toString().equals("")) {
+                    Log.d("AsyncAnswerSubmit", "shopDetailQuestion_Answer_Text.getText().toString().        : " +shopDetailQuestion_Answer_Text.getText().toString());
+
                     String answer = shopDetailQuestion_Answer_Text.getText().toString();
 
                     Void conn;
@@ -91,6 +94,11 @@ public class ShopDetail_Question_Answer_Submit extends AppCompatActivity impleme
                     } catch (InterruptedException | ExecutionException | TimeoutException e) {
                         e.printStackTrace();
                     }
+
+                } else {
+
+                    Dialog_Default dial = new Dialog_Default(this);
+                    dial.tempCall("WARNING", "내용을 입력한 후 제출을 눌러주세요.");
 
                 }
 

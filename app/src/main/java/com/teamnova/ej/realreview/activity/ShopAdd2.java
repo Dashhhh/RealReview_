@@ -259,7 +259,7 @@ public class ShopAdd2 extends AppCompatActivity implements View.OnClickListener 
 
                         ProgressWheel progressDialog = new ProgressWheel(this);
                         Void upload;
-                        upload= new AsyncShopAdd2HTTP(urlMerge, progressDialog, this).execute().get(1000,TimeUnit.MICROSECONDS);
+                        upload= new AsyncShopAdd2HTTP(urlMerge, progressDialog, this).execute().get(10000,TimeUnit.MILLISECONDS);
 
                     } catch (UnsupportedEncodingException | InterruptedException | ExecutionException | TimeoutException e) {
                         e.printStackTrace();

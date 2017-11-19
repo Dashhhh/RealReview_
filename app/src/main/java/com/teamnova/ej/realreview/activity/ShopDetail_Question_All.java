@@ -48,7 +48,14 @@ public class ShopDetail_Question_All extends AppCompatActivity {
         shopId = ShopDetail_Main.SHOP_ID;
         init();
         listener();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         initializingData();
+
     }
 
     private void init() {
