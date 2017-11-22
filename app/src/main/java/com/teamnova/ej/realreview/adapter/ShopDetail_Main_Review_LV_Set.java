@@ -17,7 +17,8 @@ public class ShopDetail_Main_Review_LV_Set {
     public String rating;
     public float fRating;
     public String nick;
-
+    public String nearby;
+    public String locality;
 
     public String getTitleImage() {
         return titleImage;

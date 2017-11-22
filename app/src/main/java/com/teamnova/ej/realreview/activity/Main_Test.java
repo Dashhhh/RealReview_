@@ -719,7 +719,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 
                 } else {
                     Dialog_Default dial = new Dialog_Default(this);
-                    dial.call("Image Warning", "문제가 발생 했습니다.");
+                    dial.tempCall("Image Warning", "문제가 발생 했습니다.");
                 }
                 /**
                  *

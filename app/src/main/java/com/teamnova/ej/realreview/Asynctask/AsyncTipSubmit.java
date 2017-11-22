@@ -40,6 +40,7 @@ public class AsyncTipSubmit extends AsyncTask<Void, Integer, Void> {
     String TestVAR;
     private Context mContext;
     private String userLocationCheckResult;
+    private String localityCheckResult;
 
     public AsyncTipSubmit(String urlString, ProgressWheel dialog, Context mContext) {
         this.urlString = urlString;
@@ -81,7 +82,50 @@ public class AsyncTipSubmit extends AsyncTask<Void, Integer, Void> {
         Log.d("ASYNC_TIP", "LOCATION_USER_LAT :" + LOCATION_USER_LAT  +"<"+  LOCATION_FAR_LEFT_LAT   );
         Log.d("ASYNC_TIP", "LOCATION_USER_LNG :" + LOCATION_USER_LNG  +">"+  LOCATION_FAR_LEFT_LNG    );
         Log.d("ASYNC_TIP", "LOCATION_USER_LNG :" + LOCATION_USER_LNG  +"<"+  LOCATION_NEAR_RIGHT_LNG  );
+
         SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
+
+        String tag = pref.getSharedData("TAG");
+        double shopLat = Double.parseDouble(pref.getSharedData("LAT" + tag));
+        double shopLng = Double.parseDouble(pref.getSharedData("LNG" + tag));
+        double lat = Double.parseDouble(pref.getSharedData("isLogged_lat"));
+        double lng = Double.parseDouble(pref.getSharedData("isLogged_lng"));
+        double SW_Lat = Double.parseDouble(pref.getSharedData("isLogged_SW_Lat"));
+        double SW_Lng = Double.parseDouble(pref.getSharedData("isLogged_SW_Lng"));
+        double NE_Lat = Double.parseDouble(pref.getSharedData("isLogged_NE_Lat"));
+        double NE_Lng = Double.parseDouble(pref.getSharedData("isLogged_NE_Lng"));
+
+        Log.d("ASYNC_TIP", "Locality, shopLat " + shopLat  );
+        Log.d("ASYNC_TIP", "Locality, shopLng " + shopLng  );
+        Log.d("ASYNC_TIP", "Locality, SW_Lat " + SW_Lat  );
+        Log.d("ASYNC_TIP", "Locality, SW_Lng " + SW_Lng  );
+        Log.d("ASYNC_TIP", "Locality, NE_Lat " + NE_Lat  );
+        Log.d("ASYNC_TIP", "Locality, NE_Lng " + NE_Lng  );
+
+
+//        if (    lat > SW_Lng &&
+//                lat < NE_Lng &&
+//                lng > NE_Lat &&
+//                lng < SW_Lat )
+        if (    shopLat > SW_Lat &&
+                shopLat < NE_Lat &&
+                shopLng > SW_Lng &&
+                shopLng < NE_Lng   )
+        {
+            localityCheckResult = "1";    // TRUE
+            Log.d("ASYNC_TIP", "localityCheckResult True" );
+        }
+
+        else {
+            localityCheckResult = "0";    // FALSE
+            Log.d("ASYNC_TIP", "localityCheckResult False" );
+        }
+
+        Log.d("ASYNC_TIP", "lat  :" + lat   +">"+ SW_Lat);
+        Log.d("ASYNC_TIP", "lat  :" + lat   +"<"+ NE_Lat);
+        Log.d("ASYNC_TIP", "lng  :" + lng   +">"+ SW_Lng);
+        Log.d("ASYNC_TIP", "lng  :" + lng   +"<"+ NE_Lng);
+
         StringBuilder jsonhtml = new StringBuilder();
         StringBuffer postDataBuilder = new StringBuffer();
         JSONArray jsonArray;
@@ -107,6 +151,7 @@ public class AsyncTipSubmit extends AsyncTask<Void, Integer, Void> {
             buffer.append("userid").append("=").append(ShopDetail_Tip_Submit.TIP_USERID).append("&");
             buffer.append("tip").append("=").append(ShopDetail_Tip_Submit.TIP_TEXT).append("&");
             buffer.append("nearby").append("=").append(userLocationCheckResult).append("&");
+            buffer.append("locality").append("=").append(localityCheckResult).append("&");
             buffer.append("nick").append("=").append(ShopDetail_Tip_Submit.TIP_USERNICK);
             Log.d("ASYNC_TIP", "userLocationCheckResult : "+userLocationCheckResult   );
 
@@ -141,22 +186,6 @@ public class AsyncTipSubmit extends AsyncTask<Void, Integer, Void> {
     @Override
     protected void onPostExecute(Void result) {
 
-
-    }
-
-
-    private void eraseSharedPref(Context mContext) {
-
-        SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
-        pref.setSharedData("REVIEW_IMAGE_1", "");
-        pref.setSharedData("REVIEW_IMAGE_2", "");
-        pref.setSharedData("REVIEW_IMAGE_3", "");
-        pref.setSharedData("REVIEW_IMAGE_4", "");
-        pref.setSharedData("REVIEW_IMAGE_5", "");
-        pref.setSharedData("HTTP_REVIEW_ID", "");
-        pref.setSharedData("HTTP_REVIEW_REVIEW", "");
-        pref.setSharedData("HTTP_REVIEW_USER", "");
-        pref.setSharedData("HTTP_REVIEW_RATING", "");
 
     }
 

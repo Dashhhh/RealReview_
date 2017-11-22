@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -20,6 +21,7 @@ import com.pnikosis.materialishprogress.ProgressWheel;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.teamnova.ej.realreview.Asynctask.AsyncReviewSubmit;
 import com.teamnova.ej.realreview.R;
+import com.teamnova.ej.realreview.util.Dialog_Default;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 import com.werb.pickphotoview.PickPhotoView;
 import com.werb.pickphotoview.util.PickConfig;
@@ -157,23 +159,47 @@ public class ShopDetail_Review_Submit extends AppCompatActivity implements View.
 
             case R.id.reviewSubmit: {
 
+                String text = String.valueOf(reviewEditText.getText().toString());
 
-                String text = reviewEditText.getText().toString();
-                SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
-                pref.setSharedData("HTTP_REVIEW_ID",iShopId);
-                pref.setSharedData("HTTP_REVIEW_REVIEW", text);
-                pref.setSharedData("HTTP_REVIEW_USER",iUserId);
-                pref.setSharedData("HTTP_REVIEW_RATING", String.valueOf(iRating));
-                pref.setSharedData("HTTP_REVIEW_NICK", String.valueOf(iNick));
-                ProgressWheel progressDialog = new ProgressWheel(this);
-                Void conn;
-                try {
-                    conn = new AsyncReviewSubmit(progressDialog, this).execute().get(10000, TimeUnit.MILLISECONDS);
-                    Log.d("REVIEW_Image","MAIN THREAD conn Check :"+conn);
-                    finish();
-                } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                    e.printStackTrace();
+                if(!(reviewEditText.getText().toString().equals("") || text == null)){
+
+                    if(reviewImageLayout.getVisibility() == View.VISIBLE) {
+
+                        SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
+                        pref.setSharedData("HTTP_REVIEW_ID",iShopId);
+                        pref.setSharedData("HTTP_REVIEW_REVIEW", text);
+                        pref.setSharedData("HTTP_REVIEW_USER",iUserId);
+                        pref.setSharedData("HTTP_REVIEW_RATING", String.valueOf(iRating));
+                        pref.setSharedData("HTTP_REVIEW_NICK", String.valueOf(iNick));
+                        ProgressWheel progressDialog = new ProgressWheel(this);
+                        Void conn;
+                        try {
+                            conn = new AsyncReviewSubmit(progressDialog, this).execute().get(10000, TimeUnit.MILLISECONDS);
+                            Log.d("REVIEW_Image","MAIN THREAD conn Check :"+conn);
+                            finish();
+                        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
+
+                        Dialog_Default dial = new Dialog_Default(this);
+                        dial.callMaterialDefault("Warning", "하나 이상의 사진을 넣어주세요.");
+
+
+
+                    }
+
+
+
+                } else {
+
+                    Dialog_Default dial = new Dialog_Default(this);
+                    dial.callMaterialDefault("Warning", "내용을 입력해 주세요");
+
                 }
+
+
 
 
                 break;
@@ -269,6 +295,7 @@ public class ShopDetail_Review_Submit extends AppCompatActivity implements View.
             }
 
             reviewImageLayout.setVisibility(View.VISIBLE);
+
 
         } else if (requestCode == GALLERY_PICK && resultCode == RESULT_OK){
             mSelected = Matisse.obtainResult(data);

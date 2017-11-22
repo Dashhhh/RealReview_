@@ -142,21 +142,26 @@
                     <!--app:materialIcon="md_star"-->
                     <!--app:roundedCorners="true" />-->
 
-                    <com.beardedhen.androidbootstrap.AwesomeTextView
+                    <com.beardedhen.androidbootstrap.BootstrapBadge
                         android:id="@+id/tipCertify"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:bootstrapBrand="success"
-                        android:layout_marginLeft="15dp"
-                        app:bootstrapText="{fa-street-view} "
-                        app:fontAwesomeIcon="fa_android"
-                        app:typicon="ty_anchor" />
+                        android:layout_marginLeft="10dp"
+                        app:bootstrapSize="xs"
+                        />
+                    <com.beardedhen.androidbootstrap.BootstrapBadge
+                        android:id="@+id/tipLocality"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:bootstrapSize="xs"
+                        />
 
 
                 </LinearLayout>
 
 
             </LinearLayout>
+
 
 
             <!--<TextView-->
@@ -346,6 +351,8 @@
                 app:bootstrapText="{fa-clock-o} 123123"
                 app:fontAwesomeIcon="fa_android"
                 app:typicon="ty_anchor" />
+
+
 
 
         </LinearLayout>

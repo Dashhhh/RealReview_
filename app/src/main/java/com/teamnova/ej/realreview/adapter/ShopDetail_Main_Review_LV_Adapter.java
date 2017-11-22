@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.bumptech.glide.Glide;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
@@ -68,7 +69,7 @@ public class ShopDetail_Main_Review_LV_Adapter extends BaseAdapter {
         Log.d("REVIEW_VIEWING", "pref.getSharedData - isLogged_nick :" + pref.getSharedData("isLogged_nick"));
 
         if (view == null) {
-
+            TypefaceProvider.registerDefaultIconSets();
             view = inflater.inflate(R.layout.activity_shop_detail__main_review_listview, viewGroup, false);
             vh.reviewRootLinear = view.findViewById(R.id.reviewRootLinear);
             vh.reviewUserImage = view.findViewById(R.id.reviewUserImage);
@@ -85,8 +86,8 @@ public class ShopDetail_Main_Review_LV_Adapter extends BaseAdapter {
             vh.reviewLayoutForLoginUser = view.findViewById(R.id.reviewLayoutForLoginUser);
             vh.reviewModify = view.findViewById(R.id.reviewModify);
             vh.reviewDelete = view.findViewById(R.id.reviewDelete);
-
-
+            vh.reviewCertify = view.findViewById(R.id.reviewCertify);
+            vh.reviewLocality = view.findViewById(R.id.reviewLocality);
             view.setTag(vh);
         } else {
             vh = (ShopDetail_Main_Review_LV_ViewHolder) view.getTag();
@@ -110,9 +111,23 @@ public class ShopDetail_Main_Review_LV_Adapter extends BaseAdapter {
         vh.reviewText.setText(setData.reviewText);
         vh.reviewRating.setRating(setData.fRating);
 
+        if(setData.locality.equals("1")) {
+            vh.reviewLocality.setVisibility(View.VISIBLE);
+            vh.reviewLocality.setBadgeText("Locality");
+        } else {
+            vh.reviewLocality.setVisibility(View.GONE);
+        }
+        if(setData.nearby.equals("1")){
+            vh.reviewCertify.setVisibility(View.VISIBLE);
+            vh.reviewCertify.setBadgeText("NearBy");
+        } else {
+            vh.reviewCertify.setVisibility(View.GONE);
+        }
+
+
         if (checkUser.equals(setData.getNick())) {
 
-            // TODO - Setting onClickListener for User Layout
+            // TODO - Setting onClickListener for User Layoutw
 
 //            vh.reviewLayoutForLoginUser = view.findViewById(R.id.reviewLayoutForLoginUser);
 //            vh.reviewModify = view.findViewById(R.id.reviewModify);
@@ -179,7 +194,9 @@ public class ShopDetail_Main_Review_LV_Adapter extends BaseAdapter {
                         String rating,
                         String nick,
                         float fRating,
-                        String profileImageURL) {
+                        String profileImageURL,
+                        String locality,
+                        String nearby) {
         ShopDetail_Main_Review_LV_Set addSetData = new ShopDetail_Main_Review_LV_Set();
 
         addSetData.titleImage = titleImage;
@@ -193,6 +210,8 @@ public class ShopDetail_Main_Review_LV_Adapter extends BaseAdapter {
         addSetData.nick = nick;
         addSetData.fRating = fRating;
         addSetData.titleImage = profileImageURL;
+        addSetData.locality = locality;
+        addSetData.nearby = nearby;
 
 //        this.data.addAll(data);
         this.data.add(0, addSetData);

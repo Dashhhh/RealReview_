@@ -17,6 +17,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_FAR_LEFT_LAT;
+import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_FAR_LEFT_LNG;
+import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_NEAR_RIGHT_LAT;
+import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_NEAR_RIGHT_LNG;
+import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_USER_LAT;
+import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_USER_LNG;
+
 /**
  * Created by ej on 2017-10-08.
  */
@@ -29,6 +36,8 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
     private ProgressWheel dialog;
     String TestVAR;
     private String reviewData;
+    private String userLocationCheckResult;
+    private String localityCheckResult;
 
     public AsyncReviewSubmit(ProgressWheel dialog, Context mContext) {
         this.dialog = dialog;
@@ -48,21 +57,94 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
 
         try {
 
-            String sURL = "http://222.122.203.55/realreview/shopimage/reviewImageUpload.php";
+            /**
+             * Nearby & Locality
+             */
+
+
+            if (LOCATION_USER_LAT > LOCATION_NEAR_RIGHT_LAT &&
+                    LOCATION_USER_LAT < LOCATION_FAR_LEFT_LAT &&
+                    LOCATION_USER_LNG > LOCATION_FAR_LEFT_LNG &&
+                    LOCATION_USER_LNG < LOCATION_NEAR_RIGHT_LNG) {
+                userLocationCheckResult = "1";    // TRUE
+                Log.d("ASYNC_TIP", "Nearby True");
+            } else {
+                userLocationCheckResult = "0";    // FALSE
+                Log.d("ASYNC_TIP", "Nearby False");
+            }
+
+            Log.d("ASYNC_TIP", "LOCATION_USER_LAT :" + LOCATION_USER_LAT + ">" + LOCATION_NEAR_RIGHT_LAT);
+            Log.d("ASYNC_TIP", "LOCATION_USER_LAT :" + LOCATION_USER_LAT + "<" + LOCATION_FAR_LEFT_LAT);
+            Log.d("ASYNC_TIP", "LOCATION_USER_LNG :" + LOCATION_USER_LNG + ">" + LOCATION_FAR_LEFT_LNG);
+            Log.d("ASYNC_TIP", "LOCATION_USER_LNG :" + LOCATION_USER_LNG + "<" + LOCATION_NEAR_RIGHT_LNG);
+
             SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
+
+            String tag = pref.getSharedData("TAG");
+            Log.d("ASYNC_TIP", "Locality, tag :" + tag);
+
+            double shopLat = Double.parseDouble(pref.getSharedData("LAT" + tag));
+            Log.d("ASYNC_TIP", "Locality, shopLat " + shopLat);
+
+            double shopLng = Double.parseDouble(pref.getSharedData("LNG" + tag));
+            Log.d("ASYNC_TIP", "Locality, shopLng " + shopLng);
+
+            double lat = Double.parseDouble(pref.getSharedData("isLogged_lat"));
+            Log.d("ASYNC_TIP", "Locality, lat " + lat);
+
+            double lng = Double.parseDouble(pref.getSharedData("isLogged_lng"));
+            Log.d("ASYNC_TIP", "Locality, lng " + lng);
+
+            double SW_Lat = Double.parseDouble(pref.getSharedData("isLogged_SW_Lat"));
+            Log.d("ASYNC_TIP", "Locality, SW_Lat " + SW_Lat);
+
+            double SW_Lng = Double.parseDouble(pref.getSharedData("isLogged_SW_Lng"));
+            Log.d("ASYNC_TIP", "Locality, SW_Lng " + SW_Lng);
+
+            double NE_Lat = Double.parseDouble(pref.getSharedData("isLogged_NE_Lat"));
+            Log.d("ASYNC_TIP", "Locality, NE_Lat " + NE_Lat);
+
+            double NE_Lng = Double.parseDouble(pref.getSharedData("isLogged_NE_Lng"));
+            Log.d("ASYNC_TIP", "Locality, NE_Lng " + NE_Lng);
+
+
+
+//        if (    lat > SW_Lng &&
+//                lat < NE_Lng &&
+//                lng > NE_Lat &&
+//                lng < SW_Lat )
+            if (    shopLat > SW_Lat &&
+                    shopLat < NE_Lat &&
+                    shopLng > SW_Lng &&
+                    shopLng < NE_Lng) {
+                localityCheckResult = "1";    // TRUE
+                Log.d("ASYNC_TIP", "localityCheckResult True");
+            } else {
+                localityCheckResult = "0";    // FALSE
+                Log.d("ASYNC_TIP", "localityCheckResult False");
+            }
+
+            Log.d("ASYNC_TIP", "shopLat  :" + shopLat + ">" + SW_Lat);
+            Log.d("ASYNC_TIP", "shopLat  :" + shopLat + "<" + NE_Lat);
+            Log.d("ASYNC_TIP", "shopLng  :" + shopLng + ">" + SW_Lng);
+            Log.d("ASYNC_TIP", "shopLng  :" + shopLng + "<" + NE_Lng);
+
+
+            String sURL = "http://222.122.203.55/realreview/shopimage/reviewImageUpload.php";
 
             String review0 = pref.getSharedData("HTTP_REVIEW_ID");
             String review1 = pref.getSharedData("HTTP_REVIEW_REVIEW");
             String review2 = pref.getSharedData("HTTP_REVIEW_USER");
             String review3 = pref.getSharedData("HTTP_REVIEW_RATING");
             String review4 = pref.getSharedData("HTTP_REVIEW_NICK");
-            reviewData = sURL + "?" + "reviewid=" + review0 + "&review=" + review1 + "&user=" + review2 + "&rating=" + review3 + "&nick=" + review4 ;
+//            reviewData = sURL + "?" + "reviewid=" + review0 + "&review=" + review1 + "&user=" + review2 + "&rating=" + review3 + "&nick=" + review4 ;
+            //            Log.d("REVIEW_Image", "OutputStream URL :" + reviewData);
+
             Log.d("REVIEW_Image", "String review0 :" + review0);
             Log.d("REVIEW_Image", "String review1 :" + review1);
             Log.d("REVIEW_Image", "String review2 :" + review2);
             Log.d("REVIEW_Image", "String review3 :" + review3);
             Log.d("REVIEW_Image", "String review4 :" + review4);
-
 
 
             StringBuffer postDataBuilder = new StringBuffer();
@@ -116,20 +198,21 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
             // sendID();
 
 
-
-            Log.d("REVIEW_Image", "OutputStream URL :" + reviewData);
-
             postDataBuilder.append("\r\n");
             postDataBuilder.append(delimiter);
-            postDataBuilder.append(setValue("reviewid",review0));
+            postDataBuilder.append(setValue("reviewid", review0));
             postDataBuilder.append(delimiter);
-            postDataBuilder.append(setValue("review",review1));
+            postDataBuilder.append(setValue("review", review1));
             postDataBuilder.append(delimiter);
-            postDataBuilder.append(setValue("user",review2));
+            postDataBuilder.append(setValue("user", review2));
             postDataBuilder.append(delimiter);
-            postDataBuilder.append(setValue("nick",review4));
+            postDataBuilder.append(setValue("nick", review4));
             postDataBuilder.append(delimiter);
-            postDataBuilder.append(setValue("rating",review3));
+            postDataBuilder.append(setValue("rating", review3));
+            postDataBuilder.append(delimiter);
+            postDataBuilder.append(setValue("locality", localityCheckResult));
+            postDataBuilder.append(delimiter);
+            postDataBuilder.append(setValue("nearby", userLocationCheckResult));
             for (int i = 0; i < imagePathList.size(); i++) {
                 if (imagePathList.get(i).equals("")) {
                     break;
@@ -151,7 +234,7 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
             dos.writeUTF(postDataBuilder.toString());
 
             String postCheck = String.valueOf(postDataBuilder);
-            Log.d("REVIEW_Image","postCheck :"+postCheck);
+            Log.d("REVIEW_Image", "postCheck :" + postCheck);
 
             /**
              * REVIEW ID (SHOP ID)
@@ -202,6 +285,7 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
             dos.writeBytes(review4);
             dos.writeShort(0x0d0a);
             dos.writeShort(0x0d0a);
+
             /**
              * REVIEW (RATING)
              */
@@ -215,7 +299,32 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
             dos.writeShort(0x0d0a);
             dos.writeShort(0x0d0a);
 
+            /**
+             * REVIEW (Locality)
+             */
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+            dos.writeBytes("Content-Disposition: form-data; name=");
+            dos.writeBytes("locality");
+            dos.writeBytes("\"");
+            dos.writeShort(0x0d0a);
+            dos.writeShort(0x0d0a);
+            dos.writeBytes(localityCheckResult);
+            dos.writeShort(0x0d0a);
+            dos.writeShort(0x0d0a);
 
+            /**
+             * REVIEW (Nearby)
+             */
+
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+            dos.writeBytes("Content-Disposition: form-data; name=");
+            dos.writeBytes("nearby");
+            dos.writeBytes("\"");
+            dos.writeShort(0x0d0a);
+            dos.writeShort(0x0d0a);
+            dos.writeBytes(userLocationCheckResult);
+            dos.writeShort(0x0d0a);
+            dos.writeShort(0x0d0a);
 
 
             for (int i = 0; i < imagePath.size(); i++) {
@@ -268,13 +377,12 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
             int ch;
             InputStream is = conn.getInputStream();
             StringBuffer b = new StringBuffer();
+            Log.e("REVIEW_Image", "b = " + b);
             while ((ch = is.read()) != -1) {
                 b.append((char) ch);
             }
             String s = b.toString();
-            Log.e("REVIEW_Image", "result = " + s);
-
-
+            Log.e("REVIEW_Image", "s = " + s);
 
 
             // mEdityEntry.setText(s);
@@ -285,30 +393,9 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
 
         } catch (Exception e) {
             eraseSharedPref(mContext);
-            Log.d("Test", "exception " + e.getMessage());
+            Log.d("REVIEW_Image", "exception :" + e.getMessage());
             // TODO: handle exception
         }
-
-      /*  try {
-            SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
-            String review0 = pref.getSharedData("HTTP_REVIEW_ID");
-            String review1 = pref.getSharedData("HTTP_REVIEW_REVIEW");
-            String review2 = pref.getSharedData("HTTP_REVIEW_USER");
-            String review3 = pref.getSharedData("HTTP_REVIEW_RATING");
-            String sURL = "http://222.122.203.55/realreview/shopimage/reviewImageUpload.php";
-
-            reviewData = sURL + "?" + "reviewid=" + review0 + "&review=" + review1 + "&user=" + review2 + "&rating=" + review3;
-            URL url = new URL(reviewData);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setUseCaches(false);
-            conn.setReadTimeout(10000);
-            conn.setConnectTimeout(10000);
-            int responseCode = conn.getResponseCode();
-            Log.e("REVIEW_Image", "REVIEW INFO response code - " + responseCode);
-            conn.disconnect();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
 
         eraseSharedPref(mContext);
 
@@ -337,11 +424,11 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
         pref.setSharedData("REVIEW_IMAGE_3", "");
         pref.setSharedData("REVIEW_IMAGE_4", "");
         pref.setSharedData("REVIEW_IMAGE_5", "");
-        pref.setSharedData("HTTP_REVIEW_ID","");
-        pref.setSharedData("HTTP_REVIEW_REVIEW","");
-        pref.setSharedData("HTTP_REVIEW_USER","");
-        pref.setSharedData("HTTP_REVIEW_RATING","");
-        pref.setSharedData("HTTP_REVIEW_NICK","");
+        pref.setSharedData("HTTP_REVIEW_ID", "");
+        pref.setSharedData("HTTP_REVIEW_REVIEW", "");
+        pref.setSharedData("HTTP_REVIEW_USER", "");
+        pref.setSharedData("HTTP_REVIEW_RATING", "");
+        pref.setSharedData("HTTP_REVIEW_NICK", "");
 
     }
 

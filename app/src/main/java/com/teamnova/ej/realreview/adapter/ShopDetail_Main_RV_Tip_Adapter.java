@@ -23,7 +23,7 @@ public class ShopDetail_Main_RV_Tip_Adapter extends RecyclerView.Adapter<ShopDet
 
     public ShopDetail_Main_RV_Tip_Adapter(Context mContext, ArrayList<ShopDetail_Main_RV_Tip_Set> data) {
         this.mContext = mContext;
-        if(data==null) this.data = new ArrayList<>();
+        if (data == null) this.data = new ArrayList<>();
         else this.data = data;
 
     }
@@ -41,19 +41,20 @@ public class ShopDetail_Main_RV_Tip_Adapter extends RecyclerView.Adapter<ShopDet
         dataSet = data.get(position);
 
 
-
         holder.tipImageCount.setText("0");
         holder.tipReviewCount.setText("0");
         holder.tipUserFollower.setText("0");
-        holder.tipRegdate.setMarkdownText("{fa-clock-o} "+dataSet.getRegdate());
+        holder.tipRegdate.setMarkdownText("{fa-clock-o} " + dataSet.getRegdate());
         holder.tipText.setText(dataSet.getReviewText());
         holder.tipUserNick.setText(dataSet.getUserNick());
         Glide.with(mContext).load("http://222.122.203.55/realreview/signup/profiledefault/homeme_default.jpg").into(holder.tipUserImage);
+        Glide.with(mContext).load(dataSet.imagepath).into(holder.tipUserImage);
 
-        Log.d("ASYNC_TIP", "dataSet.nearby : "+dataSet.nearby   );
-        if(dataSet.nearby.equals("1")){
-            Log.d("ASYNC_TIP", "dataSet.nearby TRUE(1) : "+dataSet.nearby   );
+        Log.d("ASYNC_TIP", "dataSet.nearby : " + dataSet.nearby);
+        if (dataSet.nearby.equals("1")) {
+            Log.d("ASYNC_TIP", "dataSet.nearby TRUE(1) : " + dataSet.nearby);
             holder.tipCertify.setVisibility(View.VISIBLE);
+            holder.tipCertify.setBadgeText("NearBy");
 //            holder.tipTextLayout.setBackgroundResource(R.drawable.shape_bg_pink_rounded_rect);
 //            holder.tipProfileLayout.setBackgroundResource(R.drawable.shape_bg_pink_rounded_rect);
 //            holder.tipText.setTextColor(Color.parseColor("#ffffff"));
@@ -63,8 +64,27 @@ public class ShopDetail_Main_RV_Tip_Adapter extends RecyclerView.Adapter<ShopDet
 //            holder.tipReviewCount.setTextColor(Color.parseColor("#ffffff"));
 //            holder.tipImageCount.setTextColor(Color.parseColor("#ffffff"));
         } else {
-            Log.d("ASYNC_TIP", "dataSet.nearby FALSE(0) : "+dataSet.nearby   );
+            Log.d("ASYNC_TIP", "dataSet.nearby FALSE(0) : " + dataSet.nearby);
             holder.tipCertify.setVisibility(View.GONE);
+
+        }
+
+
+        if (dataSet.locality.equals("1")) {
+            Log.d("ASYNC_TIP", "dataSet.locality TRUE(1) : " + dataSet.locality);
+            holder.tipLocality.setVisibility(View.VISIBLE);
+            holder.tipLocality.setBadgeText("Locality");
+//            holder.tipTextLayout.setBackgroundResource(R.drawable.shape_bg_pink_rounded_rect);
+//            holder.tipProfileLayout.setBackgroundResource(R.drawable.shape_bg_pink_rounded_rect);
+//            holder.tipText.setTextColor(Color.parseColor("#ffffff"));
+//            holder.tipUserNick.setTextColor(Color.parseColor("#ffffff"));
+//            holder.tipRegdate.setTextColor(Color.parseColor("#ffffff"));
+//            holder.tipUserFollower.setTextColor(Color.parseColor("#ffffff"));
+//            holder.tipReviewCount.setTextColor(Color.parseColor("#ffffff"));
+//            holder.tipImageCount.setTextColor(Color.parseColor("#ffffff"));
+        } else {
+            Log.d("ASYNC_TIP", "dataSet.locality FALSE(0) : " + dataSet.locality);
+            holder.tipLocality.setVisibility(View.GONE);
 
         }
 
@@ -72,7 +92,6 @@ public class ShopDetail_Main_RV_Tip_Adapter extends RecyclerView.Adapter<ShopDet
         Log.d("TIP_ASYNC", "onBindViewHolder getRegdate : " + dataSet.getRegdate());
         Log.d("TIP_ASYNC", "onBindViewHolder getReviewText : " + dataSet.getReviewText());
         Log.d("TIP_ASYNC", "onBindViewHolder getUserNick : " + dataSet.getUserNick());
-
 
 
     }

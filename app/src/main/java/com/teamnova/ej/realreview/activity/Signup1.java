@@ -103,7 +103,7 @@ public class Signup1 extends AppCompatActivity implements View.OnClickListener {
 //                                };
 //                                new AlertDialog.Builder(this).setTitle("비밀번호가 같지 않습니다. 다시 확인해 주시기 바랍니다.").
 //                                        setNegativeButton("확인", cancelListener).show();
-                                dial.call("Warning", "비밀번호가 같지 않습니다. 다시 확인해 주시기 바랍니다.");
+                                dial.tempCall("Warning", "비밀번호가 같지 않습니다. 다시 확인해 주시기 바랍니다.");
 
                             } else if (password == "" || passwordCheck == "") {
 //                                DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
@@ -114,7 +114,7 @@ public class Signup1 extends AppCompatActivity implements View.OnClickListener {
 //                                };
 //                                new AlertDialog.Builder(this).setTitle("비밀번호를 입력해 주시기 바랍니다.").
 //                                        setNegativeButton("확인", cancelListener).show();
-                                dial.call("Warning", "비밀번호를 입력해 주시기 바랍니다.");
+                                dial.tempCall("Warning", "비밀번호를 입력해 주시기 바랍니다.");
                             }
                         } else {
 //                            DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
@@ -125,7 +125,7 @@ public class Signup1 extends AppCompatActivity implements View.OnClickListener {
 //                            };
 //                            new AlertDialog.Builder(this).setTitle("비밀번호는 4 ~ 16자리로 설정해 주시기 바랍니다.").
 //                                    setNegativeButton("확인", cancelListener).show();
-                            dial.call("Warning", "비밀번호는 4 ~ 16자리로 설정해 주시기 바랍니다.");
+                            dial.tempCall("Warning", "비밀번호는 4 ~ 16자리로 설정해 주시기 바랍니다.");
                         }
                     } else {
 //                        DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
@@ -137,7 +137,7 @@ public class Signup1 extends AppCompatActivity implements View.OnClickListener {
 //                        new AlertDialog.Builder(this).setTitle("E-mail 형식이 아닙니다.\n예제 - example@exam.com").
 //                                setNegativeButton("확인", cancelListener).show();
 
-                        dial.call("Warning", "E-mail 형식이 아닙니다.\n예제 - example@exam.com");
+                        dial.tempCall("Warning", "E-mail 형식이 아닙니다.\n예제 - example@exam.com");
 
                     }
 
@@ -150,7 +150,7 @@ public class Signup1 extends AppCompatActivity implements View.OnClickListener {
 //                    };
 //                    new AlertDialog.Builder(this).setTitle("이미 가입 된 E-mail 주소 입니다. 아이디 찾기를 이용해 주시기 바랍니다").
 //                            setNegativeButton("확인", cancelListener).show();
-                    dial.call("Warning", "이미 가입 된 E-mail 주소 입니다. 아이디 찾기를 이용해 주시기 바랍니다");
+                    dial.tempCall("Warning", "이미 가입 된 E-mail 주소 입니다. 아이디 찾기를 이용해 주시기 바랍니다");
                 }
             }
             break;

@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.teamnova.ej.realreview.R;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
@@ -47,6 +50,16 @@ public class Dialog_Default {
         s.setConfirmText("확인");
         s.show();
 
+
+    }
+
+    public void callMaterialDefault(String title, String text) {
+
+        new MaterialDialog.Builder(mContext)
+                .title(title)
+                .content(text)
+                .positiveText("확인")
+                .show();
 
     }
 

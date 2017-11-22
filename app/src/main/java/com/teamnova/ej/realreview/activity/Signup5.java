@@ -99,7 +99,7 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
         boolean bIsLogged = isLogged.doLogCheck(this);
         if (!bIsLogged) {
             Dialog_Default dial = new Dialog_Default(this);
-            dial.call("WARNING", "정상적인 접근이 아닙니다. 다시 로그인 해 주세요");
+            dial.tempCall("WARNING", "정상적인 접근이 아닙니다. 다시 로그인 해 주세요");
             finish();
         }
 
@@ -279,7 +279,7 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
 //                    Intro.iv.setImageBitmap(photo);
                 } else {
                     Dialog_Default dial = new Dialog_Default(this);
-                    dial.call("Image Warning", "문제가 발생 했습니다.");
+                    dial.tempCall("Image Warning", "문제가 발생 했습니다.");
                 }
                 /**
                  *

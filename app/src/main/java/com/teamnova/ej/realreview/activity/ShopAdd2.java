@@ -176,7 +176,7 @@ public class ShopAdd2 extends AppCompatActivity implements View.OnClickListener 
                 if (a0.isEmpty() || a1.isEmpty() || a2.isEmpty() || openTime.isEmpty() || closeTime.isEmpty() ) {
 
                     Dialog_Default dial = new Dialog_Default(this);
-                    dial.call("WARNING", "Website를 제외한 나머지 항목을 모두 작성해 주세요.");
+                    dial.tempCall("WARNING", "Website를 제외한 나머지 항목을 모두 작성해 주세요.");
 
                 } else {
 

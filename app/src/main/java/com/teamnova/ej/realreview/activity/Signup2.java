@@ -86,16 +86,16 @@ public class Signup2 extends AppCompatActivity implements View.OnClickListener {
 
                         } else {
                             Dialog_Default dial = new Dialog_Default(this);
-                            dial.call("Warning", "중복되는 닉네임 입니다. 다른 닉네임을 입력해 주시기 바랍니다.");
+                            dial.tempCall("Warning", "중복되는 닉네임 입니다. 다른 닉네임을 입력해 주시기 바랍니다.");
                         }
                     }   // nick Validate
                     else {
                         Dialog_Default dial = new Dialog_Default(this);
-                        dial.call("Warning", "닉네임은 영문, 숫자 5~12자 이내 입력 가능합니다.");
+                        dial.tempCall("Warning", "닉네임은 영문, 숫자 5~12자 이내 입력 가능합니다.");
                     }
                 } else {
                     Dialog_Default dial = new Dialog_Default(this);
-                    dial.call("Warning", "닉네임을 입력해 주시기 바랍니다.");
+                    dial.tempCall("Warning", "닉네임을 입력해 주시기 바랍니다.");
                 }
                 Log.e("tempNICK", "tempNick:" + tempNick);
                 Log.e("tempNICK2", "tempNick2:" + tempNick2);

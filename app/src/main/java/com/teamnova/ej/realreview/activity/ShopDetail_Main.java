@@ -443,6 +443,10 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 Log.d("REIVEW_REVIEW", "Casting Info - getRating :" + i + "번 :" + getRating);
                 String getProfileImageURL = jsonObject1.getString("profileimage");
                 Log.d("REIVEW_REVIEW", "Casting Info - getProfileImageURL :" + i + "번 :" + getProfileImageURL);
+                String getLocality = jsonObject1.getString("locality");
+                Log.d("REIVEW_REVIEW", "Casting Info - getLocality :" + i + "번 :" + getLocality);
+                String getNearby = jsonObject1.getString("nearby");
+                Log.d("REIVEW_REVIEW", "Casting Info - getNearby :" + i + "번 :" + getNearby);
 
 
                 if (i <= 5) {
@@ -466,7 +470,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 dataSet.titleImage = getProfileImageURL;
 */
 //                dataSet_addList.add(dataSet);
-                    reviewLvAdapter.addItem(titleImage, followerCnt, reviewCnt, imageCnt, getReviewText, getRegdate, getUserId, getRating, getNick, ff, getProfileImageURL);
+                    reviewLvAdapter.addItem(titleImage, followerCnt, reviewCnt, imageCnt, getReviewText, getRegdate, getUserId, getRating, getNick, ff, getProfileImageURL,getLocality, getNearby);
                     Log.d("REIVEW_REVIEW", "Casting Info - reviewData (Array List) :" + i + "번 :" + reviewData.get(i));
                 }
             }
@@ -586,13 +590,18 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             String regdate = getArray.getString("regdate");
             String nearby = getArray.getString("nearby");
             String nick = getArray.getString("nick");
-            ShopDetail_Main_RV_Tip_Set adapterSet = new ShopDetail_Main_RV_Tip_Set("", "0", "0", "0", tip, regdate, nick, nearby);
+            String locality = getArray.getString("locality");
+            String imagepath = getArray.getString("imagepath");
+
+            ShopDetail_Main_RV_Tip_Set adapterSet = new ShopDetail_Main_RV_Tip_Set("", "0", "0", "0", tip, regdate, nick, nearby, locality, imagepath);
             Log.d("TIP_ASYNC", "JSON Parsing...shopid  : " + shopid);
             Log.d("TIP_ASYNC", "JSON Parsing...userid  : " + userid);
             Log.d("TIP_ASYNC", "JSON Parsing...tip     : " + tip);
             Log.d("TIP_ASYNC", "JSON Parsing...regdate : " + regdate);
             Log.d("TIP_ASYNC", "JSON Parsing...nearby  : " + nearby);
             Log.d("TIP_ASYNC", "JSON Parsing...nick    : " + nick);
+            Log.d("TIP_ASYNC", "JSON Parsing...locality    : " + locality);
+            Log.d("TIP_ASYNC", "JSON Parsing...imagepath    : " + imagepath);
 
             tipList.add(0, adapterSet);
 

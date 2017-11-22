@@ -125,7 +125,23 @@
                         android:layout_marginStart="5dp"
                         android:text="0"
 
+
                         />
+
+                    <com.beardedhen.androidbootstrap.BootstrapBadge
+                        android:id="@+id/reviewCertify"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        app:bootstrapSize="xs"
+                        />
+                    <com.beardedhen.androidbootstrap.BootstrapBadge
+                        android:id="@+id/reviewLocality"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:bootstrapSize="xs"
+                        />
+
 
                 </LinearLayout>
 

@@ -21,9 +21,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -59,8 +61,20 @@ public class Signup4 extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG_GRADE = "grade";
     private static final String TAG_REG_DATE = "reg_date";
     private static final String TAG_DESCRIPTION = "description";
+    private static final String TAG_LAT = "lng";
+    private static final String TAG_LNG = "lat";
+    private static final String TAG_SW_LAT = "SW_Lat";
+    private static final String TAG_SW_LNG = "SW_Lng";
+    private static final String TAG_NE_LAT = "NE_Lat";
+    private static final String TAG_NE_LNG = "NE_Lng";
     String tempId, tempPw, tempNick, tempAddress, tempPhone, tempProfileImagePath,
             tempGender, tempFollowerCnt, tempReviewCnt, tempImageCnt, tempGrade, tempRegDate, tempDescription;
+    String tempLat;
+    String tempLng;
+    String tempSWLat;
+    String tempSWLng;
+    String tempNELat;
+    String tempNELng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +149,12 @@ public class Signup4 extends AppCompatActivity implements View.OnClickListener {
                 pref.setSharedData("isLogged_grade", tempGrade);
                 pref.setSharedData("isLogged_regDate", tempRegDate);
                 pref.setSharedData("isLogged_description", tempDescription);
+                pref.setSharedData("isLogged_lat", tempLat);
+                pref.setSharedData("isLogged_lng", tempLng);
+                pref.setSharedData("isLogged_SW_Lat", tempSWLat);
+                pref.setSharedData("isLogged_SW_Lng", tempSWLng);
+                pref.setSharedData("isLogged_NE_Lat", tempNELat);
+                pref.setSharedData("isLogged_NE_Lng", tempNELng);
 
 //                pref.setSharedData("SIGNIN_ID","");
                 pref.setSharedData("SIGNIN_PW","");
@@ -182,8 +202,25 @@ public class Signup4 extends AppCompatActivity implements View.OnClickListener {
             strReg_date = "reg_date=" + time;
             strDescription = "description=DEFAULTTTTTT";
 
+
             urlParse = login_url + strId + strAnd + strPw + strAnd + strNick + strAnd + strAddress + strAnd + strPhone + strAnd + strGender + strAnd + int_followerCnt
                     + strAnd + int_reviewCnt + strAnd + int_imageCnt + strAnd + int_grade + strAnd + strReg_date + strAnd + strDescription;
+
+            //Add ViewPort Var
+            urlParse +=
+                    "&lat=" + pref.getSharedData("SIGNUP_Lat")
+                    + "&lng=" + pref.getSharedData("SIGNUP_Lng")
+                    + "&SW_Lat=" + pref.getSharedData("SIGNUP_SW_Lat")
+                    + "&SW_Lng=" + pref.getSharedData("SIGNUP_SW_Lng")
+                    + "&NE_Lat=" + pref.getSharedData("SIGNUP_NE_Lat")
+                    + "&NE_Lng=" + pref.getSharedData("SIGNUP_NE_Lng");
+
+            Log.d("Position", "SIGNUP_Lat :" + pref.getSharedData("SIGNUP_Lat"));
+            Log.d("Position", "SIGNUP_Lng :" + pref.getSharedData("SIGNUP_Lng"));
+            Log.d("Position", "SIGNUP_SW_Lat :" + pref.getSharedData("SIGNUP_SW_Lat"));
+            Log.d("Position", "SIGNUP_SW_Lng :" + pref.getSharedData("SIGNUP_SW_Lng"));
+            Log.d("Position", "SIGNUP_NE_Lat :" + pref.getSharedData("SIGNUP_NE_Lat"));
+            Log.d("Position", "SIGNUP_NE_Lng :" + pref.getSharedData("SIGNUP_NE_Lng"));
 
 
         }
@@ -192,6 +229,7 @@ public class Signup4 extends AppCompatActivity implements View.OnClickListener {
             super.run();
             try {
                 URL phpUrl = new URL(urlParse);
+                StringBuilder jsonHtml = new StringBuilder();
 
                 HttpURLConnection conn = (HttpURLConnection) phpUrl.openConnection();
 //                conn.setConnectTimeout(10000);
@@ -201,19 +239,20 @@ public class Signup4 extends AppCompatActivity implements View.OnClickListener {
                 conn.connect();
                 int responseStatusCode = conn.getResponseCode();
                 Log.e(TAG, "response code - " + responseStatusCode);
-//                if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-//                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-//                    while (true) {
-//                        String line = br.readLine();
-//                        if (line == null)
-//                            break;
-//                        jsonHtml.append(line + "\n");
-//                    }
-//                    br.close();
-//                }
+                if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                    while (true) {
+                        String line = br.readLine();
+                        if (line == null) {
+                            break;
+                        }
+                        jsonHtml.append(line + "\n");
+                    }
+                    Log.d("Position", "jsonHtml :" + jsonHtml);
+
+                    br.close();
                 conn.disconnect();
-            } catch (Exception e) {
-                e.printStackTrace();
+            }
             }
 //            jsonHtml.toString().trim();
 //            Log.e(TAG, "jsonHtml - " + jsonHtml);
@@ -233,8 +272,14 @@ public class Signup4 extends AppCompatActivity implements View.OnClickListener {
 //                e.printStackTrace();
 //            }
 //            show(jsonHtml.toString());
-        }
-    }
+         catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }}
 
     public class idCheckThread extends Thread {
 
@@ -289,6 +334,12 @@ public class Signup4 extends AppCompatActivity implements View.OnClickListener {
                 String getGrade = item.getString(TAG_GRADE);
                 String getRegDate = item.getString(TAG_REG_DATE);
                 String getDescription = item.getString(TAG_REG_DATE);
+                String getLat = item.getString(TAG_LAT);
+                String getLng = item.getString(TAG_LNG);
+                String getSWLat = item.getString(TAG_SW_LAT);
+                String getSWLng = item.getString(TAG_SW_LNG);
+                String getNELat = item.getString(TAG_NE_LAT);
+                String getNELng = item.getString(TAG_NE_LNG);
 
                 tempId = getId;
                 tempPw = getPw;
@@ -303,6 +354,12 @@ public class Signup4 extends AppCompatActivity implements View.OnClickListener {
                 tempGrade = getGrade;
                 tempRegDate = getRegDate;
                 tempDescription = getDescription;
+                tempLat = getLat;
+                tempLng = getLng;
+                tempSWLat = getSWLat;
+                tempSWLng = getSWLng;
+                tempNELat = getNELat;
+                tempNELng = getNELng;
 
 
                 Log.e(TAG, "jObject - " + jObject);
@@ -321,7 +378,7 @@ public class Signup4 extends AppCompatActivity implements View.OnClickListener {
                 Log.e(TAG, "getGrade - " + getGrade);
                 Log.e(TAG, "getRegDate - " + getRegDate);
                 Log.e(TAG, "getDescription - " + getDescription);
-                
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -54,7 +54,7 @@ public class _DemoTest extends AppCompatActivity implements View.OnClickListener
             case R.id.demoTestDialogue: {
 
                 Dialog_Default dialogDefault = new Dialog_Default(this);
-                dialogDefault.call("제목입니다", "내용입니다.");
+                dialogDefault.tempCall("제목입니다", "내용입니다.");
                 break;
             }
 

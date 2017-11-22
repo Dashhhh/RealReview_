@@ -50,8 +50,21 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG_REG_DATE = "reg_date";
     private static final String TAG_DESCRIPTION = "description";
     private static final String TAG_RESPONSE = "response";
+    private static final String TAG_LAT = "lat";
+    private static final String TAG_LNG = "lng";
+    private static final String TAG_SW_LAT = "SW_Lat";
+    private static final String TAG_SW_LNG = "SW_Lng";
+    private static final String TAG_NE_LAT = "NE_Lat";
+    private static final String TAG_NE_LNG = "NE_Lng";
     String tempId, tempPw, tempNick, tempAddress, tempPhone, tempProfileImagePath,
             tempGender, tempFollowerCnt, tempReviewCnt, tempImageCnt, tempGrade, tempRegDate, tempDescription;
+
+    String tempLat;
+    String tempLng;
+    String tempSWLat;
+    String tempSWLng;
+    String tempNELat;
+    String tempNELng;
 
     EditText loginIdText, loginPasswordText;
     Button loginBtn;
@@ -157,6 +170,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                             pref.setSharedData("isLogged_grade", tempGrade);
                             pref.setSharedData("isLogged_regDate", tempRegDate);
                             pref.setSharedData("isLogged_description", tempDescription);
+                            pref.setSharedData("isLogged_lat", tempLat);
+                            pref.setSharedData("isLogged_lng", tempLng);
+                            pref.setSharedData("isLogged_SW_Lat", tempSWLat);
+                            pref.setSharedData("isLogged_SW_Lng", tempSWLng);
+                            pref.setSharedData("isLogged_NE_Lat", tempNELat);
+                            pref.setSharedData("isLogged_NE_Lng", tempNELng);
+
+
                             dialog.dismiss();
                             Toast.makeText(this, tempNick + ", Welcome Back", Toast.LENGTH_SHORT).show();
                             tempNick = "";
@@ -314,6 +335,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 String getGrade = item.getString(TAG_GRADE);
                 String getRegDate = item.getString(TAG_REG_DATE);
                 String getDescription = item.getString(TAG_DESCRIPTION);
+                String getLat = item.getString(TAG_LAT);
+                String getLng = item.getString(TAG_LNG);
+                String getSWLat = item.getString(TAG_SW_LAT);
+                String getSWLng = item.getString(TAG_SW_LNG);
+                String getNELat = item.getString(TAG_NE_LAT);
+                String getNELng = item.getString(TAG_NE_LNG);
 
                 tempId = getId;
                 tempPw = getPw;
@@ -328,7 +355,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 tempGrade = getGrade;
                 tempRegDate = getRegDate;
                 tempDescription = getDescription;
-
+                tempLat = getLat;
+                tempLng = getLng;
+                tempSWLat = getSWLat;
+                tempSWLng = getSWLng;
+                tempNELat = getNELat;
+                tempNELng = getNELng;
 
                 Log.e(TAG, "jObject - " + jObject);
                 Log.e(TAG, "jsonArray - " + jsonArray);
@@ -345,7 +377,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 Log.e(TAG, "getImageCnt - " + getImageCnt);
                 Log.e(TAG, "getGrade - " + getGrade);
                 Log.e(TAG, "getRegDate - " + getRegDate);
-                Log.e(TAG, "getDescription - " + getDescription);
+                Log.e(TAG, "getLat - " + tempLat );
+                Log.e(TAG, "getLng - " + tempLng );
+                Log.e(TAG, "getSWLat - " + tempSWLat );
+                Log.e(TAG, "getSWLng - " + tempSWLng );
+                Log.e(TAG, "getNELat - " + tempNELat );
+                Log.e(TAG, "getNELng - " + tempNELng );
 
             } catch (JSONException e) {
                 e.printStackTrace();

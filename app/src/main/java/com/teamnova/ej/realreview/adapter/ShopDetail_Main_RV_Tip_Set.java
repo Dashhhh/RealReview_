@@ -15,12 +15,13 @@ public class ShopDetail_Main_RV_Tip_Set {
     String regdate;
     String userNick;
     String nearby;
-
+    String locality;
+    String imagepath;
 
     public ShopDetail_Main_RV_Tip_Set() {
     }
 
-    public ShopDetail_Main_RV_Tip_Set(String titleImage, String followerCnt, String reviewCnt, String imageCnt, String reviewText, String regdate, String userNick, String nearby) {
+    public ShopDetail_Main_RV_Tip_Set(String titleImage, String followerCnt, String reviewCnt, String imageCnt, String reviewText, String regdate, String userNick, String nearby, String locality, String imagepath) {
         this.titleImage = titleImage;
         this.followerCnt = followerCnt;
         this.reviewCnt = reviewCnt;
@@ -29,6 +30,8 @@ public class ShopDetail_Main_RV_Tip_Set {
         this.regdate = regdate;
         this.userNick = userNick;
         this.nearby = nearby;
+        this.locality = locality;
+        this.imagepath = imagepath;
     }
 
     public String getTitleImage() {
@@ -93,5 +96,21 @@ public class ShopDetail_Main_RV_Tip_Set {
 
     public void setNearby(String nearby) {
         this.nearby = nearby;
+    }
+
+    public String getLocality() {
+        return locality;
+    }
+
+    public void setLocality(String locality) {
+        this.locality = locality;
+    }
+
+    public String getImagepath() {
+        return imagepath;
+    }
+
+    public void setImagepath(String imagepath) {
+        this.imagepath = imagepath;
     }
 }

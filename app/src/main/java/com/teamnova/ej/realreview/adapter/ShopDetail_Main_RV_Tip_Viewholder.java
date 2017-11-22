@@ -17,7 +17,8 @@ public class ShopDetail_Main_RV_Tip_Viewholder extends RecyclerView.ViewHolder {
     LinearLayout tipRootLinear;
     LinearLayout tipTextLayout, tipProfileLayout;
     ImageView tipUserImage;
-    com.beardedhen.androidbootstrap.AwesomeTextView tipCertify;
+    com.beardedhen.androidbootstrap.BootstrapBadge tipCertify;
+    com.beardedhen.androidbootstrap.BootstrapBadge tipLocality;
     TextView tipUserNick;
     TextView tipUserFollower;
     TextView tipReviewCount;
@@ -40,6 +41,7 @@ public class ShopDetail_Main_RV_Tip_Viewholder extends RecyclerView.ViewHolder {
         tipText = itemView.findViewById(R.id.tipText);
         tipRegdate = itemView.findViewById(R.id.tipRegdate);
         tipCertify = itemView.findViewById(R.id.tipCertify);
+        tipLocality = itemView.findViewById(R.id.tipLocality);
 
     }
 }

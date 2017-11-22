@@ -82,7 +82,7 @@ public class ShopDetail_Tip_Submit extends AppCompatActivity {
                 } else {
 
                     Dialog_Default dial = new Dialog_Default(ShopDetail_Tip_Submit.this);
-                    dial.call("TIP Submit WARNING", "Tip 내용을 입력한 후 확인을 눌러주세요.");
+                    dial.tempCall("TIP Submit WARNING", "Tip 내용을 입력한 후 확인을 눌러주세요.");
 
                 }
 
