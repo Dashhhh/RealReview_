@@ -41,6 +41,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
@@ -183,6 +184,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     ArrayList<String> valueShopDataList = new ArrayList<>();
     private JSONObject item2;
     private String modifyProfileImagePath;
+    private MaterialDialog builder;
 
     private void init() {
 
@@ -260,7 +262,11 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__test);
-
+        builder = new MaterialDialog.Builder(this)
+                .title("Connecting")
+                .content("loading..")
+                .progress(true,0)
+                .show();
         init();
         defineBottomNavi();
         listener();
@@ -305,7 +311,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         ProgressWheel progressDialog = new ProgressWheel(this);
         AsyncMainNearbyLatLngReceive upload = new AsyncMainNearbyLatLngReceive(urlMerge, this);
         upload.execute();
-
+        builder.dismiss();
 
     }   // onCreate
 
@@ -413,7 +419,6 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     protected void onPause() {
         //Activity LifrCycle 관련 메서드는 무조건 상위 메서드 호출 필요
         super.onPause();
-
         //위치정보 객체에 이벤트 해제
         lm.removeUpdates(this);
     }
@@ -956,6 +961,12 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
             SharedPreferenceUtil pref = new SharedPreferenceUtil(getApplicationContext());
 
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
     }
 
     /**

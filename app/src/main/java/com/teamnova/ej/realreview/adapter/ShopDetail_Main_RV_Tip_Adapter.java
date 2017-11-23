@@ -85,9 +85,7 @@ public class ShopDetail_Main_RV_Tip_Adapter extends RecyclerView.Adapter<ShopDet
         } else {
             Log.d("ASYNC_TIP", "dataSet.locality FALSE(0) : " + dataSet.locality);
             holder.tipLocality.setVisibility(View.GONE);
-
         }
-
 
         Log.d("TIP_ASYNC", "onBindViewHolder getRegdate : " + dataSet.getRegdate());
         Log.d("TIP_ASYNC", "onBindViewHolder getReviewText : " + dataSet.getReviewText());

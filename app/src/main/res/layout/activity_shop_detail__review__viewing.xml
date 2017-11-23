@@ -232,7 +232,7 @@
                 app:typicon="ty_lightbulb" />
 
             <com.beardedhen.androidbootstrap.BootstrapButton
-                android:id="@+id/reviewNiceBtn"
+                android:id="@+id/revieGoodBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"

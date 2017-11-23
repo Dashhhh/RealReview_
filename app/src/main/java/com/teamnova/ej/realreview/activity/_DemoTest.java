@@ -11,7 +11,7 @@ import com.teamnova.ej.realreview.util.Dialog_Default;
 
 public class _DemoTest extends AppCompatActivity implements View.OnClickListener {
 
-    Button demoTestDialogue, fregmentTest, facebookKey, bottomNavigation, glideTest, mainActivityTest, shopDetailTest;
+    Button demoTestDialogue, fregmentTest, facebookKey, bottomNavigation, glideTest, mainActivityTest, shopDetailTest, materialDialogTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class _DemoTest extends AppCompatActivity implements View.OnClickListener
         glideTest = (Button) findViewById(R.id.glideTest);
         mainActivityTest = (Button) findViewById(R.id.mainActivityTest);
         shopDetailTest = (Button) findViewById(R.id.shopDetailTest);
-
+        materialDialogTest = findViewById(R.id.materialDialogTest);
 
     }
 
@@ -44,6 +44,7 @@ public class _DemoTest extends AppCompatActivity implements View.OnClickListener
         glideTest.setOnClickListener(this);
         mainActivityTest.setOnClickListener(this);
         shopDetailTest.setOnClickListener(this);
+        materialDialogTest.setOnClickListener(this);
     }
 
     @Override
@@ -96,6 +97,15 @@ public class _DemoTest extends AppCompatActivity implements View.OnClickListener
                 startActivity(intent);
                 break;
             }
+            case R.id.materialDialogTest : {
+
+                Intent intent = new Intent(getApplicationContext(), ShopDetail_Main.class);
+                startActivity(intent);
+                break;
+
+
+            }
+
         }
 
     }

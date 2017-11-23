@@ -127,6 +127,9 @@ public class ShopDetail_Question_All extends AppCompatActivity {
                 String answerCount = getArray.getString("answerCount");
                 String metooCount = getArray.getString("metooCount");
                 String imagepath = getArray.getString("imagepath");
+
+
+
                 ShopDetail_Main_RV_QuestionAll_Set adapterSet = new ShopDetail_Main_RV_QuestionAll_Set
                         ("", "0", "0", "0", question, regdate, nick, idx,
                                 answerCount, metooCount, curious, imagepath);

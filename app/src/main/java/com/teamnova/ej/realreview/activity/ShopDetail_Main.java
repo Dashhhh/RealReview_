@@ -1,5 +1,6 @@
 package com.teamnova.ej.realreview.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -43,6 +44,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.tangxiaolv.telegramgallery.GalleryActivity;
 import com.tangxiaolv.telegramgallery.GalleryConfig;
@@ -218,8 +221,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailUserFollowerCount.setText(pref.getSharedData("isLogged_followerCnt"));
 
 
-
-
         /**
          * Add Question Layout Setting
          */
@@ -300,7 +301,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         ProgressWheel progressDialog = new ProgressWheel(this);
 
 
-        String urlParse = "http://222.122.203.55/realreview/shopimage/viewpagerImageResponse.php?id=" + defaultShopID + "&userid="+ defaulUserId;
+        String urlParse = "http://222.122.203.55/realreview/shopimage/viewpagerImageResponse.php?id=" + defaultShopID + "&userid=" + defaulUserId;
 
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
         viewpagerAdapter = new ShopDetail_Main_Adapter_Backup(this);
@@ -311,6 +312,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         ShopDetail_Main_Review_LV_Adapter reviewLvAdapter = new ShopDetail_Main_Review_LV_Adapter(this, reviewData);
         shopDetailLVReview.setAdapter(reviewLvAdapter);
         reviewLvAdapter.clearItem();
+
 
         ShopDetail_Main_RV_Photo_Adapter imageRVAdater = new ShopDetail_Main_RV_Photo_Adapter(this, imageRVList);
         imageRVAdater.clearItem();
@@ -416,9 +418,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
 */
 
-            JSONObject reviewJSON = new JSONObject(sConn);
-            JSONArray reviewJSONArray = reviewJSON.getJSONArray("info");
-
 
 /*
             JsonParser parser = new JsonParser();
@@ -427,30 +426,64 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             JsonArray jsonArray = reviewJSON.getAsJsonArray("info");
             Log.d("REVIEW_REVIEW","jsonArray :"+jsonArray);
             JsonObject jsonObject1 = jsonArray.get(0).getAsJsonObject();
-            Log.d("REVIEW_REVIEW","jsonObject :"+jsonArray);*/
+            Log.d("REVIEW_REVIEW","jsonObject :"+jsonArray);
+
+            */
+
+            JSONObject reviewJSON = new JSONObject(sConn);
+            JSONArray reviewJSONArray = reviewJSON.getJSONArray("info");
             for (int i = 0; i < reviewJSONArray.length(); i++) {
                 JSONObject jsonObject1 = reviewJSONArray.getJSONObject(i);
                 Log.d("REVIEW_REVIEW", "jsonObject1 :" + jsonObject1);
+
+                String getReviewIdx = jsonObject1.getString("idx");
+                Log.d("REIVEW_REVIEW", "Casting Info - idx :" + i + "번 :" + getReviewIdx);
+
                 String getReviewText = jsonObject1.getString("review");
                 Log.d("REIVEW_REVIEW", "Casting Info - review :" + i + "번 :" + getReviewText);
+
                 String getRegdate = jsonObject1.getString("regdate");
                 Log.d("REIVEW_REVIEW", "Casting Info - getRegdate :" + i + "번 :" + getRegdate);
+
                 String getUserId = jsonObject1.getString("id_user");
                 Log.d("REIVEW_REVIEW", "Casting Info - getUserId :" + i + "번 :" + getUserId);
+
                 String getNick = jsonObject1.getString("nick");
                 Log.d("REIVEW_REVIEW", "Casting Info - nick :" + i + "번 :" + getNick);
+
                 String getRating = jsonObject1.getString("rating");
                 Log.d("REIVEW_REVIEW", "Casting Info - getRating :" + i + "번 :" + getRating);
+
                 String getProfileImageURL = jsonObject1.getString("profileimage");
                 Log.d("REIVEW_REVIEW", "Casting Info - getProfileImageURL :" + i + "번 :" + getProfileImageURL);
+
                 String getLocality = jsonObject1.getString("locality");
                 Log.d("REIVEW_REVIEW", "Casting Info - getLocality :" + i + "번 :" + getLocality);
+
                 String getNearby = jsonObject1.getString("nearby");
                 Log.d("REIVEW_REVIEW", "Casting Info - getNearby :" + i + "번 :" + getNearby);
 
+                String getCountCool = jsonObject1.getString("countCool");
+                Log.d("REIVEW_REVIEW", "Casting Info - getCountCool :" + i + "번 :" + getCountCool);
+
+                String getCountGood = jsonObject1.getString("countGood");
+                Log.d("REIVEW_REVIEW", "Casting Info - getCountGood :" + i + "번 :" + getCountGood);
+
+                String getCountUseful = jsonObject1.getString("countUseful");
+                Log.d("REIVEW_REVIEW", "Casting Info - getCountUseful :" + i + "번 :" + getCountUseful);
+
+
+                boolean selectableUseful = jsonObject1.getBoolean("useful_selectable");
+                boolean selectableGood =   jsonObject1.getBoolean("good_selectable");
+                boolean selectableCool =  jsonObject1.getBoolean("cool_selectable");
+
+                Log.d("REIVEW_REVIEW", "Casting Info - useful_selectable :" + i + "번 :" + selectableUseful );
+                Log.d("REIVEW_REVIEW", "Casting Info - good_selectable :" + i + "번 :" + selectableGood );
+                Log.d("REIVEW_REVIEW", "Casting Info - cool_selectable :" + i + "번 :" + selectableCool );
+
+
 
                 if (i <= 5) {
-                    String titleImage = getProfileImageURL;
                     String followerCnt = "0";
                     String reviewCnt = "0";
                     String imageCnt = "0";
@@ -470,7 +503,10 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 dataSet.titleImage = getProfileImageURL;
 */
 //                dataSet_addList.add(dataSet);
-                    reviewLvAdapter.addItem(titleImage, followerCnt, reviewCnt, imageCnt, getReviewText, getRegdate, getUserId, getRating, getNick, ff, getProfileImageURL,getLocality, getNearby);
+                    reviewLvAdapter.addItem(getReviewIdx, getProfileImageURL, followerCnt, reviewCnt, imageCnt, getReviewText,
+                            getRegdate, getUserId, getRating, getNick, ff, getProfileImageURL, getLocality, getNearby,
+                            getCountCool, getCountGood, getCountUseful,
+                            selectableUseful, selectableGood, selectableCool );
                     Log.d("REIVEW_REVIEW", "Casting Info - reviewData (Array List) :" + i + "번 :" + reviewData.get(i));
                 }
             }
@@ -982,10 +1018,30 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
             case R.id.shopDetailCallBtn: {
 
-                Uri uri = Uri.parse("tel:" + defaultCall);
-                Intent callIntent = new Intent("android.intent.action.CALL");
-                callIntent.setData(uri);
-                startActivity(callIntent);
+                PermissionListener permissionlistener = new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        Log.d("TEDPermission","onPermissionGranted");
+
+                        Uri uri = Uri.parse("tel:" + defaultCall);
+                        Intent callIntent = new Intent("android.intent.action.CALL");
+                        callIntent.setData(uri);
+                        startActivity(callIntent);
+
+                    }
+
+                    @Override
+                    public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                        Log.d("TEDPermission","onPermissionDenied");
+                    }
+                };
+
+                TedPermission.with(this)
+                        .setPermissionListener(permissionlistener)
+                        .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                        .setPermissions(Manifest.permission.CALL_PHONE)
+                        .check();
+
 
                 break;
             }

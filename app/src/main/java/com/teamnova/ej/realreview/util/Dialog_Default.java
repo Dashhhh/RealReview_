@@ -65,6 +65,34 @@ public class Dialog_Default {
 
 
 
+    public void callMaterialSpin(String title, String text) {
+
+        new MaterialDialog.Builder(mContext)
+                .title(title)
+                .content(text)
+                .progress(true, 0)
+                .show();
+
+
+    }
+
+
+
+
+
+    public void dismiss(String title, String text) {
+
+        new MaterialDialog.Builder(mContext)
+                .title(title)
+                .content(text)
+                .progress(true, 0)
+                .show();
+
+    }
+
+
+
+
 
 
     /**

@@ -20,6 +20,7 @@ public class ShopDetail_Main_RV_QuestionAll_Set {
     boolean curious;
     String imagepath;
 
+
     public ShopDetail_Main_RV_QuestionAll_Set() {
     }
 

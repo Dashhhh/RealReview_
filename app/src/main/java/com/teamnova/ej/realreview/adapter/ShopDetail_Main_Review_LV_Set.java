@@ -6,7 +6,7 @@ package com.teamnova.ej.realreview.adapter;
 
 public class ShopDetail_Main_Review_LV_Set {
 
-
+    public String idx;
     public String titleImage; // Glide -> Convert URL & Viewing on getView
     public String followerCnt;
     public String reviewCnt;
@@ -19,6 +19,22 @@ public class ShopDetail_Main_Review_LV_Set {
     public String nick;
     public String nearby;
     public String locality;
+
+    public String coolCount;
+    public String usefulCount;
+    public String goodCount;
+
+    boolean useful_selectable;
+    boolean good_selectable;
+    boolean cool_selectable;
+
+    public String getIdx() {
+        return idx;
+    }
+
+    public void setIdx(String idx) {
+        this.idx = idx;
+    }
 
     public String getTitleImage() {
         return titleImage;
@@ -98,5 +114,69 @@ public class ShopDetail_Main_Review_LV_Set {
 
     public void setNick(String nick) {
         this.nick = nick;
+    }
+
+    public String getNearby() {
+        return nearby;
+    }
+
+    public void setNearby(String nearby) {
+        this.nearby = nearby;
+    }
+
+    public String getLocality() {
+        return locality;
+    }
+
+    public void setLocality(String locality) {
+        this.locality = locality;
+    }
+
+    public String getCoolCount() {
+        return coolCount;
+    }
+
+    public void setCoolCount(String coolCount) {
+        this.coolCount = coolCount;
+    }
+
+    public String getUsefulCount() {
+        return usefulCount;
+    }
+
+    public void setUsefulCount(String usefulCount) {
+        this.usefulCount = usefulCount;
+    }
+
+    public String getGoodCount() {
+        return goodCount;
+    }
+
+    public void setGoodCount(String goodCount) {
+        this.goodCount = goodCount;
+    }
+
+    public boolean isUseful_selectable() {
+        return useful_selectable;
+    }
+
+    public void setUseful_selectable(boolean useful_selectable) {
+        this.useful_selectable = useful_selectable;
+    }
+
+    public boolean isGood_selectable() {
+        return good_selectable;
+    }
+
+    public void setGood_selectable(boolean good_selectable) {
+        this.good_selectable = good_selectable;
+    }
+
+    public boolean isCool_selectable() {
+        return cool_selectable;
+    }
+
+    public void setCool_selectable(boolean cool_selectable) {
+        this.cool_selectable = cool_selectable;
     }
 }

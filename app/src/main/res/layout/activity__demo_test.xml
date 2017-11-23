@@ -94,6 +94,20 @@
         tools:layout_constraintTop_creator="1" />
 
     <Button
+        android:id="@+id/materialDialogTest"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="144dp"
+        android:text="shop Detail Test"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/facebookKey"
+        app:layout_constraintRight_toRightOf="@+id/facebookKey"
+        app:layout_constraintTop_toBottomOf="@+id/bottomNavigation"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+    <Button
         android:id="@+id/mainActivityTest"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
