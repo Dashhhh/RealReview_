@@ -60,7 +60,7 @@ public class ShopDetail_Tip_Submit extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                if (!tipText.equals("")) {
+                if (!tipText.getText().toString().equals("")) {
                     TIP_TEXT     = tipText.getText().toString();
                     TIP_SHOPID   = setTipShopId;
                     TIP_USERID   = setTipUserId;

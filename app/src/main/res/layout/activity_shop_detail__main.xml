@@ -11,11 +11,9 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -1023,46 +1021,46 @@
                 android:layout_height="10dp"
                 android:background="#dddddd"
                 android:src="@drawable/border_alpha" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Review"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#dddddd"
+                android:src="@drawable/border_alpha" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 >
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Review"
-                    android:textColor="#000000"
-                    android:textSize="14sp" />
-
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="#dddddd"
-                    android:src="@drawable/border_alpha" />
 
                 <ListView
                     android:id="@+id/shopDetailLVReview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent" />
 
 
-
-                <Button
-                    android:id="@+id/reviewPagingBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="See All Review"
-                    android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
-                    />
-                <!--TODO inflate "activity_shop_detail__main_review_listview.xml" -->
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/reviewPagingBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="See All Review"
+                android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
+                />
+            <!--TODO inflate "activity_shop_detail__main_review_listview.xml" -->
 
             <ImageView
                 android:layout_width="match_parent"

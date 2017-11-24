@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.teamnova.ej.realreview.R;
 
 import java.util.ArrayList;
@@ -41,15 +43,17 @@ public class ShopDetail_Main_RV_Tip_Adapter extends RecyclerView.Adapter<ShopDet
         dataSet = data.get(position);
 
 
-        holder.tipImageCount.setText("0");
-        holder.tipReviewCount.setText("0");
-        holder.tipUserFollower.setText("0");
+        holder.tipImageCount.setText(dataSet.getImageCnt());
+        holder.tipReviewCount.setText(dataSet.getReviewCnt());
+        holder.tipUserFollower.setText(dataSet.getFollowerCnt());
         holder.tipRegdate.setMarkdownText("{fa-clock-o} " + dataSet.getRegdate());
         holder.tipText.setText(dataSet.getReviewText());
         holder.tipUserNick.setText(dataSet.getUserNick());
-        Glide.with(mContext).load("http://222.122.203.55/realreview/signup/profiledefault/homeme_default.jpg").into(holder.tipUserImage);
-        Glide.with(mContext).load(dataSet.imagepath).into(holder.tipUserImage);
-
+//        Glide.with(mContext).load("http://222.122.203.55/realreview/signup/profiledefault/homeme_default.jpg").into(holder.tipUserImage);
+//        Glide.with(mContext).load(dataSet.imagepath).into(holder.tipUserImage);
+        Glide.with(mContext).load(dataSet.imagepath).thumbnail(0.5f)
+                .apply(RequestOptions.bitmapTransform(new CircleCrop(mContext)))
+                .into(holder.tipUserImage);
         Log.d("ASYNC_TIP", "dataSet.nearby : " + dataSet.nearby);
         if (dataSet.nearby.equals("1")) {
             Log.d("ASYNC_TIP", "dataSet.nearby TRUE(1) : " + dataSet.nearby);

@@ -11,5 +11,6 @@ public class ShopDetail_Main_Adapter_Viewholder {
 
     ImageView imageView;
     TextView textView;
+    com.beardedhen.androidbootstrap.AwesomeTextView viewpagerTitleText, viewpagerDetailText;
 
 }

@@ -3,6 +3,7 @@ package com.teamnova.ej.realreview.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -105,10 +106,10 @@ public class ShopDetail_Answer_Viewing extends AppCompatActivity {
 
         data.clear();
         ShopDetail_Answer_Viewing_Adapter adapter = new ShopDetail_Answer_Viewing_Adapter(this, data);
-        LinearLayoutManager themeLayoutSet = new LinearLayoutManager(this);
+        StaggeredGridLayoutManager themeLayoutSet = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         themeLayoutSet.setReverseLayout(true);
+        questionViewRV.setHasFixedSize(true);
         questionViewRV.setLayoutManager(themeLayoutSet);
-        questionViewRV.setVerticalScrollBarEnabled(false);
 /*
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(getApplicationContext(), new LinearLayoutManager(this).getOrientation());
@@ -117,7 +118,6 @@ public class ShopDetail_Answer_Viewing extends AppCompatActivity {
         questionViewRV.addItemDecoration(dividerItemDecoration);
 */
 
-        questionViewRV.setHasFixedSize(false);
         questionViewRV.setAdapter(adapter);
 
         JSONObject conn = new JSONObject();

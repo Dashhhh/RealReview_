@@ -1,12 +1,17 @@
 package com.teamnova.ej.realreview.Asynctask;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.pnikosis.materialishprogress.ProgressWheel;
+import com.teamnova.ej.realreview.activity.ShopDetail_Main;
+import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
-import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,26 +23,24 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Created by ej on 2017-11-10.
+ * Created by ej on 2017-10-26.
  */
 
-public class AsyncReviewGoodUp extends AsyncTask<Void, Integer, Void> {
+public class AsyncReviewRequest extends AsyncTask<Void, Integer, JSONObject> {
 
 
+    public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
+    private String urlString;
     private String params = "";
     String TestVAR;
     private Context mContext;
-    private String iShopID, iUserID, iIdx, iNick;
-    private String userLocationCheckResult;
-    String parseUrlParameter = "http://222.122.203.55/realreview/reviewScore/reviewGoodUp.php?";
+    private String shopId;
     private MaterialDialog builder;
 
-    public AsyncReviewGoodUp(String iShopID, String iUserID, String iNick, String iIdx, Context mContext) {
+    public AsyncReviewRequest(String urlString, String shopId, Context mContext) {
+        this.urlString = urlString;
         this.mContext = mContext;
-        this.iShopID = iShopID;
-        this.iUserID = iUserID;
-        this.iNick = iNick;
-        this.iIdx = iIdx;
+        this.shopId = shopId;
     }
 
     @Override
@@ -46,27 +49,24 @@ public class AsyncReviewGoodUp extends AsyncTask<Void, Integer, Void> {
         builder = new MaterialDialog.Builder(mContext)
                 .title("Connecting")
                 .content("loading..")
-                .progressIndeterminateStyle(true)
+                .progress(true, 0)
                 .show();
+
+
     }
 
-
     @Override
-    protected Void doInBackground(Void... params) {
+    protected JSONObject doInBackground(Void... params) {
         // TODO Auto-generated method stub
-
-        StringBuilder jsonhtml = new StringBuilder();
-        StringBuffer postDataBuilder = new StringBuffer();
-        JSONArray jsonArray;
-
+        JSONObject jsonObject = new JSONObject();
+        String result = "";
 
         try {
             // URL설정, 접속
-            String parameterCheck = "id_shop=" + iShopID + "\n" + "id_user=" + iUserID + "\n" + "idx_question=" + iIdx + "\n" + "nick=" + iNick;
-            URL url = new URL(parseUrlParameter);
+
+            URL url = new URL(urlString);
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
-            Log.d("AsyncAnswerSubmit", "parseUrlParameter : " + parameterCheck);
-            Log.d("AsyncAnswerSubmit", "url : " + url);
+            Log.d("ReviewAll_Async", "URL : " + url);
 
             // 전송모드 설정(일반적인 POST방식)
             http.setDefaultUseCaches(false);
@@ -77,12 +77,11 @@ public class AsyncReviewGoodUp extends AsyncTask<Void, Integer, Void> {
             // content-type 설정
             http.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
 
+            SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
             // 전송값 설정
             StringBuffer buffer = new StringBuffer();
-            buffer.append("id_shop").append("=").append(iShopID).append("&");
-            buffer.append("id_user").append("=").append(iUserID).append("&");
-            buffer.append("nick").append("=").append(iNick).append("&");
-            buffer.append("idx_review").append("=").append(iIdx);
+            buffer.append("id_user").append("=").append(pref.getSharedData("isLogged_id")).append("&");
+            buffer.append("id_shop").append("=").append(ShopDetail_Main.SHOP_ID);
 
             // 서버로 전송
             OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "UTF-8");
@@ -98,21 +97,31 @@ public class AsyncReviewGoodUp extends AsyncTask<Void, Integer, Void> {
             while ((str = bufferReader.readLine()) != null) {
                 builder.append(str + "\n");
             }
-            String result = builder.toString();
-            Log.d("AsyncAnswerSubmit", "전송결과 : " + result);
+            result = builder.toString();
+            Log.d("ReviewAll_Async", "전송결과 : " + result);
+            Log.d("ReviewAll_Async", "http.getResponseCode() : " + http.getResponseCode());
+            Log.d("ReviewAll_Async", "http.getResponseMessage() : " + http.getResponseMessage());
+
+            jsonObject = new JSONObject(result);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return null;
+
+
+        return jsonObject;
 
     }
 
     @Override
-    protected void onPostExecute(Void result) {
+    protected void onPostExecute(JSONObject result) {
+
         builder.dismiss();
+        
     }
 
     /**
@@ -138,4 +147,5 @@ public class AsyncReviewGoodUp extends AsyncTask<Void, Integer, Void> {
         return "Content-Disposition: form-data; name=\"" + key
                 + "\";filename=\"" + fileName + "\"\r\n";
     }
+
 }

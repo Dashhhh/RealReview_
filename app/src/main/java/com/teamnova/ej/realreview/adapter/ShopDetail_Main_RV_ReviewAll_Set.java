@@ -1,10 +1,10 @@
 package com.teamnova.ej.realreview.adapter;
 
 /**
- * Created by ej on 2017-10-21.
+ * Created by ej on 2017-11-24.
  */
 
-public class ShopDetail_Main_Review_LV_Set {
+public class ShopDetail_Main_RV_ReviewAll_Set {
 
     public String idx;
     public String titleImage; // Glide -> Convert URL & Viewing on getView
@@ -27,6 +27,31 @@ public class ShopDetail_Main_Review_LV_Set {
     boolean useful_selectable;
     boolean good_selectable;
     boolean cool_selectable;
+
+    public ShopDetail_Main_RV_ReviewAll_Set() {
+    }
+
+    public ShopDetail_Main_RV_ReviewAll_Set(String idx, String titleImage, String followerCnt, String reviewCnt, String imageCnt, String reviewText, String regdate, String userId, String rating, float fRating, String nick, String nearby, String locality, String coolCount, String usefulCount, String goodCount, boolean useful_selectable, boolean good_selectable, boolean cool_selectable) {
+        this.idx = idx;
+        this.titleImage = titleImage;
+        this.followerCnt = followerCnt;
+        this.reviewCnt = reviewCnt;
+        this.imageCnt = imageCnt;
+        this.reviewText = reviewText;
+        this.regdate = regdate;
+        this.userId = userId;
+        this.rating = rating;
+        this.fRating = fRating;
+        this.nick = nick;
+        this.nearby = nearby;
+        this.locality = locality;
+        this.coolCount = coolCount;
+        this.usefulCount = usefulCount;
+        this.goodCount = goodCount;
+        this.useful_selectable = useful_selectable;
+        this.good_selectable = good_selectable;
+        this.cool_selectable = cool_selectable;
+    }
 
     public String getIdx() {
         return idx;

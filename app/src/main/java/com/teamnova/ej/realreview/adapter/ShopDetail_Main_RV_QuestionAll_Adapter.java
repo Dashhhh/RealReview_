@@ -38,7 +38,6 @@ public class ShopDetail_Main_RV_QuestionAll_Adapter extends RecyclerView.Adapter
         this.mContext = mContext;
         if (data == null) this.data = new ArrayList<>();
         else this.data = data;
-
     }
 
     @Override

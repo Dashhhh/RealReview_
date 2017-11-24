@@ -30,6 +30,8 @@ public class ShopDetail_Main_Adapter_Backup extends PagerAdapter {
     LayoutInflater inflater;
     public ArrayList<ShopAdd3_SetData> shopData = new ArrayList<>();
     public ArrayList<String> stringArrayList;
+    public ArrayList<String> titleArray;
+    public ArrayList<String> detailArray;
 
 
     public ShopDetail_Main_Adapter_Backup() {
@@ -40,11 +42,17 @@ public class ShopDetail_Main_Adapter_Backup extends PagerAdapter {
         this.mContext = mContext;
         this.inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         stringArrayList = new ArrayList<>();
+        titleArray = new ArrayList<>();
+        detailArray = new ArrayList<>();
 
     }
 
-    public void addItem(String type) {
-        stringArrayList.add(type);                //������ ��Ͽ� �߰�
+    public void addItem(String url, String title, String detail) {
+        stringArrayList.add(url);
+        titleArray.add(title);
+        detailArray.add(detail);
+
+        //������ ��Ͽ� �߰�
         notifyDataSetChanged();        //�ƴ��Ϳ� ������ ����Ǿ��ٰ� �˸�. �˾Ƽ� ���ΰ�ħ
     }
 
@@ -73,6 +81,8 @@ public class ShopDetail_Main_Adapter_Backup extends PagerAdapter {
         } else {
             v = inflater.inflate(R.layout.activity_shop_detail__main_top_viewpager, container, false);
             vh.imageView = v.findViewById(R.id.shopDetailViewPagerImage);
+            vh.viewpagerTitleText = v.findViewById(R.id.viewpagerTitleText);
+            vh.viewpagerDetailText = v.findViewById(R.id.viewpagerDetailText);
             v.setTag(vh);
         }
 
@@ -86,6 +96,8 @@ public class ShopDetail_Main_Adapter_Backup extends PagerAdapter {
                 load(url).
                 into(vh.imageView);
         container.addView(v);
+        vh.viewpagerTitleText.setText(titleArray.get(position));
+        vh.viewpagerDetailText.setText(detailArray.get(position));
 
 
         vh.imageView.setOnClickListener(new View.OnClickListener() {

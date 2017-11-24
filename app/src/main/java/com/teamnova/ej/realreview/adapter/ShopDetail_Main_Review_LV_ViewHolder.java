@@ -23,7 +23,6 @@ public class ShopDetail_Main_Review_LV_ViewHolder {
     com.beardedhen.androidbootstrap.BootstrapButton reviewGoodBtn;
     com.beardedhen.androidbootstrap.BootstrapButton reviewCoolBtn;
     android.support.v7.widget.AppCompatRatingBar reviewRating;
-    LinearLayout reviewLayoutForLoginUser;
     com.beardedhen.androidbootstrap.BootstrapButton reviewModify, reviewDelete;
     com.beardedhen.androidbootstrap.BootstrapBadge reviewCertify, reviewLocality;
 

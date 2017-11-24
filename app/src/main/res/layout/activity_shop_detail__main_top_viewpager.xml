@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/viewpagerRelative"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <ImageView
-        android:layout_width="2dp"
+        android:layout_width="3dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:background="#83000000" />
+        android:background="#000000"
+        android:id="@+id/imageView" />
 
     <ImageView
         android:id="@+id/shopDetailViewPagerImage"
@@ -19,9 +22,46 @@
         android:layout_marginRight="2dp" />
 
     <ImageView
-        android:layout_width="2dp"
+        android:layout_width="3dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:background="#98000000" />
+        android:background="#000000" />
+
+
+    <com.beardedhen.androidbootstrap.AwesomeTextView
+        android:id="@+id/viewpagerTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/viewpagerDetailText"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end"
+        android:textSize="28sp"
+        app:bootstrapBrand="secondary"
+        android:layout_marginRight="4dp"
+        android:textStyle="bold"
+        android:textAlignment="textEnd"
+        app:bootstrapText="{fa-clock-o} 123123"
+        app:fontAwesomeIcon="fa_android"
+        app:typicon="ty_anchor" />
+
+
+    <com.beardedhen.androidbootstrap.AwesomeTextView
+        android:id="@+id/viewpagerDetailText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/viewpagerTitleText"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="end"
+        android:ellipsize="end"
+        android:layout_marginRight="4dp"
+        android:maxLines="3"
+        android:textAlignment="textEnd"
+        android:textSize="19sp"
+        android:textStyle="normal"
+        app:bootstrapBrand="secondary"
+        app:bootstrapText="{fa-clock-o} 123"
+        app:fontAwesomeIcon="fa_android"
+        android:layout_marginBottom="20dp"
+        app:typicon="ty_anchor" />
 
 </RelativeLayout>

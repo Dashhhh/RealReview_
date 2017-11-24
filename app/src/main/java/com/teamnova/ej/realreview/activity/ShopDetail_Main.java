@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -189,7 +190,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailReview = (AppCompatEditText) findViewById(R.id.shopDetailReview);
         shopDetailLVReview = (ListView) findViewById(R.id.shopDetailLVReview);
         reviewPagingBtn = (Button) findViewById(R.id.reviewPagingBtn);
-        reviewPagingBtn.setVisibility(View.GONE);
+//        reviewPagingBtn.setVisibility(View.GONE);
         shopDetailTip = (AppCompatEditText) findViewById(R.id.shopDetailTip);
         shopDetailTipProfileLayout = (LinearLayout) findViewById(R.id.shopDetailTipRVLayout);
         shopDetailTipRV = (RecyclerView) findViewById(R.id.shopDetailTipRV);
@@ -338,9 +339,12 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             JSONArray fixJSON = castingJO.getJSONArray("realreview");   // viewPager
             Log.d("REVIEW_VIEWPAGER_URL", "2 - fixJSON :" + fixJSON);
 
+            JSONObject reviewJSON = new JSONObject(sConn);
+            JSONArray reviewJSONArray = reviewJSON.getJSONArray("info");
+
             if (fixJSON.length() == 0) {
 
-                viewpagerAdapter.addItem("http://222.122.203.55/realreview/shopimage/upload/default_viewpager.png");
+                viewpagerAdapter.addItem("http://222.122.203.55/realreview/shopimage/upload/default_viewpager.png","","");
                 imageRVAdater.addItem("http://222.122.203.55/realreview/shopimage/upload/default_viewpager.png");
 
             }
@@ -348,13 +352,20 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             for (int i = 0; i < fixJSON.length(); i++) {
                 ShopDetail_Main_RV_Photo_Set rvSet = new ShopDetail_Main_RV_Photo_Set();
                 JSONObject item = fixJSON.getJSONObject(i);
-                Log.d("REVIEW_VIEWPAGER_URL", "3 - item :" + i + "번 :" + item);
-                String getViewpagerURL = item.getString("imagepath");
-                Log.d("REVIEW_VIEWPAGER_URL", "5 - getViewpagerURL :" + i + "번 :" + getViewpagerURL);
+                JSONObject viewpagerText = reviewJSONArray.getJSONObject(i);
+
+                String viewpagerImageUrl = item.getString("imagepath");
+                String viewpagerTitle = viewpagerText.getString("nick");
+                String viewpagerDetail = viewpagerText.getString("review");
+
+
+                Log.d("REVIEW_VIEWPAGER_URL", "viewpagerImageUrl :" + i + "번 :" + viewpagerImageUrl);
+                Log.d("REVIEW_VIEWPAGER_URL", "viewpagerTitle :" + i + "번 :" + viewpagerTitle);
+                Log.d("REVIEW_VIEWPAGER_URL", "viewpagerDetail :" + i + "번 :" + viewpagerDetail);
                 if (i <= 5) {
-                    viewpagerAdapter.addItem(getViewpagerURL);
+                    viewpagerAdapter.addItem(viewpagerImageUrl, viewpagerTitle, viewpagerDetail);
                 }
-                rvSet.imageUrl = getViewpagerURL;
+                rvSet.imageUrl = viewpagerImageUrl;
                 imageRVList.add(rvSet);
             }
 
@@ -430,8 +441,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
             */
 
-            JSONObject reviewJSON = new JSONObject(sConn);
-            JSONArray reviewJSONArray = reviewJSON.getJSONArray("info");
             for (int i = 0; i < reviewJSONArray.length(); i++) {
                 JSONObject jsonObject1 = reviewJSONArray.getJSONObject(i);
                 Log.d("REVIEW_REVIEW", "jsonObject1 :" + jsonObject1);
@@ -472,21 +481,21 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 String getCountUseful = jsonObject1.getString("countUseful");
                 Log.d("REIVEW_REVIEW", "Casting Info - getCountUseful :" + i + "번 :" + getCountUseful);
 
-
                 boolean selectableUseful = jsonObject1.getBoolean("useful_selectable");
-                boolean selectableGood =   jsonObject1.getBoolean("good_selectable");
-                boolean selectableCool =  jsonObject1.getBoolean("cool_selectable");
-
                 Log.d("REIVEW_REVIEW", "Casting Info - useful_selectable :" + i + "번 :" + selectableUseful );
+
+                boolean selectableGood =   jsonObject1.getBoolean("good_selectable");
                 Log.d("REIVEW_REVIEW", "Casting Info - good_selectable :" + i + "번 :" + selectableGood );
+
+                boolean selectableCool =  jsonObject1.getBoolean("cool_selectable");
                 Log.d("REIVEW_REVIEW", "Casting Info - cool_selectable :" + i + "번 :" + selectableCool );
 
+                String getCountFollower = jsonObject1.getString("follower_cnt");
+                String getCountReview = jsonObject1.getString("review_cnt");
+                String getCountImage = jsonObject1.getString("image_cnt");
 
 
                 if (i <= 5) {
-                    String followerCnt = "0";
-                    String reviewCnt = "0";
-                    String imageCnt = "0";
                     float ff = Float.parseFloat(getRating);
                     titleRatingPoint += ff;
                     if (reviewJSONArray.length() != 0) titleRatingPersonCount++;
@@ -503,25 +512,25 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 dataSet.titleImage = getProfileImageURL;
 */
 //                dataSet_addList.add(dataSet);
-                    reviewLvAdapter.addItem(getReviewIdx, getProfileImageURL, followerCnt, reviewCnt, imageCnt, getReviewText,
+                    reviewLvAdapter.addItem(getReviewIdx, getProfileImageURL, getCountFollower, getCountReview, getCountImage, getReviewText,
                             getRegdate, getUserId, getRating, getNick, ff, getProfileImageURL, getLocality, getNearby,
                             getCountCool, getCountGood, getCountUseful,
-                            selectableUseful, selectableGood, selectableCool );
+                            selectableUseful, selectableGood, selectableCool);
                     Log.d("REIVEW_REVIEW", "Casting Info - reviewData (Array List) :" + i + "번 :" + reviewData.get(i));
                 }
+
             }
-            if (reviewJSONArray.length() >= 5) {
+            if (reviewJSONArray.length() >= 3) {
 
                 reviewPagingBtn.setVisibility(View.VISIBLE);
                 reviewPagingBtn.setText("리뷰(" + reviewJSONArray.length() + ") 전체 보기");
+                reviewPagingBtn.setOnClickListener(this);
             }
             reviewLvAdapter.notifyDataSetChanged();
             ViewGroup.LayoutParams params = shopDetailLVReview.getLayoutParams();
-
-            setListViewHeightBasedOnItems(shopDetailLVReview);
-
+//            setListViewHeightBasedOnItems(shopDetailLVReview);
+            listViewHeightSet(reviewLvAdapter ,shopDetailLVReview);
 //            reviewLvAdapter.addItem(reviewData);
-
             Log.d("Main_Test, onMapReady", "connLength : " + fixJSON.length());
 
 
@@ -620,16 +629,20 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         for (int i = 0; i < jsonArray.length(); i++) {
 
             JSONObject getArray = jsonArray.getJSONObject(i);
-            String shopid = getArray.getString("shopid");
-            String userid = getArray.getString("userid");
-            String tip = getArray.getString("tip");
-            String regdate = getArray.getString("regdate");
-            String nearby = getArray.getString("nearby");
-            String nick = getArray.getString("nick");
-            String locality = getArray.getString("locality");
-            String imagepath = getArray.getString("imagepath");
+            String shopid             = getArray.getString("shopid");
+            String userid             = getArray.getString("userid");
+            String tip                = getArray.getString("tip");
+            String regdate            = getArray.getString("regdate");
+            String nearby             = getArray.getString("nearby");
+            String nick               = getArray.getString("nick");
+            String locality           = getArray.getString("locality");
+            String imagepath          = getArray.getString("imagepath");
+            String getCountFollower   = getArray.getString("follower_cnt");
+            String getCountReview     = getArray.getString("review_cnt");
+            String getCountImage      = getArray.getString("image_cnt");
 
-            ShopDetail_Main_RV_Tip_Set adapterSet = new ShopDetail_Main_RV_Tip_Set("", "0", "0", "0", tip, regdate, nick, nearby, locality, imagepath);
+
+            ShopDetail_Main_RV_Tip_Set adapterSet = new ShopDetail_Main_RV_Tip_Set(imagepath, getCountFollower, getCountReview, getCountImage, tip, regdate, nick, nearby, locality, imagepath);
             Log.d("TIP_ASYNC", "JSON Parsing...shopid  : " + shopid);
             Log.d("TIP_ASYNC", "JSON Parsing...userid  : " + userid);
             Log.d("TIP_ASYNC", "JSON Parsing...tip     : " + tip);
@@ -643,6 +656,25 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
         }
 
+    }
+    public void listViewHeightSet(BaseAdapter listAdapter, ListView listView){
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++){
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+
+            Log.i("listViewHeightSet", "listItem.getMeasuredHeight() :" +listItem.getMeasuredHeight());
+//            totalHeight *= 0.98;
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+//        params.height = totalHeight + ((listView.getDividerHeight()) * (listAdapter.getCount() - 1));
+        params.height = totalHeight;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+        Log.i("listViewHeightSet", "params.height :" +params.height);
+        Log.i("listViewHeightSet", "listView.getDividerHeight() :" +listView.getDividerHeight());
     }
 
     public void setListViewHeightBasedOnItems(ListView listView) {
@@ -1149,6 +1181,15 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Question_All.class);
                 intent.putExtra("SHOPID", defaultShopID);
                 startActivity(intent);
+                break;
+            }
+
+            case R.id.reviewPagingBtn : {
+
+                Intent intent = new Intent (ShopDetail_Main.this, ShopDetail_Review_Viewing.class );
+                intent.putExtra("SHOPID", defaultShopID);
+                startActivity(intent);
+                break;
 
             }
 
