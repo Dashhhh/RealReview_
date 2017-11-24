@@ -349,26 +349,42 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
             }
 
-            for (int i = 0; i < fixJSON.length(); i++) {
-                ShopDetail_Main_RV_Photo_Set rvSet = new ShopDetail_Main_RV_Photo_Set();
-                JSONObject item = fixJSON.getJSONObject(i);
-                JSONObject viewpagerText = reviewJSONArray.getJSONObject(i);
 
-                String viewpagerImageUrl = item.getString("imagepath");
+            ArrayList<String> vpTitle = new ArrayList<>();
+            ArrayList<String> vpDetail = new ArrayList<>();
+            ArrayList<String> vpImageURL = new ArrayList<>();
+
+            for (int i = 0; i < reviewJSONArray.length(); i++) {
+
+                JSONObject viewpagerText = reviewJSONArray.getJSONObject(i);
                 String viewpagerTitle = viewpagerText.getString("nick");
                 String viewpagerDetail = viewpagerText.getString("review");
 
-
-                Log.d("REVIEW_VIEWPAGER_URL", "viewpagerImageUrl :" + i + "번 :" + viewpagerImageUrl);
                 Log.d("REVIEW_VIEWPAGER_URL", "viewpagerTitle :" + i + "번 :" + viewpagerTitle);
                 Log.d("REVIEW_VIEWPAGER_URL", "viewpagerDetail :" + i + "번 :" + viewpagerDetail);
+
+                vpTitle.add(viewpagerTitle);
+                vpDetail.add(viewpagerDetail);
+
+            }
+
+            for (int i = 0; i < fixJSON.length(); i++) {
+                ShopDetail_Main_RV_Photo_Set rvSet = new ShopDetail_Main_RV_Photo_Set();
+                JSONObject item = fixJSON.getJSONObject(i);
+
+                String viewpagerImageUrl = item.getString("imagepath");
+                Log.d("REVIEW_VIEWPAGER_URL", "viewpagerImageUrl :" + i + "번 :" + viewpagerImageUrl);
+
                 if (i <= 5) {
-                    viewpagerAdapter.addItem(viewpagerImageUrl, viewpagerTitle, viewpagerDetail);
+                    vpImageURL.add(viewpagerImageUrl);
                 }
                 rvSet.imageUrl = viewpagerImageUrl;
                 imageRVList.add(rvSet);
             }
 
+            for(int i = 0; i < vpTitle.size(); i++) {
+                viewpagerAdapter.addItem(vpImageURL.get(i), vpTitle.get(i), vpDetail.get(i));
+            }
             imageRVAdater.notifyDataSetChanged();
             shopDetailRVImage.setAdapter(imageRVAdater);
 
