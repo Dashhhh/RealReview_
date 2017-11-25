@@ -383,7 +383,11 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             }
 
             for(int i = 0; i < vpTitle.size(); i++) {
-                viewpagerAdapter.addItem(vpImageURL.get(i), vpTitle.get(i), vpDetail.get(i));
+                if(i <= 5) {
+                    viewpagerAdapter.addItem(vpImageURL.get(i), vpTitle.get(i), vpDetail.get(i));
+                } else {
+                    break;
+                }
             }
             imageRVAdater.notifyDataSetChanged();
             shopDetailRVImage.setAdapter(imageRVAdater);
