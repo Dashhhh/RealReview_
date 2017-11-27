@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Xml;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
@@ -33,13 +34,13 @@ import static com.teamnova.ej.realreview.activity.ShopDetail_Question_Submit.QUE
 
 public class AsyncAnswerSubmit extends AsyncTask<Void, Integer, Void> {
 
-    private ProgressWheel dialog;
     private String params = "";
     String TestVAR;
     private Context mContext;
     private String iShopID, iUserID, answer, iIdx, iNick;
     private String userLocationCheckResult;
     String parseUrlParameter = "http://222.122.203.55/realreview/answer/answerUpload.php?";
+    private MaterialDialog builder;
 
 
     public AsyncAnswerSubmit(String iShopID, String iUserID, String answer, String iIdx,String iNick, Context mContext) {
@@ -49,15 +50,18 @@ public class AsyncAnswerSubmit extends AsyncTask<Void, Integer, Void> {
         this.iIdx = iIdx;
         this.iNick = iNick;
         this.mContext = mContext;
-        dialog = new ProgressWheel(mContext);
-        
     }
 
     @Override
     protected void onPreExecute() {
 
-        dialog.setInstantProgress(0.64f);
-        dialog.setBarColor(Color.BLUE);
+
+        builder = new MaterialDialog.Builder(mContext)
+                .title("Connecting")
+                .content("loading..")
+                .progressIndeterminateStyle(true)
+                .show();
+
     }
 
     @Override
@@ -122,8 +126,8 @@ public class AsyncAnswerSubmit extends AsyncTask<Void, Integer, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-
-
+        super.onPostExecute(result);
+        builder.dismiss();
     }
 
     /**

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 import org.json.JSONArray;
@@ -25,13 +26,13 @@ import java.net.URL;
 public class AsyncAlsoCuriousRequestDown extends AsyncTask<Void, Integer, Void> {
 
 
-    private ProgressWheel dialog;
     private String params = "";
     String TestVAR;
     private Context mContext;
     private String iShopID, iUserID, iIdx, iNick;
     private String userLocationCheckResult;
     String parseUrlParameter = "http://222.122.203.55/realreview/question/questionCuriousDown.php?";
+    private MaterialDialog builder;
 
 
     public AsyncAlsoCuriousRequestDown(String iShopID, String iUserID, String iNick, String iIdx, Context mContext) {
@@ -40,14 +41,18 @@ public class AsyncAlsoCuriousRequestDown extends AsyncTask<Void, Integer, Void> 
         this.iUserID = iUserID;
         this.iNick = iNick;
         this.iIdx = iIdx;
-        dialog = new ProgressWheel(mContext);
     }
 
     @Override
     protected void onPreExecute() {
 
-        dialog.setInstantProgress(0.64f);
-        dialog.setBarColor(Color.BLUE);
+
+        builder = new MaterialDialog.Builder(mContext)
+                .title("Connecting")
+                .content("loading..")
+                .progressIndeterminateStyle(true)
+                .show();
+
     }
 
     @Override
@@ -111,8 +116,8 @@ public class AsyncAlsoCuriousRequestDown extends AsyncTask<Void, Integer, Void> 
 
     @Override
     protected void onPostExecute(Void result) {
-
-
+        super.onPostExecute(result);
+        builder.dismiss();
     }
 
     /**

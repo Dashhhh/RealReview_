@@ -18,7 +18,7 @@ public class ValidateUtil {
     }
 
     //비밀번호정규식
-    public static final Pattern VALID_PASSWORD_REGEX_ALPHA_NUM = Pattern.compile("^[a-zA-Z0-9!@.#$%^&*?_~]{4,16}$"); // 4자리 ~ 16자리까지 가능
+    public static final Pattern VALID_PASSWORD_REGEX_ALPHA_NUM = Pattern.compile("^[a-zA-Z0-9!@.#$%^&*?_~]{4,16}$"); // 4자리 ~ 16자리까지 가능, 영어(대소문) + 숫자 + 특수문자
 
     public static boolean validatePassword(String pwStr) {
         Matcher matcher = VALID_PASSWORD_REGEX_ALPHA_NUM.matcher(pwStr);
@@ -26,15 +26,16 @@ public class ValidateUtil {
     }
 
     //닉네임정규식
-    public static final Pattern VALID_NICK_REGEX_ALPHA_NUM = Pattern.compile("^[A-Za-z0-9_-]{5,12}$"); // 4자리 ~ 16자리까지 가능
+    public static final Pattern VALID_NICK_REGEX_ALPHA_NUM = Pattern.compile("^[A-Za-z0-9_-]{5,12}$", Pattern.CASE_INSENSITIVE); // 5자리 ~ 12자리, 영어 + 숫자
     public static boolean validateNick(String nickStr) {
         Matcher matcher = VALID_NICK_REGEX_ALPHA_NUM.matcher(nickStr);
         return matcher.matches();
     }
 
     //HTTP 정규식
-//    public static final Pattern VALID_HTTP_REGEX = Pattern.compile("/^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})([/\\w_.-]*)*/?$/"); // 4자리 ~ 16자리까지 가능
-    public static final Pattern VALID_HTTP_REGEX = Pattern.compile("/^(https?:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([\\/\\w_\\.-]*)*\\/?$/"); // 4자리 ~ 16자리까지 가능
+//    public static final Pattern VALID_HTTP_REGEX = Pattern.compile("/^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})([/\\w_.-]*)*/?$/");
+//    public static final Pattern VALID_HTTP_REGEX = Pattern.compile("/^(https?:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([\\/\\w_\\.-]*)*\\/?$/");
+    public static final Pattern VALID_HTTP_REGEX = Pattern.compile("^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$", Pattern.CASE_INSENSITIVE);
     public static boolean validateHttp(String httpStr) {
         Matcher matcher = VALID_HTTP_REGEX.matcher(httpStr);
         return matcher.matches();

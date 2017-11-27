@@ -48,7 +48,6 @@ public class AsyncReviewUsefulDown extends AsyncTask<Void, Integer, Void> {
                 .content("loading..")
                 .progressIndeterminateStyle(true)
                 .show();
-
     }
 
     @Override

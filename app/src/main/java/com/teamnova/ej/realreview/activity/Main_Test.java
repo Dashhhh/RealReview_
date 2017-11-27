@@ -1074,9 +1074,9 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         try {
             conn = new AsyncMainNearbyLatLngReceive(urlMerge, this).execute().get(5000, TimeUnit.MILLISECONDS);
             JSONObject castingJO = new JSONObject(String.valueOf(conn));
-            Log.d("JSON_CHECK", "1 - castingJO :" + castingJO);
+            Log.d("maintest", "1 - castingJO :" + castingJO);
             JSONArray fixJSON = castingJO.getJSONArray("realreview");
-            Log.d("JSON_CHECK", "2 - fixJSON :" + fixJSON);
+            Log.d("maintest", "2 - fixJSON :" + fixJSON);
 
 
             MarkerOptions markerOptions = new MarkerOptions();
@@ -1115,6 +1115,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
                 String a14 = item2.getString("shopTheme4");
                 String a15 = item2.getString("shopTheme5");
                 String a16 = item2.getString("callNumber");
+                String websiteNullCheck = item2.getString("webSite");
 
                 SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
 
@@ -1165,6 +1166,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 
         } catch (InterruptedException | ExecutionException | TimeoutException | JSONException e) {
             e.printStackTrace();
+            Log.d("maintest", "catch");
 
         }
 

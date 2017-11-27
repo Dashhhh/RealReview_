@@ -171,10 +171,9 @@ public class ShopDetail_Review_Submit extends AppCompatActivity implements View.
                         pref.setSharedData("HTTP_REVIEW_USER",iUserId);
                         pref.setSharedData("HTTP_REVIEW_RATING", String.valueOf(iRating));
                         pref.setSharedData("HTTP_REVIEW_NICK", String.valueOf(iNick));
-                        ProgressWheel progressDialog = new ProgressWheel(this);
                         Void conn;
                         try {
-                            conn = new AsyncReviewSubmit(progressDialog, this).execute().get(10000, TimeUnit.MILLISECONDS);
+                            conn = new AsyncReviewSubmit(this).execute().get(10000, TimeUnit.MILLISECONDS);
                             Log.d("REVIEW_Image","MAIN THREAD conn Check :"+conn);
                             finish();
                         } catch (InterruptedException | ExecutionException | TimeoutException e) {

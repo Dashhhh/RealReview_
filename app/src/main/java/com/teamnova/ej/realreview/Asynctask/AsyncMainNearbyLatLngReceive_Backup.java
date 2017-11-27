@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.teamnova.ej.realreview.activity.Main_Test;
 
@@ -28,22 +29,23 @@ public class AsyncMainNearbyLatLngReceive_Backup extends AsyncTask<Void, Integer
     private String urlString;
     private String params = "";
     Context mContext;
-    private ProgressWheel dialog;
     String TestVAR;
+    private MaterialDialog builder;
 
-    public AsyncMainNearbyLatLngReceive_Backup(String urlString, ProgressWheel dialog, Context mContext) {
+    public AsyncMainNearbyLatLngReceive_Backup(String urlString, Context mContext) {
         this.urlString = urlString;
-        this.dialog = dialog;
         this.mContext = mContext;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        dialog = new ProgressWheel(mContext);
-        dialog.setInstantProgress(0.64f);
-        dialog.setBarColor(Color.BLUE);
-        dialog.spin();
+
+        builder = new MaterialDialog.Builder(mContext)
+                .title("Connecting")
+                .content("loading..")
+                .progressIndeterminateStyle(true)
+                .show();
 
     }
 
@@ -124,7 +126,8 @@ public class AsyncMainNearbyLatLngReceive_Backup extends AsyncTask<Void, Integer
 
     @Override
     protected void onPostExecute(StringBuilder result) {
-        dialog.stopSpinning();
+        super.onPostExecute(result);
+        builder.dismiss();
     }
 
 }

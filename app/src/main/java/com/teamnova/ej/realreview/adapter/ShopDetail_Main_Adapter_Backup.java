@@ -52,8 +52,7 @@ public class ShopDetail_Main_Adapter_Backup extends PagerAdapter {
         titleArray.add(title);
         detailArray.add(detail);
 
-        //������ ��Ͽ� �߰�
-        notifyDataSetChanged();        //�ƴ��Ϳ� ������ ����Ǿ��ٰ� �˸�. �˾Ƽ� ���ΰ�ħ
+        notifyDataSetChanged();
     }
 
     @Override
@@ -95,10 +94,18 @@ public class ShopDetail_Main_Adapter_Backup extends PagerAdapter {
         Glide.with(mContext).
                 load(url).
                 into(vh.imageView);
-        container.addView(v);
-        vh.viewpagerTitleText.setText(titleArray.get(position));
-        vh.viewpagerDetailText.setText(detailArray.get(position));
 
+        if(titleArray.get(position).isEmpty() || titleArray.get(position).equals("") || titleArray.get(position).equals(null)){
+            vh.viewpagerTitleText.setText("");
+            vh.viewpagerDetailText.setText("");
+            vh.viewpagerTitleText.setVisibility(View.GONE);
+            vh.viewpagerDetailText.setVisibility(View.GONE);
+        } else {
+            vh.viewpagerTitleText.setText(titleArray.get(position));
+            vh.viewpagerDetailText.setText(detailArray.get(position));
+        }
+
+        container.addView(v);
 
         vh.imageView.setOnClickListener(new View.OnClickListener() {
             @Override

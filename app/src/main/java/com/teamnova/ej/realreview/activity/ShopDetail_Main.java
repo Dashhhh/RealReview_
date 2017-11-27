@@ -72,6 +72,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -269,19 +270,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onStart() {
         super.onStart();
-        defaulDataSet();
-        try {
-            adapting();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        setShopData();
+
 
     }
 
@@ -354,17 +343,20 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             ArrayList<String> vpDetail = new ArrayList<>();
             ArrayList<String> vpImageURL = new ArrayList<>();
 
-            for (int i = 0; i < reviewJSONArray.length(); i++) {
+            for (int i = 0; i < fixJSON.length(); i++) {
 
-                JSONObject viewpagerText = reviewJSONArray.getJSONObject(i);
+                JSONObject viewpagerText = fixJSON.getJSONObject(i);
                 String viewpagerTitle = viewpagerText.getString("nick");
                 String viewpagerDetail = viewpagerText.getString("review");
+                String viewpagerImageUrl = viewpagerText.getString("imagepath");
 
                 Log.d("REVIEW_VIEWPAGER_URL", "viewpagerTitle :" + i + "번 :" + viewpagerTitle);
                 Log.d("REVIEW_VIEWPAGER_URL", "viewpagerDetail :" + i + "번 :" + viewpagerDetail);
+                Log.d("REVIEW_VIEWPAGER_URL", "viewpagerImageUrl :" + i + "번 :" + viewpagerImageUrl);
 
                 vpTitle.add(viewpagerTitle);
                 vpDetail.add(viewpagerDetail);
+                vpImageURL.add(viewpagerImageUrl);
 
             }
 
@@ -381,10 +373,18 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 rvSet.imageUrl = viewpagerImageUrl;
                 imageRVList.add(rvSet);
             }
+            Log.d("REVIEW_VIEWPAGER_URL", "vpTitle - SIZE :" + vpTitle.size());
+            Log.d("REVIEW_VIEWPAGER_URL", "vpDetail - SIZE :" +   vpDetail.size() );
+            Log.d("REVIEW_VIEWPAGER_URL", "vpImageURL - SIZE :" + vpImageURL.size() );
 
-            for(int i = 0; i < vpTitle.size(); i++) {
+            for(int i = 0; i < vpImageURL.size(); i++) {
                 if(i <= 5) {
-                    viewpagerAdapter.addItem(vpImageURL.get(i), vpTitle.get(i), vpDetail.get(i));
+                    if(vpTitle.size() > 0 && vpDetail.size() > 0){
+                        if(!vpTitle.equals("") ||!vpDetail.equals("") && i <= vpTitle.size())
+                        viewpagerAdapter.addItem(vpImageURL.get(i), vpTitle.get(i), vpDetail.get(i));
+                    } else {
+                        viewpagerAdapter.addItem(vpImageURL.get(i), "", "");
+                    }
                 } else {
                     break;
                 }
@@ -640,8 +640,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
         String tipURL = "http://222.122.203.55/realreview/tip/tipRequest.php";
         JSONObject tipConn = null;
-        ProgressWheel progressWheel = new ProgressWheel(this);
-        tipConn = new AsyncTipRequest(tipURL, progressWheel, this).execute().get(10000, TimeUnit.MILLISECONDS);
+        tipConn = new AsyncTipRequest(tipURL, this).execute().get(10000, TimeUnit.MILLISECONDS);
         Log.d("TIP_ASYNC", "Async excute Complete - result JSONObject : " + tipConn);
 
         JSONArray jsonArray = tipConn.getJSONArray("tipresult");
@@ -1119,8 +1118,10 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 String webSite2 = String.valueOf(webSite);
                 Log.d("Website_Check", "tag :" + tag);
                 Log.d("Website_Check", "webSite :" + webSite);
+                Log.d("Website_Check", "webSite2.isEmpty() :" + webSite2.isEmpty());
+                Log.d("Website_Check", "webSite2.length() :" + webSite2.length());
 
-                if (webSite2.equals("") || webSite2.isEmpty() || webSite2.equals(null)) {
+                if (webSite2.equals("") || webSite2.isEmpty() || webSite2.equals("null")) {
                     final AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
                     localBuilder.setTitle("OOPS!")
                             .setMessage("해당 상점은 Web Site 정보가 없습니다. 설정해 보시겠나요?")
@@ -1150,7 +1151,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                     } else {
                         Log.d("Website_Check", "else");
 
-                        DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
+                        DialogInterface.OnClickListener websiteIntent = new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_AddWebsite.class);
@@ -1166,7 +1167,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                         new AlertDialog.Builder(this)
                                 .setTitle("해당 상점은 Web Site 정보가 잘못되었습니다.")
                                 .setMessage(pref.getSharedData("isLogged_nick") + "님 께서 다시 제안해 보시겠나요?")
-                                .setPositiveButton("좋아요", cameraListener)
+                                .setPositiveButton("좋아요", websiteIntent)
                                 .setNegativeButton("취소", cancelListener)
                                 .show();
                     }
@@ -1238,63 +1239,83 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 17));
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        defaulDataSet();
+        try {
+            adapting();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        setShopData();
+
+    }
+
     /*
 
-            SEND && RECEIVE SMS
+                SEND && RECEIVE SMS
 
-        public void sendSMS(String smsNumber, String smsText){
-            PendingIntent sentIntent = PendingIntent.getBroadcast(this, 0, new Intent("SMS_SENT_ACTION"), 0);
-            PendingIntent deliveredIntent = PendingIntent.getBroadcast(this, 0, new Intent("SMS_DELIVERED_ACTION"), 0);
+            public void sendSMS(String smsNumber, String smsText){
+                PendingIntent sentIntent = PendingIntent.getBroadcast(this, 0, new Intent("SMS_SENT_ACTION"), 0);
+                PendingIntent deliveredIntent = PendingIntent.getBroadcast(this, 0, new Intent("SMS_DELIVERED_ACTION"), 0);
 
 
-            registerReceiver(new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    switch(getResultCode()){
-                        case Activity.RESULT_OK:
-                            // 전송 성공
-                            Toast.makeText(ShopDetail_Main.this, "전송 완료", Toast.LENGTH_SHORT).show();
-                            break;
-                        case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                            // 전송 실패
-                            Toast.makeText(ShopDetail_Main.this, "전송 실패", Toast.LENGTH_SHORT).show();
-                            break;
-                        case SmsManager.RESULT_ERROR_NO_SERVICE:
-                            // 서비스 지역 아님
-                            Toast.makeText(ShopDetail_Main.this, "서비스 지역이 아닙니다", Toast.LENGTH_SHORT).show();
-                            break;
-                        case SmsManager.RESULT_ERROR_RADIO_OFF:
-                            // 무선 꺼짐
-                            Toast.makeText(ShopDetail_Main.this, "무선(Radio)가 꺼져있습니다", Toast.LENGTH_SHORT).show();
-                            break;
-                        case SmsManager.RESULT_ERROR_NULL_PDU:
-                            // PDU 실패
-                            Toast.makeText(ShopDetail_Main.this, "PDU Null", Toast.LENGTH_SHORT).show();
-                            break;
+                registerReceiver(new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+                        switch(getResultCode()){
+                            case Activity.RESULT_OK:
+                                // 전송 성공
+                                Toast.makeText(ShopDetail_Main.this, "전송 완료", Toast.LENGTH_SHORT).show();
+                                break;
+                            case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                                // 전송 실패
+                                Toast.makeText(ShopDetail_Main.this, "전송 실패", Toast.LENGTH_SHORT).show();
+                                break;
+                            case SmsManager.RESULT_ERROR_NO_SERVICE:
+                                // 서비스 지역 아님
+                                Toast.makeText(ShopDetail_Main.this, "서비스 지역이 아닙니다", Toast.LENGTH_SHORT).show();
+                                break;
+                            case SmsManager.RESULT_ERROR_RADIO_OFF:
+                                // 무선 꺼짐
+                                Toast.makeText(ShopDetail_Main.this, "무선(Radio)가 꺼져있습니다", Toast.LENGTH_SHORT).show();
+                                break;
+                            case SmsManager.RESULT_ERROR_NULL_PDU:
+                                // PDU 실패
+                                Toast.makeText(ShopDetail_Main.this, "PDU Null", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
                     }
-                }
-            }, new IntentFilter("SMS_SENT_ACTION"));
+                }, new IntentFilter("SMS_SENT_ACTION"));
 
-            registerReceiver(new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    switch (getResultCode()){
-                        case Activity.RESULT_OK:
-                            // 도착 완료
-                            Toast.makeText(ShopDetail_Main.this, "SMS 도착 완료", Toast.LENGTH_SHORT).show();
-                            break;
-                        case Activity.RESULT_CANCELED:
-                            // 도착 안됨
-                            Toast.makeText(ShopDetail_Main.this, "SMS 도착 실패", Toast.LENGTH_SHORT).show();
-                            break;
+                registerReceiver(new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+                        switch (getResultCode()){
+                            case Activity.RESULT_OK:
+                                // 도착 완료
+                                Toast.makeText(ShopDetail_Main.this, "SMS 도착 완료", Toast.LENGTH_SHORT).show();
+                                break;
+                            case Activity.RESULT_CANCELED:
+                                // 도착 안됨
+                                Toast.makeText(ShopDetail_Main.this, "SMS 도착 실패", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
                     }
-                }
-            }, new IntentFilter("SMS_DELIVERED_ACTION"));
+                }, new IntentFilter("SMS_DELIVERED_ACTION"));
 
-            SmsManager mSmsManager = SmsManager.getDefault();
-            mSmsManager.sendTextMessage(smsNumber, null, smsText, sentIntent, deliveredIntent);
-        }
-        */
+                SmsManager mSmsManager = SmsManager.getDefault();
+                mSmsManager.sendTextMessage(smsNumber, null, smsText, sentIntent, deliveredIntent);
+            }
+            */
     private void sendSMS(String phoneNumber, String message) {
         String SENT = "SMS_SENT";
         String DELIVERED = "SMS_DELIVERED";

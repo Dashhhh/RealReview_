@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 import org.json.JSONException;
@@ -29,6 +30,7 @@ public class AsyncDirectionRequest extends AsyncTask<Void, Integer, JSONObject> 
     String directionDestination = "";
     String directionDestinationLat = "";
     String directionDestinationLng = "";
+    private MaterialDialog builder;
 
     public AsyncDirectionRequest() {
     }
@@ -43,9 +45,13 @@ public class AsyncDirectionRequest extends AsyncTask<Void, Integer, JSONObject> 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        ProgressWheel dial = new ProgressWheel(mContext);
-        dial.setInstantProgress(0.64f);
-        dial.setBarColor(Color.BLUE);
+
+        builder = new MaterialDialog.Builder(mContext)
+                .title("Connecting")
+                .content("loading..")
+                .progressIndeterminateStyle(true)
+                .show();
+
     }
 
     @Override
@@ -126,7 +132,7 @@ public class AsyncDirectionRequest extends AsyncTask<Void, Integer, JSONObject> 
     @Override
     protected void onPostExecute(JSONObject result) {
         super.onPostExecute(result);
-
+        builder.dismiss();
     }
 
     @Override

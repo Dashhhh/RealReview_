@@ -1,15 +1,12 @@
 package com.teamnova.ej.realreview.Asynctask;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.pnikosis.materialishprogress.ProgressWheel;
-import com.teamnova.ej.realreview.activity.ShopDetail_Main;
-import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,50 +20,56 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Created by ej on 2017-10-26.
+ * Created by ej on 2017-11-10.
  */
 
-public class AsyncReviewRequest extends AsyncTask<Void, Integer, JSONObject> {
+public class AsyncShopDetailWebsiteUpdate extends AsyncTask<Void, Integer, StringBuilder> {
 
 
-    public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
-    private String urlString;
+    private final String userID;
+    private final String nick;
     private String params = "";
     String TestVAR;
     private Context mContext;
-    private String shopId;
+    private String iShopID, shopURL, iIdx, iNick;
+    private String userLocationCheckResult;
+    String parseUrlParameter = "http://222.122.203.55/realreview/shopAdd/shopWebsiteUpdate.php";
     private MaterialDialog builder;
+    private StringBuilder stringBuilder;
 
-    public AsyncReviewRequest(String urlString, String shopId, Context mContext) {
-        this.urlString = urlString;
+
+    public AsyncShopDetailWebsiteUpdate(String iShopID, String shopURL, String nick, String userID, Context mContext) {
         this.mContext = mContext;
-        this.shopId = shopId;
+        this.iShopID = iShopID;
+        this.shopURL = shopURL;
+        this.nick = nick;
+        this.userID = userID;
     }
 
     @Override
     protected void onPreExecute() {
-
         builder = new MaterialDialog.Builder(mContext)
                 .title("Connecting")
                 .content("loading..")
-                .progress(true, 0)
+                .progressIndeterminateStyle(true)
                 .show();
-
-
     }
 
     @Override
-    protected JSONObject doInBackground(Void... params) {
+    protected StringBuilder doInBackground(Void... params) {
         // TODO Auto-generated method stub
-        JSONObject jsonObject = new JSONObject();
-        String result = "";
 
+        StringBuilder jsonhtml = new StringBuilder();
+        StringBuffer postDataBuilder = new StringBuffer();
+        String result;
+        JSONObject jsonObject = new JSONObject();
         try {
             // URL설정, 접속
-
-            URL url = new URL(urlString);
+            String parameterCheck = "\nid_shop=" + iShopID + "\n" + "shopid=" + shopURL;
+            URL url = new URL(parseUrlParameter);
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
-            Log.d("ReviewAll_Async", "URL : " + url);
+            Log.d("websiteUpdate", "parseUrlParameter : " + parameterCheck);
+            Log.d("websiteUpdate", "url : " + url);
 
             // 전송모드 설정(일반적인 POST방식)
             http.setDefaultUseCaches(false);
@@ -77,31 +80,30 @@ public class AsyncReviewRequest extends AsyncTask<Void, Integer, JSONObject> {
             // content-type 설정
             http.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
 
-            SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
             // 전송값 설정
             StringBuffer buffer = new StringBuffer();
-            buffer.append("id_user").append("=").append(pref.getSharedData("isLogged_id")).append("&");
-            buffer.append("id_shop").append("=").append(ShopDetail_Main.SHOP_ID);
+            buffer.append("shopid").append("=").append(iShopID).append("&");
+            buffer.append("userid").append("=").append(userID).append("&");
+            buffer.append("nick").append("=").append(nick).append("&");
+            buffer.append("url").append("=").append(shopURL);
 
             // 서버로 전송
             OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "UTF-8");
             PrintWriter writer = new PrintWriter(outStream);
             writer.write(buffer.toString());
             writer.flush();
+            Log.d("websiteUpdate", "http Response Code : " + http.getResponseCode());
 
             // 전송 결과값 받기
             InputStreamReader inputStream = new InputStreamReader(http.getInputStream(), "UTF-8");
             BufferedReader bufferReader = new BufferedReader(inputStream);
-            StringBuilder builder = new StringBuilder();
+            stringBuilder = new StringBuilder();
             String str;
             while ((str = bufferReader.readLine()) != null) {
-                builder.append(str + "\n");
+                stringBuilder.append(str + "\n");
             }
-            result = builder.toString();
-            Log.d("ReviewAll_Async", "전송결과 : " + result);
-            Log.d("ReviewAll_Async", "http.getResponseCode() : " + http.getResponseCode());
-            Log.d("ReviewAll_Async", "http.getResponseMessage() : " + http.getResponseMessage());
-
+            result = stringBuilder.toString();
+            Log.d("websiteUpdate", "전송결과 : " + result);
             jsonObject = new JSONObject(result);
 
         } catch (MalformedURLException e) {
@@ -111,17 +113,14 @@ public class AsyncReviewRequest extends AsyncTask<Void, Integer, JSONObject> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-        return jsonObject;
+        return stringBuilder;
 
     }
 
     @Override
-    protected void onPostExecute(JSONObject result) {
+    protected void onPostExecute(StringBuilder result) {
         super.onPostExecute(result);
         builder.dismiss();
-        
     }
 
     /**
@@ -147,5 +146,4 @@ public class AsyncReviewRequest extends AsyncTask<Void, Integer, JSONObject> {
         return "Content-Disposition: form-data; name=\"" + key
                 + "\";filename=\"" + fileName + "\"\r\n";
     }
-
 }

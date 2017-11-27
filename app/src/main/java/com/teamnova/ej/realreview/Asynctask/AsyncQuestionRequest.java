@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.teamnova.ej.realreview.activity.ShopDetail_Main;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
@@ -33,25 +34,25 @@ public class AsyncQuestionRequest extends AsyncTask<Void, Integer, JSONObject> {
     public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
     private String urlString;
     private String params = "";
-    private ProgressWheel dialog;
     String TestVAR;
     private Context mContext;
     private String shopId;
+    private MaterialDialog builder;
 
     public AsyncQuestionRequest(String urlString, String shopId, Context mContext) {
         this.urlString = urlString;
         this.mContext = mContext;
         this.shopId = shopId;
-        dialog = new ProgressWheel(mContext);
-
     }
 
     @Override
     protected void onPreExecute() {
 
-        dialog.setInstantProgress(0.64f);
-        dialog.setBarColor(Color.BLUE);
-        dialog.spin();
+        builder = new MaterialDialog.Builder(mContext)
+                .title("Connecting")
+                .content("loading..")
+                .progressIndeterminateStyle(true)
+                .show();
     }
 
     @Override
@@ -123,7 +124,8 @@ public class AsyncQuestionRequest extends AsyncTask<Void, Integer, JSONObject> {
 
     @Override
     protected void onPostExecute(JSONObject result) {
-
+        super.onPostExecute(result);
+        builder.dismiss();
     }
 
     /**

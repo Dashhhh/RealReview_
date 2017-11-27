@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 import org.json.JSONArray;
@@ -32,6 +33,7 @@ public class AsyncAlsoCuriousRequestUp extends AsyncTask<Void, Integer, Void> {
     private String iShopID, iUserID, iIdx, iNick;
     private String userLocationCheckResult;
     String parseUrlParameter = "http://222.122.203.55/realreview/question/questionCuriousUp.php?";
+    private MaterialDialog builder;
 
 
     public AsyncAlsoCuriousRequestUp(String iShopID, String iUserID, String iNick, String iIdx, Context mContext) {
@@ -46,8 +48,13 @@ public class AsyncAlsoCuriousRequestUp extends AsyncTask<Void, Integer, Void> {
     @Override
     protected void onPreExecute() {
 
-        dialog.setInstantProgress(0.64f);
-        dialog.setBarColor(Color.BLUE);
+
+        builder = new MaterialDialog.Builder(mContext)
+                .title("Connecting")
+                .content("loading..")
+                .progressIndeterminateStyle(true)
+                .show();
+
     }
 
     @Override
@@ -111,8 +118,8 @@ public class AsyncAlsoCuriousRequestUp extends AsyncTask<Void, Integer, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-
-
+        super.onPostExecute(result);
+        builder.dismiss();
     }
 
     /**

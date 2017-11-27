@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
@@ -33,22 +34,24 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
     private String urlString;
     private String params = "";
     Context mContext;
-    private ProgressWheel dialog;
     String TestVAR;
     private String reviewData;
     private String userLocationCheckResult;
     private String localityCheckResult;
+    private MaterialDialog builder;
 
-    public AsyncReviewSubmit(ProgressWheel dialog, Context mContext) {
-        this.dialog = dialog;
+    public AsyncReviewSubmit(Context mContext) {
         this.mContext = mContext;
     }
 
     @Override
     protected void onPreExecute() {
 
-        dialog.setInstantProgress(0.64f);
-        dialog.setBarColor(Color.BLUE);
+        builder = new MaterialDialog.Builder(mContext)
+                .title("Connecting")
+                .content("loading..")
+                .progressIndeterminateStyle(true)
+                .show();
     }
 
     @Override
@@ -404,15 +407,11 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        try {
-            Intent intent = new Intent();
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-
-        } catch (Exception e) {
-        }
-
+        super.onPostExecute(result);
+        builder.dismiss();
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
 
