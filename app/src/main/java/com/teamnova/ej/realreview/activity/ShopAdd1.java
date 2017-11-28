@@ -313,7 +313,7 @@ public class ShopAdd1 extends FragmentActivity implements OnMapReadyCallback, Go
                 startActivity(intent);
 
             } else if (resultCode == RESULT_CANCELED) {
-                Intent intent = new Intent(ShopAdd1.this, Main_Test.class);
+                Intent intent = new Intent(ShopAdd1.this, Main.class);
                 startActivity(intent);
             }
         }

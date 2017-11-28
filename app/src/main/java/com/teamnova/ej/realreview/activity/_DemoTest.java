@@ -75,7 +75,7 @@ public class _DemoTest extends AppCompatActivity implements View.OnClickListener
 
             case R.id.bottomNavigation: {
 
-                Intent intent = new Intent(getApplicationContext(), Main_Test.class);
+                Intent intent = new Intent(getApplicationContext(), Main.class);
                 startActivity(intent);
                 break;
             }
@@ -87,7 +87,7 @@ public class _DemoTest extends AppCompatActivity implements View.OnClickListener
             }
             case R.id.mainActivityTest: {
 
-                Intent intent = new Intent(getApplicationContext(), Main_Nearby.class);
+                Intent intent = new Intent(getApplicationContext(), Z_NOTUSED__Main_Nearby.class);
                 startActivity(intent);
                 break;
             }

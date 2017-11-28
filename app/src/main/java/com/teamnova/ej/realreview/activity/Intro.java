@@ -202,8 +202,8 @@ public class Intro extends AppCompatActivity implements LocationListener {
 
         String checkAddress = getAddress(lat,lng);
 
-        Main_Test.MY_POSITION_LAT = lat;
-        Main_Test.MY_POSITION_LNG = lng;
+        Main.MY_POSITION_LAT = lat;
+        Main.MY_POSITION_LNG = lng;
 
         Log.d("Intro - onLocationChange", "lat :"+lat);
         Log.d("Intro - onLocationChange", "lng :"+lng);

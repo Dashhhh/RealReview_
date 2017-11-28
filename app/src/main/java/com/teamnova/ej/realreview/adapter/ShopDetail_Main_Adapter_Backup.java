@@ -75,14 +75,14 @@ public class ShopDetail_Main_Adapter_Backup extends PagerAdapter {
         ShopDetail_Main_Adapter_Viewholder vh = new ShopDetail_Main_Adapter_Viewholder();
         View v = null;
 
-        if (v != null) {
-            vh = (ShopDetail_Main_Adapter_Viewholder) v.getTag();
-        } else {
+        if (v == null) {
             v = inflater.inflate(R.layout.activity_shop_detail__main_top_viewpager, container, false);
             vh.imageView = v.findViewById(R.id.shopDetailViewPagerImage);
             vh.viewpagerTitleText = v.findViewById(R.id.viewpagerTitleText);
             vh.viewpagerDetailText = v.findViewById(R.id.viewpagerDetailText);
             v.setTag(vh);
+        } else {
+            vh = (ShopDetail_Main_Adapter_Viewholder) v.getTag();
         }
 
         String url = stringArrayList.get(position);
@@ -110,11 +110,8 @@ public class ShopDetail_Main_Adapter_Backup extends PagerAdapter {
         vh.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(mContext, ShopDetail_PhotoView.class);
-
                 intent.putExtra("imageURL",stringArrayList.get(fPosition));
-
                 mContext.startActivity(intent);
 
             }

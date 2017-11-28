@@ -2,12 +2,10 @@ package com.teamnova.ej.realreview.Asynctask;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.pnikosis.materialishprogress.ProgressWheel;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
 import java.io.DataOutputStream;
@@ -18,12 +16,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_FAR_LEFT_LAT;
-import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_FAR_LEFT_LNG;
-import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_NEAR_RIGHT_LAT;
-import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_NEAR_RIGHT_LNG;
-import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_USER_LAT;
-import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_USER_LNG;
+import static com.teamnova.ej.realreview.activity.Main.LOCATION_FAR_LEFT_LAT;
+import static com.teamnova.ej.realreview.activity.Main.LOCATION_FAR_LEFT_LNG;
+import static com.teamnova.ej.realreview.activity.Main.LOCATION_NEAR_RIGHT_LAT;
+import static com.teamnova.ej.realreview.activity.Main.LOCATION_NEAR_RIGHT_LNG;
+import static com.teamnova.ej.realreview.activity.Main.LOCATION_USER_LAT;
+import static com.teamnova.ej.realreview.activity.Main.LOCATION_USER_LNG;
 
 /**
  * Created by ej on 2017-10-08.

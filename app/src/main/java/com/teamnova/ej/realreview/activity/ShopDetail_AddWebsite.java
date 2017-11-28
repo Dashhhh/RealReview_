@@ -59,13 +59,13 @@ public class ShopDetail_AddWebsite extends AppCompatActivity {
                     Log.d("Website_Check", "addWebText : " + addWebText.getText().toString());
                     Log.d("Website_Check", "Validate check : " + check);
                     if (check) {
-                        dial.tempCall("정규식 TRUE","!");
+//                        dial.tempCall("정규식 TRUE", "!");
 
                         StringBuilder conn;
                         try {
 
                             SharedPreferenceUtil pref = new SharedPreferenceUtil(getApplicationContext());
-                            conn = new AsyncShopDetailWebsiteUpdate(ShopDetail_Main.SHOP_ID, url, pref.getSharedData("isLogged_nick"),pref.getSharedData("isLogged_id"),ShopDetail_AddWebsite.this).execute().get(10000, TimeUnit.MILLISECONDS);
+                            conn = new AsyncShopDetailWebsiteUpdate(ShopDetail_Main.SHOP_ID, url, pref.getSharedData("isLogged_nick"), pref.getSharedData("isLogged_id"), ShopDetail_AddWebsite.this).execute().get(10000, TimeUnit.MILLISECONDS);
                             Log.d("websiteUpdate", "conn Parsing : " + conn);
 
                             JSONObject parsing0 = new JSONObject(String.valueOf(conn));
@@ -79,7 +79,7 @@ public class ShopDetail_AddWebsite extends AppCompatActivity {
 
                             JSONArray parsing3 = parsing0.getJSONArray("result");
                             Log.d("websiteUpdate", "parsing3 : " + parsing3);
-                            finish();
+
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         } catch (ExecutionException e) {
@@ -89,6 +89,8 @@ public class ShopDetail_AddWebsite extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
+                        finish();
 
                     } else {
                         dial.tempCall("OOPS!", "내용을 예제와 같이 다시 입력해 주세요!");

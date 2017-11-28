@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.teamnova.ej.realreview.activity.Main_Test">
+    tools:context="com.teamnova.ej.realreview.activity.Main">
 
     <FrameLayout
         android:id="@+id/content"
@@ -58,7 +58,7 @@
                             android:name="com.google.android.gms.maps.SupportMapFragment"
                             android:layout_width="match_parent"
                             android:layout_height="300dp"
-                            tools:context=".activity.Main_Test"
+                            tools:context=".activity.Main"
                             class="com.google.android.gms.maps.SupportMapFragment"
                             />
 
@@ -139,6 +139,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <com.arlib.floatingsearchview.FloatingSearchView
+                android:id="@+id/floating_search_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:floatingSearch_searchBarMarginLeft="1dp"
+                app:floatingSearch_searchBarMarginTop="5dp"
+                app:floatingSearch_searchBarMarginRight="1dp"
+                app:floatingSearch_searchHint="Search Shop"
+                app:floatingSearch_suggestionsListAnimDuration="250"
+                app:floatingSearch_showSearchKey="false"
+                app:floatingSearch_leftActionMode="showSearch"
+                app:floatingSearch_menu="@menu/menu_main"
+                app:floatingSearch_close_search_on_keyboard_dismiss="true"/>
 
             <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
@@ -146,7 +159,7 @@
                 android:name="com.google.android.gms.maps.MapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".activity.Main_Test" />
+                tools:context=".activity.Main" />
 
         </LinearLayout>
 

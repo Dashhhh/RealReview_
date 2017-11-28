@@ -10,31 +10,33 @@ import android.widget.LinearLayout;
 
 import com.teamnova.ej.realreview.R;
 
-public class Main_More extends AppCompatActivity implements View.OnClickListener {
+public class Z_NOTUSED__Main_Search extends AppCompatActivity implements View.OnClickListener {
+
     LinearLayout bottomNearby, bottomSearch, bottomMe, bottomMore;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_more);
+        setContentView(R.layout.z_notused__activity_main_search);
+
         init();
         listener();
     }
 
     private void init() {
         bottomNearby = (LinearLayout) findViewById(R.id.bottomNearby);
-        bottomSearch = (LinearLayout) findViewById(R.id.bottomSearch);
+//        bottomSearch = (LinearLayout) findViewById(R.id.bottomSearch);
         bottomMe = (LinearLayout) findViewById(R.id.bottomMe);
-//        bottomMore = (LinearLayout) findViewById(R.id.bottomMore);
-
+        bottomMore = (LinearLayout) findViewById(R.id.bottomMore);
 
     }
 
     private void listener() {
         bottomNearby.setOnClickListener(this);
-        bottomSearch.setOnClickListener(this);
+//        bottomSearch.setOnClickListener(this);
         bottomMe.setOnClickListener(this);
-//        bottomMore.setOnClickListener(this);
+        bottomMore.setOnClickListener(this);
 
     }
 
@@ -43,28 +45,28 @@ public class Main_More extends AppCompatActivity implements View.OnClickListener
 
         switch (view.getId()) {
             case R.id.bottomNearby: {
-                Intent intent = new Intent(Main_More.this, Main_Nearby.class);
+                Intent intent = new Intent(Z_NOTUSED__Main_Search.this, Z_NOTUSED__Main_Nearby.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.bottomSearch: {
-                Intent intent = new Intent(Main_More.this, Main_Search.class);
-                startActivity(intent);
-                break;
-            }
-
-            case R.id.bottomMe: {
-                Intent intent = new Intent(Main_More.this, Main_Me.class);
-                startActivity(intent);
-                break;
-            }
-
-//            case R.id.bottomMore: {
-//                Intent intent = new Intent(Main_Me.this, Main_More.class);
+//            case R.id.bottomSearch: {
+//                Intent intent = new Intent(Z_NOTUSED__Main_Search.this, Z_NOTUSED__Main_Search.class);
 //                startActivity(intent);
 //                break;
 //            }
+
+            case R.id.bottomMe: {
+                Intent intent = new Intent(Z_NOTUSED__Main_Search.this, Z_NOTUSED__Main_Me.class);
+                startActivity(intent);
+                break;
+            }
+
+            case R.id.bottomMore: {
+                Intent intent = new Intent(Z_NOTUSED__Main_Search.this, Z_NOTUSED__Main_More.class);
+                startActivity(intent);
+                break;
+            }
 
         }
 

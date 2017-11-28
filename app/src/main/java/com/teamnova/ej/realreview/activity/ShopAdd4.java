@@ -38,7 +38,7 @@ public class ShopAdd4 extends AppCompatActivity implements View.OnClickListener 
 
             case R.id.shopAdd4NextBtn : {
 
-                Intent intent = new Intent(ShopAdd4.this, Main_Test.class);
+                Intent intent = new Intent(ShopAdd4.this, Main.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

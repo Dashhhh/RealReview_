@@ -166,7 +166,7 @@ public class ShopDetail_Main_Review_LV_Adapter extends BaseAdapter {
         Log.d("REVIEW_DELETE", "getView");
 
         /**
-         * Delete Review -> Divide Function
+         * Delete Review -> Divide Function\
          */
 
         if (checkUser.equals(setData.getNick())) {

@@ -1,13 +1,11 @@
 package com.teamnova.ej.realreview.Asynctask;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.pnikosis.materialishprogress.ProgressWheel;
-import com.teamnova.ej.realreview.activity.Main_Test;
+import com.teamnova.ej.realreview.activity.Main;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -115,7 +113,7 @@ public class AsyncMainNearbyLatLngReceive_Backup extends AsyncTask<Void, Integer
             String getIndexShopAdd = item.getString("indexShopAdd");
             String getPermanentlyClosed = item.getString("permanentlyClosed");
             String getPriceLevel = item.getString("priceLevel");
-            Main_Test.HTTP_RECEIVE_SHOPDATA = jsonHtml;
+            Main.HTTP_RECEIVE_SHOPDATA = jsonHtml;
 
             return jsonHtml;
         } catch (JSONException e) {

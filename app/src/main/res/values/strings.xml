@@ -10,4 +10,274 @@
     <string name="title_search">Search</string>
     <string name="title_me">Me</string>
     <string name="title_activity_shop_detail__main__direction">Map</string>
+
+
+
+    <string name="기타">기타</string>
+    <string name="회계">회계</string>
+    <string name="공항">공항</string>
+    <string name="유원지">유원지</string>
+    <string name="수족관">수족관</string>
+    <string name="아트갤러리">아트갤러리</string>
+    <string name="Atm">Atm</string>
+    <string name="제과점">제과점</string>
+    <string name="은행">은행</string>
+    <string name="바">바</string>
+    <string name="뷰티살롱">뷰티살롱</string>
+    <string name="자전거상점">자전거상점</string>
+    <string name="서점">서점</string>
+    <string name="볼링장">볼링장</string>
+    <string name="버스정류장">버스정류장</string>
+    <string name="카페">카페</string>
+    <string name="캠프장">캠프장</string>
+    <string name="자동차딜러">자동차딜러</string>
+    <string name="자동차렌탈">자동차렌탈</string>
+    <string name="자동차수리">자동차수리</string>
+    <string name="세차장">세차장</string>
+    <string name="카지노">카지노</string>
+    <string name="묘지">묘지</string>
+    <string name="교회">교회</string>
+    <string name="시청">시청</string>
+    <string name="의류매장">의류매장</string>
+    <string name="편의점">편의점</string>
+    <string name="법원">법원</string>
+    <string name="치과의사">치과의사</string>
+    <string name="의사">의사</string>
+    <string name="백화점">백화점</string>
+    <string name="전기">전기</string>
+    <string name="전자상점">전자상점</string>
+    <string name="대사관">대사관</string>
+    <string name="설립">설립</string>
+    <string name="금융">금융</string>
+    <string name="소방서">소방서</string>
+    <string name="꽃집">꽃집</string>
+    <string name="음식">음식</string>
+    <string name="장례식장">장례식장</string>
+    <string name="가구점">가구점</string>
+    <string name="주유소">주유소</string>
+    <string name="일반계약자">일반계약자</string>
+    <string name="식료품점">식료품점</string>
+    <string name="체육관">체육관</string>
+    <string name="모발관리">모발관리</string>
+    <string name="하드웨어매장">하드웨어매장</string>
+    <string name="건강">건강</string>
+    <string name="힌두사원">힌두사원</string>
+    <string name="가정용품점">가정용품점</string>
+    <string name="병원">병원</string>
+    <string name="보험기관">보험기관</string>
+    <string name="보석상">보석상</string>
+    <string name="세탁">세탁</string>
+    <string name="변호사">변호사</string>
+    <string name="도서관">도서관</string>
+    <string name="주류판매점">주류판매점</string>
+    <string name="지방정부청사">지방정부청사</string>
+    <string name="자물쇠">자물쇠</string>
+    <string name="숙박">숙박</string>
+    <string name="식사제공">식사제공</string>
+    <string name="식사테이크아웃">식사테이크아웃</string>
+    <string name="모스크">모스크</string>
+    <string name="영화대여">영화대여</string>
+    <string name="영화극장">영화극장</string>
+    <string name="이사회사">이사회사</string>
+    <string name="박물관">박물관</string>
+    <string name="나이트클럽">나이트클럽</string>
+    <string name="화가">화가</string>
+    <string name="공원">공원</string>
+    <string name="주차">주차</string>
+    <string name="애완동물가게">애완동물가게</string>
+    <string name="약국">약국</string>
+    <string name="물리치료사">물리치료사</string>
+    <string name="예배당의장소">예배당의장소</string>
+    <string name="배관공">배관공</string>
+    <string name="경찰">경찰</string>
+    <string name="우체국">우체국</string>
+    <string name="부동산중개인">부동산중개인</string>
+    <string name="레스토랑">레스토랑</string>
+    <string name="루핑계약자">루핑계약자</string>
+    <string name="RV공원">RV공원</string>
+    <string name="학교">학교</string>
+    <string name="신발가게">신발가게</string>
+    <string name="쇼핑몰">쇼핑몰</string>
+    <string name="스파">스파</string>
+    <string name="경기장">경기장</string>
+    <string name="보관">보관</string>
+    <string name="상점">상점</string>
+    <string name="지하철역">지하철역</string>
+    <string name="회당">회당</string>
+    <string name="택시승차장">택시승차장</string>
+    <string name="기차역">기차역</string>
+    <string name="여행사">여행사</string>
+    <string name="대학">대학</string>
+    <string name="수의진료">수의진료</string>
+    <string name="동물원">동물원</string>
+    <string name="행정구역수준1">행정구역수준1</string>
+    <string name="행정구역수준2">행정구역수준2</string>
+    <string name="행정구역수준3">행정구역수준3</string>
+    <string name="구어짐면적">구어짐면적</string>
+    <string name="국가">국가</string>
+    <string name="층">층</string>
+    <string name="지오코드">지오코드</string>
+    <string name="교차점">교차점</string>
+    <string name="지역성">지역성</string>
+    <string name="자연지형지물">자연지형지물</string>
+    <string name="이웃">이웃</string>
+    <string name="정치">정치</string>
+    <string name="관심지점">관심지점</string>
+    <string name="포스트박스">포스트박스</string>
+    <string name="우편번호">우편번호</string>
+    <string name="우편번호접두사">우편번호접두사</string>
+    <string name="우편타운">우편타운</string>
+    <string name="전제">전제</string>
+    <string name="방">방</string>
+    <string name="루트">루트</string>
+    <string name="거리주소">거리주소</string>
+    <string name="하부구조">하부구조</string>
+    <string name="하위수준1">하위수준1</string>
+    <string name="하위수준2">하위수준2</string>
+    <string name="하위수준3">하위수준3</string>
+    <string name="하위수준4">하위수준4</string>
+    <string name="하위수준5">하위수준5</string>
+    <string name="Subpremise">Subpremise</string>
+    <string name="합성지오코드">합성지오코드</string>
+    <string name="대중교통역">대중교통역</string>
+    <string name=""></string>
+    <string name=""></string>
+    <string name=""></string>
+    <string name=""></string>
+    <string name=""></string>
+    <string name=""></string>
+    <string name=""></string>
+    <string name=""></string>
+    <string name=""></string>
+    <string name=""></string>
+    <string name=""></string>
+
+
 </resources>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

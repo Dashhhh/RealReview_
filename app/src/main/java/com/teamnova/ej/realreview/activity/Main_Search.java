@@ -1,100 +1,90 @@
 package com.teamnova.ej.realreview.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
+import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 import com.teamnova.ej.realreview.R;
 
-public class Main_Search extends AppCompatActivity implements View.OnClickListener {
+import java.util.ArrayList;
 
-    LinearLayout bottomNearby, bottomSearch, bottomMe, bottomMore;
+/**
+ * Created by ej on 2017-10-12.
+ */
 
+public class Main_Search extends Fragment implements OnMapReadyCallback{
+
+    Context mContext;
+    GoogleMap mMap;
+    private FloatingSearchView mSearchView;
+
+    public Main_Search(Context mContext) {
+        this.mContext = mContext;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
+
+
+
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_search);
 
-        init();
-        listener();
-    }
+        mSearchView = mSearchView.findViewById(R.id.floating_search_view);
+        mSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
+            @Override
+            public void onSearchTextChanged(String oldQuery, final String newQuery) {
 
-    private void init() {
-        bottomNearby = (LinearLayout) findViewById(R.id.bottomNearby);
-//        bottomSearch = (LinearLayout) findViewById(R.id.bottomSearch);
-        bottomMe = (LinearLayout) findViewById(R.id.bottomMe);
-        bottomMore = (LinearLayout) findViewById(R.id.bottomMore);
+                //get suggestions based on newQuery
+                //pass them on to the search view
+                mSearchView.swapSuggestions(new ArrayList<SearchSuggestion>());
+            }
+        });
+        Log.i("FragmentTest","Enter - onCreate");
 
-    }
-
-    private void listener() {
-        bottomNearby.setOnClickListener(this);
-//        bottomSearch.setOnClickListener(this);
-        bottomMe.setOnClickListener(this);
-        bottomMore.setOnClickListener(this);
 
     }
 
     @Override
-    public void onClick(View view) {
-
-        switch (view.getId()) {
-            case R.id.bottomNearby: {
-                Intent intent = new Intent(Main_Search.this, Main_Nearby.class);
-                startActivity(intent);
-                break;
-            }
-
-//            case R.id.bottomSearch: {
-//                Intent intent = new Intent(Main_Search.this, Main_Search.class);
-//                startActivity(intent);
-//                break;
-//            }
-
-            case R.id.bottomMe: {
-                Intent intent = new Intent(Main_Search.this, Main_Me.class);
-                startActivity(intent);
-                break;
-            }
-
-            case R.id.bottomMore: {
-                Intent intent = new Intent(Main_Search.this, Main_More.class);
-                startActivity(intent);
-                break;
-            }
-
-        }
+    public void onPause() {
+        super.onPause();
+        Log.i("FragmentTest","Enter - onPause");
 
     }
 
-    /**
-     * Called when the activity has detected the user's press of the back
-     * key.  The default implementation simply finishes the current activity,
-     * but you can override this to do whatever you want.
-     */
     @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-        AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
-        localBuilder.setTitle(getString(R.string.app_name))
-                .setMessage("정말 App을 종료 하시겠습니까??")
-                .setPositiveButton("종료", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt) {
-                        //Intent intent=new Intent(getApplication(),Login.class);
-                        //startActivity(intent);
-                        finish();
-                    }
-                }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt) {
+    public void onStop() {
+        super.onStop();
+        Log.i("FragmentTest","Enter - onStop");
 
-            }
-        })
-                .create()
-                .show();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        Log.i("FragmentTest","Enter - Main Test");
+        LatLng myPostision = new LatLng(37.53364562988281, 126.83870697021484);
+
+
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(myPostision));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+
     }
 }

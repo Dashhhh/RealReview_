@@ -25,7 +25,6 @@ import java.net.URL;
 
 public class AsyncShopDetailWebsiteUpdate extends AsyncTask<Void, Integer, StringBuilder> {
 
-
     private final String userID;
     private final String nick;
     private String params = "";

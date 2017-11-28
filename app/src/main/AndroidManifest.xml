@@ -85,14 +85,14 @@
         <activity
             android:name=".activity.LoginKakao"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".activity.Main_Nearby" />
+        <activity android:name=".activity.Z_NOTUSED__Main_Nearby" />
         <activity android:name=".activity._DemoTest" />
         <activity android:name=".activity._FacebookHashKey" />
-        <activity android:name=".activity.Main_Search" />
-        <activity android:name=".activity.Main_Me" />
-        <activity android:name=".activity.Main_More" />
+        <activity android:name=".activity.Z_NOTUSED__Main_Search" />
+        <activity android:name=".activity.Z_NOTUSED__Main_Me" />
+        <activity android:name=".activity.Z_NOTUSED__Main_More" />
         <activity
-            android:name=".activity.Main_Test"
+            android:name=".activity.Main"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_main__test"
             android:theme="@style/AppTheme" />

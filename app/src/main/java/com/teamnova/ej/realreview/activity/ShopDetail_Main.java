@@ -342,21 +342,30 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             ArrayList<String> vpTitle = new ArrayList<>();
             ArrayList<String> vpDetail = new ArrayList<>();
             ArrayList<String> vpImageURL = new ArrayList<>();
-
+            String idx = "0";
             for (int i = 0; i < fixJSON.length(); i++) {
+
 
                 JSONObject viewpagerText = fixJSON.getJSONObject(i);
                 String viewpagerTitle = viewpagerText.getString("nick");
                 String viewpagerDetail = viewpagerText.getString("review");
                 String viewpagerImageUrl = viewpagerText.getString("imagepath");
+                String viewpagerIdx = viewpagerText.getString("idx");
+//                idx = viewpagerIdx;
 
-                Log.d("REVIEW_VIEWPAGER_URL", "viewpagerTitle :" + i + "번 :" + viewpagerTitle);
-                Log.d("REVIEW_VIEWPAGER_URL", "viewpagerDetail :" + i + "번 :" + viewpagerDetail);
-                Log.d("REVIEW_VIEWPAGER_URL", "viewpagerImageUrl :" + i + "번 :" + viewpagerImageUrl);
 
-                vpTitle.add(viewpagerTitle);
-                vpDetail.add(viewpagerDetail);
-                vpImageURL.add(viewpagerImageUrl);
+                if(idx.equals(viewpagerIdx)) {
+                    Log.d("REVIEW_VIEWPAGER_URL2", "PASS - idx : " +idx + ", viewpagerIdx : "  + viewpagerIdx);
+                } else {
+                    Log.d("REVIEW_VIEWPAGER_URL2", "viewpagerTitle :" + i + "번 :" + viewpagerTitle);
+                    Log.d("REVIEW_VIEWPAGER_URL2", "viewpagerDetail :" + i + "번 :" + viewpagerDetail);
+                    Log.d("REVIEW_VIEWPAGER_URL2", "viewpagerImageUrl :" + i + "번 :" + viewpagerImageUrl);
+                    vpTitle.add(viewpagerTitle);
+                    vpDetail.add(viewpagerDetail);
+                    vpImageURL.add(viewpagerImageUrl);
+                    idx = viewpagerIdx;
+                }
+
 
             }
 
@@ -377,13 +386,13 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             Log.d("REVIEW_VIEWPAGER_URL", "vpDetail - SIZE :" +   vpDetail.size() );
             Log.d("REVIEW_VIEWPAGER_URL", "vpImageURL - SIZE :" + vpImageURL.size() );
 
-            for(int i = 0; i < vpImageURL.size(); i++) {
+            for(int i = 0; i < vpTitle.size(); i++) {
                 if(i <= 5) {
                     if(vpTitle.size() > 0 && vpDetail.size() > 0){
                         if(!vpTitle.equals("") ||!vpDetail.equals("") && i <= vpTitle.size())
                         viewpagerAdapter.addItem(vpImageURL.get(i), vpTitle.get(i), vpDetail.get(i));
                     } else {
-                        viewpagerAdapter.addItem(vpImageURL.get(i), "", "");
+//                        viewpagerAdapter.addItem(vpImageURL.get(i), "", "");
                     }
                 } else {
                     break;
@@ -540,7 +549,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 }
 
             }
-            if (reviewJSONArray.length() >= 3) {
+            if (reviewJSONArray.length() > 2) {
 
                 reviewPagingBtn.setVisibility(View.VISIBLE);
                 reviewPagingBtn.setText("리뷰(" + reviewJSONArray.length() + ") 전체 보기");
@@ -551,7 +560,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 //            setListViewHeightBasedOnItems(shopDetailLVReview);
             listViewHeightSet(reviewLvAdapter ,shopDetailLVReview);
 //            reviewLvAdapter.addItem(reviewData);
-            Log.d("Main_Test, onMapReady", "connLength : " + fixJSON.length());
+            Log.d("Main, onMapReady", "connLength : " + fixJSON.length());
 
 
         } catch (InterruptedException | ExecutionException | TimeoutException | JSONException e) {

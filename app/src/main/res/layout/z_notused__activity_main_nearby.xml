@@ -5,12 +5,61 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.teamnova.ej.realreview.activity.Main_Search">
+    tools:context="com.teamnova.ej.realreview.activity.Z_NOTUSED__Main_Nearby">
+
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:text="123"
+                />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="333"
+                />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+
+        </LinearLayout>
+
+
+
+
 
     </ScrollView>
 
@@ -37,7 +86,7 @@
                 android:layout_marginTop="3dp"
                 android:layout_weight="1"
                 android:padding="1dp"
-                android:src="@drawable/main_bottom_nearby" />
+                android:src="@drawable/main_bottom_nearby_sel" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -46,8 +95,7 @@
                 android:layout_marginTop="1dp"
                 android:gravity="center"
                 android:text="Nearby"
-
-                />
+                android:textColor="#ff0000" />
 
         </LinearLayout>
 
@@ -63,11 +111,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="3dp"
-
                 android:layout_weight="1"
                 android:padding="1dp"
-                android:src="@drawable/main_bottom_search_sel"
-                android:textColor="#ff0000" />
+                android:src="@drawable/main_bottom_search" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -91,7 +137,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="3dp"
-
                 android:layout_weight="1"
                 android:src="@drawable/main_bottom_me" />
 
@@ -121,8 +166,6 @@
                 android:layout_marginTop="3dp"
                 android:layout_weight="1"
                 android:padding="2dp"
-
-
                 android:src="@drawable/main_bottom_more" />
 
             <TextView
@@ -136,4 +179,5 @@
         </LinearLayout>
 
     </LinearLayout>
+
 </LinearLayout>

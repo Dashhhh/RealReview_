@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.teamnova.ej.realreview.Asynctask.AsyncDirectionRequest;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.util.Dialog_Default;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
@@ -27,9 +26,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
@@ -181,7 +177,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                             dialog.dismiss();
                             Toast.makeText(this, tempNick + ", Welcome Back", Toast.LENGTH_SHORT).show();
                             tempNick = "";
-                            Intent intent = new Intent(getApplicationContext(), Main_Test.class);
+                            Intent intent = new Intent(getApplicationContext(), Main.class);
                             startActivity(intent);
 //                        } else if (!tempIdStr.isEmpty() && tempPwStr.equals("")) {
 //                            dial.tempCall("Warning", "비밀번호를 입력 후 로그인해 주시기 바랍니다.");

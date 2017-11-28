@@ -5,66 +5,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.teamnova.ej.realreview.activity.Main_Nearby">
-
+    tools:context="com.teamnova.ej.realreview.activity.Z_NOTUSED__Main_Me">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10">
 
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:padding="2dp">
 
-            <Button
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:text="123"
-                />
-            <Button
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="333"
-                />
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="0dp"
+                android:layout_marginTop="3dp"
 
+                android:layout_weight="1"
+                android:padding="1dp"
+                android:src="@drawable/main_bottom_nearby_sel" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="1dp"
+                android:gravity="center"
+                android:text="Nearby"
+                android:textColor="#ff0000" />
 
         </LinearLayout>
-
-
-
-
 
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/homeBottomMenu"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -81,12 +57,14 @@
             android:padding="2dp">
 
             <ImageView
+                android:id="@+id/bottom"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="3dp"
                 android:layout_weight="1"
+
                 android:padding="1dp"
-                android:src="@drawable/main_bottom_nearby_sel" />
+                android:src="@drawable/main_bottom_nearby" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -94,9 +72,7 @@
                 android:layout_marginBottom="3dp"
                 android:layout_marginTop="1dp"
                 android:gravity="center"
-                android:text="Nearby"
-                android:textColor="#ff0000" />
-
+                android:text="Nearby" />
         </LinearLayout>
 
         <LinearLayout
@@ -112,6 +88,7 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="3dp"
                 android:layout_weight="1"
+
                 android:padding="1dp"
                 android:src="@drawable/main_bottom_search" />
 
@@ -138,7 +115,8 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="3dp"
                 android:layout_weight="1"
-                android:src="@drawable/main_bottom_me" />
+
+                android:src="@drawable/main_bottom_me_sel" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -146,8 +124,8 @@
                 android:layout_marginBottom="3dp"
                 android:layout_marginTop="1dp"
                 android:gravity="center"
-
-                android:text="Me" />
+                android:text="Me"
+                android:textColor="#ff0000" />
 
         </LinearLayout>
 
@@ -179,5 +157,4 @@
         </LinearLayout>
 
     </LinearLayout>
-
 </LinearLayout>

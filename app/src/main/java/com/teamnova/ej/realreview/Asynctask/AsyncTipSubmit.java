@@ -20,12 +20,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_FAR_LEFT_LAT;
-import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_FAR_LEFT_LNG;
-import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_NEAR_RIGHT_LAT;
-import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_NEAR_RIGHT_LNG;
-import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_USER_LAT;
-import static com.teamnova.ej.realreview.activity.Main_Test.LOCATION_USER_LNG;
+import static com.teamnova.ej.realreview.activity.Main.LOCATION_FAR_LEFT_LAT;
+import static com.teamnova.ej.realreview.activity.Main.LOCATION_FAR_LEFT_LNG;
+import static com.teamnova.ej.realreview.activity.Main.LOCATION_NEAR_RIGHT_LAT;
+import static com.teamnova.ej.realreview.activity.Main.LOCATION_NEAR_RIGHT_LNG;
+import static com.teamnova.ej.realreview.activity.Main.LOCATION_USER_LAT;
+import static com.teamnova.ej.realreview.activity.Main.LOCATION_USER_LNG;
 
 /**
  * Created by ej on 2017-10-26.

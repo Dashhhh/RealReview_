@@ -5,42 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.teamnova.ej.realreview.activity.Main_Me">
+    tools:context="com.teamnova.ej.realreview.activity.Z_NOTUSED__Main_Search">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:padding="2dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="3dp"
-
-                android:layout_weight="1"
-                android:padding="1dp"
-                android:src="@drawable/main_bottom_nearby_sel" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:layout_marginBottom="3dp"
-                android:layout_marginTop="1dp"
-                android:gravity="center"
-                android:text="Nearby"
-                android:textColor="#ff0000" />
-
-        </LinearLayout>
-
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/homeBottomMenu"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -57,12 +32,10 @@
             android:padding="2dp">
 
             <ImageView
-                android:id="@+id/bottom"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="3dp"
                 android:layout_weight="1"
-
                 android:padding="1dp"
                 android:src="@drawable/main_bottom_nearby" />
 
@@ -72,7 +45,10 @@
                 android:layout_marginBottom="3dp"
                 android:layout_marginTop="1dp"
                 android:gravity="center"
-                android:text="Nearby" />
+                android:text="Nearby"
+
+                />
+
         </LinearLayout>
 
         <LinearLayout
@@ -87,10 +63,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="3dp"
-                android:layout_weight="1"
 
+                android:layout_weight="1"
                 android:padding="1dp"
-                android:src="@drawable/main_bottom_search" />
+                android:src="@drawable/main_bottom_search_sel"
+                android:textColor="#ff0000" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -114,9 +91,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="3dp"
-                android:layout_weight="1"
 
-                android:src="@drawable/main_bottom_me_sel" />
+                android:layout_weight="1"
+                android:src="@drawable/main_bottom_me" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -124,8 +101,8 @@
                 android:layout_marginBottom="3dp"
                 android:layout_marginTop="1dp"
                 android:gravity="center"
-                android:text="Me"
-                android:textColor="#ff0000" />
+
+                android:text="Me" />
 
         </LinearLayout>
 
@@ -144,6 +121,8 @@
                 android:layout_marginTop="3dp"
                 android:layout_weight="1"
                 android:padding="2dp"
+
+
                 android:src="@drawable/main_bottom_more" />
 
             <TextView

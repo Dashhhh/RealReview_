@@ -153,7 +153,7 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
                 }
 
 
-                Intent intent = new Intent(Signup5.this, Main_Test.class);
+                Intent intent = new Intent(Signup5.this, Main.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

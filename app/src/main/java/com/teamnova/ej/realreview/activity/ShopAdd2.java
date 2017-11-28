@@ -139,7 +139,7 @@ public class ShopAdd2 extends AppCompatActivity implements View.OnClickListener 
                         pref.setSharedData("PLACETYPE" + 2, "");
                         pref.setSharedData("PLACETYPE" + 3, "");
                         pref.setSharedData("PLACETYPE" + 4, "");
-                        Intent intent = new Intent(getApplication(), Main_Test.class);
+                        Intent intent = new Intent(getApplication(), Main.class);
                         startActivity(intent);
                         finish();
                     }

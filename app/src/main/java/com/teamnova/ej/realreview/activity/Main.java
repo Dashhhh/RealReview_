@@ -62,7 +62,6 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.teamnova.ej.realreview.R;
-import com.teamnova.ej.realreview.adapter.Main_Test_SearchMap;
 import com.teamnova.ej.realreview.util.Dialog_Default;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
@@ -89,7 +88,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class Main_Test extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, LocationListener {
+public class Main extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, LocationListener {
 
     public static String ID;
     public static final int PICK_FROM_CAMERA = 0;
@@ -222,7 +221,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
                         meLinear.setVisibility(View.GONE);
                         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                                 .findFragmentById(R.id.mapView);
-                        mapFragment.getMapAsync(Main_Test.this);
+                        mapFragment.getMapAsync(Main.this);
                         return true;
                     case R.id.navigation_search:
                         nearbyLinear.setVisibility(View.GONE);
@@ -236,7 +235,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
                         fragmentTransaction.commit();
                         MapFragment searchFragment = (MapFragment) getFragmentManager()
                                 .findFragmentById(R.id.searchMap);
-                        Main_Test_SearchMap inst = new Main_Test_SearchMap(Main_Test.this);
+                        Main_Search inst = new Main_Search(Main.this);
                         searchFragment.getMapAsync(inst);
 
                         return true;
@@ -261,11 +260,11 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main__test);
+        setContentView(R.layout.activity_main);
         builder = new MaterialDialog.Builder(this)
                 .title("Connecting")
                 .content("loading..")
-                .progress(true,0)
+                .progress(true, 0)
                 .show();
         init();
         defineBottomNavi();
@@ -282,6 +281,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
@@ -294,8 +294,8 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
                 });
 
 
-        Log.d("Main_Test - onCreate", "MY_POSITION_LAT :" + MY_POSITION_LAT);
-        Log.d("Main_Test - onCreate", "MY_POSITION_LNG :" + MY_POSITION_LNG);
+        Log.d("Main - onCreate", "MY_POSITION_LAT :" + MY_POSITION_LAT);
+        Log.d("Main - onCreate", "MY_POSITION_LNG :" + MY_POSITION_LNG);
 
         LOCATION_USER_LAT = MY_POSITION_LAT;
         LOCATION_USER_LNG = MY_POSITION_LNG;
@@ -311,7 +311,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         ProgressWheel progressDialog = new ProgressWheel(this);
         AsyncMainNearbyLatLngReceive upload = new AsyncMainNearbyLatLngReceive(urlMerge, this);
         upload.execute();
-        builder.dismiss();
+
 
     }   // onCreate
 
@@ -352,7 +352,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 
             case R.id.nearbyShopAdd: {
 
-                Intent intent = new Intent(Main_Test.this, ShopAdd1.class);
+                Intent intent = new Intent(Main.this, ShopAdd1.class);
                 startActivity(intent);
                 break;
 
@@ -366,7 +366,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("Main_Test", "ENTER - onResume");
+        Log.d("Main", "ENTER - onResume");
         //위치정보 - Activity LifrCycle 관련 메서드는 무조건 상위 메서드 호출 필요
         /** 이 화면이 불릴 때, 일시정지 해제 처리*/
 
@@ -420,6 +420,9 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         //Activity LifrCycle 관련 메서드는 무조건 상위 메서드 호출 필요
         super.onPause();
         //위치정보 객체에 이벤트 해제
+
+        if (builder.isShowing()) builder.dismiss();
+
         lm.removeUpdates(this);
     }
 
@@ -442,7 +445,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-                Log.d("TEDPermission","onPermissionDenied");
+                Log.d("TEDPermission", "onPermissionDenied");
             }
 
 
@@ -604,12 +607,12 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         String imagePath = pref.getSharedData("isLogged_profileImagePath");
 
         if (imagePath.isEmpty()) {
-            Glide.with(Main_Test.this)
+            Glide.with(Main.this)
                     .load("http://222.122.203.55/realreview/signup/profiledefault/homeme_default.jpg")
                     .apply(RequestOptions.bitmapTransform(new CircleCrop(this)))
                     .into(meProfileImage);
         } else {
-            Glide.with(Main_Test.this)
+            Glide.with(Main.this)
                     .load(imagePath)
                     .apply(RequestOptions.bitmapTransform(new CircleCrop(this)))
                     .into(meProfileImage);
@@ -717,7 +720,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
                 Toast.makeText(this, "CROP FROM CAMERA!", Toast.LENGTH_SHORT).show();
                 if (extras != null) {
                     Bitmap photo = extras.getParcelable("data");
-                    Glide.with(Main_Test.this)
+                    Glide.with(Main.this)
                             .load(mImageCaptureUri)
                             .apply(RequestOptions.bitmapTransform(new CircleCrop(this)))
                             .into(meProfileImage);
@@ -896,7 +899,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
             String time = sdfNow.format(new Date(System.currentTimeMillis()));
             Log.e("TIME", "TIME:" + time);
 
-            SharedPreferenceUtil pref = new SharedPreferenceUtil(Main_Test.this);
+            SharedPreferenceUtil pref = new SharedPreferenceUtil(Main.this);
             strId += pref.getSharedData("isLogged_id");
 
             String aa = getPath(mImageCaptureUri);
@@ -950,7 +953,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
                 JSONObject jsonString = jsonArray.getJSONObject(0);
                 modifyProfileImagePath = jsonString.getString("imagepath");
                 Log.d("filePathThread", "imagePathResponse : " + modifyProfileImagePath);
-                SharedPreferenceUtil pref = new SharedPreferenceUtil(Main_Test.this);
+                SharedPreferenceUtil pref = new SharedPreferenceUtil(Main.this);
                 pref.setSharedData("isLogged_profileImagePath", modifyProfileImagePath);
 
 
@@ -982,7 +985,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
                 .setMessage("App을 종료 하시겠습니까??")
                 .setPositiveButton("그만할래요", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt) {
-                        SharedPreferenceUtil pref = new SharedPreferenceUtil(Main_Test.this);
+                        SharedPreferenceUtil pref = new SharedPreferenceUtil(Main.this);
                         finish();
                     }
                 }).setNegativeButton("계속하기", new DialogInterface.OnClickListener() {
@@ -1150,7 +1153,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 //                    @Override
 //                    public boolean onMarkerClick(Marker marker) {
 //
-//                        Dialog_Default dial = new Dialog_Default(Main_Test.this);
+//                        Dialog_Default dial = new Dialog_Default(Main.this);
 //                        dial.call("MARKER CLICK", "TODO : SHOP DETAIL ACTIVITY");
 //
 //
@@ -1161,7 +1164,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 
             }
 
-            Log.d("Main_Test, onMapReady", "connLength : " + fixJSON.length());
+            Log.d("Main, onMapReady", "connLength : " + fixJSON.length());
 
 
         } catch (InterruptedException | ExecutionException | TimeoutException | JSONException e) {
@@ -1180,13 +1183,13 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         @Override
         public void onInfoWindowClick(Marker marker) {
             String markerId = String.valueOf(marker.getTag());
-//            Dialog_Default dial = new Dialog_Default(Main_Test.this);
+//            Dialog_Default dial = new Dialog_Default(Main.this);
 //            dial.call("MARKER INFO WINDOW CLICK","TODO : MAKE ACTIVITY");
 
             Log.d("MARKER_TAG", "marker.getTag() :" + markerId);
-            SharedPreferenceUtil pref = new SharedPreferenceUtil(Main_Test.this);
+            SharedPreferenceUtil pref = new SharedPreferenceUtil(Main.this);
             pref.setSharedData("TAG", markerId);
-            Intent intent = new Intent(Main_Test.this, ShopDetail_Main.class);
+            Intent intent = new Intent(Main.this, ShopDetail_Main.class);
             intent.putExtra("TAG", String.valueOf(marker.getTag()));
             startActivity(intent);
 
@@ -1203,14 +1206,23 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
         private String urlString;
         private String params = "";
         String TestVAR;
+        private MaterialDialog builder;
+        Context mContext;
 
         AsyncMainNearbyLatLngReceive(String urlString, Context mContext) {
             this.urlString = urlString;
+            this.mContext = mContext;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
+            builder = new MaterialDialog.Builder(mContext)
+                    .title("Connecting")
+                    .content("loading..")
+                    .progressIndeterminateStyle(true)
+                    .show();
         }
 
         @Override
@@ -1290,6 +1302,7 @@ public class Main_Test extends AppCompatActivity implements View.OnClickListener
 
         @Override
         protected void onPostExecute(StringBuilder result) {
+            if (builder.isShowing()) builder.dismiss();
         }
 
     }
