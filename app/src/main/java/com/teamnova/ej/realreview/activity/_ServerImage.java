@@ -34,21 +34,21 @@ public class _ServerImage extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity___server_image);
 
-        gridTest1 = (ImageView) findViewById(R.id.gridTest1);
-        gridTest2 = (ImageView) findViewById(R.id.gridTest2);
-        gridTest3 = (ImageView) findViewById(R.id.gridTest3);
-        gridTest4 = (ImageView) findViewById(R.id.gridTest4);
-        gridTest5 = (ImageView) findViewById(R.id.gridTest5);
-        gridTest6 = (ImageView) findViewById(R.id.gridTest6);
-        gridTest7 = (ImageView) findViewById(R.id.gridTest7);
-        gridTest8 = (ImageView) findViewById(R.id.gridTest8);
-        gridTest9 = (ImageView) findViewById(R.id.gridTest9);
-        gridTest10 = (ImageView) findViewById(R.id.gridTest10);
-        gridTest11 = (ImageView) findViewById(R.id.gridTest11);
-        gridTest12 = (ImageView) findViewById(R.id.gridTest12);
-        gridTest13 = (ImageView) findViewById(R.id.gridTest13);
-        gridTest14 = (ImageView) findViewById(R.id.gridTest14);
-        gridTest15 = (ImageView) findViewById(R.id.gridTest15);
+        gridTest1 = findViewById(R.id.gridTest1);
+        gridTest2 = findViewById(R.id.gridTest2);
+        gridTest3 = findViewById(R.id.gridTest3);
+        gridTest4 = findViewById(R.id.gridTest4);
+        gridTest5 = findViewById(R.id.gridTest5);
+        gridTest6 = findViewById(R.id.gridTest6);
+        gridTest7 = findViewById(R.id.gridTest7);
+        gridTest8 = findViewById(R.id.gridTest8);
+        gridTest9 = findViewById(R.id.gridTest9);
+        gridTest10 = findViewById(R.id.gridTest10);
+        gridTest11 = findViewById(R.id.gridTest11);
+        gridTest12 = findViewById(R.id.gridTest12);
+        gridTest13 = findViewById(R.id.gridTest13);
+        gridTest14 = findViewById(R.id.gridTest14);
+        gridTest15 = findViewById(R.id.gridTest15);
 
 
         RequestOptions rOp = new RequestOptions();

@@ -28,7 +28,7 @@ public class ShopDetail_PhotoView extends AppCompatActivity {
     }
 
     private void init() {
-        photoView = (PhotoView) findViewById(R.id.shopDetailPhotoView);
+        photoView = findViewById(R.id.shopDetailPhotoView);
         Glide.with(this).load(imageURL).into(photoView);
     }
 

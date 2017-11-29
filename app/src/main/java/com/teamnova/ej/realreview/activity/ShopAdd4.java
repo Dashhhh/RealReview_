@@ -27,7 +27,7 @@ public class ShopAdd4 extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void init() {
-        shopAdd4NextBtn = (Button) findViewById(R.id.shopAdd4NextBtn);
+        shopAdd4NextBtn = findViewById(R.id.shopAdd4NextBtn);
     }
 
 

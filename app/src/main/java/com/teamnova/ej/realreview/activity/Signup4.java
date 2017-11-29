@@ -93,11 +93,11 @@ public class Signup4 extends AppCompatActivity implements View.OnClickListener {
 
     private void init() {
 
-        sign4Image = (ImageView) findViewById(R.id.sign4Image);
-        sign4Phone = (EditText) findViewById(R.id.sign4Phone);
-        sign4CertiNumber = (EditText) findViewById(R.id.sign4CertiNumber);
-        sign4Next = (Button) findViewById(R.id.sign4Next);
-        sign4CertiRequest = (Button) findViewById(R.id.sign4CertiRequest);
+        sign4Image = findViewById(R.id.sign4Image);
+        sign4Phone = findViewById(R.id.sign4Phone);
+        sign4CertiNumber = findViewById(R.id.sign4CertiNumber);
+        sign4Next = findViewById(R.id.sign4Next);
+        sign4CertiRequest = findViewById(R.id.sign4CertiRequest);
 
     }   // init()
 

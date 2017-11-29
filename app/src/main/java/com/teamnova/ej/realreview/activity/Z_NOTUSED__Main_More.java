@@ -22,9 +22,9 @@ public class Z_NOTUSED__Main_More extends AppCompatActivity implements View.OnCl
     }
 
     private void init() {
-        bottomNearby = (LinearLayout) findViewById(R.id.bottomNearby);
-        bottomSearch = (LinearLayout) findViewById(R.id.bottomSearch);
-        bottomMe = (LinearLayout) findViewById(R.id.bottomMe);
+        bottomNearby = findViewById(R.id.bottomNearby);
+        bottomSearch = findViewById(R.id.bottomSearch);
+        bottomMe = findViewById(R.id.bottomMe);
 //        bottomMore = (LinearLayout) findViewById(R.id.bottomMore);
 
 

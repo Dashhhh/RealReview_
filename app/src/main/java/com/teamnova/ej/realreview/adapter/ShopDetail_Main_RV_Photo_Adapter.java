@@ -69,7 +69,7 @@ public class ShopDetail_Main_RV_Photo_Adapter extends RecyclerView.Adapter<ShopD
     public int getItemCount() {
         Log.d("RecyclerView(Image)", "getItemCount - Enter");
 
-        return (data.size() != 0) ? data.size() : 0;
+        return data.size();
     }
 
 

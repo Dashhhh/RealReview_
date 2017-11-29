@@ -57,18 +57,18 @@ public class ShopAdd2 extends AppCompatActivity implements View.OnClickListener 
 
     private void init() {
 
-        shopAdd2sign = (MaterialEditText) findViewById(R.id.shopAdd2sign);
-        shopAdd2Address = (MaterialEditText) findViewById(R.id.shopAdd2Address);
-        shopAdd2PhoneNumber = (MaterialEditText) findViewById(R.id.shopAdd2PhoneNumber);
-        shopAdd2Website = (MaterialEditText) findViewById(R.id.shopAdd2Website);
-        shopAdd2OpenTime = (MaterialEditText) findViewById(R.id.shopAdd2OpenTime);
-        shopAdd2CloseTime = (MaterialEditText) findViewById(R.id.shopAdd2CloseTime);
-        shopAdd2Btn = (Button) findViewById(R.id.shopAdd2Btn);
-        shopAdd2PlaceType1 = (TextView) findViewById(R.id.shopAdd2PlaceType1);
-        shopAdd2PlaceType2 = (TextView) findViewById(R.id.shopAdd2PlaceType2);
-        shopAdd2PlaceType3 = (TextView) findViewById(R.id.shopAdd2PlaceType3);
-        shopAdd2PlaceType4 = (TextView) findViewById(R.id.shopAdd2PlaceType4);
-        shopAdd2PlaceType5 = (TextView) findViewById(R.id.shopAdd2PlaceType5);
+        shopAdd2sign = findViewById(R.id.shopAdd2sign);
+        shopAdd2Address = findViewById(R.id.shopAdd2Address);
+        shopAdd2PhoneNumber = findViewById(R.id.shopAdd2PhoneNumber);
+        shopAdd2Website = findViewById(R.id.shopAdd2Website);
+        shopAdd2OpenTime = findViewById(R.id.shopAdd2OpenTime);
+        shopAdd2CloseTime = findViewById(R.id.shopAdd2CloseTime);
+        shopAdd2Btn = findViewById(R.id.shopAdd2Btn);
+        shopAdd2PlaceType1 = findViewById(R.id.shopAdd2PlaceType1);
+        shopAdd2PlaceType2 = findViewById(R.id.shopAdd2PlaceType2);
+        shopAdd2PlaceType3 = findViewById(R.id.shopAdd2PlaceType3);
+        shopAdd2PlaceType4 = findViewById(R.id.shopAdd2PlaceType4);
+        shopAdd2PlaceType5 = findViewById(R.id.shopAdd2PlaceType5);
 
 
         shopAdd2sign.setText(shopSign);

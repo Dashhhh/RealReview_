@@ -36,13 +36,13 @@ public class Signin extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void init() {
-        loginBtn = (Button) findViewById(R.id.loginBtn);
-        signupBtn = (Button) findViewById(R.id.signupBtn);
-        loginForFacebook = (Button) findViewById(R.id.loginForFacebook);
-        loginForNaver = (Button) findViewById(R.id.loginForNaver);
-        loginForKakao = (Button) findViewById(R.id.loginForKakao);
-        forgotPassword = (TextView) findViewById(R.id.forgotPassword);
-        demoTest = (Button) findViewById(R.id.demoTest);
+        loginBtn = findViewById(R.id.loginBtn);
+        signupBtn = findViewById(R.id.signupBtn);
+        loginForFacebook = findViewById(R.id.loginForFacebook);
+        loginForNaver = findViewById(R.id.loginForNaver);
+        loginForKakao = findViewById(R.id.loginForKakao);
+        forgotPassword = findViewById(R.id.forgotPassword);
+        demoTest = findViewById(R.id.demoTest);
     }
 
     @Override

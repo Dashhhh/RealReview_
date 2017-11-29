@@ -27,9 +27,9 @@ public class Z_NOTUSED__Main_Nearby extends AppCompatActivity implements View.On
 
     private void init() {
 //        bottomNearby = (LinearLayout) findViewById(R.id.bottomNearby);
-        bottomSearch = (LinearLayout) findViewById(R.id.bottomSearch);
-        bottomMe = (LinearLayout) findViewById(R.id.bottomMe);
-        bottomMore = (LinearLayout) findViewById(R.id.bottomMore);
+        bottomSearch = findViewById(R.id.bottomSearch);
+        bottomMe = findViewById(R.id.bottomMe);
+        bottomMore = findViewById(R.id.bottomMore);
 
 
     }

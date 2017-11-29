@@ -25,13 +25,13 @@ public class _DemoTest extends AppCompatActivity implements View.OnClickListener
 
     private void init() {
 
-        demoTestDialogue = (Button) findViewById(R.id.demoTestDialogue);
-        fregmentTest = (Button) findViewById(R.id.fregmentTest);
-        facebookKey = (Button) findViewById(R.id.facebookKey);
-        bottomNavigation = (Button) findViewById(R.id.bottomNavigation);
-        glideTest = (Button) findViewById(R.id.glideTest);
-        mainActivityTest = (Button) findViewById(R.id.mainActivityTest);
-        shopDetailTest = (Button) findViewById(R.id.shopDetailTest);
+        demoTestDialogue = findViewById(R.id.demoTestDialogue);
+        fregmentTest = findViewById(R.id.fregmentTest);
+        facebookKey = findViewById(R.id.facebookKey);
+        bottomNavigation = findViewById(R.id.bottomNavigation);
+        glideTest = findViewById(R.id.glideTest);
+        mainActivityTest = findViewById(R.id.mainActivityTest);
+        shopDetailTest = findViewById(R.id.shopDetailTest);
         materialDialogTest = findViewById(R.id.materialDialogTest);
 
     }

@@ -24,10 +24,10 @@ public class Z_NOTUSED__Main_Me extends AppCompatActivity implements View.OnClic
 
     private void init() {
 
-        bottomNearby = (LinearLayout) findViewById(R.id.bottomNearby);
-        bottomSearch = (LinearLayout) findViewById(R.id.bottomSearch);
+        bottomNearby = findViewById(R.id.bottomNearby);
+        bottomSearch = findViewById(R.id.bottomSearch);
 //        bottomMe = (LinearLayout) findViewById(R.id.bottomMe);
-        bottomMore = (LinearLayout) findViewById(R.id.bottomMore);
+        bottomMore = findViewById(R.id.bottomMore);
 
     }
 

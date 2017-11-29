@@ -51,7 +51,7 @@ public class ShopDetail_MainReview_RV_Theme_Adapter extends RecyclerView.Adapter
     public int getItemCount() {
         Log.d("DETAIL_THEME", "getItemCount - Enter");
 
-        return (data.size() != 0) ? data.size() : 0;
+        return data.size();
     }
 
 }

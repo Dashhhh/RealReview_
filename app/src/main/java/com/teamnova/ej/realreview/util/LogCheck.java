@@ -17,9 +17,6 @@ public class LogCheck {
         SharedPreferenceUtil pref = new SharedPreferenceUtil(context);
         String check = pref.getSharedData("isLogged");
         Boolean chk = Boolean.valueOf(check);
-        if (chk) return true;
-        else {
-            return false;
-        }
+        return chk;
     }
 }

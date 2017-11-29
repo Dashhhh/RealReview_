@@ -99,13 +99,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
     private void init() {
 
-        loginIdText = (EditText) findViewById(R.id.loginIdText);
-        loginPasswordText = (EditText) findViewById(R.id.loginPasswordText);
-        loginBtn = (Button) findViewById(R.id.loginBtn);
-        loginSignIn = (TextView) findViewById(R.id.loginSignIn);
-        loginText = (TextView) findViewById(R.id.loginText);
-        idImage = (ImageView) findViewById(R.id.idImage);
-        passwordImage = (ImageView) findViewById(R.id.passwordImage);
+        loginIdText = findViewById(R.id.loginIdText);
+        loginPasswordText = findViewById(R.id.loginPasswordText);
+        loginBtn = findViewById(R.id.loginBtn);
+        loginSignIn = findViewById(R.id.loginSignIn);
+        loginText = findViewById(R.id.loginText);
+        idImage = findViewById(R.id.idImage);
+        passwordImage = findViewById(R.id.passwordImage);
 
     }
 

@@ -25,10 +25,10 @@ public class Z_NOTUSED__Main_Search extends AppCompatActivity implements View.On
     }
 
     private void init() {
-        bottomNearby = (LinearLayout) findViewById(R.id.bottomNearby);
+        bottomNearby = findViewById(R.id.bottomNearby);
 //        bottomSearch = (LinearLayout) findViewById(R.id.bottomSearch);
-        bottomMe = (LinearLayout) findViewById(R.id.bottomMe);
-        bottomMore = (LinearLayout) findViewById(R.id.bottomMore);
+        bottomMe = findViewById(R.id.bottomMe);
+        bottomMore = findViewById(R.id.bottomMore);
 
     }
 

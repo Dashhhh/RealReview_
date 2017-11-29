@@ -50,11 +50,11 @@ public class Signup1 extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup1);
 
-        sign1Id = (EditText) findViewById(R.id.sign1Id);
-        sign1Password = (EditText) findViewById(R.id.sign1Password);
-        sign1PasswordCheck = (EditText) findViewById(R.id.sign1PasswordCheck);
-        sign1Next = (Button) findViewById(R.id.sign1Next);
-        sign1Image = (ImageView) findViewById(R.id.sign1Image);
+        sign1Id = findViewById(R.id.sign1Id);
+        sign1Password = findViewById(R.id.sign1Password);
+        sign1PasswordCheck = findViewById(R.id.sign1PasswordCheck);
+        sign1Next = findViewById(R.id.sign1Next);
+        sign1Image = findViewById(R.id.sign1Image);
 
 
         sign1Next.setOnClickListener(this);

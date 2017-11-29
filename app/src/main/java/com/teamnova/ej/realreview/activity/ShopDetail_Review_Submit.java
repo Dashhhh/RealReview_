@@ -84,19 +84,19 @@ public class ShopDetail_Review_Submit extends AppCompatActivity implements View.
     }
 
     private void init() {
-        reviewTitle = (TextView) findViewById(R.id.reviewTitle);
+        reviewTitle = findViewById(R.id.reviewTitle);
         reviewTitle.setText(iTitle);
-        reviewRating = (AppCompatRatingBar) findViewById(R.id.reviewRating);
+        reviewRating = findViewById(R.id.reviewRating);
         reviewRating.setRating(iRating);
-        reviewImageLayout = (LinearLayout) findViewById(R.id.reviewImageLayout);
-        reviewImage1 = (ImageView) findViewById(R.id.reviewImage1);
-        reviewImage2 = (ImageView) findViewById(R.id.reviewImage2);
-        reviewImage3 = (ImageView) findViewById(R.id.reviewImage3);
-        reviewImage4 = (ImageView) findViewById(R.id.reviewImage4);
-        reviewImage5 = (ImageView) findViewById(R.id.reviewImage5);
-        reviewCamera = (Button) findViewById(R.id.reviewCamera);
-        reviewSubmit = (Button) findViewById(R.id.reviewSubmit);
-        reviewEditText = (MaterialEditText) findViewById(R.id.reviewEditText);
+        reviewImageLayout = findViewById(R.id.reviewImageLayout);
+        reviewImage1 = findViewById(R.id.reviewImage1);
+        reviewImage2 = findViewById(R.id.reviewImage2);
+        reviewImage3 = findViewById(R.id.reviewImage3);
+        reviewImage4 = findViewById(R.id.reviewImage4);
+        reviewImage5 = findViewById(R.id.reviewImage5);
+        reviewCamera = findViewById(R.id.reviewCamera);
+        reviewSubmit = findViewById(R.id.reviewSubmit);
+        reviewEditText = findViewById(R.id.reviewEditText);
 
     }
 

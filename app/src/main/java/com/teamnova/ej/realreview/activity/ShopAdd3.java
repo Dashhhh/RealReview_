@@ -55,9 +55,9 @@ public class ShopAdd3 extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void init() {
-        shopAdd3LV = (ListView) findViewById(R.id.shopAdd3LV);
-        shopAdd3NextBtn = (Button) findViewById(R.id.shopAdd3NextBtn);
-        shopAdd3AddMenuBtn = (Button) findViewById(R.id.shopAdd3AddMenuBtn);
+        shopAdd3LV = findViewById(R.id.shopAdd3LV);
+        shopAdd3NextBtn = findViewById(R.id.shopAdd3NextBtn);
+        shopAdd3AddMenuBtn = findViewById(R.id.shopAdd3AddMenuBtn);
     }
 
 

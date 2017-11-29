@@ -107,10 +107,10 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
 
     private void init() {
 
-        sign5Camera = (ImageView) findViewById(R.id.sign5Camera);
-        sign5AddImage = (Button) findViewById(R.id.sign5AddImage);
-        uploadButton = (Button) findViewById(R.id.uploadButton);
-        messageText = (TextView) findViewById(R.id.messageText);
+        sign5Camera = findViewById(R.id.sign5Camera);
+        sign5AddImage = findViewById(R.id.sign5AddImage);
+        uploadButton = findViewById(R.id.uploadButton);
+        messageText = findViewById(R.id.messageText);
         messageText.setText("Uploading file path :- '/mnt/sdcard/" + uploadFileName + "'");
 
     }

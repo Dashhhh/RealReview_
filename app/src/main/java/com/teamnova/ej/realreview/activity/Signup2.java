@@ -50,9 +50,9 @@ public class Signup2 extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup2);
 
-        sign2Image = (ImageView) findViewById(R.id.sign2Image);
-        sign2Nick = (EditText) findViewById(R.id.sign2Nick);
-        sign2Check = (Button) findViewById(R.id.sign2Check);
+        sign2Image = findViewById(R.id.sign2Image);
+        sign2Nick = findViewById(R.id.sign2Nick);
+        sign2Check = findViewById(R.id.sign2Check);
 
         sign2Check.setOnClickListener(this);
 
@@ -68,7 +68,7 @@ public class Signup2 extends AppCompatActivity implements View.OnClickListener {
                 boolean nickVali;
                 if (!tempNick.isEmpty()) {
                     ValidateUtil vUtil = new ValidateUtil();
-                    Boolean bNIck = vUtil.validateNick(nick);
+                    Boolean bNIck = ValidateUtil.validateNick(nick);
                     if (bNIck) {
                         nickCheckThread nickCheck = new nickCheckThread(nick);
                         nickCheck.start();
