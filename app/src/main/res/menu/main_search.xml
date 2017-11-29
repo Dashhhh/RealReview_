@@ -1,385 +1,513 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/기타"
-        android:title="@string/기타" />
+        android:title="@string/기타"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/회계"
-        android:title="@string/회계" />
+        android:title="@string/회계"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/공항"
-        android:title="@string/공항" />
+        android:title="@string/공항"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/유원지"
-        android:title="@string/유원지" />
+        android:title="@string/유원지"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/수족관"
-        android:title="@string/수족관" />
+        android:title="@string/수족관"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/아트갤러리"
-        android:title="@string/아트갤러리" />
+        android:title="@string/아트갤러리"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/Atm"
-        android:title="@string/Atm" />
+        android:title="@string/Atm"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/제과점"
-        android:title="@string/제과점" />
+        android:title="@string/제과점"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/은행"
-        android:title="@string/은행" />
+        android:title="@string/은행"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/바"
-        android:title="@string/바" />
+        android:title="@string/바"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/뷰티살롱"
-        android:title="@string/뷰티살롱" />
+        android:title="@string/뷰티살롱"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/자전거상점"
-        android:title="@string/자전거상점" />
+        android:title="@string/자전거상점"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/서점"
-        android:title="@string/서점" />
+        android:title="@string/서점"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/볼링장"
-        android:title="@string/볼링장" />
+        android:title="@string/볼링장"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/버스정류장"
-        android:title="@string/버스정류장" />
+        android:title="@string/버스정류장"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/카페"
-        android:title="@string/카페" />
+        android:title="@string/카페"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/캠프장"
-        android:title="@string/캠프장" />
+        android:title="@string/캠프장"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/자동차딜러"
-        android:title="@string/자동차딜러" />
+        android:title="@string/자동차딜러"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/자동차렌탈"
-        android:title="@string/자동차렌탈" />
+        android:title="@string/자동차렌탈"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/자동차수리"
-        android:title="@string/자동차수리" />
+        android:title="@string/자동차수리"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/세차장"
-        android:title="@string/세차장" />
+        android:title="@string/세차장"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/카지노"
-        android:title="@string/카지노" />
+        android:title="@string/카지노"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/묘지"
-        android:title="@string/묘지" />
+        android:title="@string/묘지"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/교회"
-        android:title="@string/교회" />
+        android:title="@string/교회"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/시청"
-        android:title="@string/시청" />
+        android:title="@string/시청"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/의류매장"
-        android:title="@string/의류매장" />
+        android:title="@string/의류매장"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/편의점"
-        android:title="@string/편의점" />
+        android:title="@string/편의점"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/법원"
-        android:title="@string/법원" />
+        android:title="@string/법원"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/치과의사"
-        android:title="@string/치과의사" />
+        android:title="@string/치과의사"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/의사"
-        android:title="@string/의사" />
+        android:title="@string/의사"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/백화점"
-        android:title="@string/백화점" />
+        android:title="@string/백화점"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/전기"
-        android:title="@string/전기" />
+        android:title="@string/전기"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/전자상점"
-        android:title="@string/전자상점" />
+        android:title="@string/전자상점"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/대사관"
-        android:title="@string/대사관" />
+        android:title="@string/대사관"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/설립"
-        android:title="@string/설립" />
+        android:title="@string/설립"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/금융"
-        android:title="@string/금융" />
+        android:title="@string/금융"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/소방서"
-        android:title="@string/소방서" />
+        android:title="@string/소방서"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/꽃집"
-        android:title="@string/꽃집" />
+        android:title="@string/꽃집"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/음식"
-        android:title="@string/음식" />
+        android:title="@string/음식"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/장례식장"
-        android:title="@string/장례식장" />
+        android:title="@string/장례식장"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/가구점"
-        android:title="@string/가구점" />
+        android:title="@string/가구점"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/주유소"
-        android:title="@string/주유소" />
+        android:title="@string/주유소"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/일반계약자"
-        android:title="@string/일반계약자" />
+        android:title="@string/일반계약자"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/식료품점"
-        android:title="@string/식료품점" />
+        android:title="@string/식료품점"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/체육관"
-        android:title="@string/체육관" />
+        android:title="@string/체육관"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/모발관리"
-        android:title="@string/모발관리" />
+        android:title="@string/모발관리"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/하드웨어매장"
-        android:title="@string/하드웨어매장" />
+        android:title="@string/하드웨어매장"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/건강"
-        android:title="@string/건강" />
+        android:title="@string/건강"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/힌두사원"
-        android:title="@string/힌두사원" />
+        android:title="@string/힌두사원"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/가정용품점"
-        android:title="@string/가정용품점" />
+        android:title="@string/가정용품점"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/병원"
-        android:title="@string/병원" />
+        android:title="@string/병원"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/보험기관"
-        android:title="@string/보험기관" />
+        android:title="@string/보험기관"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/보석상"
-        android:title="@string/보석상" />
+        android:title="@string/보석상"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/세탁"
-        android:title="@string/세탁" />
+        android:title="@string/세탁"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/변호사"
-        android:title="@string/변호사" />
+        android:title="@string/변호사"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/도서관"
-        android:title="@string/도서관" />
+        android:title="@string/도서관"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/주류판매점"
-        android:title="@string/주류판매점" />
+        android:title="@string/주류판매점"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/지방정부청사"
-        android:title="@string/지방정부청사" />
+        android:title="@string/지방정부청사"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/자물쇠"
-        android:title="@string/자물쇠" />
+        android:title="@string/자물쇠"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/숙박"
-        android:title="@string/숙박" />
+        android:title="@string/숙박"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/식사제공"
-        android:title="@string/식사제공" />
+        android:title="@string/식사제공"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/식사테이크아웃"
-        android:title="@string/식사테이크아웃" />
+        android:title="@string/식사테이크아웃"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/모스크"
-        android:title="@string/모스크" />
+        android:title="@string/모스크"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/영화대여"
-        android:title="@string/영화대여" />
+        android:title="@string/영화대여"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/영화극장"
-        android:title="@string/영화극장" />
+        android:title="@string/영화극장"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/이사회사"
-        android:title="@string/이사회사" />
+        android:title="@string/이사회사"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/박물관"
-        android:title="@string/박물관" />
+        android:title="@string/박물관"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/나이트클럽"
-        android:title="@string/나이트클럽" />
+        android:title="@string/나이트클럽"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/화가"
-        android:title="@string/화가" />
+        android:title="@string/화가"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/공원"
-        android:title="@string/공원" />
+        android:title="@string/공원"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/주차"
-        android:title="@string/주차" />
+        android:title="@string/주차"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/애완동물가게"
-        android:title="@string/애완동물가게" />
+        android:title="@string/애완동물가게"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/약국"
-        android:title="@string/약국" />
+        android:title="@string/약국"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/물리치료사"
-        android:title="@string/물리치료사" />
+        android:title="@string/물리치료사"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/예배당의장소"
-        android:title="@string/예배당의장소" />
+        android:title="@string/예배당의장소"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/배관공"
-        android:title="@string/배관공" />
+        android:title="@string/배관공"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/경찰"
-        android:title="@string/경찰" />
+        android:title="@string/경찰"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/우체국"
-        android:title="@string/우체국" />
+        android:title="@string/우체국"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/부동산중개인"
-        android:title="@string/부동산중개인" />
+        android:title="@string/부동산중개인"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/레스토랑"
-        android:title="@string/레스토랑" />
+        android:title="@string/레스토랑"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/루핑계약자"
-        android:title="@string/루핑계약자" />
+        android:title="@string/루핑계약자"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/RV공원"
-        android:title="@string/RV공원" />
+        android:title="@string/RV공원"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/학교"
-        android:title="@string/학교" />
+        android:title="@string/학교"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/신발가게"
-        android:title="@string/신발가게" />
+        android:title="@string/신발가게"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/쇼핑몰"
-        android:title="@string/쇼핑몰" />
+        android:title="@string/쇼핑몰"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/스파"
-        android:title="@string/스파" />
+        android:title="@string/스파"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/경기장"
-        android:title="@string/경기장" />
+        android:title="@string/경기장"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/보관"
-        android:title="@string/보관" />
+        android:title="@string/보관"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/상점"
-        android:title="@string/상점" />
+        android:title="@string/상점"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/지하철역"
-        android:title="@string/지하철역" />
+        android:title="@string/지하철역"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/회당"
-        android:title="@string/회당" />
+        android:title="@string/회당"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/택시승차장"
-        android:title="@string/택시승차장" />
+        android:title="@string/택시승차장"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/기차역"
-        android:title="@string/기차역" />
+        android:title="@string/기차역"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/여행사"
-        android:title="@string/여행사" />
+        android:title="@string/여행사"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/대학"
-        android:title="@string/대학" />
+        android:title="@string/대학"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/수의진료"
-        android:title="@string/수의진료" />
+        android:title="@string/수의진료"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/동물원"
-        android:title="@string/동물원" />
+        android:title="@string/동물원"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/행정구역수준1"
-        android:title="@string/행정구역수준1" />
+        android:title="@string/행정구역수준1"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/행정구역수준2"
-        android:title="@string/행정구역수준2" />
+        android:title="@string/행정구역수준2"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/행정구역수준3"
-        android:title="@string/행정구역수준3" />
+        android:title="@string/행정구역수준3"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/구어짐면적"
-        android:title="@string/구어짐면적" />
+        android:title="@string/구어짐면적"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/국가"
-        android:title="@string/국가" />
+        android:title="@string/국가"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/층"
-        android:title="@string/층" />
+        android:title="@string/층"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/지오코드"
-        android:title="@string/지오코드" />
+        android:title="@string/지오코드"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/교차점"
-        android:title="@string/교차점" />
+        android:title="@string/교차점"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/지역성"
-        android:title="@string/지역성" />
+        android:title="@string/지역성"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/자연지형지물"
-        android:title="@string/자연지형지물" />
+        android:title="@string/자연지형지물"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/이웃"
-        android:title="@string/이웃" />
+        android:title="@string/이웃"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/정치"
-        android:title="@string/정치" />
+        android:title="@string/정치"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/관심지점"
-        android:title="@string/관심지점" />
+        android:title="@string/관심지점"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/포스트박스"
-        android:title="@string/포스트박스" />
+        android:title="@string/포스트박스"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/우편번호"
-        android:title="@string/우편번호" />
+        android:title="@string/우편번호"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/우편번호접두사"
-        android:title="@string/우편번호접두사" />
+        android:title="@string/우편번호접두사"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/우편타운"
-        android:title="@string/우편타운" />
+        android:title="@string/우편타운"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/전제"
-        android:title="@string/전제" />
+        android:title="@string/전제"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/방"
-        android:title="@string/방" />
+        android:title="@string/방"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/루트"
-        android:title="@string/루트" />
+        android:title="@string/루트"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/거리주소"
-        android:title="@string/거리주소" />
+        android:title="@string/거리주소"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/하부구조"
-        android:title="@string/하부구조" />
+        android:title="@string/하부구조"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/하위수준1"
-        android:title="@string/하위수준1" />
+        android:title="@string/하위수준1"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/하위수준2"
-        android:title="@string/하위수준2" />
+        android:title="@string/하위수준2"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/하위수준3"
-        android:title="@string/하위수준3" />
+        android:title="@string/하위수준3"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/하위수준4"
-        android:title="@string/하위수준4" />
+        android:title="@string/하위수준4"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/하위수준5"
-        android:title="@string/하위수준5" />
+        android:title="@string/하위수준5"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/Subpremise"
-        android:title="@string/Subpremise" />
+        android:title="@string/Subpremise"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/합성지오코드"
-        android:title="@string/합성지오코드" />
+        android:title="@string/합성지오코드"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/대중교통역"
-        android:title="@string/대중교통역" />
+        android:title="@string/대중교통역"
+        app:showAsAction="ifRoom" />
 </menu>

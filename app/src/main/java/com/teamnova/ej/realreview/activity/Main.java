@@ -37,11 +37,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.arlib.floatingsearchview.FloatingSearchView;
+import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
+import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
@@ -136,7 +140,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
      * init VAR
      */
 
-    LinearLayout nearbyLinear, searchLinear, meLinear, meLinearSecond, meProfileStateLayout, meMLinearMyFeed;
+    LinearLayout nearbyLinear, meLinear, meLinearSecond, meProfileStateLayout, meMLinearMyFeed;
+    RelativeLayout searchLinear;
     ListView meMyFeedListView;
     FrameLayout content;
     ScrollView map_container, meScrollView;
@@ -150,7 +155,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     private boolean mRequestingLocationUpdates;
     private LocationCallback mLocationCallback;
     private LocationRequest mLocationRequest;
-
+    com.arlib.floatingsearchview.FloatingSearchView floatingSearchView;
 
     //    SupportMapFragment mapFragment;
 
@@ -185,26 +190,90 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     private String modifyProfileImagePath;
     private MaterialDialog builder;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        TypefaceProvider.registerDefaultIconSets();
+        setContentView(R.layout.activity_main);
+        builder = new MaterialDialog.Builder(this)
+                .title("Connecting")
+                .content("loading..")
+                .progress(true, 0)
+                .show();
+        init();
+        defineBottomNavi();
+        listener();
+        receiveLocationData();
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            mFusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                // Logic to handle location object
+                            }
+                        }
+                    });
+
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        } else {
+
+        }
+
+
+
+        Log.d("Main - onCreate", "MY_POSITION_LAT :" + MY_POSITION_LAT);
+        Log.d("Main - onCreate", "MY_POSITION_LNG :" + MY_POSITION_LNG);
+
+        LOCATION_USER_LAT = MY_POSITION_LAT;
+        LOCATION_USER_LNG = MY_POSITION_LNG;
+
+        SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
+        pref.setSharedData("DIRECTION_USER_LAT", String.valueOf(LOCATION_USER_LAT));
+        pref.setSharedData("DIRECTION_USER_LNG", String.valueOf(LOCATION_USER_LNG));
+        Log.d("DIRECTION_USER", "DIRECTION_USER_LAT :" + pref.getSharedData("DIRECTION_USER_LAT"));
+        Log.d("DIRECTION_USER", "DIRECTION_USER_LNG :" + pref.getSharedData("DIRECTION_USER_LNG"));
+
+        String url = "http://222.122.203.55/realreview/Nearby/latlng.php?";
+        String urlMerge = url + "lat_start=" + resultNearRightLat + "&lat_end=" + resultFarLeftLat + "&lng_start=" + resultFarLeftLng + "&lng_end=" + resultNearRightLng;
+        ProgressWheel progressDialog = new ProgressWheel(this);
+        AsyncMainNearbyLatLngReceive upload = new AsyncMainNearbyLatLngReceive(urlMerge, this);
+        upload.execute();
+
+
+    }   // onCreate
+
     private void init() {
 
 
-        searchLinear = (LinearLayout) findViewById(R.id.searchLinear);
-        nearbyLinear = (LinearLayout) findViewById(R.id.nearbyLinear);
-        meLinear = (LinearLayout) findViewById(R.id.meLinear);
-        content = (FrameLayout) findViewById(R.id.content);
-        map_container = (ScrollView) findViewById(R.id.map_container);    // onCreate Init
-        navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        meProfileId = (TextView) findViewById(R.id.meProfileId);
-        meProfileNick = (TextView) findViewById(R.id.meProfileNick);
-        meFollowerText = (TextView) findViewById(R.id.meFollowerText);
-        meReviewText = (TextView) findViewById(R.id.meReviewText);
-        imageUploadText = (TextView) findViewById(R.id.imageUploadText);
-        meProfileImage = (ImageView) findViewById(R.id.meProfileImage);
-        followerCntImage = (ImageView) findViewById(R.id.followerCntImage);
-        reviewCntImage = (ImageView) findViewById(R.id.reviewCntImage);
-        imageUploadCnt = (ImageView) findViewById(R.id.imageUploadCnt);
-        meMyFeedListView = (ListView) findViewById(R.id.meMyFeedListView);
-        nearbyShopAdd = (Button) findViewById(R.id.nearbyShopAdd);
+        searchLinear = findViewById(R.id.searchLinear);
+        nearbyLinear = findViewById(R.id.nearbyLinear);
+        meLinear = findViewById(R.id.meLinear);
+        content = findViewById(R.id.content);
+        map_container = findViewById(R.id.map_container);    // onCreate Init
+        navigation = findViewById(R.id.navigation);
+        meProfileId = findViewById(R.id.meProfileId);
+        meProfileNick = findViewById(R.id.meProfileNick);
+        meFollowerText = findViewById(R.id.meFollowerText);
+        meReviewText = findViewById(R.id.meReviewText);
+        imageUploadText = findViewById(R.id.imageUploadText);
+        meProfileImage = findViewById(R.id.meProfileImage);
+        followerCntImage = findViewById(R.id.followerCntImage);
+        reviewCntImage = findViewById(R.id.reviewCntImage);
+        imageUploadCnt = findViewById(R.id.imageUploadCnt);
+        meMyFeedListView = findViewById(R.id.meMyFeedListView);
+        nearbyShopAdd = findViewById(R.id.nearbyShopAdd);
+        floatingSearchView = findViewById(R.id.floating_search_view);
     }
 
     private void defineBottomNavi() {
@@ -238,6 +307,17 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                         Main_Search inst = new Main_Search(Main.this);
                         searchFragment.getMapAsync(inst);
 
+                        floatingSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
+                            @Override
+                            public void onSearchTextChanged(String oldQuery, final String newQuery) {
+
+                                //get suggestions based on newQuery
+                                //pass them on to the search view
+                                floatingSearchView.swapSuggestions(new ArrayList<SearchSuggestion>());
+                            }
+                        });
+
+
                         return true;
                     case R.id.navigation_me:
                         searchLinear.setVisibility(View.GONE);
@@ -256,64 +336,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
         pref.setSharedData("LOCATION_FLAG", "TRUE");
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        builder = new MaterialDialog.Builder(this)
-                .title("Connecting")
-                .content("loading..")
-                .progress(true, 0)
-                .show();
-        init();
-        defineBottomNavi();
-        listener();
-        receiveLocationData();
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-
-        mFusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            // Logic to handle location object
-                        }
-                    }
-                });
-
-
-        Log.d("Main - onCreate", "MY_POSITION_LAT :" + MY_POSITION_LAT);
-        Log.d("Main - onCreate", "MY_POSITION_LNG :" + MY_POSITION_LNG);
-
-        LOCATION_USER_LAT = MY_POSITION_LAT;
-        LOCATION_USER_LNG = MY_POSITION_LNG;
-
-        SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
-        pref.setSharedData("DIRECTION_USER_LAT", String.valueOf(LOCATION_USER_LAT));
-        pref.setSharedData("DIRECTION_USER_LNG", String.valueOf(LOCATION_USER_LNG));
-        Log.d("DIRECTION_USER", "DIRECTION_USER_LAT :" + pref.getSharedData("DIRECTION_USER_LAT"));
-        Log.d("DIRECTION_USER", "DIRECTION_USER_LNG :" + pref.getSharedData("DIRECTION_USER_LNG"));
-
-        String url = "http://222.122.203.55/realreview/Nearby/latlng.php?";
-        String urlMerge = url + "lat_start=" + resultNearRightLat + "&lat_end=" + resultFarLeftLat + "&lng_start=" + resultFarLeftLng + "&lng_end=" + resultNearRightLng;
-        ProgressWheel progressDialog = new ProgressWheel(this);
-        AsyncMainNearbyLatLngReceive upload = new AsyncMainNearbyLatLngReceive(urlMerge, this);
-        upload.execute();
-
-
-    }   // onCreate
 
 
     @Override
@@ -366,7 +388,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("Main", "ENTER - onResume");
+        Log.d("LifeCycle", "onResume - Enter");
         //위치정보 - Activity LifrCycle 관련 메서드는 무조건 상위 메서드 호출 필요
         /** 이 화면이 불릴 때, 일시정지 해제 처리*/
 
@@ -411,6 +433,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
             startLocationUpdates();
         }
 
+        if (builder.isShowing()) builder.dismiss();
+
 
     }
 
@@ -420,8 +444,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         //Activity LifrCycle 관련 메서드는 무조건 상위 메서드 호출 필요
         super.onPause();
         //위치정보 객체에 이벤트 해제
+        Log.d("LifeCycle", "onPause - Enter");
 
-        if (builder.isShowing()) builder.dismiss();
 
         lm.removeUpdates(this);
     }
@@ -969,6 +993,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d("LifeCycle", "onStop - Enter");
 
     }
 

@@ -40,9 +40,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:textSize="17dp"
-                            android:textColor="#000000"
                             android:text="> 내 주변 추천 장소는?"
+                            android:textColor="#000000"
+                            android:textSize="17dp"
                             android:textStyle="bold" />
 
                         <!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"-->
@@ -56,11 +56,10 @@
                             xmlns:tools="http://schemas.android.com/tools"
                             android:id="@+id/mapView"
                             android:name="com.google.android.gms.maps.SupportMapFragment"
+                            class="com.google.android.gms.maps.SupportMapFragment"
                             android:layout_width="match_parent"
                             android:layout_height="300dp"
-                            tools:context=".activity.Main"
-                            class="com.google.android.gms.maps.SupportMapFragment"
-                            />
+                            tools:context=".activity.Main" />
 
                         <!--<com.google.android.gms.maps.MapView-->
                         <!--android:id="@+id/mapView"-->
@@ -115,14 +114,14 @@
                                 />
 
                         </LinearLayout>
+
                         <Button
                             android:id="@+id/nearbyShopAdd"
-                            android:layout_marginTop="10dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
                             android:background="@drawable/border_alpha"
-                            android:text="가게 등록 신청하기"
-                            />
+                            android:text="가게 등록 신청하기" />
 
 
                     </LinearLayout>
@@ -134,24 +133,11 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/searchLinear"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.arlib.floatingsearchview.FloatingSearchView
-                android:id="@+id/floating_search_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:floatingSearch_searchBarMarginLeft="1dp"
-                app:floatingSearch_searchBarMarginTop="5dp"
-                app:floatingSearch_searchBarMarginRight="1dp"
-                app:floatingSearch_searchHint="Search Shop"
-                app:floatingSearch_suggestionsListAnimDuration="250"
-                app:floatingSearch_showSearchKey="false"
-                app:floatingSearch_leftActionMode="showSearch"
-                app:floatingSearch_menu="@menu/menu_main"
-                app:floatingSearch_close_search_on_keyboard_dismiss="true"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
@@ -161,7 +147,35 @@
                 android:layout_height="match_parent"
                 tools:context=".activity.Main" />
 
-        </LinearLayout>
+            <!--android:name="com.google.android.gms.maps.MapFragment"-->
+
+            <com.arlib.floatingsearchview.FloatingSearchView
+                android:id="@+id/floating_search_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/floating_search_view2"
+                app:floatingSearch_close_search_on_keyboard_dismiss="true"
+                app:floatingSearch_leftActionMode="showSearch"
+                app:floatingSearch_menu="@menu/main_search"
+                app:floatingSearch_searchHint="Search Shop Type"
+                app:floatingSearch_showMenuAction="true"
+                app:floatingSearch_showSearchKey="false"
+                app:floatingSearch_suggestionsListAnimDuration="200" />
+
+
+            <com.arlib.floatingsearchview.FloatingSearchView
+                android:id="@+id/floating_search_view2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:floatingSearch_close_search_on_keyboard_dismiss="true"
+                app:floatingSearch_leftActionMode="showSearch"
+                app:floatingSearch_menu="@menu/main_search"
+                app:floatingSearch_searchHint="Search Shop Type"
+                app:floatingSearch_showMenuAction="true"
+                app:floatingSearch_showSearchKey="false"
+                app:floatingSearch_suggestionsListAnimDuration="200" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/meLinear"
