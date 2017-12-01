@@ -121,7 +121,6 @@
         <activity android:name=".activity.ShopDetail_Menu_Self" />
         <activity android:name=".activity.ShopDetail_Menu" />
         <activity android:name=".activity.ShopDetail_Answer_Viewing_2depth" />
-        <activity android:name=".activity.Profile_Main" />
 
         <provider
             android:name="com.werb.pickphotoview.provider.PickProvider"

@@ -114,6 +114,10 @@ public class ShopAdd1 extends FragmentActivity implements OnMapReadyCallback, Go
                 String strPlace = String.valueOf(place);
 //                dial.call("strPlace", strPlace);
                 String[] splitStrPlace = strPlace.split("=", 0);
+
+                /**
+                 * Split Reference
+                 */
 //                Log.e("splitStrPlace", splitStrPlace[0]);   // PlaceEntity{id
 //                Log.e("splitStrPlace", splitStrPlace[1]);   // ChIJvfnODzWgfDUR2quYsvZn2rE, placeTypes
 //                Log.e("splitStrPlace", splitStrPlace[2]);   // [7, 38, 88, 1013, 34], locale

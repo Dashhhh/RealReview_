@@ -27,7 +27,11 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,7 +39,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -47,8 +50,6 @@ import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -65,7 +66,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.pnikosis.materialishprogress.ProgressWheel;
+import com.teamnova.ej.realreview.Asynctask.AsyncMyFeedRequest;
 import com.teamnova.ej.realreview.R;
+import com.teamnova.ej.realreview.adapter.MainMe_MyFeed_Review_Adapter;
+import com.teamnova.ej.realreview.adapter.MainMe_MyFeed_Review_Set;
 import com.teamnova.ej.realreview.util.Dialog_Default;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
@@ -142,12 +146,13 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
     LinearLayout nearbyLinear, meLinear, meLinearSecond, meProfileStateLayout, meMLinearMyFeed;
     RelativeLayout searchLinear;
-    ListView meMyFeedListView;
+    RecyclerView mainMeMyFeedRV, mainMeQuestionRV, mainMeTipRV;
     FrameLayout content;
     ScrollView map_container, meScrollView;
     BottomNavigationView navigation;
     private GoogleMap mMap;
-    TextView searchText, meProfileId, meProfileNick, meFollowerText, meReviewText, imageUploadText;
+    TextView searchText, meProfileUserNick, meProfileUserAddress;
+    com.beardedhen.androidbootstrap.AwesomeTextView meFollowerText, meReviewCount, mainMeImageCount;
     ImageView meProfileImage, followerCntImage, reviewCntImage, imageUploadCnt;
     private String imagePath;
     Button nearbyShopAdd;
@@ -189,6 +194,10 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     private JSONObject item2;
     private String modifyProfileImagePath;
     private MaterialDialog builder;
+    private Toolbar toolbar;
+    private TextView meProfileUserId;
+    private ArrayList<MainMe_MyFeed_Review_Set> reviewArrayData = new ArrayList<>();
+    private String myFeedURL = "http://222.122.203.55/realreview/myFeed/myFeed.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -231,7 +240,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         }
 
 
-
         Log.d("Main - onCreate", "MY_POSITION_LAT :" + MY_POSITION_LAT);
         Log.d("Main - onCreate", "MY_POSITION_LNG :" + MY_POSITION_LNG);
 
@@ -255,6 +263,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
     private void init() {
 
+        SharedPreferenceUtil pref = new SharedPreferenceUtil(getApplicationContext());
 
         searchLinear = findViewById(R.id.searchLinear);
         nearbyLinear = findViewById(R.id.nearbyLinear);
@@ -262,18 +271,52 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         content = findViewById(R.id.content);
         map_container = findViewById(R.id.map_container);    // onCreate Init
         navigation = findViewById(R.id.navigation);
-        meProfileId = findViewById(R.id.meProfileId);
-        meProfileNick = findViewById(R.id.meProfileNick);
-        meFollowerText = findViewById(R.id.meFollowerText);
-        meReviewText = findViewById(R.id.meReviewText);
-        imageUploadText = findViewById(R.id.imageUploadText);
+        meProfileUserNick = findViewById(R.id.meProfileUserNick);
+        meProfileUserNick.setText(pref.getSharedData("isLogged_nick"));
+
+        meProfileUserId = findViewById(R.id.meProfileUserId);
+        meProfileUserId.setText(pref.getSharedData("isLogged_id"));
+
+        meProfileUserAddress = findViewById(R.id.meProfileUserAddress);
+        String userAddressSplit = pref.getSharedData("isLogged_address");
+        String[] splitAddress = userAddressSplit.split(" ", 0);
+        for (int i = 0; i < splitAddress.length; i++)
+            Log.d("MainUserAddress", "splitAddress[" + i + "]: " + splitAddress[i]);
+        String userAddressResult = splitAddress[1] + " " + splitAddress[2] + " " + splitAddress[3];
+        meProfileUserAddress.setText(userAddressResult);
+
+
+        meFollowerText = findViewById(R.id.mainMeFollowCount);
+        meFollowerText.setMarkdownText("{fa-users} " + pref.getSharedData("isLogged_followerCnt"));
+
+        meReviewCount = findViewById(R.id.mainMeReviewCount);
+        meReviewCount.setMarkdownText("{fa-commenting} " + pref.getSharedData("isLogged_reviewCnt"));
+
+        mainMeImageCount = findViewById(R.id.mainMeImageCount);
+        mainMeImageCount.setMarkdownText("{fa-camera} " + pref.getSharedData("isLogged_imageCnt"));
+
         meProfileImage = findViewById(R.id.meProfileImage);
-        followerCntImage = findViewById(R.id.followerCntImage);
-        reviewCntImage = findViewById(R.id.reviewCntImage);
-        imageUploadCnt = findViewById(R.id.imageUploadCnt);
-        meMyFeedListView = findViewById(R.id.meMyFeedListView);
+        mainMeMyFeedRV = findViewById(R.id.mainMeMyFeedRV);
+
+
+        /**
+         * User Profile -> REVIEW, QUESTION, TIP 나누지 않고 MY FEED로 한번에 보이기
+         * Recycler View, Use ViewType!
+         */
+//        mainMeTipRV = findViewById(R.id.mainMeTipRV);
+//        mainMeQuestionRV = findViewById(R.id.mainMeQuestionRV);
+
         nearbyShopAdd = findViewById(R.id.nearbyShopAdd);
         floatingSearchView = findViewById(R.id.floating_search_view);
+
+        toolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        toolbar.setTitle("REAL REVIEW");
+        actionBar.setTitle("actionbar");
+
     }
 
     private void defineBottomNavi() {
@@ -324,6 +367,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                         nearbyLinear.setVisibility(View.GONE);
                         meLinear.setVisibility(View.VISIBLE);
 
+                        myFeedAdapting();
 
                         return true;
                 }
@@ -386,10 +430,241 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        myFeedAdapting();
+
+
+    }
+
+    private void myFeedAdapting() {
+
+
+        reviewArrayData.clear();
+        MainMe_MyFeed_Review_Adapter feedAdapter = new MainMe_MyFeed_Review_Adapter(this, reviewArrayData);
+
+        LinearLayoutManager mainMeMyFeedLayoutManager = new LinearLayoutManager(this);
+        mainMeMyFeedRV.setLayoutManager(mainMeMyFeedLayoutManager);
+        mainMeMyFeedRV.setHasFixedSize(true);
+        mainMeMyFeedRV.setAdapter(feedAdapter);
+
+
+        JSONObject conn;
+        try {
+            conn = new AsyncMyFeedRequest(myFeedURL, this).execute().get(10000, TimeUnit.MILLISECONDS);
+            Log.d("ASYNCMyFeed", "conn : " + conn);
+
+            /**
+             * reviewDefault Parsing
+             */
+
+            JSONArray myFeedReviewParsing = conn.getJSONArray("reviewDefault");
+            Log.d("ASYNCMyFeed_REVIEW", "myFeedReviewParsing : " + myFeedReviewParsing);
+
+            for (int i = 0; i < myFeedReviewParsing.length(); i++) {
+
+                JSONObject myFeedReviewParsing2 = myFeedReviewParsing.getJSONObject(i);
+                String type = myFeedReviewParsing2.getString("type");
+                String idx = myFeedReviewParsing2.getString("idx");
+                String review = myFeedReviewParsing2.getString("review");
+                String regData = myFeedReviewParsing2.getString("regData");
+                String id_shop = myFeedReviewParsing2.getString("id_shop");
+                String id_user = myFeedReviewParsing2.getString("id_user");
+                String rating = myFeedReviewParsing2.getString("rating");
+                String nick = myFeedReviewParsing2.getString("nick");
+                String shopName = myFeedReviewParsing2.getString("shopName");
+                String nearBy = myFeedReviewParsing2.getString("nearby");
+                String locality = myFeedReviewParsing2.getString("locality");
+                String countUseful = myFeedReviewParsing2.getString("countUseful");
+                String countGood = myFeedReviewParsing2.getString("countGood");
+                String countCool = myFeedReviewParsing2.getString("countCool");
+                String shopReviewCount = myFeedReviewParsing2.getString("shopReviewCount");
+                String shopImagePath = myFeedReviewParsing2.getString("shopImagepath");
+
+                SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
+                MainMe_MyFeed_Review_Set addData = new MainMe_MyFeed_Review_Set(
+                        idx,
+                        pref.getSharedData("isLogged_profileImagePath"),
+                        review,
+                        regData,
+                        id_user,
+                        rating,
+                        nick,
+                        nearBy,
+                        locality,
+                        countCool,
+                        countUseful,
+                        countGood,
+                        shopImagePath,
+                        shopName
+                );
+
+                Log.d("MainMe_MyFeed_Review_Set", addData.getNick() );
+                Log.d("MainMe_MyFeed_Review_Set", addData.getNearby() );
+
+                reviewArrayData.add(0, addData);
+
+
+                String cool_Idx = "";
+                String cool_Id_shop = "";
+                String cool_Id_user = "";
+                String cool_Nick = "";
+                String cool_ReviewIdx = "";
+                String good_Idx = "";
+                String good_Id_shop = "";
+                String good_Id_user = "";
+                String good_Nick = "";
+                String good_ReviewIdx = "";
+                String useful_Idx = "";
+                String useful_Id_shop = "";
+                String useful_Id_user = "";
+                String useful_Nick = "";
+                String useful_ReviewIdx = "";
+
+                Log.d("ASYNCMyFeed_REVIEW", "type : " + type);
+                Log.d("ASYNCMyFeed_REVIEW", "idx : " + idx);
+                Log.d("ASYNCMyFeed_REVIEW", "review : " + review);
+                Log.d("ASYNCMyFeed_REVIEW", "regData : " + regData);
+                Log.d("ASYNCMyFeed_REVIEW", "id_shop : " + id_shop);
+                Log.d("ASYNCMyFeed_REVIEW", "id_user : " + id_user);
+                Log.d("ASYNCMyFeed_REVIEW", "rating : " + rating);
+                Log.d("ASYNCMyFeed_REVIEW", "nick : " + nick);
+                Log.d("ASYNCMyFeed_REVIEW", "shopName : " + shopName);
+                Log.d("ASYNCMyFeed_REVIEW", "nearBy : " + nearBy);
+                Log.d("ASYNCMyFeed_REVIEW", "locality : " + locality);
+                Log.d("ASYNCMyFeed_REVIEW", "countUseful : " + countUseful);
+                Log.d("ASYNCMyFeed_REVIEW", "countGood : " + countGood);
+                Log.d("ASYNCMyFeed_REVIEW", "countCool : " + countCool);
+                Log.d("ASYNCMyFeed_REVIEW", "shopReviewCount : " + shopReviewCount);
+
+
+                JSONArray myFeedReviewParsingCool = myFeedReviewParsing2.getJSONArray("cool_array");
+                JSONArray myFeedReviewParsingGood = myFeedReviewParsing2.getJSONArray("good_array");
+                JSONArray myFeedReviewParsingUseful = myFeedReviewParsing2.getJSONArray("useful_array");
+
+                Log.d("ASYNCMyFeed_REVIEW", "myFeedReviewParsingCool : " + myFeedReviewParsingCool);
+                Log.d("ASYNCMyFeed_REVIEW", "myFeedReviewParsingGood : " + myFeedReviewParsingGood);
+                Log.d("ASYNCMyFeed_REVIEW", "myFeedReviewParsingUseful : " + myFeedReviewParsingUseful);
+
+
+                for (int j = 0; j < myFeedReviewParsingCool.length(); j++) {
+                    JSONObject myFeedReviewParsingCool2 = myFeedReviewParsingCool.getJSONObject(j);
+                    cool_Idx = myFeedReviewParsingCool2.getString("idx");
+                    cool_Id_shop = myFeedReviewParsingCool2.getString("id_shop");
+                    cool_Id_user = myFeedReviewParsingCool2.getString("id_user");
+                    cool_Nick = myFeedReviewParsingCool2.getString("nick");
+                    cool_ReviewIdx = myFeedReviewParsingCool2.getString("idx_review");
+
+                    Log.d("ASYNCMyFeed_REVIEW", "cool_Idx : " + cool_Idx);
+                    Log.d("ASYNCMyFeed_REVIEW", "cool_Id_shop : " + cool_Id_shop);
+                    Log.d("ASYNCMyFeed_REVIEW", "cool_Id_user : " + cool_Id_user);
+                    Log.d("ASYNCMyFeed_REVIEW", "cool_Nick : " + cool_Nick);
+                    Log.d("ASYNCMyFeed_REVIEW", "cool_ReviewIdx : " + cool_ReviewIdx);
+
+                }
+                for (int j = 0; j < myFeedReviewParsingGood.length(); j++) {
+                    JSONObject myFeedReviewParsingGood2 = myFeedReviewParsingGood.getJSONObject(j);
+                    good_Idx = myFeedReviewParsingGood2.getString("idx");
+                    good_Id_shop = myFeedReviewParsingGood2.getString("id_shop");
+                    good_Id_user = myFeedReviewParsingGood2.getString("id_user");
+                    good_Nick = myFeedReviewParsingGood2.getString("nick");
+                    good_ReviewIdx = myFeedReviewParsingGood2.getString("idx_review");
+                }
+
+                for (int j = 0; j < myFeedReviewParsingUseful.length(); j++) {
+                    JSONObject myFeedReviewParsingUseful2 = myFeedReviewParsingUseful.getJSONObject(j);
+                    useful_Idx = myFeedReviewParsingUseful2.getString("idx");
+                    useful_Id_shop = myFeedReviewParsingUseful2.getString("id_shop");
+                    useful_Id_user = myFeedReviewParsingUseful2.getString("id_user");
+                    useful_Nick = myFeedReviewParsingUseful2.getString("nick");
+                    useful_ReviewIdx = myFeedReviewParsingUseful2.getString("idx_review");
+                }
+
+
+            }
+
+            feedAdapter.notifyDataSetChanged();
+
+            /**
+             *  questionDefault Parsing
+             */
+
+
+            JSONArray myFeedQuestionParsing = conn.getJSONArray("questionDefault");
+
+            for (int i = 0; i < myFeedQuestionParsing.length(); i++) {
+
+                JSONObject myFeedQuestionParsing2 = myFeedQuestionParsing.getJSONObject(i);
+                String type = myFeedQuestionParsing2.getString("type");
+                String idx = myFeedQuestionParsing2.getString("idx");
+                String nick = myFeedQuestionParsing2.getString("nick");
+                String regdate = myFeedQuestionParsing2.getString("regdate");
+                String shop_id = myFeedQuestionParsing2.getString("shop_id");
+                String user_id = myFeedQuestionParsing2.getString("user_id");
+                String question = myFeedQuestionParsing2.getString("question");
+                String answerCount = myFeedQuestionParsing2.getString("answerCount");
+                String metooCount = myFeedQuestionParsing2.getString("metooCount");
+                String shopQuestionCount = myFeedQuestionParsing2.getString("shopQuestionCount");
+
+
+                JSONArray myFeedReviewParsingQuestion = myFeedQuestionParsing2.getJSONArray("metoo_array");
+
+                for (int j = 0; j < myFeedReviewParsingQuestion.length(); j++) {
+
+                    JSONObject myFeedReviewParsingQuestion2 = myFeedReviewParsingQuestion.getJSONObject(j);
+                    String question_Idx = myFeedReviewParsingQuestion2.getString("idx");
+                    String question_Id_shop = myFeedReviewParsingQuestion2.getString("id_shop");
+                    String question_Id_user = myFeedReviewParsingQuestion2.getString("id_user");
+                    String question_Nick = myFeedReviewParsingQuestion2.getString("nick");
+                    String question_ReviewIdx = myFeedReviewParsingQuestion2.getString("idx_question");
+
+                }
+            }
+
+            /**
+             *  tipDefault Parsing
+             */
+
+
+            JSONArray myFeedTipParsing = conn.getJSONArray("tipDefault");
+            Log.d("ASYNCMyFeed_TIP", "myFeedTipParsing : " + myFeedTipParsing);
+
+            for (int i = 0; i < myFeedTipParsing.length(); i++) {
+
+                JSONObject myFeedTipParsing2 = myFeedTipParsing.getJSONObject(i);
+                String type = myFeedTipParsing2.getString("type");
+                String idx = myFeedTipParsing2.getString("idx");
+                String shop_id = myFeedTipParsing2.getString("shop_id");
+                String user_id = myFeedTipParsing2.getString("user_id");
+                String tip = myFeedTipParsing2.getString("tip");
+                String regdate = myFeedTipParsing2.getString("regdate");
+                String nearby = myFeedTipParsing2.getString("nearby");
+                String nick = myFeedTipParsing2.getString("nick");
+                String locality = myFeedTipParsing2.getString("locality");
+                String shopTipCount = myFeedTipParsing2.getString("shopTipCount");
+
+            }
+
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    @Override
     protected void onResume() {
         super.onResume();
         Log.d("LifeCycle", "onResume - Enter");
-        //위치정보 - Activity LifrCycle 관련 메서드는 무조건 상위 메서드 호출 필요
+        //위치정보 - Activity LifeCycle 관련 메서드는 무조건 상위 메서드 호출 필요
         /** 이 화면이 불릴 때, 일시정지 해제 처리*/
 
         //위치정보 객체에 이벤트 연결
@@ -438,7 +713,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
     }
 
-
     @Override
     protected void onPause() {
         //Activity LifrCycle 관련 메서드는 무조건 상위 메서드 호출 필요
@@ -449,6 +723,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
         lm.removeUpdates(this);
     }
+
 
     private void startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -485,7 +760,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                 mLocationCallback,
                 null /* Looper */);
     }
-
 
     private void receiveLocationData() {
 
@@ -547,10 +821,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
         myPosition_lat = location.getLatitude();
         myPosition_lng = location.getLongitude();
-
-
-        // String이외의 데이터 형을 String으로 변환하는 메서드
-        // String이외의 데이터 형을 String으로 변화하는 꼼수~!!
 
         Log.d("MYLOG", "ADDRESS CHECK :" + getAddress(myPosition_lat, myPosition_lng));
 
@@ -633,13 +903,14 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         if (imagePath.isEmpty()) {
             Glide.with(Main.this)
                     .load("http://222.122.203.55/realreview/signup/profiledefault/homeme_default.jpg")
-                    .apply(RequestOptions.bitmapTransform(new CircleCrop(this)))
                     .into(meProfileImage);
+            meProfileImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
         } else {
             Glide.with(Main.this)
                     .load(imagePath)
-                    .apply(RequestOptions.bitmapTransform(new CircleCrop(this)))
                     .into(meProfileImage);
+            meProfileImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
 
         meProfileImage.setOnClickListener(this);
@@ -676,7 +947,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
         intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
                 mImageCaptureUri);
-        intent.putExtra("return-data", true);
+        intent.putExtra("return-reviewArrayData", true);
 //        startActivityForResult(intent, PICK_FROM_CAMERA);
         startActivityForResult(Intent.createChooser(intent, "실행 할 카메라 선택"), PICK_FROM_CAMERA);
 
@@ -725,7 +996,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 //                intent.putExtra("aspectX", 1);
 //                intent.putExtra("aspectY", 1);
 //                intent.putExtra("scale", true);
-                intent.putExtra("return-data", true);
+                intent.putExtra("return-reviewArrayData", true);
 
 //                    realPath = getPath(mImageCaptureUri);
 //                    UrParseImage = realPath;
@@ -739,14 +1010,14 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
             case CROP_FROM_CAMERA: {
                 // 크롭이 된 이후의 이미지를 넘겨 받습니다.
                 // 이미지뷰에 이미지를 보여준다거나 부가적인 작업 이후에
-                // 임시 파일을 삭제합니다.
+                // 임시 파일을 삭제
                 final Bundle extras = data.getExtras();
                 Toast.makeText(this, "CROP FROM CAMERA!", Toast.LENGTH_SHORT).show();
                 if (extras != null) {
-                    Bitmap photo = extras.getParcelable("data");
+                    Bitmap photo = extras.getParcelable("reviewArrayData");
+                    meProfileImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     Glide.with(Main.this)
                             .load(mImageCaptureUri)
-                            .apply(RequestOptions.bitmapTransform(new CircleCrop(this)))
                             .into(meProfileImage);
 
                 } else {
@@ -845,14 +1116,14 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                 conn.setUseCaches(false); // Don't use a Cached Copy
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Connection", "Keep-Alive");
-                conn.setRequestProperty("ENCTYPE", "multipart/form-data");
-                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+                conn.setRequestProperty("ENCTYPE", "multipart/form-reviewArrayData");
+                conn.setRequestProperty("Content-Type", "multipart/form-reviewArrayData;boundary=" + boundary);
                 conn.setRequestProperty("uploaded_file", fileName);
 
                 dos = new DataOutputStream(conn.getOutputStream());
 
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
+                dos.writeBytes("Content-Disposition: form-reviewArrayData; name=\"uploaded_file\";filename=\""
                         + fileName + "\"" + lineEnd);
 
                 dos.writeBytes(lineEnd);
@@ -875,7 +1146,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
                 }
 
-                // send multipart form data necesssary after file data...
+                // send multipart form reviewArrayData necesssary after file reviewArrayData...
                 dos.writeBytes(lineEnd);
                 dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 

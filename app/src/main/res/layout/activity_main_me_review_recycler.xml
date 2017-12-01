@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/reviewRootLinear"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainMeRootLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
@@ -10,15 +11,16 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="6dp"
-        android:background="#b1dddddd"
-        />
+        android:background="#b1dddddd" />
 
     <LinearLayout
+        android:id="@+id/mainMeContentsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/mainMeProfileLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -30,7 +32,7 @@
             android:paddingRight="14dp">
 
             <ImageView
-                android:id="@+id/reviewUserImage"
+                android:id="@+id/mainMeProfileImage"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
@@ -51,7 +53,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/reviewUserId"
+                        android:id="@+id/mainMeUserNick"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -77,7 +79,7 @@
                         app:typicon="ty_anchor" />
 
                     <TextView
-                        android:id="@+id/reviewUserFollower"
+                        android:id="@+id/mainMeFollowerCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -96,7 +98,7 @@
 
 
                     <TextView
-                        android:id="@+id/reviewReviewCount"
+                        android:id="@+id/mainMeReviewCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -116,7 +118,7 @@
 
 
                     <TextView
-                        android:id="@+id/reviewImageCount"
+                        android:id="@+id/mainMeImageCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -128,7 +130,7 @@
                         />
 
                     <com.beardedhen.androidbootstrap.BootstrapBadge
-                        android:id="@+id/reviewCertify"
+                        android:id="@+id/mainMeCertify"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -174,71 +176,32 @@
             android:layout_marginRight="5dp"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+
+            <android.support.v7.widget.AppCompatRatingBar
+                android:id="@+id/mainMeMyRating"
+                style="@style/Base.Widget.AppCompat.RatingBar.Indicator"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
-
-                <android.support.v7.widget.AppCompatRatingBar
-                    android:id="@+id/reviewRating_inflate"
-                    style="@style/Base.Widget.AppCompat.RatingBar.Indicator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:isIndicator="true"
-                    android:max="5"
-                    android:numStars="5"
-                    android:rating="0"
-                    android:stepSize="0.1" />
-
-                <com.beardedhen.androidbootstrap.BootstrapButton
-                    android:id="@+id/reviewModify"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/reviewDelete"
-                    android:layout_alignBottom="@+id/reviewDelete"
-                    android:layout_toStartOf="@+id/reviewDelete"
-                    app:bootstrapBrand="success"
-                    app:bootstrapSize="sm"
-                    app:bootstrapText="{fa-wrench}\n재작성"
-                    app:buttonMode="regular"
-                    app:roundedCorners="true"
-                    app:showOutline="true" />
-
-                <com.beardedhen.androidbootstrap.BootstrapButton
-                    android:id="@+id/reviewDelete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_alignParentRight="true"
-                    app:bootstrapBrand="danger"
-                    app:bootstrapSize="sm"
-                    app:bootstrapText="{fa-trash-o}\n삭제"
-                    app:buttonMode="regular"
-                    app:roundedCorners="true"
-                    app:showOutline="true" />
-
-            </RelativeLayout>
+                android:isIndicator="true"
+                android:max="5"
+                android:numStars="5"
+                android:rating="0"
+                android:stepSize="0.1"
+                app:layout_constraintBottom_toBottomOf="@+id/mainMeShopThumbnail"
+                tools:layout_editor_absoluteX="59dp" />
 
             <TextView
-                android:id="@+id/reviewText"
+                android:id="@+id/mainMeWroteType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:ellipsize="end"
-                android:maxLines="3"
-                android:minLines="3"
-                android:paddingBottom="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="3dp"
-                android:paddingTop="10dp"
-                android:text="foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar "
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="Wrote Type"
                 android:textColor="#000000" />
 
             <ImageView
@@ -248,14 +211,81 @@
                 android:layout_marginTop="7dp"
                 android:background="#aaaaaa" />
 
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:id="@+id/mainMeShopThumbnail"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    tools:layout_editor_absoluteX="25dp"
+                    tools:layout_editor_absoluteY="0dp" />
+
+
+                <TextView
+                    android:id="@+id/mainMeShopName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="8dp"
+                    android:text="SHOP NAME"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:layout_editor_absoluteX="85dp" />
+
+                <android.support.v7.widget.AppCompatRatingBar
+                    android:id="@+id/mainMeShopRating"
+                    style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp"
+                    android:layout_marginBottom="8dp"
+                    android:isIndicator="true"
+                    android:max="5"
+                    android:numStars="5"
+                    android:rating="0"
+                    android:stepSize="0.1"
+                    app:layout_constraintBottom_toBottomOf="@+id/mainMeShopThumbnail"
+                    tools:layout_editor_absoluteX="85dp" />
+
+                <TextView
+                    android:id="@+id/mainMeShopReviewCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:text="SHOP TOTAL REVIEW"
+                    tools:layout_editor_absoluteX="172dp"
+                    tools:layout_editor_absoluteY="26dp" />
+
+                <com.beardedhen.androidbootstrap.AwesomeTextView
+                    android:id="@+id/mainMeCheckinCount"
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="8dp"
+                    app:bootstrapText="{fa-certificate}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="7dp"
+                android:background="#aaaaaa" />
+
+
             <com.beardedhen.androidbootstrap.AwesomeTextView
-                android:id="@+id/reviewRegdate"
+                android:id="@+id/mainMeRegdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginBottom="7dp"
                 android:layout_marginRight="10dp"
-                android:textSize="11sp"
                 app:bootstrapBrand="info"
                 app:bootstrapText="{fa-clock-o} 123123"
                 app:fontAwesomeIcon="fa_android"
@@ -272,49 +302,6 @@
             android:layout_marginRight="5dp"
             android:orientation="horizontal">
 
-
-            <com.beardedhen.androidbootstrap.BootstrapButton
-                android:id="@+id/reviewUsefulBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                app:bootstrapBrand="warning"
-                app:bootstrapSize="sm"
-                app:bootstrapText="{ty_lightbulb} 유용해요"
-                app:buttonMode="checkbox"
-                app:roundedCorners="true"
-                app:showOutline="true"
-                app:typicon="ty_lightbulb" />
-
-            <com.beardedhen.androidbootstrap.BootstrapButton
-                android:id="@+id/revieGoodBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                app:bootstrapBrand="success"
-                app:bootstrapSize="sm"
-                app:bootstrapText="{md_thumb_up} 멋있어요"
-                app:buttonMode="checkbox"
-                app:roundedCorners="true"
-                app:showOutline="true" />
-
-            <com.beardedhen.androidbootstrap.BootstrapButton
-                android:id="@+id/reviewCoolBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                app:bootstrapBrand="primary"
-                app:bootstrapSize="sm"
-                app:bootstrapText="{fa_meh_o} 냉정해요"
-                app:buttonMode="checkbox"
-                app:roundedCorners="true"
-                app:showOutline="true" />
 
         </LinearLayout>
     </LinearLayout>

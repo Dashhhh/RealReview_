@@ -328,7 +328,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
             if (fixJSON.length() == 0) {
 
-                viewpagerAdapter.addItem("http://222.122.203.55/realreview/shopimage/upload/default_viewpager.png","","");
+                viewpagerAdapter.addItem("http://222.122.203.55/realreview/shopimage/upload/default_viewpager.png", "", "");
                 imageRVAdater.addItem("http://222.122.203.55/realreview/shopimage/upload/default_viewpager.png");
 
             }
@@ -349,8 +349,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 //                idx = viewpagerIdx;
 
 
-                if(idx.equals(viewpagerIdx)) {
-                    Log.d("REVIEW_VIEWPAGER_URL2", "PASS - idx : " +idx + ", viewpagerIdx : "  + viewpagerIdx);
+                if (idx.equals(viewpagerIdx)) {
+                    Log.d("REVIEW_VIEWPAGER_URL2", "PASS - idx : " + idx + ", viewpagerIdx : " + viewpagerIdx);
                 } else {
                     Log.d("REVIEW_VIEWPAGER_URL2", "viewpagerTitle :" + i + "번 :" + viewpagerTitle);
                     Log.d("REVIEW_VIEWPAGER_URL2", "viewpagerDetail :" + i + "번 :" + viewpagerDetail);
@@ -360,32 +360,44 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                     vpImageURL.add(viewpagerImageUrl);
                     idx = viewpagerIdx;
                 }
-
-
             }
 
             for (int i = 0; i < fixJSON.length(); i++) {
-                ShopDetail_Main_RV_Photo_Set rvSet = new ShopDetail_Main_RV_Photo_Set();
                 JSONObject item = fixJSON.getJSONObject(i);
-
                 String viewpagerImageUrl = item.getString("imagepath");
                 Log.d("REVIEW_VIEWPAGER_URL", "viewpagerImageUrl :" + i + "번 :" + viewpagerImageUrl);
-
                 if (i <= 5) {
                     vpImageURL.add(viewpagerImageUrl);
                 }
-                rvSet.imageUrl = viewpagerImageUrl;
-                imageRVList.add(rvSet);
             }
-            Log.d("REVIEW_VIEWPAGER_URL", "vpTitle - SIZE :" + vpTitle.size());
-            Log.d("REVIEW_VIEWPAGER_URL", "vpDetail - SIZE :" +   vpDetail.size() );
-            Log.d("REVIEW_VIEWPAGER_URL", "vpImageURL - SIZE :" + vpImageURL.size() );
 
-            for(int i = 0; i < vpTitle.size(); i++) {
-                if(i <= 5) {
-                    if(vpTitle.size() > 0 && vpDetail.size() > 0){
-                        if(!vpTitle.equals("") ||!vpDetail.equals("") && i <= vpTitle.size())
-                        viewpagerAdapter.addItem(vpImageURL.get(i), vpTitle.get(i), vpDetail.get(i));
+
+            /**
+             * Recycler View -> PHOTO Parsing
+             */
+
+            JSONArray photoRVParsing = castingJO.getJSONArray("photo");   // viewPager
+            Log.d("REVIEW_PHOTO", "photoRVParsing" + photoRVParsing);
+
+            for (int i = 0; i < photoRVParsing.length(); i++) {
+                ShopDetail_Main_RV_Photo_Set rvSet = new ShopDetail_Main_RV_Photo_Set();
+                JSONObject photoParsing2 = photoRVParsing.getJSONObject(i);
+                rvSet.imageUrl = photoParsing2.getString("photoimagepath");
+                imageRVList.add(rvSet);
+                Log.d("REVIEW_PHOTO", "photoRVParsing" + photoParsing2);
+
+
+            }
+
+            Log.d("REVIEW_VIEWPAGER_URL", "vpTitle - SIZE :" + vpTitle.size());
+            Log.d("REVIEW_VIEWPAGER_URL", "vpDetail - SIZE :" + vpDetail.size());
+            Log.d("REVIEW_VIEWPAGER_URL", "vpImageURL - SIZE :" + vpImageURL.size());
+
+            for (int i = 0; i < vpTitle.size(); i++) {
+                if (i <= 5) {
+                    if (vpTitle.size() > 0 && vpDetail.size() > 0) {
+                        if (!vpTitle.equals("") || !vpDetail.equals("") && i <= vpTitle.size())
+                            viewpagerAdapter.addItem(vpImageURL.get(i), vpTitle.get(i), vpDetail.get(i));
                     } else {
 //                        viewpagerAdapter.addItem(vpImageURL.get(i), "", "");
                     }
@@ -393,6 +405,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                     break;
                 }
             }
+
             imageRVAdater.notifyDataSetChanged();
             shopDetailRVImage.setAdapter(imageRVAdater);
 
@@ -506,13 +519,13 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 Log.d("REIVEW_REVIEW", "Casting Info - getCountUseful :" + i + "번 :" + getCountUseful);
 
                 boolean selectableUseful = jsonObject1.getBoolean("useful_selectable");
-                Log.d("REIVEW_REVIEW", "Casting Info - useful_selectable :" + i + "번 :" + selectableUseful );
+                Log.d("REIVEW_REVIEW", "Casting Info - useful_selectable :" + i + "번 :" + selectableUseful);
 
-                boolean selectableGood =   jsonObject1.getBoolean("good_selectable");
-                Log.d("REIVEW_REVIEW", "Casting Info - good_selectable :" + i + "번 :" + selectableGood );
+                boolean selectableGood = jsonObject1.getBoolean("good_selectable");
+                Log.d("REIVEW_REVIEW", "Casting Info - good_selectable :" + i + "번 :" + selectableGood);
 
-                boolean selectableCool =  jsonObject1.getBoolean("cool_selectable");
-                Log.d("REIVEW_REVIEW", "Casting Info - cool_selectable :" + i + "번 :" + selectableCool );
+                boolean selectableCool = jsonObject1.getBoolean("cool_selectable");
+                Log.d("REIVEW_REVIEW", "Casting Info - cool_selectable :" + i + "번 :" + selectableCool);
 
                 String getCountFollower = jsonObject1.getString("follower_cnt");
                 String getCountReview = jsonObject1.getString("review_cnt");
@@ -553,7 +566,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             reviewLvAdapter.notifyDataSetChanged();
             ViewGroup.LayoutParams params = shopDetailLVReview.getLayoutParams();
 //            setListViewHeightBasedOnItems(shopDetailLVReview);
-            listViewHeightSet(reviewLvAdapter ,shopDetailLVReview);
+            listViewHeightSet(reviewLvAdapter, shopDetailLVReview);
 //            reviewLvAdapter.addItem(reviewData);
             Log.d("Main, onMapReady", "connLength : " + fixJSON.length());
 
@@ -652,17 +665,17 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         for (int i = 0; i < jsonArray.length(); i++) {
 
             JSONObject getArray = jsonArray.getJSONObject(i);
-            String shopid             = getArray.getString("shopid");
-            String userid             = getArray.getString("userid");
-            String tip                = getArray.getString("tip");
-            String regdate            = getArray.getString("regdate");
-            String nearby             = getArray.getString("nearby");
-            String nick               = getArray.getString("nick");
-            String locality           = getArray.getString("locality");
-            String imagepath          = getArray.getString("imagepath");
-            String getCountFollower   = getArray.getString("follower_cnt");
-            String getCountReview     = getArray.getString("review_cnt");
-            String getCountImage      = getArray.getString("image_cnt");
+            String shopid = getArray.getString("shopid");
+            String userid = getArray.getString("userid");
+            String tip = getArray.getString("tip");
+            String regdate = getArray.getString("regdate");
+            String nearby = getArray.getString("nearby");
+            String nick = getArray.getString("nick");
+            String locality = getArray.getString("locality");
+            String imagepath = getArray.getString("imagepath");
+            String getCountFollower = getArray.getString("follower_cnt");
+            String getCountReview = getArray.getString("review_cnt");
+            String getCountImage = getArray.getString("image_cnt");
 
 
             ShopDetail_Main_RV_Tip_Set adapterSet = new ShopDetail_Main_RV_Tip_Set(imagepath, getCountFollower, getCountReview, getCountImage, tip, regdate, nick, nearby, locality, imagepath);
@@ -680,14 +693,15 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         }
 
     }
-    public void listViewHeightSet(BaseAdapter listAdapter, ListView listView){
+
+    public void listViewHeightSet(BaseAdapter listAdapter, ListView listView) {
         int totalHeight = 0;
-        for (int i = 0; i < listAdapter.getCount(); i++){
+        for (int i = 0; i < listAdapter.getCount(); i++) {
             View listItem = listAdapter.getView(i, null, listView);
             listItem.measure(0, 0);
             totalHeight += listItem.getMeasuredHeight();
 
-            Log.i("listViewHeightSet", "listItem.getMeasuredHeight() :" +listItem.getMeasuredHeight());
+            Log.i("listViewHeightSet", "listItem.getMeasuredHeight() :" + listItem.getMeasuredHeight());
 //            totalHeight *= 0.98;
         }
 
@@ -696,8 +710,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         params.height = totalHeight;
         listView.setLayoutParams(params);
         listView.requestLayout();
-        Log.i("listViewHeightSet", "params.height :" +params.height);
-        Log.i("listViewHeightSet", "listView.getDividerHeight() :" +listView.getDividerHeight());
+        Log.i("listViewHeightSet", "params.height :" + params.height);
+        Log.i("listViewHeightSet", "listView.getDividerHeight() :" + listView.getDividerHeight());
     }
 
     public void setListViewHeightBasedOnItems(ListView listView) {
@@ -1076,7 +1090,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 PermissionListener permissionlistener = new PermissionListener() {
                     @Override
                     public void onPermissionGranted() {
-                        Log.d("TEDPermission","onPermissionGranted");
+                        Log.d("TEDPermission", "onPermissionGranted");
 
                         Uri uri = Uri.parse("tel:" + defaultCall);
                         Intent callIntent = new Intent("android.intent.action.CALL");
@@ -1087,7 +1101,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
                     @Override
                     public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-                        Log.d("TEDPermission","onPermissionDenied");
+                        Log.d("TEDPermission", "onPermissionDenied");
                     }
                 };
 
@@ -1209,9 +1223,9 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 break;
             }
 
-            case R.id.reviewPagingBtn : {
+            case R.id.reviewPagingBtn: {
 
-                Intent intent = new Intent (ShopDetail_Main.this, ShopDetail_Review_Viewing.class );
+                Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Review_Viewing.class);
                 intent.putExtra("SHOPID", defaultShopID);
                 startActivity(intent);
                 break;

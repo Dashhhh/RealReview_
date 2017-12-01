@@ -103,7 +103,7 @@ public class ShopDetail_Main_Review_LV_Adapter extends BaseAdapter {
             vh.reviewModify = view.findViewById(R.id.reviewModify);
             vh.reviewDelete = view.findViewById(R.id.reviewDelete);
             vh.reviewCertify = view.findViewById(R.id.reviewCertify);
-            vh.reviewLocality = view.findViewById(R.id.reviewLocality);
+            vh.reviewLocality = view.findViewById(R.id.mainMeLocality);
             Log.d("Review_AdaptingChk", "Check view :" + view);
             view.setTag(vh);
         } else {

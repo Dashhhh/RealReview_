@@ -36,10 +36,10 @@
         android:background="#46000000"
         android:paddingLeft="15dp"
         android:textAlignment="textStart"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textStyle="normal|bold"
         app:bootstrapBrand="secondary"
-        app:bootstrapText="{fa-user-circle} Recently Review"
+        app:bootstrapText="{fa-group} Recently Photo"
         app:fontAwesomeIcon="fa_android"
         app:typicon="ty_anchor" />
 

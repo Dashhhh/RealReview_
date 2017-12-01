@@ -26,7 +26,6 @@ public class AsyncShopPhotoSubmit extends AsyncTask<Void, Integer, Void> {
     Context mContext;
     String TestVAR;
     private String reviewData;
-    ProgressWheel shopDetailSpinner;
 
     public AsyncShopPhotoSubmit(Context mContext) {
         this.mContext = mContext;
@@ -34,11 +33,6 @@ public class AsyncShopPhotoSubmit extends AsyncTask<Void, Integer, Void> {
 
     @Override
     protected void onPreExecute() {
-
-         shopDetailSpinner = new ProgressWheel(mContext);
-        
-
-
 
     }
 
@@ -52,7 +46,8 @@ public class AsyncShopPhotoSubmit extends AsyncTask<Void, Integer, Void> {
             SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
 
             String review0 = pref.getSharedData("HTTP_REVIEW_ID");
-            String review2 = pref.getSharedData("HTTP_REVIEW_USER");
+            String review2 = pref.getSharedData("isLogged_nick");
+            String userID = pref.getSharedData("isLogged_id");
             reviewData = sURL + "?" + "reviewid=" + review0 + "&user=" + review2;
             Log.d("ShopPhoto_Image", "String review0 :" + review0);
             Log.d("ShopPhoto_Image", "String review2 :" + review2);
@@ -117,7 +112,9 @@ public class AsyncShopPhotoSubmit extends AsyncTask<Void, Integer, Void> {
             postDataBuilder.append(delimiter);
             postDataBuilder.append(setValue("reviewid",review0));
             postDataBuilder.append(delimiter);
-            postDataBuilder.append(setValue("user",review2));
+            postDataBuilder.append(setValue("nick",review2));
+            postDataBuilder.append(delimiter);
+            postDataBuilder.append(setValue("user",userID));
             for (int i = 0; i < imagePathList.size(); i++) {
                 if (imagePathList.get(i).equals("")) {
                     break;
@@ -155,6 +152,18 @@ public class AsyncShopPhotoSubmit extends AsyncTask<Void, Integer, Void> {
             dos.writeShort(0x0d0a);
             dos.writeShort(0x0d0a);
             /**
+             * REVIEW (NICK ID)
+             */
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+            dos.writeBytes("Content-Disposition: form-data; name=");
+            dos.writeBytes("nick");
+            dos.writeBytes("\"");
+            dos.writeShort(0x0d0a);
+            dos.writeShort(0x0d0a);
+            dos.writeBytes(review2);
+            dos.writeShort(0x0d0a);
+            dos.writeShort(0x0d0a);
+            /**
              * REVIEW (USER ID)
              */
             dos.writeBytes(twoHyphens + boundary + lineEnd);
@@ -163,7 +172,7 @@ public class AsyncShopPhotoSubmit extends AsyncTask<Void, Integer, Void> {
             dos.writeBytes("\"");
             dos.writeShort(0x0d0a);
             dos.writeShort(0x0d0a);
-            dos.writeBytes(review2);
+            dos.writeBytes(userID);
             dos.writeShort(0x0d0a);
             dos.writeShort(0x0d0a);
 
