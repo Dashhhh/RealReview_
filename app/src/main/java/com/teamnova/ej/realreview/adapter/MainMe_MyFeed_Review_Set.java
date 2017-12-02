@@ -1,5 +1,7 @@
 package com.teamnova.ej.realreview.adapter;
 
+import java.util.ArrayList;
+
 /**
  * Created by ej on 2017-12-01.
  */
@@ -10,6 +12,7 @@ public class MainMe_MyFeed_Review_Set {
     /**
      * Review Var
      */
+    String type;
     String idx_review;
     String reviewUserThumbnail; // Glide -> Convert URL & Viewing on getView
     String reviewText;
@@ -19,31 +22,43 @@ public class MainMe_MyFeed_Review_Set {
     String nick;
     String nearby;
     String locality;
+    String shopReviewCount;
     String coolCount;
     String usefulCount;
     String goodCount;
-
     String shopImagepath;
     String shopName;
+
+    ArrayList<String> userCool = new ArrayList<>();
+    ArrayList<String> userGood = new ArrayList<>();
+    ArrayList<String> userUseful = new ArrayList<>();
 
     public MainMe_MyFeed_Review_Set() {
     }
 
-    public MainMe_MyFeed_Review_Set(String idx_review,
-                                    String reviewUserThumbnail,
-                                    String reviewText,
-                                    String regdate,
-                                    String userId,
-                                    String rating,
-                                    String nick,
-                                    String nearby,
-                                    String locality,
-                                    String coolCount,
-                                    String usefulCount,
-                                    String goodCount,
-                                    String shopImagepath,
-                                    String shopName
+    public MainMe_MyFeed_Review_Set(
+            String type,
+            String idx_review,
+            String reviewUserThumbnail,
+            String reviewText,
+            String regdate,
+            String userId,
+            String rating,
+            String nick,
+            String nearby,
+            String locality,
+            String coolCount,
+            String usefulCount,
+            String goodCount,
+            String shopImagepath,
+            String shopName,
+            String shopReviewCount,
+            ArrayList<String> userCool,
+            ArrayList<String> userGood,
+            ArrayList<String> userUseful
+
     ) {
+        this.type = type;
         this.idx_review = idx_review;
         this.reviewUserThumbnail = reviewUserThumbnail;
         this.reviewText = reviewText;
@@ -58,6 +73,10 @@ public class MainMe_MyFeed_Review_Set {
         this.goodCount = goodCount;
         this.shopImagepath = shopImagepath;
         this.shopName = shopName;
+        this.shopReviewCount = shopReviewCount;
+        this.userCool = userCool;
+        this.userGood = userGood;
+        this.userUseful = userUseful;
     }
 
     public String getIdx_review() {
@@ -170,5 +189,13 @@ public class MainMe_MyFeed_Review_Set {
 
     public void setShopName(String shopName) {
         this.shopName = shopName;
+    }
+
+    public String getShopReviewCount() {
+        return shopReviewCount;
+    }
+
+    public void setShopReviewCount(String shopReviewCount) {
+        this.shopReviewCount = shopReviewCount;
     }
 }

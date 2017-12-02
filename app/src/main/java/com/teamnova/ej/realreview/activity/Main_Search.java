@@ -1,5 +1,6 @@
 package com.teamnova.ej.realreview.activity;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -19,13 +19,12 @@ import com.google.android.gms.maps.model.LatLng;
  * Created by ej on 2017-10-12.
  */
 
-public class Main_Search extends MapFragment implements OnMapReadyCallback {
+public class Main_Search extends Fragment implements OnMapReadyCallback {
 
     Context mContext;
     GoogleMap mMap;
     private FloatingSearchView mSearchView;
     String blank = " ";
-
 
     public Main_Search(Context mContext) {
         this.mContext = mContext;
@@ -72,7 +71,6 @@ public class Main_Search extends MapFragment implements OnMapReadyCallback {
         mMap = googleMap;
         Log.i("FragmentTest", "Enter - Main Test");
         LatLng myPostision = new LatLng(37.53364562988281, 126.83870697021484);
-
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(myPostision));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17));

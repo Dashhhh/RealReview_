@@ -68,8 +68,11 @@ import com.gun0912.tedpermission.TedPermission;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.teamnova.ej.realreview.Asynctask.AsyncMyFeedRequest;
 import com.teamnova.ej.realreview.R;
+import com.teamnova.ej.realreview.adapter.MainMe_MyFeed_Question_Adapter;
+import com.teamnova.ej.realreview.adapter.MainMe_MyFeed_Question_Set;
 import com.teamnova.ej.realreview.adapter.MainMe_MyFeed_Review_Adapter;
 import com.teamnova.ej.realreview.adapter.MainMe_MyFeed_Review_Set;
+import com.teamnova.ej.realreview.adapter.MainMe_MyFeed_Tip_Set;
 import com.teamnova.ej.realreview.util.Dialog_Default;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
@@ -196,7 +199,9 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     private MaterialDialog builder;
     private Toolbar toolbar;
     private TextView meProfileUserId;
-    private ArrayList<MainMe_MyFeed_Review_Set> reviewArrayData = new ArrayList<>();
+    public ArrayList<MainMe_MyFeed_Review_Set> reviewArrayData = new ArrayList<>();
+    public ArrayList<MainMe_MyFeed_Question_Set> questionArrayData = new ArrayList<>();
+    public ArrayList<MainMe_MyFeed_Tip_Set> tipArrayData = new ArrayList<>();
     private String myFeedURL = "http://222.122.203.55/realreview/myFeed/myFeed.php";
 
     @Override
@@ -297,6 +302,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
         meProfileImage = findViewById(R.id.meProfileImage);
         mainMeMyFeedRV = findViewById(R.id.mainMeMyFeedRV);
+        mainMeQuestionRV = findViewById(R.id.mainMeQuestionRV);
+        mainMeTipRV = findViewById(R.id.mainMeTipRV);
 
 
         /**
@@ -442,13 +449,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
 
         reviewArrayData.clear();
-        MainMe_MyFeed_Review_Adapter feedAdapter = new MainMe_MyFeed_Review_Adapter(this, reviewArrayData);
-
-        LinearLayoutManager mainMeMyFeedLayoutManager = new LinearLayoutManager(this);
-        mainMeMyFeedRV.setLayoutManager(mainMeMyFeedLayoutManager);
-        mainMeMyFeedRV.setHasFixedSize(true);
-        mainMeMyFeedRV.setAdapter(feedAdapter);
-
 
         JSONObject conn;
         try {
@@ -461,7 +461,11 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
             JSONArray myFeedReviewParsing = conn.getJSONArray("reviewDefault");
             Log.d("ASYNCMyFeed_REVIEW", "myFeedReviewParsing : " + myFeedReviewParsing);
-
+            MainMe_MyFeed_Review_Adapter feedAdapter = new MainMe_MyFeed_Review_Adapter(this, reviewArrayData);
+            LinearLayoutManager mainMeMyFeedLayoutManager = new LinearLayoutManager(this);
+            mainMeMyFeedRV.setLayoutManager(mainMeMyFeedLayoutManager);
+            mainMeMyFeedRV.setHasFixedSize(false);
+            mainMeMyFeedRV.setAdapter(feedAdapter);
             for (int i = 0; i < myFeedReviewParsing.length(); i++) {
 
                 JSONObject myFeedReviewParsing2 = myFeedReviewParsing.getJSONObject(i);
@@ -482,29 +486,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                 String shopReviewCount = myFeedReviewParsing2.getString("shopReviewCount");
                 String shopImagePath = myFeedReviewParsing2.getString("shopImagepath");
 
-                SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
-                MainMe_MyFeed_Review_Set addData = new MainMe_MyFeed_Review_Set(
-                        idx,
-                        pref.getSharedData("isLogged_profileImagePath"),
-                        review,
-                        regData,
-                        id_user,
-                        rating,
-                        nick,
-                        nearBy,
-                        locality,
-                        countCool,
-                        countUseful,
-                        countGood,
-                        shopImagePath,
-                        shopName
-                );
-
-                Log.d("MainMe_MyFeed_Review_Set", addData.getNick() );
-                Log.d("MainMe_MyFeed_Review_Set", addData.getNearby() );
-
-                reviewArrayData.add(0, addData);
-
 
                 String cool_Idx = "";
                 String cool_Id_shop = "";
@@ -521,31 +502,34 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                 String useful_Id_user = "";
                 String useful_Nick = "";
                 String useful_ReviewIdx = "";
+                ArrayList<String> userCool = new ArrayList<>();
+                ArrayList<String> userGood = new ArrayList<>();
+                ArrayList<String> userUseful = new ArrayList<>();
 
-                Log.d("ASYNCMyFeed_REVIEW", "type : " + type);
-                Log.d("ASYNCMyFeed_REVIEW", "idx : " + idx);
-                Log.d("ASYNCMyFeed_REVIEW", "review : " + review);
-                Log.d("ASYNCMyFeed_REVIEW", "regData : " + regData);
-                Log.d("ASYNCMyFeed_REVIEW", "id_shop : " + id_shop);
-                Log.d("ASYNCMyFeed_REVIEW", "id_user : " + id_user);
-                Log.d("ASYNCMyFeed_REVIEW", "rating : " + rating);
-                Log.d("ASYNCMyFeed_REVIEW", "nick : " + nick);
-                Log.d("ASYNCMyFeed_REVIEW", "shopName : " + shopName);
-                Log.d("ASYNCMyFeed_REVIEW", "nearBy : " + nearBy);
-                Log.d("ASYNCMyFeed_REVIEW", "locality : " + locality);
-                Log.d("ASYNCMyFeed_REVIEW", "countUseful : " + countUseful);
-                Log.d("ASYNCMyFeed_REVIEW", "countGood : " + countGood);
-                Log.d("ASYNCMyFeed_REVIEW", "countCool : " + countCool);
-                Log.d("ASYNCMyFeed_REVIEW", "shopReviewCount : " + shopReviewCount);
+//                Log.d("ASYNCMyFeed_REVIEW", "type : " + type);
+//                Log.d("ASYNCMyFeed_REVIEW", "idx : " + idx);
+//                Log.d("ASYNCMyFeed_REVIEW", "review : " + review);
+//                Log.d("ASYNCMyFeed_REVIEW", "regData : " + regData);
+//                Log.d("ASYNCMyFeed_REVIEW", "id_shop : " + id_shop);
+//                Log.d("ASYNCMyFeed_REVIEW", "id_user : " + id_user);
+//                Log.d("ASYNCMyFeed_REVIEW", "rating : " + rating);
+//                Log.d("ASYNCMyFeed_REVIEW", "nick : " + nick);
+//                Log.d("ASYNCMyFeed_REVIEW", "shopName : " + shopName);
+//                Log.d("ASYNCMyFeed_REVIEW", "nearBy : " + nearBy);
+//                Log.d("ASYNCMyFeed_REVIEW", "locality : " + locality);
+//                Log.d("ASYNCMyFeed_REVIEW", "countUseful : " + countUseful);
+//                Log.d("ASYNCMyFeed_REVIEW", "countGood : " + countGood);
+//                Log.d("ASYNCMyFeed_REVIEW", "countCool : " + countCool);
+//                Log.d("ASYNCMyFeed_REVIEW", "shopReviewCount : " + shopReviewCount);
 
 
                 JSONArray myFeedReviewParsingCool = myFeedReviewParsing2.getJSONArray("cool_array");
                 JSONArray myFeedReviewParsingGood = myFeedReviewParsing2.getJSONArray("good_array");
                 JSONArray myFeedReviewParsingUseful = myFeedReviewParsing2.getJSONArray("useful_array");
 
-                Log.d("ASYNCMyFeed_REVIEW", "myFeedReviewParsingCool : " + myFeedReviewParsingCool);
-                Log.d("ASYNCMyFeed_REVIEW", "myFeedReviewParsingGood : " + myFeedReviewParsingGood);
-                Log.d("ASYNCMyFeed_REVIEW", "myFeedReviewParsingUseful : " + myFeedReviewParsingUseful);
+//                Log.d("ASYNCMyFeed_REVIEW", "myFeedReviewParsingCool : " + myFeedReviewParsingCool);
+//                Log.d("ASYNCMyFeed_REVIEW", "myFeedReviewParsingGood : " + myFeedReviewParsingGood);
+//                Log.d("ASYNCMyFeed_REVIEW", "myFeedReviewParsingUseful : " + myFeedReviewParsingUseful);
 
 
                 for (int j = 0; j < myFeedReviewParsingCool.length(); j++) {
@@ -555,12 +539,12 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                     cool_Id_user = myFeedReviewParsingCool2.getString("id_user");
                     cool_Nick = myFeedReviewParsingCool2.getString("nick");
                     cool_ReviewIdx = myFeedReviewParsingCool2.getString("idx_review");
-
-                    Log.d("ASYNCMyFeed_REVIEW", "cool_Idx : " + cool_Idx);
-                    Log.d("ASYNCMyFeed_REVIEW", "cool_Id_shop : " + cool_Id_shop);
-                    Log.d("ASYNCMyFeed_REVIEW", "cool_Id_user : " + cool_Id_user);
-                    Log.d("ASYNCMyFeed_REVIEW", "cool_Nick : " + cool_Nick);
-                    Log.d("ASYNCMyFeed_REVIEW", "cool_ReviewIdx : " + cool_ReviewIdx);
+                    userCool.add(0, cool_Nick);
+//                    Log.d("ASYNCMyFeed_REVIEW", "cool_Idx : " + cool_Idx);
+//                    Log.d("ASYNCMyFeed_REVIEW", "cool_Id_shop : " + cool_Id_shop);
+//                    Log.d("ASYNCMyFeed_REVIEW", "cool_Id_user : " + cool_Id_user);
+//                    Log.d("ASYNCMyFeed_REVIEW", "cool_Nick : " + cool_Nick);
+//                    Log.d("ASYNCMyFeed_REVIEW", "cool_ReviewIdx : " + cool_ReviewIdx);
 
                 }
                 for (int j = 0; j < myFeedReviewParsingGood.length(); j++) {
@@ -570,6 +554,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                     good_Id_user = myFeedReviewParsingGood2.getString("id_user");
                     good_Nick = myFeedReviewParsingGood2.getString("nick");
                     good_ReviewIdx = myFeedReviewParsingGood2.getString("idx_review");
+                    userGood.add(0, cool_Nick);
                 }
 
                 for (int j = 0; j < myFeedReviewParsingUseful.length(); j++) {
@@ -579,48 +564,121 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                     useful_Id_user = myFeedReviewParsingUseful2.getString("id_user");
                     useful_Nick = myFeedReviewParsingUseful2.getString("nick");
                     useful_ReviewIdx = myFeedReviewParsingUseful2.getString("idx_review");
+                    userUseful.add(0, useful_Nick);
                 }
 
 
-            }
+                SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
+                MainMe_MyFeed_Review_Set addData = new MainMe_MyFeed_Review_Set(
+                        type,
+                        idx,
+                        pref.getSharedData("isLogged_profileImagePath"),
+                        review,
+                        regData,
+                        id_user,
+                        rating,
+                        nick,
+                        nearBy,
+                        locality,
+                        countCool,
+                        countUseful,
+                        countGood,
+                        shopImagePath,
+                        shopName,
+                        shopReviewCount,
+                        userCool,
+                        userGood,
+                        userUseful
+                );
 
+                reviewArrayData.add(0, addData);
+                MainMe_MyFeed_Review_Set checker = reviewArrayData.get(i);
+//                Log.d("MainMe_MyFeed_Review_Set", addData.getNick());
+//                Log.d("MainMe_MyFeed_Review_Set", addData.getNearby());
+//                Log.d("MainMe_MyFeed_Review_Set-addSize", String.valueOf(reviewArrayData.get(i)));
+//                Log.d("MainMe_MyFeed_Review_Set-addSize", "checker.getNick :" + checker.getNick());
+
+            }
             feedAdapter.notifyDataSetChanged();
+
 
             /**
              *  questionDefault Parsing
              */
 
+            MainMe_MyFeed_Question_Adapter questionAdapter = new MainMe_MyFeed_Question_Adapter(this, questionArrayData);
+            LinearLayoutManager mainMeMyQuestionLayoutManager = new LinearLayoutManager(this);
+            mainMeQuestionRV.setLayoutManager(mainMeMyQuestionLayoutManager);
+            mainMeQuestionRV.setHasFixedSize(false);
+            mainMeQuestionRV.setAdapter(questionAdapter);
 
             JSONArray myFeedQuestionParsing = conn.getJSONArray("questionDefault");
 
             for (int i = 0; i < myFeedQuestionParsing.length(); i++) {
 
+                String question_Idx;
+                String question_Id_shop;
+                String question_Id_user;
+                String question_Nick;
+                String question_ReviewIdx;
+                String type;
+                String idx;
+                String nick;
+                String regdate;
+                String shop_id;
+                String user_id;
+                String question;
+                String answerCount;
+                String metooCount;
+                String shopQuestionCount;
+                String address;
+                String shopName;
+                String callNumber;
+                double rating;
+                String shopImagePath;
+
                 JSONObject myFeedQuestionParsing2 = myFeedQuestionParsing.getJSONObject(i);
-                String type = myFeedQuestionParsing2.getString("type");
-                String idx = myFeedQuestionParsing2.getString("idx");
-                String nick = myFeedQuestionParsing2.getString("nick");
-                String regdate = myFeedQuestionParsing2.getString("regdate");
-                String shop_id = myFeedQuestionParsing2.getString("shop_id");
-                String user_id = myFeedQuestionParsing2.getString("user_id");
-                String question = myFeedQuestionParsing2.getString("question");
-                String answerCount = myFeedQuestionParsing2.getString("answerCount");
-                String metooCount = myFeedQuestionParsing2.getString("metooCount");
-                String shopQuestionCount = myFeedQuestionParsing2.getString("shopQuestionCount");
+                type = myFeedQuestionParsing2.getString("type");
+                idx = myFeedQuestionParsing2.getString("idx");
+                nick = myFeedQuestionParsing2.getString("nick");
+                regdate = myFeedQuestionParsing2.getString("regdate");
+                shop_id = myFeedQuestionParsing2.getString("shop_id");
+                user_id = myFeedQuestionParsing2.getString("user_id");
+                question = myFeedQuestionParsing2.getString("question");
+                answerCount = myFeedQuestionParsing2.getString("answerCount");
+                metooCount = myFeedQuestionParsing2.getString("metooCount");
+                shopQuestionCount = myFeedQuestionParsing2.getString("shopQuestionCount");
+                address = myFeedQuestionParsing2.getString("address");
+                shopName = myFeedQuestionParsing2.getString("shopName");
+                callNumber = myFeedQuestionParsing2.getString("callNumber");
+//                rating = myFeedQuestionParsing2.getDouble("rating");
+                shopImagePath = myFeedQuestionParsing2.getString("shopImagePath");
 
 
                 JSONArray myFeedReviewParsingQuestion = myFeedQuestionParsing2.getJSONArray("metoo_array");
-
+                Log.d("ASYNCMyFeed_REVIEW_Question", "myFeedReviewParsingQuestion : " + myFeedReviewParsingQuestion);
+                Log.d("ASYNCMyFeed_REVIEW_Question", "myFeedReviewParsingQuestion2 : " + myFeedQuestionParsing2);
+                ArrayList<String> metooArray = new ArrayList<>();
                 for (int j = 0; j < myFeedReviewParsingQuestion.length(); j++) {
 
                     JSONObject myFeedReviewParsingQuestion2 = myFeedReviewParsingQuestion.getJSONObject(j);
-                    String question_Idx = myFeedReviewParsingQuestion2.getString("idx");
-                    String question_Id_shop = myFeedReviewParsingQuestion2.getString("id_shop");
-                    String question_Id_user = myFeedReviewParsingQuestion2.getString("id_user");
-                    String question_Nick = myFeedReviewParsingQuestion2.getString("nick");
-                    String question_ReviewIdx = myFeedReviewParsingQuestion2.getString("idx_question");
-
+                    question_Idx = myFeedReviewParsingQuestion2.getString("idx");
+                    question_Id_shop = myFeedReviewParsingQuestion2.getString("id_shop");
+                    question_Id_user = myFeedReviewParsingQuestion2.getString("id_user");
+                    question_Nick = myFeedReviewParsingQuestion2.getString("nick");
+                    question_ReviewIdx = myFeedReviewParsingQuestion2.getString("idx_question");
+                    metooArray.add(0,nick);
                 }
+
+                SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
+                MainMe_MyFeed_Question_Set addData = new MainMe_MyFeed_Question_Set(
+                    regdate, answerCount, metooCount, shopImagePath, metooArray, address, shopName, callNumber, shopQuestionCount, shopImagePath
+                );
+                questionArrayData.add(0, addData);
             }
+
+            questionAdapter.notifyDataSetChanged();
+
 
             /**
              *  tipDefault Parsing

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainMeQuestionRootLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
+    android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
     android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="6dp"
-        android:background="#b1dddddd" />
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="6dp"-->
+        <!--android:background="#b1dddddd" />-->
 
     <LinearLayout
         android:id="@+id/mainMeQuestionContentsLayout"
@@ -129,20 +129,6 @@
 
                         />
 
-                    <com.beardedhen.androidbootstrap.BootstrapBadge
-                        android:id="@+id/mainMeQuestionCertify"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        app:bootstrapSize="xs" />
-
-                    <com.beardedhen.androidbootstrap.BootstrapBadge
-                        android:id="@+id/mainMeLocality"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:bootstrapSize="xs" />
-
-
                 </LinearLayout>
 
 
@@ -177,31 +163,46 @@
             android:orientation="vertical">
 
 
-            <android.support.v7.widget.AppCompatRatingBar
-                android:id="@+id/mainMeQuestionMyRating"
-                style="@style/Base.Widget.AppCompat.RatingBar.Indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:isIndicator="true"
-                android:max="5"
-                android:numStars="5"
-                android:rating="0"
-                android:stepSize="0.1"
-                app:layout_constraintBottom_toBottomOf="@+id/mainMeQuestionShopThumbnail"
-                tools:layout_editor_absoluteX="59dp" />
-
             <TextView
                 android:id="@+id/mainMeQuestionWroteType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
                 android:ellipsize="end"
                 android:paddingLeft="10dp"
                 android:paddingRight="3dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
                 android:text="Wrote Type"
+                android:textColor="#000000" />
+
+            <com.beardedhen.androidbootstrap.AwesomeTextView
+                android:id="@+id/mainMeQuestionAnswerState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:paddingLeft="10dp"
+                android:paddingRight="3dp"
+                android:text="Question, Answer Count"
+                android:textAlignment="textStart"
+                android:textColor="#000000" />
+
+            <com.beardedhen.androidbootstrap.AwesomeTextView
+                android:id="@+id/mainMeQuestionMetooState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:paddingLeft="10dp"
+                android:paddingRight="3dp"
+                android:text="Metoo State"
+                android:textAlignment="textStart"
                 android:textColor="#000000" />
 
             <ImageView
@@ -213,70 +214,86 @@
 
 
             <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  app:layout_constraintBottom_toBottomOf="@+id/mainMeQuestionShopName"
+                  app:layout_constraintTop_toBottomOf="@+id/mainMeQuestionShopName">
 
 
-                <ImageView
-                    android:id="@+id/mainMeQuestionShopThumbnail"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    tools:layout_editor_absoluteX="25dp"
-                    tools:layout_editor_absoluteY="0dp" />
+                  <ImageView
+                      android:id="@+id/mainMeQuestionShopThumbnail"
+                      android:layout_width="0dp"
+                      android:layout_height="50dp"
+                      android:layout_marginEnd="15dp"
+                      android:layout_marginStart="20dp"
+                      app:layout_constraintBottom_toBottomOf="parent"
+                      app:layout_constraintEnd_toStartOf="@+id/mainMeQuestionShopRating"
+                      app:layout_constraintStart_toStartOf="parent"
+                      app:layout_constraintTop_toBottomOf="@+id/guideline" />
 
 
-                <TextView
-                    android:id="@+id/mainMeQuestionShopName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="18dp"
-                    android:layout_marginTop="8dp"
-                    android:text="SHOP NAME"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:layout_editor_absoluteX="85dp" />
+                  <TextView
+                      android:id="@+id/mainMeQuestionShopName"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="4dp"
+                      android:text="SHOP NAME"
+                      android:textSize="12sp"
+                      app:layout_constraintBottom_toTopOf="@+id/mainMeQuestionShopRating"
+                      app:layout_constraintEnd_toEndOf="@+id/mainMeQuestionShopRating"
+                      app:layout_constraintTop_toTopOf="parent"
+                      app:layout_constraintVertical_chainStyle="packed" />
 
-                <android.support.v7.widget.AppCompatRatingBar
-                    android:id="@+id/mainMeQuestionShopRating"
-                    style="@style/Base.Widget.AppCompat.RatingBar.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="15dp"
-                    android:layout_marginBottom="8dp"
-                    android:isIndicator="true"
-                    android:max="5"
-                    android:numStars="5"
-                    android:rating="0"
-                    android:stepSize="0.1"
-                    app:layout_constraintBottom_toBottomOf="@+id/mainMeQuestionShopThumbnail"
-                    tools:layout_editor_absoluteX="85dp" />
+                  <android.support.v7.widget.AppCompatRatingBar
+                      android:id="@+id/mainMeQuestionShopRating"
+                      style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginEnd="199dp"
+                      android:isIndicator="true"
+                      android:max="5"
+                      android:numStars="5"
+                      android:rating="0"
+                      android:stepSize="0.1"
+                      app:layout_constraintBottom_toBottomOf="parent"
+                      app:layout_constraintEnd_toEndOf="parent"
+                      app:layout_constraintStart_toEndOf="@+id/mainMeQuestionShopThumbnail"
+                      app:layout_constraintTop_toBottomOf="@+id/mainMeQuestionShopName" />
 
-                <TextView
-                    android:id="@+id/mainMeQuestionShopReviewCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="18dp"
-                    android:text="SHOP TOTAL REVIEW"
-                    tools:layout_editor_absoluteX="172dp"
-                    tools:layout_editor_absoluteY="26dp" />
+                  <TextView
+                      android:id="@+id/mainMeQuestionShopQuestionCount"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginEnd="47dp"
+                      android:text="SHOP TOTAL Question"
+                      android:textSize="12sp"
+                      app:layout_constraintBottom_toBottomOf="parent"
+                      app:layout_constraintEnd_toEndOf="parent"
+                      app:layout_constraintStart_toEndOf="@+id/mainMeQuestionShopRating"
+                      app:layout_constraintTop_toTopOf="parent" />
 
-                <com.beardedhen.androidbootstrap.AwesomeTextView
-                    android:id="@+id/mainMeQuestionCheckinCount"
-                    android:layout_width="30sp"
-                    android:layout_height="30sp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="8dp"
-                    app:bootstrapText="{fa-certificate}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                  <android.support.constraint.Guideline
+                      android:id="@+id/guideline"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginEnd="4dp"
+                      android:layout_marginStart="20dp"
+                      android:orientation="vertical"
+                      app:layout_constraintBottom_toTopOf="@+id/mainMeQuestionShopThumbnail"
+                      app:layout_constraintEnd_toStartOf="@+id/mainMeQuestionShopThumbnail"
+                      app:layout_constraintGuide_end="354dp"
+                      app:layout_constraintStart_toStartOf="parent"
+                      app:layout_constraintTop_toTopOf="parent" />
 
-            </android.support.constraint.ConstraintLayout>
+              </android.support.constraint.ConstraintLayout>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="3dp"
-                android:layout_marginTop="7dp"
-                android:background="#aaaaaa" />
+              <ImageView
+                  android:layout_width="match_parent"
+                  android:layout_height="1dp"
+                  android:layout_marginBottom="3dp"
+                  android:layout_marginTop="7dp"
+                  android:background="#aaaaaa" />
 
 
             <com.beardedhen.androidbootstrap.AwesomeTextView
@@ -286,21 +303,11 @@
                 android:layout_gravity="end"
                 android:layout_marginBottom="7dp"
                 android:layout_marginRight="10dp"
+                android:textSize="12sp"
                 app:bootstrapBrand="info"
                 app:bootstrapText="{fa-clock-o} 123123"
                 app:fontAwesomeIcon="fa_android"
                 app:typicon="ty_anchor" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:orientation="horizontal">
 
 
         </LinearLayout>

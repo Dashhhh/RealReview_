@@ -32,7 +32,7 @@ public class MainMe_MyFeed_Review_Viewholder extends RecyclerView.ViewHolder {
     android.support.v7.widget.AppCompatRatingBar mainMeMyRating;
     android.support.v7.widget.AppCompatRatingBar mainMeShopRating;
     com.beardedhen.androidbootstrap.AwesomeTextView mainMeCheckinCount;
-    com.beardedhen.androidbootstrap.AwesomeTextView mainMeRegdate;
+    com.beardedhen.androidbootstrap.AwesomeTextView mainMeRegdate, mainMeCoolState, mainMeGoodState, mainMeUsefulState;
 
     public MainMe_MyFeed_Review_Viewholder(View itemView) {
         super(itemView);
@@ -56,6 +56,9 @@ public class MainMe_MyFeed_Review_Viewholder extends RecyclerView.ViewHolder {
         mainMeShopRating = itemView.findViewById(R.id.mainMeShopRating);
         mainMeCheckinCount = itemView.findViewById(R.id.mainMeCheckinCount);
         mainMeRegdate = itemView.findViewById(R.id.mainMeRegdate);
+        mainMeCoolState = itemView.findViewById(R.id.mainMeCoolState);
+        mainMeGoodState = itemView.findViewById(R.id.mainMeGoodState);
+        mainMeUsefulState = itemView.findViewById(R.id.mainMeUsefulState);
 
     }
 }

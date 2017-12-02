@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainMeQuestionRootLayout"
+    android:id="@+id/mainMeTipRootLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
@@ -14,13 +14,13 @@
         android:background="#b1dddddd" />
 
     <LinearLayout
-        android:id="@+id/mainMeQuestionContentsLayout"
+        android:id="@+id/mainMeTipContentsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/mainMeQuestionProfileLayout"
+            android:id="@+id/mainMeTipProfileLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -32,7 +32,7 @@
             android:paddingRight="14dp">
 
             <ImageView
-                android:id="@+id/mainMeQuestionProfileImage"
+                android:id="@+id/mainMeTipProfileImage"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/mainMeQuestionUserNick"
+                        android:id="@+id/mainMeTipUserNick"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -79,7 +79,7 @@
                         app:typicon="ty_anchor" />
 
                     <TextView
-                        android:id="@+id/mainMeQuestionFollowerCount"
+                        android:id="@+id/mainMeTipFollowerCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -98,7 +98,7 @@
 
 
                     <TextView
-                        android:id="@+id/mainMeQuestionReviewCount"
+                        android:id="@+id/mainMeTipReviewCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -118,7 +118,7 @@
 
 
                     <TextView
-                        android:id="@+id/mainMeQuestionImageCount"
+                        android:id="@+id/mainMeTipImageCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -130,7 +130,7 @@
                         />
 
                     <com.beardedhen.androidbootstrap.BootstrapBadge
-                        android:id="@+id/mainMeQuestionCertify"
+                        android:id="@+id/mainMeTipCertify"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -178,7 +178,7 @@
 
 
             <android.support.v7.widget.AppCompatRatingBar
-                android:id="@+id/mainMeQuestionMyRating"
+                android:id="@+id/mainMeTipMyRating"
                 style="@style/Base.Widget.AppCompat.RatingBar.Indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -187,11 +187,11 @@
                 android:numStars="5"
                 android:rating="0"
                 android:stepSize="0.1"
-                app:layout_constraintBottom_toBottomOf="@+id/mainMeQuestionShopThumbnail"
+                app:layout_constraintBottom_toBottomOf="@+id/mainMeTipShopThumbnail"
                 tools:layout_editor_absoluteX="59dp" />
 
             <TextView
-                android:id="@+id/mainMeQuestionWroteType"
+                android:id="@+id/mainMeTipWroteType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -219,7 +219,7 @@
 
 
                 <ImageView
-                    android:id="@+id/mainMeQuestionShopThumbnail"
+                    android:id="@+id/mainMeTipShopThumbnail"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     tools:layout_editor_absoluteX="25dp"
@@ -227,7 +227,7 @@
 
 
                 <TextView
-                    android:id="@+id/mainMeQuestionShopName"
+                    android:id="@+id/mainMeTipShopName"
                     android:layout_width="wrap_content"
                     android:layout_height="18dp"
                     android:layout_marginTop="8dp"
@@ -236,7 +236,7 @@
                     tools:layout_editor_absoluteX="85dp" />
 
                 <android.support.v7.widget.AppCompatRatingBar
-                    android:id="@+id/mainMeQuestionShopRating"
+                    android:id="@+id/mainMeTipShopRating"
                     style="@style/Base.Widget.AppCompat.RatingBar.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="15dp"
@@ -246,11 +246,11 @@
                     android:numStars="5"
                     android:rating="0"
                     android:stepSize="0.1"
-                    app:layout_constraintBottom_toBottomOf="@+id/mainMeQuestionShopThumbnail"
+                    app:layout_constraintBottom_toBottomOf="@+id/mainMeTipShopThumbnail"
                     tools:layout_editor_absoluteX="85dp" />
 
                 <TextView
-                    android:id="@+id/mainMeQuestionShopReviewCount"
+                    android:id="@+id/mainMeTipShopQuestionCount"
                     android:layout_width="wrap_content"
                     android:layout_height="18dp"
                     android:text="SHOP TOTAL REVIEW"
@@ -258,7 +258,7 @@
                     tools:layout_editor_absoluteY="26dp" />
 
                 <com.beardedhen.androidbootstrap.AwesomeTextView
-                    android:id="@+id/mainMeQuestionCheckinCount"
+                    android:id="@+id/mainMeTipCheckinCount"
                     android:layout_width="30sp"
                     android:layout_height="30sp"
                     android:layout_marginBottom="8dp"
@@ -280,7 +280,7 @@
 
 
             <com.beardedhen.androidbootstrap.AwesomeTextView
-                android:id="@+id/mainMeQuestionRegdate"
+                android:id="@+id/mainMeTipRegdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class MainMe_MyFeed_Review_Adapter extends RecyclerView.Adapter<MainMe_MyFeed_Review_Viewholder> {
 
     LayoutInflater inflater = null;
-    ArrayList<MainMe_MyFeed_Review_Set> data;
+    public ArrayList<MainMe_MyFeed_Review_Set> data;
     Context mContext;
 
     public MainMe_MyFeed_Review_Adapter(Context mContext, ArrayList<MainMe_MyFeed_Review_Set> data) {
@@ -46,7 +46,7 @@ public class MainMe_MyFeed_Review_Adapter extends RecyclerView.Adapter<MainMe_My
 
 
         SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
-        MainMe_MyFeed_Review_Set getData = new MainMe_MyFeed_Review_Set();
+        MainMe_MyFeed_Review_Set getData = data.get(position);
         Glide.with(mContext).load(getData.reviewUserThumbnail).thumbnail(0.2f).into(holder.mainMeProfileImage);
         holder.mainMeProfileImage.setScaleType(ImageView.ScaleType.CENTER);
         holder.mainMeUserNick.setText(getData.nick);
@@ -54,6 +54,7 @@ public class MainMe_MyFeed_Review_Adapter extends RecyclerView.Adapter<MainMe_My
         holder.mainMeImageCount.setText(pref.getSharedData("isLogged_imageCnt"));
         holder.mainMeReviewCount.setText(pref.getSharedData("isLogged_reviewCnt"));
 
+        Log.d("getData.nick", String.valueOf(getData.nick));
         Log.d("getData.nearby", String.valueOf(getData.nearby));
 
 
@@ -80,6 +81,32 @@ public class MainMe_MyFeed_Review_Adapter extends RecyclerView.Adapter<MainMe_My
         float shopRating = Float.parseFloat(getData.getRating());
         holder.mainMeShopName.setText(getData.shopName);
         holder.mainMeShopRating.setRating(shopRating);
+        holder.mainMeRegdate.setMarkdownText("{fa-clock-o} " + getData.regdate);
+        holder.mainMeShopReviewCount.setText("상점 리뷰 :" + getData.shopReviewCount);
+        holder.mainMeCheckinCount.setMarkdownText("{fa-certificate} 5");
+
+        if (getData.userCool.size() >= 2) {
+            holder.mainMeCoolState.setMarkdownText("{fa-check-square} " + getData.userCool.get(0) + "님 외 " + (getData.userCool.size() - 1) + "명이 냉정하다고 합니다. {fa-meh-o}");
+        } else if (getData.userCool.size() == 1) {
+            holder.mainMeCoolState.setMarkdownText("{fa-check-square} " + getData.userCool.get(0) + "님이 냉정하다고 합니다. {fa-meh-o}");
+        } else {
+            holder.mainMeCoolState.setVisibility(View.GONE);
+        }
+        if (getData.userGood.size() >= 2) {
+            holder.mainMeGoodState.setMarkdownText("{fa-check-square} " + getData.userGood.get(0) + "님 외 " + (getData.userGood.size() - 1) + "명이 좋다고 합니다! {fa-smile-o}");
+        } else if (getData.userGood.size() == 1) {
+            holder.mainMeGoodState.setMarkdownText("{fa-check-square} " + getData.userGood.get(0) + "님이 좋다고 합니다! {fa-smile-o}");
+
+        } else {
+            holder.mainMeGoodState.setVisibility(View.GONE);
+        }
+        if (getData.userUseful.size() >= 2) {
+            holder.mainMeUsefulState.setMarkdownText("{fa-check-square} " + getData.userUseful.get(0) + "님 외 " + (getData.userUseful.size() - 1) + "명이 유용하다고 합니다! {fa-thumbs-o-up}");
+        } else if (getData.userUseful.size() == 1) {
+            holder.mainMeUsefulState.setMarkdownText("{fa-check-square} " + getData.userUseful.get(0) + "님이 유용하다고 합니다! {fa-thumbs-o-up}");
+        } else {
+            holder.mainMeUsefulState.setVisibility(View.GONE);
+        }
 
     }
 
@@ -88,4 +115,5 @@ public class MainMe_MyFeed_Review_Adapter extends RecyclerView.Adapter<MainMe_My
     public int getItemCount() {
         return data.size();
     }
+
 }

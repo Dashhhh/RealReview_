@@ -1,5 +1,7 @@
 package com.teamnova.ej.realreview.adapter;
 
+import java.util.ArrayList;
+
 /**
  * Created by ej on 2017-12-01.
  */
@@ -10,7 +12,7 @@ public class MainMe_MyFeed_Question_Set {
     /**
      * Question Var
      */
-    private String titleImage; // Glide -> Convert URL & Viewing on getView
+    private String userTitleImage; // Glide -> Convert URL & Viewing on getView
     private String followerCnt;
     private String reviewCnt;
     private String imageCnt;
@@ -22,39 +24,50 @@ public class MainMe_MyFeed_Question_Set {
     private String metooCount;
     private boolean curious;
     private String imagepath;
+    ArrayList<String> userMetoo = new ArrayList<>();
+    ArrayList<String> userAnswer = new ArrayList<>();
+    String address;
 
-    public MainMe_MyFeed_Question_Set(String titleImage,
-                                      String followerCnt,
-                                      String reviewCnt,
-                                      String imageCnt,
-                                      String reviewText,
-                                      String regdate,
-                                      String userNick,
-                                      String idx,
-                                      String answerCount,
-                                      String metooCount,
-                                      boolean curious,
-                                      String imagepath) {
-        this.titleImage = titleImage;
-        this.followerCnt = followerCnt;
-        this.reviewCnt = reviewCnt;
-        this.imageCnt = imageCnt;
-        this.reviewText = reviewText;
+    String shopName;
+    String callNumber;
+    String shopQuestionCount;
+    double rating;
+
+    private String shopImagePath;
+
+    public MainMe_MyFeed_Question_Set() {
+    }
+
+    public MainMe_MyFeed_Question_Set(
+            String regdate,
+            String answerCount,
+            String metooCount,
+            String imagepath,
+            ArrayList<String> userMetoo,
+            String address,
+            String shopName,
+            String callNumber,
+            String shopQuestionCount,
+            String shopImagePath
+    ) {
         this.regdate = regdate;
-        this.userNick = userNick;
-        this.idx = idx;
         this.answerCount = answerCount;
         this.metooCount = metooCount;
-        this.curious = curious;
         this.imagepath = imagepath;
+        this.userMetoo = userMetoo;
+        this.address = address;
+        this.shopName = shopName;
+        this.callNumber = callNumber;
+        this.shopQuestionCount = shopQuestionCount;
+        this.shopImagePath = shopImagePath;
     }
 
-    public String getTitleImage() {
-        return titleImage;
+    public String getUserTitleImage() {
+        return userTitleImage;
     }
 
-    public void setTitleImage(String titleImage) {
-        this.titleImage = titleImage;
+    public void setUserTitleImage(String userTitleImage) {
+        this.userTitleImage = userTitleImage;
     }
 
     public String getFollowerCnt() {
@@ -143,5 +156,69 @@ public class MainMe_MyFeed_Question_Set {
 
     public void setImagepath(String imagepath) {
         this.imagepath = imagepath;
+    }
+
+    public ArrayList<String> getUserMetoo() {
+        return userMetoo;
+    }
+
+    public void setUserMetoo(ArrayList<String> userMetoo) {
+        this.userMetoo = userMetoo;
+    }
+
+    public ArrayList<String> getUserAnswer() {
+        return userAnswer;
+    }
+
+    public void setUserAnswer(ArrayList<String> userAnswer) {
+        this.userAnswer = userAnswer;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public String getCallNumber() {
+        return callNumber;
+    }
+
+    public void setCallNumber(String callNumber) {
+        this.callNumber = callNumber;
+    }
+
+    public String getShopQuestionCount() {
+        return shopQuestionCount;
+    }
+
+    public void setShopQuestionCount(String shopQuestionCount) {
+        this.shopQuestionCount = shopQuestionCount;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public String getShopImagePath() {
+        return shopImagePath;
+    }
+
+    public void setShopImagePath(String shopImagePath) {
+        this.shopImagePath = shopImagePath;
     }
 }

@@ -1,6 +1,7 @@
 package com.teamnova.ej.realreview.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -41,84 +42,99 @@ public class Intro extends AppCompatActivity implements LocationListener {
     com.wang.avi.AVLoadingIndicatorView introProgress;
 
     public static String MYLOCATION;
-    void startAnim(){
+
+    void startAnim() {
         introProgress = findViewById(R.id.introProgress);
         introProgress.show();
         // or avi.smoothToShow();
     }
 
 
-    void stopAnim(){
+    void stopAnim() {
         introProgress.hide();
         // or avi.smoothToHide();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
         startAnim();
 
-
-
-
-
-
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
 
         /**위치정보 객체를 생성한다.*/
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Log.d("LOCATION_PROVIDER_CHECK", "LocationManager lm : " + lm);
 
         /** 현재 사용가능한 위치 정보 장치 검색*/
         //위치정보 하드웨어 목록
         Criteria c = new Criteria();
+        Log.d("LOCATION_PROVIDER_CHECK", "Criteria : " + c);
+
         //최적의 하드웨어 이름을 리턴받는다.
-//        provider = lm.getBestProvider(c, true);
-        Log.d("LOCATION_PROVIDER_CHECK","provider :"+provider);
+        provider = lm.getBestProvider(c,true);
+        Log.d("LOCATION_PROVIDER_CHECK", "provider :" + provider);
 
         // 최적의 값이 없거나, 해당 장치가 사용가능한 상태가 아니라면,
         //모든 장치 리스트에서 사용가능한 항목 얻기
         if (provider == null || !lm.isProviderEnabled(provider)) {
             // 모든 장치 목록
             List<String> list = lm.getAllProviders();
+            Log.d("LOCATION_PROVIDER_CHECK", "list : " + list);
 
             for (int i = 0; i < list.size(); i++) {
                 //장치 이름 하나 얻기
-                String temp = list.get(i);
-                Log.d("LOCATION_PROVIDER_CHECK","Device Name :"+temp);
+                String temp = list.get(list.size()-1-i);
+                Log.d("LOCATION_PROVIDER_CHECK", "Device Name :" + temp);
                 //사용 가능 여부 검사
                 if (lm.isProviderEnabled(temp)) {
                     provider = temp;
                     break;
                 }
             }
+            Log.d("LOCATION_PROVIDER_CHECK", "CHECK");
         }// (end if)위치정보 검색 끝
+        Log.d("LOCATION_PROVIDER_CHECK", "CHECK");
 
         /**마지막으로  조회했던 위치 얻기*/
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Location location = lm.getLastKnownLocation(provider);
+        Log.d("LOCATION_PROVIDER_CHECK", "location  CHECK :");
 
-        if (location == null) {
-            Toast.makeText(this, "사용가능한 위치 정보 제공자가 없습니다.", Toast.LENGTH_SHORT).show();
-        } else {
-            //최종 위치에서 부터 이어서 GPS 시작...
-            onLocationChanged(location);
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Log.d("LOCATION_PROVIDER_CHECK", "onPermissionDenied");
+                @SuppressLint("MissingPermission") Location location = lm.getLastKnownLocation(provider);
+                Log.d("LOCATION_PROVIDER_CHECK", "location  :" + location);
 
-        }
+                if (location == null) {
+                    Toast.makeText(Intro.this, "사용가능한 위치 정보 제공자가 없습니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    //최종 위치에서 부터 이어서 GPS 시작...
+                    onLocationChanged(location);
+                    Log.d("LOCATION_PROVIDER_CHECK", "Last Position  :" + location);
+
+                }
+            }
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Log.d("LOCATION_PROVIDER_CHECK", "onPermissionDenied");
+            }
+        };
+
+        TedPermission.with(Intro.this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .check();
+
 
 
         takePlaceTypeMap();
 
         anime = AnimationUtils.loadAnimation(this, R.anim.rise_up);
         anime.setFillAfter(true);
+        Log.d("LOCATION_PROVIDER_CHECK", "mhandler CHECK");
 
         mhandler = new Handler();
         mhandler.postDelayed(new Runnable() {
@@ -130,7 +146,7 @@ public class Intro extends AppCompatActivity implements LocationListener {
                     @Override
                     public void onPermissionGranted() {
 
-                        Log.d("TEDPermission","onPermissionGranted");
+                        Log.d("LOCATION_PROVIDER_CHECK", "onPermissionGranted");
 
                         Intent i = new Intent(Intro.this, Signin.class);
                         startActivity(i);
@@ -140,7 +156,7 @@ public class Intro extends AppCompatActivity implements LocationListener {
 
                     @Override
                     public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-                        Log.d("TEDPermission","onPermissionDenied");
+                        Log.d("LOCATION_PROVIDER_CHECK", "onPermissionDenied");
 
 
                     }
@@ -174,13 +190,10 @@ public class Intro extends AppCompatActivity implements LocationListener {
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
             return;
-        } else{
+        } else {
 
             lm.requestLocationUpdates(provider, 2000, 1, this);
         }
-
-
-
     }
 
     @Override
@@ -200,16 +213,14 @@ public class Intro extends AppCompatActivity implements LocationListener {
         double lat = location.getLatitude();
         double lng = location.getLongitude();
 
-        String checkAddress = getAddress(lat,lng);
+        String checkAddress = getAddress(lat, lng);
 
         Main.MY_POSITION_LAT = lat;
         Main.MY_POSITION_LNG = lng;
 
-        Log.d("Intro - onLocationChange", "lat :"+lat);
-        Log.d("Intro - onLocationChange", "lng :"+lng);
-        Log.d("Intro - onLocationChange", "checkAddress :"+checkAddress);
-
-
+        Log.d("LOCATION_PROVIDER_CHECK", "lat :" + lat);
+        Log.d("LOCATION_PROVIDER_CHECK", "lng :" + lng);
+        Log.d("LOCATION_PROVIDER_CHECK", "checkAddress :" + checkAddress);
 
     }
 
@@ -239,18 +250,22 @@ public class Intro extends AppCompatActivity implements LocationListener {
 
         //위치정보를 활용하기 위한 구글 API 객체
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-
+        Log.e("LOCATION_PROVIDER_CHECK", "geocoder :" + geocoder);
         //주소 목록을 담기 위한 HashMap
         List<Address> list = null;
 
         try {
             list = geocoder.getFromLocation(lat, lng, 1);
+            Log.e("LOCATION_PROVIDER_CHECK", "list(geocoder.getFromLocation) :" + list);
+
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e("LOCATION_PROVIDER_CHECK", "list(geocoder.getFromLocation) FAIL:" + list);
+
         }
 
         if (list == null) {
-            Log.e("getAddress", "주소 데이터 얻기 실패");
+            Log.e("LOCATION_PROVIDER_CHECK", "주소 데이터 얻기 실패");
             return null;
         }
 
@@ -401,7 +416,6 @@ public class Intro extends AppCompatActivity implements LocationListener {
         pref.setSharedData("1030", "대중 교통 역");
 
     }
-
 
 
 }

@@ -6,8 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.teamnova.ej.realreview.R;
+import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
 import java.util.ArrayList;
 
@@ -41,31 +44,49 @@ public class MainMe_MyFeed_Question_Adapter extends RecyclerView.Adapter<MainMe_
     @Override
     public void onBindViewHolder(MainMe_MyFeed_Question_Viewholder holder, int position) {
 
+        SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
+        MainMe_MyFeed_Question_Set getData = data.get(position);
+
+        Glide.with(mContext).load(getData.getUserTitleImage()).thumbnail(0.2f).into(holder.mainMeQuestionProfileImage);
+        holder.mainMeQuestionUserNick.setText(pref.getSharedData("isLogged_nick"));
+        holder.mainMeQuestionFollowerCount.setText(getData.getFollowerCnt());
+        holder.mainMeQuestionReviewCount.setText(getData.getReviewCnt());
+        holder.mainMeQuestionImageCount.setText(getData.getImageCnt());
+        holder.mainMeQuestionWroteType.setText("질문 작성");
+
+        holder.mainMeQuestionRegdate.setMarkdownText("{fa-clock-o} " + getData.getRegdate());
+        holder.mainMeQuestionShopName.setText(getData.shopName);
+        holder.mainMeQuestionShopRating.setRating(0.0f);
+//        holder.mainMeQuestionShopQuestionCount.setText("Reviews:" + getData.shopQuestionCount);
+//        holder.mainMeQuestionCheckinCount.setMarkdownText("{fa-certificate} 5");
+
+        if (getData.getUserAnswer().size() >= 2) {
+            holder.mainMeQuestionAnswerState.setMarkdownText("{fa-check-square} {fa-fa} " + getData.getUserAnswer().get(0) + "님 외 " + (getData.getUserAnswer().size() - 1) + "명이 이 질문에 답변을 달았습니다!");
+        } else if (getData.getUserAnswer().size() == 1) {
+            holder.mainMeQuestionAnswerState.setMarkdownText("{fa-check-square} {fa-fa} " + getData.getUserAnswer().get(0) + "님이 답변을 주셨군요!");
+        } else {
+            holder.mainMeQuestionAnswerState.setVisibility(View.GONE);
+        }
+
+        if (getData.getUserMetoo().size() >= 2) {
+            holder.mainMeQuestionMetooState.setMarkdownText("{fa-check-square} {fa-users} " + getData.getUserMetoo().get(0) + "님 외 " + (getData.getUserMetoo().size() - 1) + "명이 이 질문을 함께 궁금해 하는군요!");
+        } else if (getData.getUserMetoo().size() == 1) {
+            holder.mainMeQuestionMetooState.setMarkdownText("{fa-check-square} {fa-user} " + getData.getUserMetoo().get(0) + "님이 질문을 함께 궁금해 하는군요!");
+        } else {
+            holder.mainMeQuestionMetooState.setVisibility(View.GONE);
+        }
+
+        Glide.with(mContext).load(pref.getSharedData("isLogged_profileImagePath")).thumbnail(0.2f).into(holder.mainMeQuestionProfileImage);
+        holder.mainMeQuestionProfileImage.setScaleType(ImageView.ScaleType.CENTER);
+        holder.mainMeQuestionFollowerCount.setText(pref.getSharedData("isLogged_followerCnt"));
+        holder.mainMeQuestionImageCount.setText(pref.getSharedData("isLogged_imageCnt"));
+        holder.mainMeQuestionReviewCount.setText(pref.getSharedData("isLogged_reviewCnt"));
+        Glide.with(mContext).load(getData.getShopImagePath()).thumbnail(0.5f).into(holder.mainMeQuestionShopThumbnail);
+        holder.mainMeQuestionShopName.setText(getData.getShopName());
+        holder.mainMeQuestionShopQuestionCount.setText("전체 질문 수 : "+getData.getShopQuestionCount());
 
 
 
-
-
-//        Log.d("RecyclerView(Image)", "onBindViewHolder - Enter");
-//
-//        final int fPosition = position;
-//        final MainMe_MyFeed_Review_Set setUrl = data.get(position);
-//        Log.d("RecyclerView(Image)", "data size :" + String.valueOf(data.size()));
-//        Log.d("RecyclerView(Image)", "data get position :" + String.valueOf(data.get(position)));
-//        Log.d("RecyclerView(Image)", "setUrl :" + setUrl);
-//        Log.d("RecyclerView(Image)", "setUrl :" + setUrl.imageUrl);
-//        Glide.with(mContext).load(setUrl.imageUrl).into(holder.iv);
-//
-//        holder.iv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                String imageURL = setUrl.imageUrl;
-//                Intent intent = new Intent(mContext, ShopDetail_PhotoView.class);
-//                intent.putExtra("imageURL", imageURL);
-//                mContext.startActivity(intent);
-//            }
-//        });
     }
 
     @Override

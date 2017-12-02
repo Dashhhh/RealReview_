@@ -199,6 +199,7 @@
             android:id="@+id/meLinear"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#ffffff"
             android:orientation="vertical">
 
             <android.support.v4.widget.NestedScrollView
@@ -334,6 +335,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
                             android:textAlignment="textStart"
                             android:textColor="#000000"
                             android:textSize="20sp"
