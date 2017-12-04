@@ -47,7 +47,7 @@ public class MainMe_MyFeed_Review_Adapter extends RecyclerView.Adapter<MainMe_My
 
         SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
         MainMe_MyFeed_Review_Set getData = data.get(position);
-        Glide.with(mContext).load(getData.reviewUserThumbnail).thumbnail(0.2f).into(holder.mainMeProfileImage);
+        Glide.with(mContext).load(getData.reviewUserThumbnail).thumbnail(0.5f).into(holder.mainMeProfileImage);
         holder.mainMeProfileImage.setScaleType(ImageView.ScaleType.CENTER);
         holder.mainMeUserNick.setText(getData.nick);
         holder.mainMeFollowerCount.setText(pref.getSharedData("isLogged_followerCnt"));
@@ -77,7 +77,14 @@ public class MainMe_MyFeed_Review_Adapter extends RecyclerView.Adapter<MainMe_My
         holder.mainMeMyRating.setRating(rating);
         holder.mainMeWroteType.setText("REVIEW 작성");
 
-        Glide.with(mContext).load(getData.shopImagepath).thumbnail(0.2f).into(holder.mainMeShopThumbnail);
+//        Log.d("mainMeshopImagePath", getData.shopImagepath +", postition : "+ position);
+        if(getData.shopImagepath.equals("")) {
+            Glide.with(mContext).load(R.drawable.defaulticon).into(holder.mainMeShopThumbnail);
+        } else {
+            Glide.with(mContext).load(getData.shopImagepath).into(holder.mainMeShopThumbnail);
+        }
+
+        holder.mainMeShopThumbnail.setScaleType(ImageView.ScaleType.CENTER_CROP);
         float shopRating = Float.parseFloat(getData.getRating());
         holder.mainMeShopName.setText(getData.shopName);
         holder.mainMeShopRating.setRating(shopRating);

@@ -11,117 +11,56 @@ public class MainMe_MyFeed_Tip_Set {
      * Tip Var
      */
 
-    private String titleImage; // Glide -> Convert URL & Viewing on getView
-    private String followerCnt;
-    private String reviewCnt;
-    private String imageCnt;
-    private String reviewText;
-    private String regdate;
-    private String userNick;
-    private String nearby;
-    private String locality;
-    private String imagepath;
+    String type;
+    String idx;
+    String shop_id; // Glide -> Convert URL & Viewing on getView
+    String user_id;
+    String tip;
+    String regdate;
+    String nearby;
+    String nick;
+    String locality;
+    String shopTipCount;
+    String shopidCheck;
+    String shopImagePath;
+    String shopTipRowNum;
+    String shopName;
 
-    public MainMe_MyFeed_Tip_Set(String titleImage,
-                                 String followerCnt,
-                                 String reviewCnt,
-                                 String imageCnt,
-                                 String reviewText,
-                                 String regdate,
-                                 String userNick,
-                                 String nearby,
-                                 String locality,
-                                 String imagepath) {
-        this.titleImage = titleImage;
-        this.followerCnt = followerCnt;
-        this.reviewCnt = reviewCnt;
-        this.imageCnt = imageCnt;
-        this.reviewText = reviewText;
-        this.regdate = regdate;
-        this.userNick = userNick;
-        this.nearby = nearby;
-        this.locality = locality;
-        this.imagepath = imagepath;
+    public MainMe_MyFeed_Tip_Set() {
     }
 
+    public MainMe_MyFeed_Tip_Set(
 
-    public String getTitleImage() {
-        return titleImage;
+            String type,
+            String idx,
+            String shop_id,
+            String user_id,
+            String tip,
+            String regdate,
+            String nearby,
+            String nick,
+            String locality,
+            String shopTipCount,
+            String shopidCheck,
+            String shopImagePath,
+            String shopTipRowNum,
+            String shopName
+    ) {
+        this.type= type;
+        this.idx= idx;
+        this.shop_id= shop_id;
+        this.user_id= user_id;
+        this.tip= tip;
+        this.regdate= regdate;
+        this.nearby= nearby;
+        this.nick= nick;
+        this.locality= locality;
+        this.shopTipCount= shopTipCount;
+        this.shopidCheck= shopidCheck;
+        this.shopImagePath= shopImagePath;
+        this.shopTipRowNum= shopTipRowNum;
+        this.shopName= shopName;
+
     }
 
-    public void setTitleImage(String titleImage) {
-        this.titleImage = titleImage;
-    }
-
-    public String getFollowerCnt() {
-        return followerCnt;
-    }
-
-    public void setFollowerCnt(String followerCnt) {
-        this.followerCnt = followerCnt;
-    }
-
-    public String getReviewCnt() {
-        return reviewCnt;
-    }
-
-    public void setReviewCnt(String reviewCnt) {
-        this.reviewCnt = reviewCnt;
-    }
-
-    public String getImageCnt() {
-        return imageCnt;
-    }
-
-    public void setImageCnt(String imageCnt) {
-        this.imageCnt = imageCnt;
-    }
-
-    public String getReviewText() {
-        return reviewText;
-    }
-
-    public void setReviewText(String reviewText) {
-        this.reviewText = reviewText;
-    }
-
-    public String getRegdate() {
-        return regdate;
-    }
-
-    public void setRegdate(String regdate) {
-        this.regdate = regdate;
-    }
-
-    public String getUserNick() {
-        return userNick;
-    }
-
-    public void setUserNick(String userNick) {
-        this.userNick = userNick;
-    }
-
-    public String getNearby() {
-        return nearby;
-    }
-
-    public void setNearby(String nearby) {
-        this.nearby = nearby;
-    }
-
-    public String getLocality() {
-        return locality;
-    }
-
-    public void setLocality(String locality) {
-        this.locality = locality;
-    }
-
-    public String getImagepath() {
-        return imagepath;
-    }
-
-    public void setImagepath(String imagepath) {
-        this.imagepath = imagepath;
-    }
 }

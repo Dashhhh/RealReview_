@@ -108,10 +108,11 @@ public class Intro extends AppCompatActivity implements LocationListener {
                 Log.d("LOCATION_PROVIDER_CHECK", "location  :" + location);
 
                 if (location == null) {
-                    Toast.makeText(Intro.this, "사용가능한 위치 정보 제공자가 없습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Intro.this, "Last Location Provider : "  + location , Toast.LENGTH_SHORT).show();
                 } else {
                     //최종 위치에서 부터 이어서 GPS 시작...
                     onLocationChanged(location);
+                    Toast.makeText(Intro.this, "Last Location Provider : "  + location , Toast.LENGTH_SHORT).show();
                     Log.d("LOCATION_PROVIDER_CHECK", "Last Position  :" + location);
 
                 }

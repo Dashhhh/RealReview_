@@ -6,7 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.teamnova.ej.realreview.R;
 
 import java.util.ArrayList;
@@ -17,13 +19,11 @@ import java.util.ArrayList;
 
 public class MainMe_MyFeed_Tip_Adapter extends RecyclerView.Adapter<MainMe_MyFeed_Tip_Viewholder> {
 
-    LayoutInflater inflater = null;
     ArrayList<MainMe_MyFeed_Tip_Set> data = new ArrayList<>();
     Context mContext;
 
     public MainMe_MyFeed_Tip_Adapter(Context mContext, ArrayList<MainMe_MyFeed_Tip_Set> data) {
         this.mContext = mContext;
-        inflater = LayoutInflater.from(mContext);
         if (data == null) {
             this.data = new ArrayList<>();
         } else {
@@ -41,31 +41,31 @@ public class MainMe_MyFeed_Tip_Adapter extends RecyclerView.Adapter<MainMe_MyFee
     @Override
     public void onBindViewHolder(MainMe_MyFeed_Tip_Viewholder holder, int position) {
 
+        MainMe_MyFeed_Tip_Set getData = data.get(position);
+        holder.mainMeTipCheckinCount.setMarkdownText("{fa-certificate} 5");
+        holder.mainMeTipShopName.setText(getData.shopName);
+        holder.mainMeTipCount.setText("상점 전체 Tip : "+getData.shopTipCount);
+        holder.mainMeTipText.setText(getData.tip);
+        holder.mainMeTipShopThumbnail.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+        if(getData.shopImagePath.equals("")) {
+            Glide.with(mContext).load(R.drawable.defaulticon).into(holder.mainMeTipShopThumbnail);
+        } else {
+            Glide.with(mContext).load(getData.shopImagePath).into(holder.mainMeTipShopThumbnail);
+        }
+        holder.mainMeTipRegdate.setText(getData.regdate);
+
+        Log.d("ASYNCMyFeed_TIP", "getData.shop_id : " + getData.shop_id);
+        Log.d("ASYNCMyFeed_TIP", "getData.shopName : " + getData.shopName);
+        Log.d("ASYNCMyFeed_TIP", "getData.idx : " + getData.idx);
+        Log.d("ASYNCMyFeed_TIP", "getData.locality : " + getData.locality);
+        Log.d("ASYNCMyFeed_TIP", "getData.nearby : " + getData.nearby);
+        Log.d("ASYNCMyFeed_TIP", "getData.shopidCheck : " + getData.shopidCheck);
+        Log.d("ASYNCMyFeed_TIP", "getData.shopTipRowNum : " + getData.shopTipRowNum);
+        Log.d("ASYNCMyFeed_TIP", "getData.shopImagePath : " + getData.shopImagePath);
+        Log.d("ASYNCMyFeed_TIP", "getData.tip : " + getData.tip);
 
 
-
-
-
-//        Log.d("RecyclerView(Image)", "onBindViewHolder - Enter");
-//
-//        final int fPosition = position;
-//        final MainMe_MyFeed_Review_Set setUrl = data.get(position);
-//        Log.d("RecyclerView(Image)", "data size :" + String.valueOf(data.size()));
-//        Log.d("RecyclerView(Image)", "data get position :" + String.valueOf(data.get(position)));
-//        Log.d("RecyclerView(Image)", "setUrl :" + setUrl);
-//        Log.d("RecyclerView(Image)", "setUrl :" + setUrl.imageUrl);
-//        Glide.with(mContext).load(setUrl.imageUrl).into(holder.iv);
-//
-//        holder.iv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                String imageURL = setUrl.imageUrl;
-//                Intent intent = new Intent(mContext, ShopDetail_PhotoView.class);
-//                intent.putExtra("imageURL", imageURL);
-//                mContext.startActivity(intent);
-//            }
-//        });
     }
 
     @Override

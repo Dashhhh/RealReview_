@@ -17,6 +17,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -165,6 +166,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     private LocationRequest mLocationRequest;
     com.arlib.floatingsearchview.FloatingSearchView floatingSearchView;
 
+    com.beardedhen.androidbootstrap.BootstrapButton mainMeBtnReview, mainMeBtnTip, mainMeBtnQuestion, mainMeBtnBookmark;
     //    SupportMapFragment mapFragment;
 
     /**
@@ -252,6 +254,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         LOCATION_USER_LNG = MY_POSITION_LNG;
 
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
+
         pref.setSharedData("DIRECTION_USER_LAT", String.valueOf(LOCATION_USER_LAT));
         pref.setSharedData("DIRECTION_USER_LNG", String.valueOf(LOCATION_USER_LNG));
         Log.d("DIRECTION_USER", "DIRECTION_USER_LAT :" + pref.getSharedData("DIRECTION_USER_LAT"));
@@ -301,9 +304,9 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         mainMeImageCount.setMarkdownText("{fa-camera} " + pref.getSharedData("isLogged_imageCnt"));
 
         meProfileImage = findViewById(R.id.meProfileImage);
-        mainMeMyFeedRV = findViewById(R.id.mainMeMyFeedRV);
-        mainMeQuestionRV = findViewById(R.id.mainMeQuestionRV);
-        mainMeTipRV = findViewById(R.id.mainMeTipRV);
+//        mainMeMyFeedRV = findViewById(R.id.mainMeMyFeedRV);
+//        mainMeQuestionRV = findViewById(R.id.mainMeQuestionRV);
+//        mainMeTipRV = findViewById(R.id.mainMeTipRV);
 
 
         /**
@@ -324,6 +327,40 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         toolbar.setTitle("REAL REVIEW");
         actionBar.setTitle("actionbar");
 
+
+        mainMeBtnReview = findViewById(R.id.mainMeBtnReview);
+        mainMeBtnTip = findViewById(R.id.mainMeBtnTip);
+        mainMeBtnQuestion = findViewById(R.id.mainMeBtnQuestion);
+        mainMeBtnBookmark = findViewById(R.id.mainMeBtnBookmark);
+
+        mainMeBtnReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent (Main.this, Main_Me_Reviews.class);
+                startActivity(intent);
+            }
+        });
+        mainMeBtnTip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent (Main.this, Main_Me_Tip.class);
+                startActivity(intent);
+            }
+        });
+        mainMeBtnQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent (Main.this, Main_Me_Question.class);
+                startActivity(intent);
+            }
+        });
+        mainMeBtnBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent (Main.this, Main_Me_Bookmark.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void defineBottomNavi() {
@@ -374,7 +411,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                         nearbyLinear.setVisibility(View.GONE);
                         meLinear.setVisibility(View.VISIBLE);
 
-                        myFeedAdapting();
+//                        myFeedAdapting();
 
                         return true;
                 }
@@ -424,13 +461,38 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
             }
 
             case R.id.nearbyShopAdd: {
-
                 Intent intent = new Intent(Main.this, ShopAdd1.class);
                 startActivity(intent);
                 break;
-
             }
 
+/*
+            case R.id.mainMeBtnReview :{
+                Intent intent = new Intent (Main.this, Main_Me_Reviews.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.mainMeBtnTip :{
+                Intent intent = new Intent (Main.this, Main_Me_Tip.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.mainMeBtnQuestion :{
+                Intent intent = new Intent (Main.this, Main_Me_Question.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.mainMeBtnBookmark :{
+                Intent intent = new Intent (Main.this, Main_Me_Bookmark.class);
+                startActivity(intent);
+                break;
+            }
+*/
+
+
+
+            
+            
         }
 
     }
@@ -440,11 +502,16 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     protected void onStart() {
         super.onStart();
 
-        myFeedAdapting();
+
+        /**
+         * Main -> Main_Me_XXX로 분할
+         */
+//        myFeedAdapting();
 
 
     }
 
+    /*
     private void myFeedAdapting() {
 
 
@@ -455,9 +522,9 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
             conn = new AsyncMyFeedRequest(myFeedURL, this).execute().get(10000, TimeUnit.MILLISECONDS);
             Log.d("ASYNCMyFeed", "conn : " + conn);
 
-            /**
+            *//**
              * reviewDefault Parsing
-             */
+             *//*
 
             JSONArray myFeedReviewParsing = conn.getJSONArray("reviewDefault");
             Log.d("ASYNCMyFeed_REVIEW", "myFeedReviewParsing : " + myFeedReviewParsing);
@@ -506,30 +573,10 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                 ArrayList<String> userGood = new ArrayList<>();
                 ArrayList<String> userUseful = new ArrayList<>();
 
-//                Log.d("ASYNCMyFeed_REVIEW", "type : " + type);
-//                Log.d("ASYNCMyFeed_REVIEW", "idx : " + idx);
-//                Log.d("ASYNCMyFeed_REVIEW", "review : " + review);
-//                Log.d("ASYNCMyFeed_REVIEW", "regData : " + regData);
-//                Log.d("ASYNCMyFeed_REVIEW", "id_shop : " + id_shop);
-//                Log.d("ASYNCMyFeed_REVIEW", "id_user : " + id_user);
-//                Log.d("ASYNCMyFeed_REVIEW", "rating : " + rating);
-//                Log.d("ASYNCMyFeed_REVIEW", "nick : " + nick);
-//                Log.d("ASYNCMyFeed_REVIEW", "shopName : " + shopName);
-//                Log.d("ASYNCMyFeed_REVIEW", "nearBy : " + nearBy);
-//                Log.d("ASYNCMyFeed_REVIEW", "locality : " + locality);
-//                Log.d("ASYNCMyFeed_REVIEW", "countUseful : " + countUseful);
-//                Log.d("ASYNCMyFeed_REVIEW", "countGood : " + countGood);
-//                Log.d("ASYNCMyFeed_REVIEW", "countCool : " + countCool);
-//                Log.d("ASYNCMyFeed_REVIEW", "shopReviewCount : " + shopReviewCount);
-
 
                 JSONArray myFeedReviewParsingCool = myFeedReviewParsing2.getJSONArray("cool_array");
                 JSONArray myFeedReviewParsingGood = myFeedReviewParsing2.getJSONArray("good_array");
                 JSONArray myFeedReviewParsingUseful = myFeedReviewParsing2.getJSONArray("useful_array");
-
-//                Log.d("ASYNCMyFeed_REVIEW", "myFeedReviewParsingCool : " + myFeedReviewParsingCool);
-//                Log.d("ASYNCMyFeed_REVIEW", "myFeedReviewParsingGood : " + myFeedReviewParsingGood);
-//                Log.d("ASYNCMyFeed_REVIEW", "myFeedReviewParsingUseful : " + myFeedReviewParsingUseful);
 
 
                 for (int j = 0; j < myFeedReviewParsingCool.length(); j++) {
@@ -540,11 +587,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                     cool_Nick = myFeedReviewParsingCool2.getString("nick");
                     cool_ReviewIdx = myFeedReviewParsingCool2.getString("idx_review");
                     userCool.add(0, cool_Nick);
-//                    Log.d("ASYNCMyFeed_REVIEW", "cool_Idx : " + cool_Idx);
-//                    Log.d("ASYNCMyFeed_REVIEW", "cool_Id_shop : " + cool_Id_shop);
-//                    Log.d("ASYNCMyFeed_REVIEW", "cool_Id_user : " + cool_Id_user);
-//                    Log.d("ASYNCMyFeed_REVIEW", "cool_Nick : " + cool_Nick);
-//                    Log.d("ASYNCMyFeed_REVIEW", "cool_ReviewIdx : " + cool_ReviewIdx);
 
                 }
                 for (int j = 0; j < myFeedReviewParsingGood.length(); j++) {
@@ -602,9 +644,9 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
             feedAdapter.notifyDataSetChanged();
 
 
-            /**
+            *//**
              *  questionDefault Parsing
-             */
+             *//*
 
             MainMe_MyFeed_Question_Adapter questionAdapter = new MainMe_MyFeed_Question_Adapter(this, questionArrayData);
             LinearLayoutManager mainMeMyQuestionLayoutManager = new LinearLayoutManager(this);
@@ -667,12 +709,12 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                     question_Id_user = myFeedReviewParsingQuestion2.getString("id_user");
                     question_Nick = myFeedReviewParsingQuestion2.getString("nick");
                     question_ReviewIdx = myFeedReviewParsingQuestion2.getString("idx_question");
-                    metooArray.add(0,nick);
+                    metooArray.add(0, nick);
                 }
 
                 SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
                 MainMe_MyFeed_Question_Set addData = new MainMe_MyFeed_Question_Set(
-                    regdate, answerCount, metooCount, shopImagePath, metooArray, address, shopName, callNumber, shopQuestionCount, shopImagePath
+                        regdate, answerCount, metooCount, shopImagePath, metooArray, address, shopName, callNumber, shopQuestionCount, shopImagePath
                 );
                 questionArrayData.add(0, addData);
             }
@@ -680,9 +722,9 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
             questionAdapter.notifyDataSetChanged();
 
 
-            /**
+            *//**
              *  tipDefault Parsing
-             */
+             *//*
 
 
             JSONArray myFeedTipParsing = conn.getJSONArray("tipDefault");
@@ -716,6 +758,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         }
 
     }
+    */
 
 
     @Override

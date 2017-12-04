@@ -323,6 +323,70 @@
                     </RelativeLayout>
 
 
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                        <com.beardedhen.androidbootstrap.BootstrapButton
+                            android:id="@+id/mainMeBtnReview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:bootstrapText="{fa-commenting}    Reviews"
+                            android:textAlignment="textStart"
+                            app:bootstrapSize="xl"
+                            app:bootstrapBrand="secondary"
+                            app:roundedCorners="false"
+                            app:buttonMode="regular"
+                            app:showOutline="false"
+                            android:layout_marginBottom="1dp"
+                            />
+
+                        <com.beardedhen.androidbootstrap.BootstrapButton
+                            android:id="@+id/mainMeBtnQuestion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:bootstrapText="{fa-question-circle}    Question"
+                            android:textAlignment="textStart"
+                            app:bootstrapSize="xl"
+                            app:bootstrapBrand="secondary"
+                            app:roundedCorners="false"
+                            android:layout_marginBottom="1dp"
+                            app:buttonMode="regular"
+                            app:showOutline="false"
+                            />
+
+                        <com.beardedhen.androidbootstrap.BootstrapButton
+                            android:id="@+id/mainMeBtnTip"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:bootstrapText="{fa-tags}    Tip"
+                            android:textAlignment="textStart"
+                            app:bootstrapSize="xl"
+                            app:bootstrapBrand="secondary"
+                            android:layout_marginBottom="1dp"
+                            app:roundedCorners="false"
+                            app:buttonMode="regular"
+                            app:showOutline="false"
+                            />
+
+                        <com.beardedhen.androidbootstrap.BootstrapButton
+                            android:id="@+id/mainMeBtnBookmark"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:bootstrapText="{fa-bookmark}    Bookmark"
+                            android:textAlignment="textStart"
+                            app:bootstrapSize="xl"
+                            app:bootstrapBrand="secondary"
+                            app:roundedCorners="false"
+                            app:buttonMode="regular"
+                            app:showOutline="false"
+                            />
+
+                    </LinearLayout>
+<!--
                     <LinearLayout
                         android:id="@+id/mainMeReviewLayout"
                         android:layout_width="match_parent"
@@ -406,7 +470,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="1dp" />
 
-                            </LinearLayout>
+                            </LinearLayout>-->
 
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>

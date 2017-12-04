@@ -48,13 +48,15 @@ public class MainMe_MyFeed_Question_Set {
             String shopName,
             String callNumber,
             String shopQuestionCount,
-            String shopImagePath
+            String shopImagePath,
+            ArrayList<String> userAnswer
     ) {
         this.regdate = regdate;
         this.answerCount = answerCount;
         this.metooCount = metooCount;
         this.imagepath = imagepath;
         this.userMetoo = userMetoo;
+        this.userAnswer = userAnswer;
         this.address = address;
         this.shopName = shopName;
         this.callNumber = callNumber;

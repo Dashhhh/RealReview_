@@ -143,7 +143,11 @@
         <activity android:name=".activity.ShopDetail_PhotoView" />
         <activity android:name=".activity.ShopDetail_Review_Viewing" />
         <activity android:name=".activity.ShopDetail_Review_Modify" />
-        <activity android:name=".activity._MaterialDialog"></activity>
+        <activity android:name=".activity._MaterialDialog" />
+        <activity android:name=".activity.Main_Me_Reviews" />
+        <activity android:name=".activity.Main_Me_Question" />
+        <activity android:name=".activity.Main_Me_Tip" />
+        <activity android:name=".activity.Main_Me_Bookmark"></activity>
     </application>
 
 </manifest>

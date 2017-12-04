@@ -47,7 +47,7 @@ public class MainMe_MyFeed_Question_Adapter extends RecyclerView.Adapter<MainMe_
         SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
         MainMe_MyFeed_Question_Set getData = data.get(position);
 
-        Glide.with(mContext).load(getData.getUserTitleImage()).thumbnail(0.2f).into(holder.mainMeQuestionProfileImage);
+        Glide.with(mContext).load(pref.getSharedData("isLogged_profileImagePath")).thumbnail(0.5f).into(holder.mainMeQuestionProfileImage);
         holder.mainMeQuestionUserNick.setText(pref.getSharedData("isLogged_nick"));
         holder.mainMeQuestionFollowerCount.setText(getData.getFollowerCnt());
         holder.mainMeQuestionReviewCount.setText(getData.getReviewCnt());
@@ -57,8 +57,6 @@ public class MainMe_MyFeed_Question_Adapter extends RecyclerView.Adapter<MainMe_
         holder.mainMeQuestionRegdate.setMarkdownText("{fa-clock-o} " + getData.getRegdate());
         holder.mainMeQuestionShopName.setText(getData.shopName);
         holder.mainMeQuestionShopRating.setRating(0.0f);
-//        holder.mainMeQuestionShopQuestionCount.setText("Reviews:" + getData.shopQuestionCount);
-//        holder.mainMeQuestionCheckinCount.setMarkdownText("{fa-certificate} 5");
 
         if (getData.getUserAnswer().size() >= 2) {
             holder.mainMeQuestionAnswerState.setMarkdownText("{fa-check-square} {fa-fa} " + getData.getUserAnswer().get(0) + "님 외 " + (getData.getUserAnswer().size() - 1) + "명이 이 질문에 답변을 달았습니다!");
@@ -76,7 +74,7 @@ public class MainMe_MyFeed_Question_Adapter extends RecyclerView.Adapter<MainMe_
             holder.mainMeQuestionMetooState.setVisibility(View.GONE);
         }
 
-        Glide.with(mContext).load(pref.getSharedData("isLogged_profileImagePath")).thumbnail(0.2f).into(holder.mainMeQuestionProfileImage);
+        Glide.with(mContext).load(pref.getSharedData("isLogged_profileImagePath")).thumbnail(0.5f).into(holder.mainMeQuestionProfileImage);
         holder.mainMeQuestionProfileImage.setScaleType(ImageView.ScaleType.CENTER);
         holder.mainMeQuestionFollowerCount.setText(pref.getSharedData("isLogged_followerCnt"));
         holder.mainMeQuestionImageCount.setText(pref.getSharedData("isLogged_imageCnt"));
@@ -84,8 +82,10 @@ public class MainMe_MyFeed_Question_Adapter extends RecyclerView.Adapter<MainMe_
         Glide.with(mContext).load(getData.getShopImagePath()).thumbnail(0.5f).into(holder.mainMeQuestionShopThumbnail);
         holder.mainMeQuestionShopName.setText(getData.getShopName());
         holder.mainMeQuestionShopQuestionCount.setText("전체 질문 수 : "+getData.getShopQuestionCount());
-
-
+        Log.d("ASYNCMyFeed_REVIEW_Adapter", "pref.getSharedData(\"isLogged_profileImagePath\") : " + pref.getSharedData("isLogged_profileImagePath"));
+        Log.d("ASYNCMyFeed_REVIEW_Adapter", "getData.getUserTitleImage() : " + getData.getUserTitleImage());
+        Log.d("ASYNCMyFeed_REVIEW_Adapter", "getData.getShopImagePath() : " + getData.getShopImagePath());
+        Log.d("ASYNCMyFeed_REVIEW_Adapter", "getUserAnswer " + getData.getUserAnswer());
 
     }
 
