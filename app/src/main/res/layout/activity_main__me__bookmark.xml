@@ -6,4 +6,10 @@
     android:layout_height="match_parent"
     tools:context="com.teamnova.ej.realreview.activity.Main_Me_Bookmark">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/mainMeQuestionRV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
 </android.support.constraint.ConstraintLayout>

@@ -30,6 +30,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
@@ -46,6 +47,10 @@ import com.gun0912.tedpermission.TedPermission;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.tangxiaolv.telegramgallery.GalleryActivity;
 import com.tangxiaolv.telegramgallery.GalleryConfig;
+import com.teamnova.ej.realreview.Asynctask.AsyncBookmarkDelete;
+import com.teamnova.ej.realreview.Asynctask.AsyncBookmarkInsert;
+import com.teamnova.ej.realreview.Asynctask.AsyncReviewUsefulDown;
+import com.teamnova.ej.realreview.Asynctask.AsyncReviewUsefulUp;
 import com.teamnova.ej.realreview.Asynctask.AsyncShopDetailImageURLRequest;
 import com.teamnova.ej.realreview.Asynctask.AsyncShopPhotoSubmit;
 import com.teamnova.ej.realreview.Asynctask.AsyncTipRequest;
@@ -84,7 +89,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     ImageView shopDetailTipUserImage;
     android.support.v7.widget.AppCompatRatingBar shopDetailTitleRating, shopDetailRatingReview, shopDetailRatingReview2;
     android.support.v7.widget.RecyclerView shopDetailRVTitleTag, shopDetailRVImage, shopDetailTipRV;
-    Button shopDetailTopAddPhoto, shopDetailCheckin, shopDetailBookmark, mapAddress, shopDetailCallBtn, shopDetailDirection, shopDetailMenu, shopDetailWebsiteBtn, shopDetailMessageBtn;
+    Button mapAddress, shopDetailCallBtn, shopDetailDirection, shopDetailMenu, shopDetailWebsiteBtn, shopDetailMessageBtn;
     LinearLayout shopDetailProfile, shopDetailProfile2, shopDetailProfile3, shopDetailTipProfileLayout, shopDetailQuestionRoot, shopDetailQuestionAllRoot;
     SupportMapFragment mapFragmentDetail;
     android.support.v7.widget.AppCompatEditText shopDetailQuestion, shopDetailReview, shopDetailTip;
@@ -92,6 +97,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     me.relex.circleindicator.CircleIndicator shopDetailIndicator;
     ImageView shopDetailQuestionUserImage, shopDetailAddReviewUserProfile, shopDetailReviewAddUserImage;
 
+    com.beardedhen.androidbootstrap.BootstrapButton shopDetailTopAddPhoto, shopDetailCheckin, shopDetailBookmark;
 
     SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
             .findFragmentById(R.id.mapFragmentDetail);
@@ -134,6 +140,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     com.beardedhen.androidbootstrap.BootstrapButton shopDetailQuestionAllBtn;
     public static String TITLE;
     public static String SHOP_ID;
+    private boolean bookmarkCheckResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,12 +153,62 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         listener();
         checkShopData();
 
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapFragmentDetail);
         mapFragment.getMapAsync(this);
 
+    }
 
+    private void bookmark() {
+
+        shopDetailBookmark.setOnCheckedChangedListener(new BootstrapButton.OnCheckedChangedListener() {
+            @Override
+            public void OnCheckedChanged(BootstrapButton bootstrapButton, boolean isChecked) {
+
+                if (isChecked) {
+                    /**
+                     * Bookmark가 설정 되어 있으므로 BookmarkDelete
+                     */
+                    SharedPreferenceUtil pref = new SharedPreferenceUtil(ShopDetail_Main.this);
+                    String sDataUserID = pref.getSharedData("isLogged_id");
+                    String sDataShopID = ShopDetail_Main.SHOP_ID;
+                    String sDataNick = pref.getSharedData("isLogged_nick");
+                    Log.d("shopDetailBookmark", "sDataUserID :" + sDataUserID);
+                    Log.d("shopDetailBookmark", "sDataShopID :" + sDataShopID);
+                    Log.d("shopDetailBookmark", "sDataNick   :" + sDataNick);
+                    Void conn;
+                    try {
+                        conn = new AsyncBookmarkInsert(sDataShopID, sDataUserID, sDataNick, ShopDetail_Main.this).execute().get(10000, TimeUnit.MILLISECONDS);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (TimeoutException e) {
+                        e.printStackTrace();
+                    }
+                    bootstrapButton.setMarkdownText("{fa-bookmark}\nBookmark");
+                } else {
+                    /**
+                     * Bookmark가 없으므로 BookmarkInsert
+                     */
+                    SharedPreferenceUtil pref = new SharedPreferenceUtil(ShopDetail_Main.this);
+                    String sDataUserID = pref.getSharedData("isLogged_id");
+                    String sDataShopID = ShopDetail_Main.SHOP_ID;
+                    String sDataNick = pref.getSharedData("isLogged_nick");
+                    Void conn;
+                    try {
+                        conn = new AsyncBookmarkDelete(sDataShopID, sDataUserID, sDataNick, ShopDetail_Main.this).execute().get(10000, TimeUnit.MILLISECONDS);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (TimeoutException e) {
+                        e.printStackTrace();
+                    }
+                    bootstrapButton.setMarkdownText("{fa-bookmark}\nBookmark");
+                }
+            }
+        });
     }
 
     private void init() {
@@ -371,6 +428,24 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 }
             }
 
+
+            /**
+             * Recycler View -> Bookmark Checker
+             * bookmark true = checked,
+             * bookmark false  = unchecked
+             */
+
+            bookmarkCheckResponse = false;
+            bookmarkCheckResponse = castingJO.getBoolean("bookmarkCheck");   // viewPager
+            Log.d("bookmarkChecked", "bookmark boolean : " + String.valueOf(bookmarkCheckResponse));
+
+            if (bookmarkCheckResponse) {
+                shopDetailBookmark.setSelected(true);
+                Log.d("bookmarkChecked", "setChecked : true");
+            } else {
+                shopDetailBookmark.setSelected(false);
+                Log.d("bookmarkChecked", "setChecked : false");
+            }
 
             /**
              * Recycler View -> PHOTO Parsing
@@ -896,7 +971,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailRVImage.setOnClickListener(this);
         shopDetailTopAddPhoto.setOnClickListener(this);
         shopDetailCheckin.setOnClickListener(this);
-        shopDetailBookmark.setOnClickListener(this);
         mapAddress.setOnClickListener(this);
         shopDetailCallBtn.setOnClickListener(this);
         shopDetailDirection.setOnClickListener(this);
@@ -1069,11 +1143,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             }
 
             case R.id.shopDetailCheckin: {
-
-                break;
-            }
-
-            case R.id.shopDetailBookmark: {
 
                 break;
             }
@@ -1264,6 +1333,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         defaulDataSet();
         try {
             adapting();
+            bookmark();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

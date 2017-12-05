@@ -926,10 +926,15 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         Log.d("MYLOG", "ADDRESS CHECK :" + getAddress(myPosition_lat, myPosition_lng));
 
         String checkAddress = getAddress(myPosition_lat, myPosition_lng);
-        String[] splitAddress = checkAddress.split(" ", 0);
-        for (int a = 0; a < splitAddress.length; a++) {
-            Log.d("MYLOG", "Address Split :" + splitAddress[a]);
+        ArrayList<String> check = new ArrayList<>();
+        check.add(0, checkAddress);
+        if(!check.get(0).equals("")) {
+            String[] splitAddress = checkAddress.split(" ", 0);
+            for (int a = 0; a < splitAddress.length; a++) {
+                Log.d("MYLOG", "Address Split :" + splitAddress[a]);
+            }
         }
+        check.clear();
 
         MY_POSITION_LAT = location.getLatitude();
         MY_POSITION_LNG = location.getLongitude();

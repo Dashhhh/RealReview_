@@ -30,15 +30,14 @@
                     android:id="@+id/shopDetailIndicator"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
+                    android:layout_alignParentBottom="true"
                     android:background="#79ffd5d5"
-                    app:ci_orientation="horizontal"
-                    app:ci_gravity="center"
                     app:ci_drawable="@drawable/page_not"
                     app:ci_drawable_unselected="@drawable/page_select"
-                    android:layout_alignParentBottom="true"
+                    app:ci_gravity="center"
+                    app:ci_orientation="horizontal"
 
                     />
-
 
 
             </RelativeLayout>
@@ -52,15 +51,22 @@
                 android:orientation="vertical">
 
 
-                <TextView
-                    android:id="@+id/shopDetailTitle"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="123"
-                    android:textColor="#000000"
-                    android:textSize="30dp" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/shopDetailTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:text="123"
+                        android:textColor="#000000"
+                        android:textSize="30sp" />
+
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -113,9 +119,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textAlignment="center"
                         android:contentDescription="SHOP TAG"
                         android:padding="10dp"
+                        android:textAlignment="center"
                         app:layoutManager="StaggeredGridLayoutManager"
                         app:spanCount="5">
                         <!--TODO INFLATE : 외곽선-->
@@ -128,44 +134,43 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_margin="10dp"
-                    >
+                    android:orientation="horizontal">
 
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
+                        android:text="OPEN  "
                         android:textColor="#000000"
-                        android:textSize="15sp"
-                        android:text="OPEN  " />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/shopDetailTimeOpen"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
+                        android:text="set Text"
                         android:textColor="#000000"
-                        android:textSize="15sp"
-                        android:text="set Text" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="40dp"
+                        android:text="CLOSE"
                         android:textColor="#000000"
-                        android:textSize="15sp"
-                        android:text="CLOSE" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/shopDetailTimeClose"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
+                        android:text="set Text"
                         android:textColor="#000000"
-                        android:textSize="15sp"
-                        android:text="set Text" />
+                        android:textSize="15sp" />
 
 
                 </LinearLayout>
@@ -206,55 +211,104 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/border"
                     android:orientation="horizontal">
 
 
-                    <ImageView
-                        android:layout_width="1dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:background="#dddddd" />
-
-                    <Button
+                    <com.beardedhen.androidbootstrap.BootstrapButton
                         android:id="@+id/shopDetailTopAddPhoto"
                         android:layout_width="wrap_content"
-                        android:layout_height="55dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/shopdetail_photo"
-
-                        />
-
-                    <ImageView
-                        android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:background="#dddddd" />
+                        android:layout_weight="1"
+                        app:bootstrapBrand="regular"
+                        app:bootstrapSize="md"
+                        app:bootstrapText="{fa-camera}\nAdd Photo"
+                        app:buttonMode="regular"
+                        app:roundedCorners="true"
+                        app:showOutline="true" />
 
-                    <Button
+                    <com.beardedhen.androidbootstrap.BootstrapButton
                         android:id="@+id/shopDetailCheckin"
                         android:layout_width="wrap_content"
-                        android:layout_height="55dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/shopdetail_check" />
-
-
-                    <ImageView
-                        android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:background="#dddddd" />
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shopdetail_check"
+                        app:bootstrapBrand="regular"
+                        app:bootstrapSize="md"
+                        app:bootstrapText="{fa_certificate}\nCheck-In"
+                        app:buttonMode="regular"
+                        app:roundedCorners="true"
+                        app:showOutline="true" />
 
-
-                    <Button
+                    <com.beardedhen.androidbootstrap.BootstrapButton
                         android:id="@+id/shopDetailBookmark"
                         android:layout_width="wrap_content"
-                        android:layout_height="55dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/shopdetail_bookmark" />
-
+                        android:background="@drawable/shopdetail_bookmark"
+                        app:bootstrapBrand="primary"
+                        app:bootstrapSize="md"
+                        app:bootstrapText="{fa_bookmark}\nBookmark"
+                        app:buttonMode="checkbox"
+                        app:fontAwesomeIcon="fa_bookmark"
+                        app:roundedCorners="true"
+                        app:showOutline="true" />
 
                 </LinearLayout>
+
+                <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@drawable/border"-->
+                <!--android:orientation="horizontal">-->
+
+
+                <!--<ImageView-->
+                <!--android:layout_width="1dp"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:background="#dddddd" />-->
+
+                <!--<Button-->
+                <!--android:id="@+id/shopDetailTopAddPhoto"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="55dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@drawable/shopdetail_photo"-->
+
+                <!--/>-->
+
+                <!--<ImageView-->
+                <!--android:layout_width="1dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:background="#dddddd" />-->
+
+                <!--<Button-->
+                <!--android:id="@+id/shopDetailCheckin"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="55dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@drawable/shopdetail_check" />-->
+
+
+                <!--<ImageView-->
+                <!--android:layout_width="1dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:background="#dddddd" />-->
+
+
+                <!--<Button-->
+                <!--android:id="@+id/shopDetailBookmark"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="55dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@drawable/shopdetail_bookmark" />-->
+
+
+                <!--</LinearLayout>-->
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -474,8 +528,6 @@
                     android:src="@drawable/border_alpha" />
 
 
-
-
                 <!--HERE-->
 
                 <LinearLayout
@@ -483,42 +535,40 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="horizontal"
+                    android:paddingBottom="7dp"
                     android:paddingLeft="16dp"
                     android:paddingRight="14dp"
-                    android:paddingBottom="7dp"
-                    android:paddingTop="10dp"
-                    android:layout_marginRight="5dp"
-                    android:orientation="horizontal">
+                    android:paddingTop="10dp">
 
                     <ImageView
                         android:id="@+id/shopDetailQuestionUserImage"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
-                        android:scaleType="fitXY"
                         android:layout_marginEnd="9dp"
-                        />
-
+                        android:scaleType="fitXY" />
 
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="4"
                         android:layout_gravity="center"
+                        android:layout_weight="4"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            >
+                            android:layout_height="wrap_content">
+
                             <TextView
                                 android:id="@+id/shopDetailQuestionUserID"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:gravity="center_vertical"
                                 android:layout_gravity="left"
+                                android:gravity="center_vertical"
                                 android:text="123"
                                 android:textColor="#000000"
                                 android:textSize="15sp"
@@ -528,18 +578,17 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
                             android:layout_gravity="center"
+                            android:gravity="center_vertical"
                             android:orientation="horizontal">
 
                             <com.beardedhen.androidbootstrap.AwesomeTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:bootstrapBrand="success"
-                                app:fontAwesomeIcon="fa_android"
-                                app:typicon="ty_anchor"
                                 app:bootstrapText="{fa-users} "
-                                />
+                                app:fontAwesomeIcon="fa_android"
+                                app:typicon="ty_anchor" />
 
                             <TextView
                                 android:id="@+id/shopDetailQuestionFollower"
@@ -549,17 +598,14 @@
                                 android:text="0" />
 
 
-
                             <com.beardedhen.androidbootstrap.AwesomeTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:bootstrapBrand="success"
-                                app:fontAwesomeIcon="fa_android"
-                                app:typicon="ty_anchor"
                                 android:layout_marginLeft="12dp"
+                                app:bootstrapBrand="success"
                                 app:bootstrapText="{fa-commenting} "
-                                />
-
+                                app:fontAwesomeIcon="fa_android"
+                                app:typicon="ty_anchor" />
 
 
                             <TextView
@@ -574,12 +620,11 @@
                             <com.beardedhen.androidbootstrap.AwesomeTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:bootstrapBrand="success"
-                                app:fontAwesomeIcon="fa_android"
                                 android:layout_marginLeft="12dp"
-                                app:typicon="ty_anchor"
+                                app:bootstrapBrand="success"
                                 app:bootstrapText="{fa-camera-retro} "
-                                />
+                                app:fontAwesomeIcon="fa_android"
+                                app:typicon="ty_anchor" />
 
 
                             <TextView
@@ -628,9 +673,9 @@
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    app:bootstrapText="{fa-search-plus} 모든 질문보기"
                     app:bootstrapBrand="info"
                     app:bootstrapSize="md"
+                    app:bootstrapText="{fa-search-plus} 모든 질문보기"
                     app:buttonMode="regular"
                     app:roundedCorners="true"
                     app:showOutline="false" />
@@ -687,41 +732,39 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:paddingLeft="14dp"
-                        android:paddingRight="14dp"
-                        android:paddingBottom="5dp"
                         android:layout_marginRight="5dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="14dp"
+                        android:paddingRight="14dp">
 
                         <ImageView
                             android:id="@+id/questionAllUserImage"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
-                            android:scaleType="fitXY"
                             android:layout_marginEnd="9dp"
-                            />
-
+                            android:scaleType="fitXY" />
 
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="4"
                             android:layout_gravity="center"
+                            android:layout_weight="4"
                             android:gravity="center"
                             android:orientation="vertical">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                >
+                                android:layout_height="wrap_content">
+
                                 <TextView
                                     android:id="@+id/questionAllUserNick"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:gravity="center_vertical"
                                     android:layout_gravity="left"
+                                    android:gravity="center_vertical"
                                     android:text="123"
                                     android:textColor="#000000"
                                     android:textSize="16sp"
@@ -738,10 +781,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     app:bootstrapBrand="primary"
-                                    app:fontAwesomeIcon="fa_android"
-                                    app:typicon="ty_anchor"
                                     app:bootstrapText="{fa-users} "
-                                    />
+                                    app:fontAwesomeIcon="fa_android"
+                                    app:typicon="ty_anchor" />
 
                                 <TextView
                                     android:id="@+id/questionAllUserFollower"
@@ -753,16 +795,13 @@
                                     android:text="0" />
 
 
-
                                 <com.beardedhen.androidbootstrap.AwesomeTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     app:bootstrapBrand="primary"
-                                    app:fontAwesomeIcon="fa_android"
-                                    app:typicon="ty_anchor"
                                     app:bootstrapText="{fa-commenting} "
-                                    />
-
+                                    app:fontAwesomeIcon="fa_android"
+                                    app:typicon="ty_anchor" />
 
 
                                 <TextView
@@ -770,8 +809,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:layout_marginStart="5dp"
                                     android:layout_marginEnd="5dp"
+                                    android:layout_marginStart="5dp"
                                     android:text="0"
 
                                     />
@@ -780,10 +819,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     app:bootstrapBrand="primary"
-                                    app:fontAwesomeIcon="fa_android"
-                                    app:typicon="ty_anchor"
                                     app:bootstrapText="{fa-camera-retro} "
-                                    />
+                                    app:fontAwesomeIcon="fa_android"
+                                    app:typicon="ty_anchor" />
 
 
                                 <TextView
@@ -866,29 +904,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="horizontal"
+                    android:paddingBottom="7dp"
                     android:paddingLeft="16dp"
                     android:paddingRight="14dp"
-                    android:paddingBottom="7dp"
-                    android:paddingTop="10dp"
-                    android:layout_marginRight="5dp"
-                    android:orientation="horizontal">
+                    android:paddingTop="10dp">
 
                     <ImageView
                         android:id="@+id/shopDetailReviewAddUserImage"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
-                        android:scaleType="fitXY"
                         android:layout_marginEnd="9dp"
-                        />
-
+                        android:scaleType="fitXY" />
 
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="4"
                         android:layout_gravity="center"
+                        android:layout_weight="4"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
 
@@ -897,12 +933,13 @@
                             android:layout_height="wrap_content"
 
                             >
+
                             <TextView
                                 android:id="@+id/shopDetailReviewAddUserID"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
                                 android:layout_gravity="left"
+                                android:gravity="center_vertical"
                                 android:text="123"
                                 android:textColor="#000000"
                                 android:textSize="16sp"
@@ -920,10 +957,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:bootstrapBrand="success"
-                                app:fontAwesomeIcon="fa_android"
-                                app:typicon="ty_anchor"
                                 app:bootstrapText="{fa-users} "
-                                />
+                                app:fontAwesomeIcon="fa_android"
+                                app:typicon="ty_anchor" />
 
                             <TextView
                                 android:id="@+id/shopDetailReviewAddFollower"
@@ -933,17 +969,14 @@
                                 android:text="0" />
 
 
-
                             <com.beardedhen.androidbootstrap.AwesomeTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:bootstrapBrand="success"
-                                app:fontAwesomeIcon="fa_android"
-                                app:typicon="ty_anchor"
                                 android:layout_marginLeft="12dp"
+                                app:bootstrapBrand="success"
                                 app:bootstrapText="{fa-commenting} "
-                                />
-
+                                app:fontAwesomeIcon="fa_android"
+                                app:typicon="ty_anchor" />
 
 
                             <TextView
@@ -958,12 +991,11 @@
                             <com.beardedhen.androidbootstrap.AwesomeTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:bootstrapBrand="success"
-                                app:fontAwesomeIcon="fa_android"
                                 android:layout_marginLeft="12dp"
-                                app:typicon="ty_anchor"
+                                app:bootstrapBrand="success"
                                 app:bootstrapText="{fa-camera-retro} "
-                                />
+                                app:fontAwesomeIcon="fa_android"
+                                app:typicon="ty_anchor" />
 
 
                             <TextView
@@ -1021,6 +1053,7 @@
                 android:layout_height="10dp"
                 android:background="#dddddd"
                 android:src="@drawable/border_alpha" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -1041,14 +1074,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <ListView
                     android:id="@+id/shopDetailLVReview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-
 
 
             </LinearLayout>
@@ -1057,10 +1088,9 @@
                 android:id="@+id/reviewPagingBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="See All Review"
-                android:visibility="gone"
                 android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
-                />
+                android:text="See All Review"
+                android:visibility="gone" />
             <!--TODO inflate "activity_shop_detail__main_review_listview.xml" -->
 
             <ImageView
@@ -1068,7 +1098,6 @@
                 android:layout_height="10dp"
                 android:background="#dddddd"
                 android:src="@drawable/border_alpha" />
-
 
 
             <LinearLayout
@@ -1101,43 +1130,41 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginTop="10dp"
-                    android:paddingLeft="14dp"
-                    android:paddingRight="14dp"
-                    android:paddingBottom="5dp"
                     android:layout_marginRight="5dp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp">
 
                     <ImageView
                         android:id="@+id/shopDetailTipUserImage"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_marginTop="5dp"
                         android:layout_gravity="center"
-                        android:scaleType="fitXY"
                         android:layout_marginEnd="9dp"
-                        />
-
+                        android:layout_marginTop="5dp"
+                        android:scaleType="fitXY" />
 
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="4"
                         android:layout_gravity="center"
+                        android:layout_weight="4"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            >
+                            android:layout_height="wrap_content">
+
                             <TextView
                                 android:id="@+id/shopDetailTipUserNick"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:gravity="center_vertical"
                                 android:layout_gravity="left"
+                                android:gravity="center_vertical"
                                 android:text="123"
                                 android:textColor="#000000"
                                 android:textSize="16sp"
@@ -1154,10 +1181,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:bootstrapBrand="primary"
-                                app:fontAwesomeIcon="fa_android"
-                                app:typicon="ty_anchor"
                                 app:bootstrapText="{fa-users} "
-                                />
+                                app:fontAwesomeIcon="fa_android"
+                                app:typicon="ty_anchor" />
 
                             <TextView
                                 android:id="@+id/shopDetailUserFollowerCount"
@@ -1169,16 +1195,13 @@
                                 android:text="0" />
 
 
-
                             <com.beardedhen.androidbootstrap.AwesomeTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:bootstrapBrand="primary"
-                                app:fontAwesomeIcon="fa_android"
-                                app:typicon="ty_anchor"
                                 app:bootstrapText="{fa-commenting} "
-                                />
-
+                                app:fontAwesomeIcon="fa_android"
+                                app:typicon="ty_anchor" />
 
 
                             <TextView
@@ -1186,8 +1209,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_marginStart="5dp"
                                 android:layout_marginEnd="5dp"
+                                android:layout_marginStart="5dp"
                                 android:text="0"
 
                                 />
@@ -1196,10 +1219,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:bootstrapBrand="primary"
-                                app:fontAwesomeIcon="fa_android"
-                                app:typicon="ty_anchor"
                                 app:bootstrapText="{fa-camera-retro} "
-                                />
+                                app:fontAwesomeIcon="fa_android"
+                                app:typicon="ty_anchor" />
 
 
                             <TextView
@@ -1229,7 +1251,6 @@
 
 
             </LinearLayout>
-
 
 
             <ImageView
@@ -1269,9 +1290,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textAlignment="center"
                     android:contentDescription="tipList"
-                    />
+                    android:textAlignment="center" />
                 <!--TODO INFLATE : 외곽선-->
 
 
