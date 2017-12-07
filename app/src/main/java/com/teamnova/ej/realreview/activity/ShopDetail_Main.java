@@ -704,7 +704,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         Log.d("DETAIL_THEME", "pref.getSharedData THEME5번 :" + pref.getSharedData("THEME5"));
         Log.d("DETAIL_THEME", "pref.getSharedData TAG :" + pref.getSharedData("TAG"));
 
-        int markerTag = Integer.parseInt(pref.getSharedData("TAG"));
+        String markerTag = pref.getSharedData("TAG");
         for (int i = 1; i < 6; i++) {
             Log.d("DETAIL_THEME", "pref.getSharedData THEME" + i + "번 :" + pref.getSharedData("THEME" + i));
             if (!pref.getSharedData("THEME" + i + markerTag).equals("")) {
@@ -1143,6 +1143,9 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             }
 
             case R.id.shopDetailCheckin: {
+
+
+
 
                 break;
             }

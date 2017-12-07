@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainMeBookmarkRootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
+    android:orientation="vertical">
+
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="6dp"-->
+    <!--android:background="#b1dddddd" />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:id="@+id/mainMeBookmarkContentsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <ImageView
+                android:id="@+id/mainMeBookmarkShopThumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#28000000"
+
+                />
+
+            <TextView
+                android:id="@+id/mainMeBookmarkShopName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:paddingLeft="15dp"
+                android:text="SHOP NAME"
+                android:textColor="#ffffff"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.beardedhen.androidbootstrap.AwesomeTextView
+                android:id="@+id/mainMeBookmarkCheckinCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center|right"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:textSize="20sp"
+                app:bootstrapBrand="info"
+                app:bootstrapText="{fa-certificate}123123" />
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/mainMeBookmarkProfileLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/mainMeBookmarkProfileImage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="9dp" />
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/mainMeBookmarkUserNick"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:gravity="center_vertical"
+                        android:text="123"
+                        android:textColor="#000000"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.beardedhen.androidbootstrap.AwesomeTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        app:bootstrapBrand="primary"
+                        app:bootstrapText="{fa-users} "
+                        app:fontAwesomeIcon="fa_android"
+                        app:typicon="ty_anchor" />
+
+                    <TextView
+                        android:id="@+id/mainMeBookmarkFollowerCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginStart="5dp"
+                        android:text="0"
+                        android:textSize="12sp" />
+
+
+                    <com.beardedhen.androidbootstrap.AwesomeTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        app:bootstrapBrand="primary"
+                        app:bootstrapText="{fa-commenting} "
+                        app:fontAwesomeIcon="fa_android"
+                        app:typicon="ty_anchor" />
+
+
+                    <TextView
+                        android:id="@+id/mainMeBookmarkReviewCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginStart="5dp"
+                        android:text="0"
+                        android:textSize="12sp"
+
+                        />
+
+                    <com.beardedhen.androidbootstrap.AwesomeTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        app:bootstrapBrand="primary"
+                        app:bootstrapText="{fa-camera-retro} "
+                        app:fontAwesomeIcon="fa_android"
+                        app:typicon="ty_anchor" />
+
+
+                    <TextView
+                        android:id="@+id/mainMeBookmarkImageCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginStart="5dp"
+                        android:text="0"
+                        android:textSize="12sp"
+
+
+                        />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <!--<TextView-->
+            <!--android:id="@+id/reviewRegdate"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_margin="3dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="end"-->
+            <!--android:text="123123123123123123"-->
+            <!--android:textSize="10sp" />-->
+
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1sp"
+            android:background="#dddddd" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:orientation="vertical">
+
+
+            <com.beardedhen.androidbootstrap.AwesomeTextView
+                android:id="@+id/mainMeBookmarkShopTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:paddingLeft="10dp"
+                android:paddingRight="3dp"
+                android:textAlignment="textStart"
+                android:textColor="#000000"
+                app:bootstrapText="{fa-home}  Open / Close :" />
+
+            <com.beardedhen.androidbootstrap.AwesomeTextView
+                android:id="@+id/mainMeBookmarkCall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:autoLink="phone"
+                android:ellipsize="end"
+                android:paddingLeft="10dp"
+                android:paddingRight="3dp"
+                android:textAlignment="textStart"
+                android:textColor="#000000"
+                app:bootstrapText="{fa-phone}  CALL : " />
+
+            <com.beardedhen.androidbootstrap.AwesomeTextView
+                android:id="@+id/mainMeBookmarkAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:autoLink="phone"
+                android:ellipsize="end"
+                android:paddingLeft="10dp"
+                android:paddingRight="3dp"
+                android:textAlignment="textStart"
+                android:textColor="#000000"
+                app:bootstrapText="{fa-compass}  ADDRESS : " />
+
+            <com.beardedhen.androidbootstrap.AwesomeTextView
+                android:id="@+id/mainMeBookmarkWebsite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:autoLink="web"
+                android:ellipsize="end"
+                android:paddingLeft="10dp"
+                android:paddingRight="3dp"
+                android:textAlignment="textStart"
+                android:textColor="#000000"
+                app:bootstrapText="{fa-external-link}  WEB SITE : " />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="7dp"
+                android:background="#aaaaaa" />
+
+
+            <com.beardedhen.androidbootstrap.AwesomeTextView
+                android:id="@+id/mainMeBookmarkRegdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginBottom="7dp"
+                android:layout_marginRight="10dp"
+                android:textSize="12sp"
+                app:bootstrapBrand="info"
+                app:bootstrapText="{fa-clock-o} 123123"
+                app:fontAwesomeIcon="fa_android"
+                app:typicon="ty_anchor" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:orientation="horizontal">
+
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

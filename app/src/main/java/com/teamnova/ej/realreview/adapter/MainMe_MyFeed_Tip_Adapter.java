@@ -34,7 +34,7 @@ public class MainMe_MyFeed_Tip_Adapter extends RecyclerView.Adapter<MainMe_MyFee
     @Override
     public MainMe_MyFeed_Tip_Viewholder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d("MainMe_MyFeed_Review_Viewholder", "onCre,ateViewHolder - Enter");
-        View v = LayoutInflater.from(mContext).inflate(R.layout.activity_main_me_tip_recycler, parent, false);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.activity_main_me_recycler_tip, parent, false);
         return new MainMe_MyFeed_Tip_Viewholder(v);
     }
 

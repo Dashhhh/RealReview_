@@ -1590,7 +1590,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
             Log.d("MARKER_TAG", "marker.getTag() :" + markerId);
             SharedPreferenceUtil pref = new SharedPreferenceUtil(Main.this);
-            pref.setSharedData("TAG", markerId);
+            pref.setSharedData  ("TAG", markerId);
             Intent intent = new Intent(Main.this, ShopDetail_Main.class);
             intent.putExtra("TAG", String.valueOf(marker.getTag()));
             startActivity(intent);

@@ -109,26 +109,21 @@ public class Main_Me_Tip extends AppCompatActivity {
             feedAdapter.notifyDataSetChanged();
         } catch (
                 InterruptedException e)
-
         {
             e.printStackTrace();
         } catch (
                 ExecutionException e)
-
         {
             e.printStackTrace();
         } catch (
                 TimeoutException e)
-
         {
             e.printStackTrace();
         } catch (
                 JSONException e)
-
         {
             e.printStackTrace();
         }
-
     }
 }
 

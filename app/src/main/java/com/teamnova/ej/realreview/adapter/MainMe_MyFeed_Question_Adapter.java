@@ -37,7 +37,7 @@ public class MainMe_MyFeed_Question_Adapter extends RecyclerView.Adapter<MainMe_
     @Override
     public MainMe_MyFeed_Question_Viewholder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d("MainMe_MyFeed_Review_Viewholder", "onCre,ateViewHolder - Enter");
-        View v = LayoutInflater.from(mContext).inflate(R.layout.activity_main_me_question_recycler, parent, false);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.activity_main_me_recycler_question, parent, false);
         return new MainMe_MyFeed_Question_Viewholder(v);
     }
 

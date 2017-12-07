@@ -40,8 +40,6 @@
                 app:bootstrapBrand="success"
                 app:bootstrapText="{fa-certificate}123123" />
 
-
-
             <ImageView
                 android:id="@+id/mainMeShopThumbnail"
                 android:layout_width="match_parent"
