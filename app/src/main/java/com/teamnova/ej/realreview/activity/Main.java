@@ -10,14 +10,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,34 +28,49 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.arlib.floatingsearchview.FloatingSearchView;
-import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -67,11 +80,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.pnikosis.materialishprogress.ProgressWheel;
-import com.teamnova.ej.realreview.Asynctask.AsyncMyFeedRequest;
 import com.teamnova.ej.realreview.R;
-import com.teamnova.ej.realreview.adapter.MainMe_MyFeed_Question_Adapter;
 import com.teamnova.ej.realreview.adapter.MainMe_MyFeed_Question_Set;
-import com.teamnova.ej.realreview.adapter.MainMe_MyFeed_Review_Adapter;
 import com.teamnova.ej.realreview.adapter.MainMe_MyFeed_Review_Set;
 import com.teamnova.ej.realreview.adapter.MainMe_MyFeed_Tip_Set;
 import com.teamnova.ej.realreview.util.Dialog_Default;
@@ -86,6 +96,8 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -94,13 +106,14 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class Main extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, LocationListener {
+public class Main extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, LocationListener, GoogleApiClient.OnConnectionFailedListener, Filterable {
 
     public static String ID;
     public static final int PICK_FROM_CAMERA = 0;
@@ -114,6 +127,24 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     public static double LOCATION_FAR_LEFT_LNG = 0;
     public static double LOCATION_NEAR_RIGHT_LAT = 0;
     public static double LOCATION_NEAR_RIGHT_LNG = 0;
+
+    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 3;
+    int PLACE_PICKER_REQUEST = 4;
+    MapView mapView;
+    GoogleApiClient mGoogleApiClient;
+    String getId = "";
+    String getAddress = "";
+    String getName = "";
+    String getPhoneNumber = "";
+    String getWebsiteUri = "";
+    String getLatLng = "";
+    String getViewport = "";
+    String getLocale = "";
+    String getPlaceTypes = "";
+    String getAttribution = "";
+    int getPriceLevel = 0;
+    float getRating = 0;
+
 
     private Uri mImageCaptureUri;
     /**
@@ -145,27 +176,27 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     String realPath = "";
     String upLoadServerUri = "http://222.122.203.55/realreview/signup/uploadtoserver.php";  // Set Image File at The SERVER
     /**
-     * init VAR
+     * VAR
      */
 
     LinearLayout nearbyLinear, meLinear, meLinearSecond, meProfileStateLayout, meMLinearMyFeed;
-    RelativeLayout searchLinear;
+    LinearLayout searchLinear;
     RecyclerView mainMeMyFeedRV, mainMeQuestionRV, mainMeTipRV;
     FrameLayout content;
     ScrollView map_container, meScrollView;
-    BottomNavigationView navigation;
+    public static BottomNavigationView navigation;
     private GoogleMap mMap;
+    private GoogleMap mMap2 ;
     TextView searchText, meProfileUserNick, meProfileUserAddress;
     com.beardedhen.androidbootstrap.AwesomeTextView meFollowerText, meReviewCount, mainMeImageCount;
     ImageView meProfileImage, followerCntImage, reviewCntImage, imageUploadCnt;
     private String imagePath;
-    Button nearbyShopAdd;
     FusedLocationProviderClient mFusedLocationClient;
     private boolean mRequestingLocationUpdates;
     private LocationCallback mLocationCallback;
     private LocationRequest mLocationRequest;
-    com.arlib.floatingsearchview.FloatingSearchView floatingSearchView;
-
+    com.beardedhen.androidbootstrap.BootstrapButton mainMeSearchLocation, mainMeSearchPlaceType, nearbyShopAdd;
+    ListView mainMeSearchPlaceTypeLV;
     com.beardedhen.androidbootstrap.BootstrapButton mainMeBtnReview, mainMeBtnTip, mainMeBtnQuestion, mainMeBtnBookmark;
     //    SupportMapFragment mapFragment;
 
@@ -194,9 +225,11 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
     public String replaceTest = "";
     ArrayList<String> fixShopDataList = new ArrayList<>();
+    ArrayList<String> fixShopDataList_MainSearch = new ArrayList<>();
     ArrayList<String> keyShopDataList = new ArrayList<>();
     ArrayList<String> valueShopDataList = new ArrayList<>();
     private JSONObject item2;
+    private JSONObject onMapCallBack2;
     private String modifyProfileImagePath;
     private MaterialDialog builder;
     private Toolbar toolbar;
@@ -205,6 +238,22 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     public ArrayList<MainMe_MyFeed_Question_Set> questionArrayData = new ArrayList<>();
     public ArrayList<MainMe_MyFeed_Tip_Set> tipArrayData = new ArrayList<>();
     private String myFeedURL = "http://222.122.203.55/realreview/myFeed/myFeed.php";
+    public static String LOCATION_ADDRESS = "";
+    public static String USER_SELECT_PLACETYPE = "관심 지점";
+
+    public static String MAIN_SEARCH_LOCATION_FAR_LEFT_LAT;
+    public static String MAIN_SEARCH_LOCATION_FAR_LEFT_LNG;
+    public static String MAIN_SEARCH_LOCATION_NEAR_RIGHT_LAT;
+    public static String MAIN_SEARCH_LOCATION_NEAR_RIGHT_LNG;
+    public static String MAIN_SEARCH_SEARCH_POSITION_LAT;
+    public static String MAIN_SEARCH_SEARCh_POSITION_LNG;
+    private boolean mapReadyCallBackFlag = true;
+    private boolean mapReadyCallBackFlag_Main = true;
+    boolean setMapCheck1 = true;
+    boolean setMapCheck2 = true;
+    public SupportMapFragment searchFragment1;
+    public SupportMapFragment searchFragment2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -267,11 +316,61 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         upload.execute();
 
 
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(Main.this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(Main.this, Main.this)
+                .build();
+
+        mainMeSearchLocation.setMarkdownText("{fa-map-pin} Location : " + LOCATION_ADDRESS);
+
     }   // onCreate
 
     private void init() {
 
         SharedPreferenceUtil pref = new SharedPreferenceUtil(getApplicationContext());
+
+
+//
+//        mMapFragment = MapFragment.newInstance();
+//        FragmentTransaction fragmentTransaction =
+//                getFragmentManager().beginTransaction();
+//        fragmentTransaction.add(R.id.mapView, mMapFragment);
+//        fragmentTransaction.commit();
+//
+//        MapFragment mapFragment = (MapFragment) getFragmentManager()
+//                .findFragmentById(R.id.mapView);
+//        mapFragment.getMapAsync(new Main_Search(this));
+/*
+        searchFragment1 = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.mapView);
+        searchFragment1.getMapAsync(onMapReadyCallback1());
+        GoogleMapOptions mapOptions = new GoogleMapOptions();
+        mapOptions.useViewLifecycleInFragment(true);
+        searchFragment1 = SupportMapFragment.newInstance(mapOptions);
+*/
+
+        searchFragment2 = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.searchMap);
+        searchFragment2.getMapAsync(onMapReadyCallback2());
+        GoogleMapOptions mapOptions2 = new GoogleMapOptions();
+        mapOptions2.useViewLifecycleInFragment(true);
+        searchFragment2 = SupportMapFragment.newInstance(mapOptions2);
+
+
+        /**
+         *
+         * Map add
+         *
+         */
+
+//        mMapFragment = MapFragment.newInstance();
+//        FragmentTransaction fragmentTransaction =
+//                getFragmentManager().beginTransaction();
+//        fragmentTransaction.add(R.id.searchLinear, mMapFragment);
+//        fragmentTransaction.commit();
+
 
         searchLinear = findViewById(R.id.searchLinear);
         nearbyLinear = findViewById(R.id.nearbyLinear);
@@ -317,11 +416,216 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 //        mainMeQuestionRV = findViewById(R.id.mainMeQuestionRV);
 
         nearbyShopAdd = findViewById(R.id.nearbyShopAdd);
-        floatingSearchView = findViewById(R.id.floating_search_view);
+        mainMeSearchLocation = findViewById(R.id.mainMeSearchLocation);
+
+
+        mainMeSearchLocation.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN: {
+
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+
+                        } else {
+                            break;
+                        }
+
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        Log.d("mainMeSearchLocation.setOnTouchListener", "ENTER");
+
+                        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                        try {
+                            Intent intent =
+                                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                                            .build(Main.this);
+                            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+                            Log.d("mainMeSearchLocation.setOnTouchListener", "try END!");
+                        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+                            e.printStackTrace();
+                            Log.d("mainMeSearchLocation.setOnTouchListener", "CATCH!");
+                        }
+                        break;
+                    }
+
+                }
+
+                return false;
+            }
+
+
+        });
+
+
+        mainMeSearchPlaceType = findViewById(R.id.mainMeSearchPlaceType);
+        mainMeSearchPlaceTypeLV = findViewById(R.id.mainMeSearchPlaceTypeLV);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        mainMeSearchPlaceTypeLV.setAdapter(adapter);
+
+        adapter.add("기타");
+        adapter.add("회계");
+        adapter.add("공항");
+        adapter.add("유원지");
+        adapter.add("수족관");
+        adapter.add("아트갤러리");
+        adapter.add("Atm");
+        adapter.add("제과점");
+        adapter.add("은행");
+        adapter.add("바");
+        adapter.add("뷰티살롱");
+        adapter.add("자전거상점");
+        adapter.add("서점");
+        adapter.add("볼링장");
+        adapter.add("버스정류장");
+        adapter.add("카페");
+        adapter.add("캠프장");
+        adapter.add("자동차딜러");
+        adapter.add("자동차렌탈");
+        adapter.add("자동차수리");
+        adapter.add("세차장");
+        adapter.add("카지노");
+        adapter.add("묘지");
+        adapter.add("교회");
+        adapter.add("시청");
+        adapter.add("의류매장");
+        adapter.add("편의점");
+        adapter.add("법원");
+        adapter.add("치과의사");
+        adapter.add("의사");
+        adapter.add("백화점");
+        adapter.add("전기");
+        adapter.add("전자상점");
+        adapter.add("대사관");
+        adapter.add("설립");
+        adapter.add("금융");
+        adapter.add("소방서");
+        adapter.add("꽃집");
+        adapter.add("음식");
+        adapter.add("장례식장");
+        adapter.add("가구점");
+        adapter.add("주유소");
+        adapter.add("일반계약자");
+        adapter.add("식료품점");
+        adapter.add("체육관");
+        adapter.add("모발관리");
+        adapter.add("하드웨어매장");
+        adapter.add("건강");
+        adapter.add("힌두사원");
+        adapter.add("가정용품점");
+        adapter.add("병원");
+        adapter.add("보험기관");
+        adapter.add("보석상");
+        adapter.add("세탁");
+        adapter.add("변호사");
+        adapter.add("도서관");
+        adapter.add("주류판매점");
+        adapter.add("지방정부청사");
+        adapter.add("자물쇠");
+        adapter.add("숙박");
+        adapter.add("식사제공");
+        adapter.add("식사테이크아웃");
+        adapter.add("모스크");
+        adapter.add("영화대여");
+        adapter.add("영화극장");
+        adapter.add("이사회사");
+        adapter.add("박물관");
+        adapter.add("나이트클럽");
+        adapter.add("화가");
+        adapter.add("공원");
+        adapter.add("주차");
+        adapter.add("애완동물가게");
+        adapter.add("약국");
+        adapter.add("물리치료사");
+        adapter.add("예배당의장소");
+        adapter.add("배관공");
+        adapter.add("경찰");
+        adapter.add("우체국");
+        adapter.add("부동산중개인");
+        adapter.add("레스토랑");
+        adapter.add("루핑계약자");
+        adapter.add("RV공원");
+        adapter.add("학교");
+        adapter.add("신발가게");
+        adapter.add("쇼핑몰");
+        adapter.add("스파");
+        adapter.add("경기장");
+        adapter.add("보관");
+        adapter.add("상점");
+        adapter.add("지하철역");
+        adapter.add("회당");
+        adapter.add("택시승차장");
+        adapter.add("기차역");
+        adapter.add("여행사");
+        adapter.add("대학");
+        adapter.add("수의진료");
+        adapter.add("동물원");
+        adapter.add("구어짐면적");
+        adapter.add("국가");
+        adapter.add("층");
+        adapter.add("지오코드");
+        adapter.add("교차점");
+        adapter.add("지역성");
+        adapter.add("자연지형지물");
+        adapter.add("이웃");
+        adapter.add("정치");
+        adapter.add("관심지점");
+        adapter.add("포스트박스");
+        adapter.add("전제");
+        adapter.add("방");
+        adapter.add("루트");
+        adapter.add("대중교통역");
+        adapter.add("abcde");
+        adapter.add("bcdef");
+
+        mainMeSearchPlaceType.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable edit) {
+                // TODO : item filtering
+                String filterText = edit.toString();
+                if (filterText.length() > 0) {
+
+                    Log.d("addTextChangedListener", "afterTextChanged - ENTER 1");
+                    mainMeSearchPlaceTypeLV.setFilterText(filterText);
+
+                } else {
+                    Log.d("addTextChangedListener", "afterTextChanged - ENTER 2");
+                    mainMeSearchPlaceTypeLV.clearTextFilter();
+                }
+
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Log.d("addTextChangedListener", "beforeTextChanged - ENTER");
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String filterText = s.toString();
+                if (filterText.length() > 0) {
+                    Log.d("addTextChangedListener", "onTextChanged - ENTER 1");
+                    mainMeSearchPlaceTypeLV.setFilterText(filterText);
+                } else {
+                    Log.d("addTextChangedListener", "onTextChanged - ENTER 2");
+                    mainMeSearchPlaceTypeLV.clearTextFilter();
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+        });
 
         toolbar = findViewById(R.id.main_toolbar);
+
         setSupportActionBar(toolbar);
+
         ActionBar actionBar = getSupportActionBar();
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         toolbar.setTitle("REAL REVIEW");
@@ -333,40 +637,428 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         mainMeBtnQuestion = findViewById(R.id.mainMeBtnQuestion);
         mainMeBtnBookmark = findViewById(R.id.mainMeBtnBookmark);
 
-        mainMeBtnReview.setOnClickListener(new View.OnClickListener() {
+        mainMeBtnReview.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent (Main.this, Main_Me_Reviews.class);
+                Intent intent = new Intent(Main.this, Main_Me_Reviews.class);
                 startActivity(intent);
             }
         });
-        mainMeBtnTip.setOnClickListener(new View.OnClickListener() {
+        mainMeBtnTip.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent (Main.this, Main_Me_Tip.class);
+                Intent intent = new Intent(Main.this, Main_Me_Tip.class);
                 startActivity(intent);
             }
         });
-        mainMeBtnQuestion.setOnClickListener(new View.OnClickListener() {
+        mainMeBtnQuestion.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent (Main.this, Main_Me_Question.class);
+                Intent intent = new Intent(Main.this, Main_Me_Question.class);
                 startActivity(intent);
             }
         });
-        mainMeBtnBookmark.setOnClickListener(new View.OnClickListener() {
+        mainMeBtnBookmark.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent (Main.this, Main_Me_Bookmark.class);
+                Intent intent = new Intent(Main.this, Main_Me_Bookmark.class);
                 startActivity(intent);
             }
         });
+    }
+
+    public OnMapReadyCallback onMapReadyCallback1() {
+        return new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                if (ActivityCompat.checkSelfPermission(Main.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Main.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+
+                {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+
+
+                SharedPreferenceUtil preferenceUtil = new SharedPreferenceUtil(Main.this);
+                String locationFlag = preferenceUtil.getSharedData("LOCATION_FLAG");
+
+                if (locationFlag.equals("TRUE"))
+
+                {
+                    navigation.setSelectedItemId(R.id.navigation_nearby);
+                    preferenceUtil.setSharedData("LOCATION_FLAG", "FALSE");
+                }
+
+
+                if (mapReadyCallBackFlag_Main) {
+                    mMap = googleMap;
+                    mapReadyCallBackFlag_Main = false;
+                }
+                mMap.clear(); // CLEAR!
+                mMap.setMyLocationEnabled(true);
+
+                String cameraPosition = String.valueOf(mMap.getCameraPosition());
+                Log.d("onMapReady", "cameraPosition :" + cameraPosition);
+
+                LatLng myPosition = new LatLng(MY_POSITION_LAT, MY_POSITION_LNG);
+
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 16));
+
+
+                //        mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+                String sFarLeft = String.valueOf(mMap.getProjection().getVisibleRegion().farLeft);
+                String sNearRight = String.valueOf(mMap.getProjection().getVisibleRegion().nearRight);
+                Log.d("onMapReadyCallback1", "sFarLeft :" + sFarLeft);
+                Log.d("onMapReadyCallback1", "sNearRight :" + sNearRight);
+
+                String[] splitFarLeft = sFarLeft.split("\\(", 0);
+                String[] splitNearRight = sNearRight.split("\\(", 0);
+
+                String[] split2FarLeft = splitFarLeft[1].split(",", 0);
+                String[] split2NearRight = splitNearRight[1].split(",", 0);
+
+                String[] split3FarLeft = split2FarLeft[1].split("\\)", 0);
+                String[] split3NearRight = split2NearRight[1].split("\\)", 0);
+
+
+                resultFarLeftLat = split2FarLeft[0];
+                resultFarLeftLng = split3FarLeft[0];
+                resultNearRightLat = split2NearRight[0];
+                resultNearRightLng = split3NearRight[0];
+
+                Log.d("SPLIT CHECK LOCATION FAR - NEAR", "split2FarLeft " + split2FarLeft[0]);
+                Log.d("SPLIT CHECK LOCATION FAR - NEAR", "split2FarLeft " + split3FarLeft[0]);
+                Log.d("SPLIT CHECK LOCATION FAR - NEAR", "split2NearRight " + split2NearRight[0]);
+                Log.d("SPLIT CHECK LOCATION FAR - NEAR", "split2NearRight " + split3NearRight[0]);
+                Log.d("MYLOG", "FarLeft:" + sFarLeft);
+                Log.d("MYLOG", "NearRight:" + sNearRight);
+
+                LOCATION_FAR_LEFT_LAT = Double.parseDouble(split2FarLeft[0]);
+                LOCATION_FAR_LEFT_LNG = Double.parseDouble(split3FarLeft[0]);
+                LOCATION_NEAR_RIGHT_LAT = Double.parseDouble(split2NearRight[0]);
+                LOCATION_NEAR_RIGHT_LNG = Double.parseDouble(split3NearRight[0]);
+
+
+                String url = "http://222.122.203.55/realreview/Nearby/latlng.php?";
+                String urlMerge = url + "lat_start=" + resultNearRightLat + "&lat_end=" + resultFarLeftLat + "&lng_start=" + resultFarLeftLng + "&lng_end=" + resultNearRightLng;
+                ProgressWheel progressDialog = new ProgressWheel(Main.this);
+                StringBuilder conn = null;
+                try
+
+                {
+                    conn = new AsyncMainNearbyLatLngReceive(urlMerge, Main.this).execute().get(5000, TimeUnit.MILLISECONDS);
+                    JSONObject castingJO = new JSONObject(String.valueOf(conn));
+                    Log.d("maintest", "1 - castingJO :" + castingJO);
+                    JSONArray fixJSON = castingJO.getJSONArray("realreview");
+                    Log.d("maintest", "2 - fixJSON :" + fixJSON);
+
+
+                    MarkerOptions markerOptions = new MarkerOptions();
+
+                    for (int i = 0; i < fixJSON.length(); i++) {
+                        JSONObject item = fixJSON.getJSONObject(i);
+                        fixShopDataList.add(String.valueOf(item));
+                        Log.d("JSON_CHECK", "3 - item :" + i + "번 :" + item);
+
+                        item2 = new JSONObject(fixShopDataList.get(i));
+                        String sLat = item2.getString("latitude");
+                        String sLng = item2.getString("longtitude");
+                        double dLat = Double.parseDouble(sLat);
+                        double dLng = Double.parseDouble(sLng);
+                        LatLng latLng = new LatLng(dLat, dLng);
+                        markerOptions.position(latLng)
+                                .title(item2.getString("shopName"))
+                                .snippet("SHOP OPEN : " + item2.getString("shopOpen") + "\nSHOP CLOSE : " + item2.getString("shopClose"));
+                        Marker marker = mMap.addMarker(markerOptions);
+
+                        marker.setTag(i);
+                        String markerTag = String.valueOf(marker.getTag());
+                        String a0 = item2.getString("id");
+                        String a1 = item2.getString("shopName");
+                        String a2 = item2.getString("address");
+                        String a3 = item2.getString("latitude");
+                        String a4 = item2.getString("longtitude");
+                        String a5 = item2.getString("viewportSouthWestLat");
+                        String a6 = item2.getString("viewportSouthWestLng");
+                        String a7 = item2.getString("viewportNorthEastLat");
+                        String a8 = item2.getString("viewportNorthEastLng");
+                        String a9 = item2.getString("shopOpen");
+                        String a10 = item2.getString("shopClose");
+                        String a11 = item2.getString("shopTheme1");
+                        String a12 = item2.getString("shopTheme2");
+                        String a13 = item2.getString("shopTheme3");
+                        String a14 = item2.getString("shopTheme4");
+                        String a15 = item2.getString("shopTheme5");
+                        String a16 = item2.getString("callNumber");
+                        String websiteNullCheck = item2.getString("webSite");
+
+                        SharedPreferenceUtil pref = new SharedPreferenceUtil(Main.this);
+
+                        pref.setSharedData("ID" + markerTag, item2.getString("id"));
+                        pref.setSharedData("TITLE" + markerTag, item2.getString("shopName"));
+                        pref.setSharedData("ADDRESS" + markerTag, item2.getString("address"));
+                        pref.setSharedData("LAT" + markerTag, item2.getString("latitude"));
+                        pref.setSharedData("LNG" + markerTag, item2.getString("longtitude"));
+                        pref.setSharedData("V_SW_LAT" + markerTag, item2.getString("viewportSouthWestLat"));
+                        pref.setSharedData("V_SW_LNG" + markerTag, item2.getString("viewportSouthWestLng"));
+                        pref.setSharedData("V_NE_LAT" + markerTag, item2.getString("viewportNorthEastLat"));
+                        pref.setSharedData("V_NE_LNG" + markerTag, item2.getString("viewportNorthEastLng"));
+                        pref.setSharedData("OPEN" + markerTag, item2.getString("shopOpen"));
+                        pref.setSharedData("CLOSE" + markerTag, item2.getString("shopClose"));
+                        pref.setSharedData("MARKERTAG" + markerTag, item2.getString("shopClose"));
+                        pref.setSharedData("THEME1" + markerTag, item2.getString("shopTheme1"));
+                        pref.setSharedData("THEME2" + markerTag, item2.getString("shopTheme2"));
+                        pref.setSharedData("THEME3" + markerTag, item2.getString("shopTheme3"));
+                        pref.setSharedData("THEME4" + markerTag, item2.getString("shopTheme4"));
+                        pref.setSharedData("THEME5" + markerTag, item2.getString("shopTheme5"));
+                        pref.setSharedData("CALL" + markerTag, item2.getString("callNumber"));
+                        pref.setSharedData("TAG" + markerTag, String.valueOf(i));
+                        if (item2.getString("webSite").isEmpty()) {
+                            pref.setSharedData("WEB" + markerTag, "");
+                        } else {
+                            pref.setSharedData("WEB" + markerTag, item2.getString("webSite"));
+                        }
+
+                        mMap.setOnInfoWindowClickListener(infoWindowClickListener);
+
+//                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//                    @Override
+//                    public boolean onMarkerClick(Marker marker) {
+//
+//                        Dialog_Default dial = new Dialog_Default(Main.Main.this );
+//                        dial.call("MARKER CLICK", "TODO : SHOP DETAIL ACTIVITY");
+//
+//
+//                        return false;
+//                    }
+//                });
+
+
+                    }
+
+                    Log.d("Main, onMapReady", "connLength : " + fixJSON.length());
+
+
+                } catch (InterruptedException | ExecutionException | TimeoutException |
+                        JSONException e)
+
+                {
+                    e.printStackTrace();
+                    Log.d("maintest", "catch");
+
+                }
+            }
+        };
+    }
+
+    public OnMapReadyCallback onMapReadyCallback2() {
+        return new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+
+
+                builder = new MaterialDialog.Builder(Main.this)
+                        .title("Connecting")
+                        .content("loading..")
+                        .progressIndeterminateStyle(true)
+                        .show();
+
+                if (mapReadyCallBackFlag) {
+                    mMap2 = googleMap;
+                    mapReadyCallBackFlag = false;
+                }
+                mMap2.clear();
+                if (ActivityCompat.checkSelfPermission(Main.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Main.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                mMap2.setMyLocationEnabled(true);
+
+                String cameraPosition = String.valueOf(mMap2.getCameraPosition());
+                Log.d("MainSearch_onMapReady2", "cameraPosition :" + cameraPosition);
+
+                LatLng myPosition = new LatLng(MY_POSITION_LAT, MY_POSITION_LNG);
+
+                mMap2.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 16));
+                Log.d("MainSearch_onMapReady2", "mMap2.getProjection().toScreenLocation(myPosition) :" + mMap2.getProjection().toScreenLocation(myPosition));
+
+//        mMap2.animateCamera(CameraUpdateFactory.zoomTo(17));
+                String  sFarLeft = String.valueOf(mMap2.getProjection().getVisibleRegion().farLeft);
+                String sNearRight = String.valueOf(mMap2.getProjection().getVisibleRegion().nearRight);
+                Log.d("onMapReadyCallback2", "sFarLeft :" + sFarLeft);
+                Log.d("onMapReadyCallback2", "sNearRight :" + sNearRight);
+                String[] splitFarLeft = sFarLeft.split("\\(", 0);
+                String[] splitNearRight = sNearRight.split("\\(", 0);
+
+                String[] split2FarLeft = splitFarLeft[1].split(",", 0);
+                String[] split2NearRight = splitNearRight[1].split(",", 0);
+
+                String[] split3FarLeft = split2FarLeft[1].split("\\)", 0);
+                String[] split3NearRight = split2NearRight[1].split("\\)", 0);
+
+//                resultFarLeftLat = split2FarLeft[0];
+//                resultFarLeftLng = split3FarLeft[0];
+//                resultNearRightLat = split2NearRight[0];
+//                resultNearRightLng = split3NearRight[0];
+
+
+                MAIN_SEARCH_LOCATION_FAR_LEFT_LAT = split2FarLeft[0];
+                MAIN_SEARCH_LOCATION_FAR_LEFT_LNG = split3FarLeft[0];
+                MAIN_SEARCH_LOCATION_NEAR_RIGHT_LAT = split2NearRight[0];
+                MAIN_SEARCH_LOCATION_NEAR_RIGHT_LNG = split3NearRight[0];
+
+                Log.d("MainSearch_onMapReady", "SPLIT CHECK LOCATION FAR - NEAR, split2FarLeft " + split2FarLeft[0]);
+                Log.d("MainSearch_onMapReady", "SPLIT CHECK LOCATION FAR - NEAR, split2FarLeft " + split3FarLeft[0]);
+                Log.d("MainSearch_onMapReady", "SPLIT CHECK LOCATION FAR - NEAR, split2NearRight " + split2NearRight[0]);
+                Log.d("MainSearch_onMapReady", "SPLIT CHECK LOCATION FAR - NEAR, split2NearRight " + split3NearRight[0]);
+                Log.d("MainSearch_onMapReady", "FarLeft:" + sFarLeft);
+                Log.d("MainSearch_onMapReady", "NearRight:" + sNearRight);
+
+
+//                LOCATION_FAR_LEFT_LAT   = Double.parseDouble(split2FarLeft[0]);
+//                LOCATION_FAR_LEFT_LNG   = Double.parseDouble(split3FarLeft[0]);
+//                LOCATION_NEAR_RIGHT_LAT = Double.parseDouble(split2NearRight[0]);
+//                LOCATION_NEAR_RIGHT_LNG = Double.parseDouble(split3NearRight[0]);
+
+
+                String url = "http://222.122.203.55/realreview/mainSearch.php?";
+                String urlMerge = url + "lat_start=" + MAIN_SEARCH_LOCATION_NEAR_RIGHT_LAT + "&lat_end=" + MAIN_SEARCH_LOCATION_FAR_LEFT_LAT + "&lng_start=" + MAIN_SEARCH_LOCATION_FAR_LEFT_LNG + "&lng_end=" + MAIN_SEARCH_LOCATION_NEAR_RIGHT_LNG + "&placetype=" + USER_SELECT_PLACETYPE;
+                StringBuilder conn = null;
+                try {
+                    Log.d("MainSearch_onMapReady2", "ENTER CALLBACK2");
+                    conn = new AsyncMainNearbyLatLngReceive_MainSearch(urlMerge, Main.this).execute().get(5000, TimeUnit.MILLISECONDS);
+                    Log.d("MainSearch_onMapReady2", "conn - " + conn);
+                    JSONObject castingJO = new JSONObject(String.valueOf(conn));
+                    Log.d("MainSearch_onMapReady2", "1 - castingJO :" + castingJO);
+                    JSONArray fixJSON = castingJO.getJSONArray("mainSearch");
+                    Log.d("MainSearch_onMapReady2", "2 - fixJSON :" + fixJSON);
+
+
+                    MarkerOptions markerOptions = new MarkerOptions();
+
+                    for (int i = 0; i < fixJSON.length(); i++) {
+                        JSONObject item = fixJSON.getJSONObject(i);
+                        fixShopDataList_MainSearch.add(String.valueOf(item));
+                        Log.d("MainSearch_onMapReady2", "JSON_CHECK, 3 - item :" + i + "번 :" + item);
+
+                        onMapCallBack2 = new JSONObject(fixShopDataList_MainSearch.get(i));
+                        String sLat = onMapCallBack2.getString("latitude");
+                        String sLng = onMapCallBack2.getString("longtitude");
+                        double dLat = Double.parseDouble(sLat);
+                        double dLng = Double.parseDouble(sLng);
+                        LatLng latLng = new LatLng(dLat, dLng);
+                        markerOptions.position(latLng)
+                                .title(onMapCallBack2.getString("shopName"))
+                                .snippet("SHOP OPEN : " + onMapCallBack2.getString("shopOpen") + "\nSHOP CLOSE : " + onMapCallBack2.getString("shopClose"))
+
+                        ;
+                        Marker marker = mMap2.addMarker(markerOptions);
+                        marker.setTag(i);
+                        String markerTag = String.valueOf(marker.getTag());
+                        String a0 = onMapCallBack2.getString("id");
+                        String a1 = onMapCallBack2.getString("shopName");
+                        String a2 = onMapCallBack2.getString("address");
+                        String a3 = onMapCallBack2.getString("latitude");
+                        String a4 = onMapCallBack2.getString("longtitude");
+                        String a5 = onMapCallBack2.getString("viewportSouthWestLat");
+                        String a6 = onMapCallBack2.getString("viewportSouthWestLng");
+                        String a7 = onMapCallBack2.getString("viewportNorthEastLat");
+                        String a8 = onMapCallBack2.getString("viewportNorthEastLng");
+                        String a9 = onMapCallBack2.getString("shopOpen");
+                        String a10 = onMapCallBack2.getString("shopClose");
+                        String a11 = onMapCallBack2.getString("shopTheme1");
+                        String a12 = onMapCallBack2.getString("shopTheme2");
+                        String a13 = onMapCallBack2.getString("shopTheme3");
+                        String a14 = onMapCallBack2.getString("shopTheme4");
+                        String a15 = onMapCallBack2.getString("shopTheme5");
+                        String a16 = onMapCallBack2.getString("callNumber");
+                        Log.d("MainSearch_onMapReady2", "2 - a1 :" + a1);
+                        Log.d("MainSearch_onMapReady2", "2 - a3 :" + a3);
+                        Log.d("MainSearch_onMapReady2", "2 - a4 :" + a4);
+
+
+                        String websiteNullCheck = onMapCallBack2.getString("webSite");
+
+                        SharedPreferenceUtil pref = new SharedPreferenceUtil(Main.this);
+
+                        pref.setSharedData("ID" + markerTag, onMapCallBack2.getString("id"));
+                        pref.setSharedData("TITLE" + markerTag, onMapCallBack2.getString("shopName"));
+                        pref.setSharedData("ADDRESS" + markerTag, onMapCallBack2.getString("address"));
+                        pref.setSharedData("LAT" + markerTag, onMapCallBack2.getString("latitude"));
+                        pref.setSharedData("LNG" + markerTag, onMapCallBack2.getString("longtitude"));
+                        pref.setSharedData("V_SW_LAT" + markerTag, onMapCallBack2.getString("viewportSouthWestLat"));
+                        pref.setSharedData("V_SW_LNG" + markerTag, onMapCallBack2.getString("viewportSouthWestLng"));
+                        pref.setSharedData("V_NE_LAT" + markerTag, onMapCallBack2.getString("viewportNorthEastLat"));
+                        pref.setSharedData("V_NE_LNG" + markerTag, onMapCallBack2.getString("viewportNorthEastLng"));
+                        pref.setSharedData("OPEN" + markerTag, onMapCallBack2.getString("shopOpen"));
+                        pref.setSharedData("CLOSE" + markerTag, onMapCallBack2.getString("shopClose"));
+                        pref.setSharedData("MARKERTAG" + markerTag, onMapCallBack2.getString("shopClose"));
+                        pref.setSharedData("THEME1" + markerTag, onMapCallBack2.getString("shopTheme1"));
+                        pref.setSharedData("THEME2" + markerTag, onMapCallBack2.getString("shopTheme2"));
+                        pref.setSharedData("THEME3" + markerTag, onMapCallBack2.getString("shopTheme3"));
+                        pref.setSharedData("THEME4" + markerTag, onMapCallBack2.getString("shopTheme4"));
+                        pref.setSharedData("THEME5" + markerTag, onMapCallBack2.getString("shopTheme5"));
+                        pref.setSharedData("CALL" + markerTag, onMapCallBack2.getString("callNumber"));
+                        pref.setSharedData("TAG" + markerTag, String.valueOf(i));
+                        if (onMapCallBack2.getString("webSite").isEmpty()) {
+                            pref.setSharedData("WEB" + markerTag, "");
+                        } else {
+                            pref.setSharedData("WEB" + markerTag, onMapCallBack2.getString("webSite"));
+                        }
+                        mMap2.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                            @Override
+                            public void onInfoWindowClick(Marker marker) {
+                                String markerId = String.valueOf(marker.getTag());
+
+                                Log.d("MainSearch_onMapReady2", "marker.getTag() :" + markerId);
+                                SharedPreferenceUtil pref = new SharedPreferenceUtil(Main.this);
+                                pref.setSharedData("TAG", markerId);
+                                Intent intent = new Intent(Main.this, ShopDetail_Main.class);
+                                intent.putExtra("TAG", String.valueOf(marker.getTag()));
+                                startActivity(intent);
+                            }
+                        });
+
+                    }
+
+                    Log.d("MainSearch_onMapReady2", "connLength : " + fixJSON.length());
+
+
+                } catch (InterruptedException | ExecutionException | TimeoutException | JSONException e) {
+                    e.printStackTrace();
+                    Log.d("MainSearch_onMapReady2", "catch");
+
+                }
+                builder.dismiss();
+            }
+        };
     }
 
     private void defineBottomNavi() {
 
         BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
                 = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
@@ -375,34 +1067,40 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                         nearbyLinear.setVisibility(View.VISIBLE);
                         searchLinear.setVisibility(View.GONE);
                         meLinear.setVisibility(View.GONE);
-                        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                                .findFragmentById(R.id.mapView);
-                        mapFragment.getMapAsync(Main.this);
+
                         return true;
                     case R.id.navigation_search:
                         nearbyLinear.setVisibility(View.GONE);
                         searchLinear.setVisibility(View.VISIBLE);
                         meLinear.setVisibility(View.GONE);
 
-                        mMapFragment = MapFragment.newInstance();
-                        FragmentTransaction fragmentTransaction =
-                                getFragmentManager().beginTransaction();
-                        fragmentTransaction.add(R.id.searchLinear, mMapFragment);
-                        fragmentTransaction.commit();
-                        MapFragment searchFragment = (MapFragment) getFragmentManager()
-                                .findFragmentById(R.id.searchMap);
-                        Main_Search inst = new Main_Search(Main.this);
-                        searchFragment.getMapAsync(inst);
 
-                        floatingSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
+                        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
-                            public void onSearchTextChanged(String oldQuery, final String newQuery) {
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+                                switch (menuItem.getItemId()) {
 
-                                //get suggestions based on newQuery
-                                //pass them on to the search view
-                                floatingSearchView.swapSuggestions(new ArrayList<SearchSuggestion>());
+                                    case R.id.navigation_search: {
+                                        Log.d("MainSearch_onMapReady2", "Switch onMenuItemClick - onMapReadyCallback2");
+                                        Log.d("MainSearch_onMapReady2", "Switch onMenuItemClick - mMap2.getProjection().getVisibleRegion()" + mMap2.getProjection().getVisibleRegion());
+                                        onMapReadyCallback2().onMapReady(mMap2);
+
+                                    }
+                                }
+
+                                return false;
                             }
                         });
+
+//                      mainMeSearchLocation.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
+//                            @Override
+//                            public void onSearchTextChanged(String oldQuery, final String newQuery) {
+//
+//                                //get suggestions based on newQuery
+//                                //pass them on to the search view
+//                                mainMeSearchLocation.swapSuggestions(new ArrayList<SearchSuggestion>());
+//                            }
+//                        });
 
 
                         return true;
@@ -490,9 +1188,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 */
 
 
-
-            
-            
         }
 
     }
@@ -523,8 +1218,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
             Log.d("ASYNCMyFeed", "conn : " + conn);
 
             *//**
-             * reviewDefault Parsing
-             *//*
+     * reviewDefault Parsing
+     *//*
 
             JSONArray myFeedReviewParsing = conn.getJSONArray("reviewDefault");
             Log.d("ASYNCMyFeed_REVIEW", "myFeedReviewParsing : " + myFeedReviewParsing);
@@ -645,8 +1340,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
 
             *//**
-             *  questionDefault Parsing
-             *//*
+     *  questionDefault Parsing
+     *//*
 
             MainMe_MyFeed_Question_Adapter questionAdapter = new MainMe_MyFeed_Question_Adapter(this, questionArrayData);
             LinearLayoutManager mainMeMyQuestionLayoutManager = new LinearLayoutManager(this);
@@ -722,9 +1417,11 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
             questionAdapter.notifyDataSetChanged();
 
 
-            *//**
-             *  tipDefault Parsing
-             *//*
+            */
+
+    /**
+     * tipDefault Parsing
+     *//*
 
 
             JSONArray myFeedTipParsing = conn.getJSONArray("tipDefault");
@@ -759,8 +1456,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
     }
     */
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -927,12 +1622,20 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
         String checkAddress = getAddress(myPosition_lat, myPosition_lng);
         ArrayList<String> check = new ArrayList<>();
-        check.add(0, checkAddress);
-        if(!check.get(0).equals("")) {
+        check.add(0, String.valueOf(checkAddress));
+        if (!check.get(0).equals("null")) {
             String[] splitAddress = checkAddress.split(" ", 0);
+            LOCATION_ADDRESS = "";
             for (int a = 0; a < splitAddress.length; a++) {
                 Log.d("MYLOG", "Address Split :" + splitAddress[a]);
+                if (a >= 2) {
+                    LOCATION_ADDRESS += splitAddress[a] + " ";
+                }
             }
+            Log.d("MYLOG", "Adress Result(LOCATION_ADDRESS :" + LOCATION_ADDRESS);
+            mainMeSearchLocation.setMarkdownText("{fa-map-pin} Location : " + LOCATION_ADDRESS);
+        } else {
+            mainMeSearchLocation.setMarkdownText("{fa-map-pin} Location : 현재위치를 확인 할 수 없습니다. 잠시 후 재시도 합니다.");
         }
         check.clear();
 
@@ -1076,9 +1779,9 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode != RESULT_OK) {
-            return;
-        }
+//        if (resultCode != RESULT_OK) {
+//            return;
+//        }
 
         switch (requestCode) {
 
@@ -1162,8 +1865,131 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
                 break;
             }
-
         }
+
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+
+
+                Place place = PlacePicker.getPlace(this, data);
+
+                List<Integer> placeTypes = place.getPlaceTypes();
+                Iterator<Integer> iterator = placeTypes.iterator();
+                int i = 0;
+
+                String strPlace = String.valueOf(place);
+                String[] splitStrPlace = strPlace.split("=", 0);
+
+
+                String aSplitStrPlace7 = splitStrPlace[7];
+                String bSplitStrPlace7 = splitStrPlace[7];
+                Log.e("Main.class" + "--- aSplitStrPlace7", aSplitStrPlace7);
+                Log.e("Main.class" + "--- bSplitStrPlace7", bSplitStrPlace7);
+
+                aSplitStrPlace7.lastIndexOf("(");
+                String[] arraySplitStrPlace7 = aSplitStrPlace7.split(",", 0);
+                Log.e("Main.class" + "1-1 > String[] arraySplitStrPlace7[0]", arraySplitStrPlace7[0]);
+                Log.e("Main.class" + "2-1 > String[] arraySplitStrPlace7[1]", arraySplitStrPlace7[1]);
+
+                arraySplitStrPlace7[0].indexOf("(");
+                arraySplitStrPlace7[1].lastIndexOf(")");
+                Log.e("Main.class" + "1-2 > String[] arraySplitStrPlace7[0]", arraySplitStrPlace7[0]);
+                Log.e("Main.class" + "2-2 > String[] arraySplitStrPlace7[1]", arraySplitStrPlace7[1]);
+
+
+                /**
+                 * Split, Lat, Lng
+                 */
+
+                String a0 = arraySplitStrPlace7[0];
+                String a1 = arraySplitStrPlace7[1];
+                String[] aa0 = a0.split("\\(");
+                String[] aa1 = a1.split("\\)");
+                Log.e("Main.class" + "defaultShopID -> aa0[0]", aa0[0]);
+                Log.e("Main.class" + "defaultShopID -> aa0[1]", aa0[1] + "\n");
+                Log.e("Main.class" + "defaultTitle -> aa0[0]", aa1[0]);
+
+                //Lat Lng Result
+                String lat = aa0[1];
+                String lng = aa1[0];
+
+
+                /**
+                 * Split, Viewport (SowthWest, NorthEast)
+                 */
+                getViewport = String.valueOf(place.getViewport());  // LatLngBounds{southwest=lat/lng: (37.481807019708505,126.97248441970851), northeast=lat/lng: (37.4845049802915,126.97518238029149)}
+                Log.e("Main.class" + "ViewPort Split", String.valueOf(getViewport));
+
+                String[] vpSplit = getViewport.split("\\)", 0);  //
+                Log.e("Main.class" + "ViewPort Split", String.valueOf(vpSplit[0]));    // LatLngBounds{southwest=lat/lng: (37.481807019708505,126.97248441970851
+                Log.e("Main.class" + "ViewPort Split", String.valueOf(vpSplit[1]));    // , northeast=lat/lng: (37.4845049802915,126.97518238029149
+
+                String[] vpSWSplit1 = vpSplit[0].split("\\(", 0);
+                String[] vpNESplit1 = vpSplit[1].split("\\(", 0);
+
+                String[] vpSWSplit2 = vpSWSplit1[1].split(",", 0);
+                String[] vpNESplit2 = vpNESplit1[1].split(",", 0);
+
+
+                // Viewport Result
+                String vpSWSplitResultLat = vpSWSplit2[0];
+                String vpSWSplitResultLng = vpSWSplit2[1];
+                String vpNESplitResultLat = vpNESplit2[0];
+                String vpNESplitResultLng = vpNESplit2[1];
+
+                SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
+
+                pref.setSharedData("SEARCH_Lat", lat);
+                pref.setSharedData("SEARCH_Lng", lng);
+                pref.setSharedData("SEARCH_SW_Lat", vpSWSplitResultLat);
+                pref.setSharedData("SEARCH_SW_Lng", vpSWSplitResultLng);
+                pref.setSharedData("SEARCH_NE_Lat", vpNESplitResultLat);
+                pref.setSharedData("SEARCH_NE_Lng", vpNESplitResultLng);
+
+
+                Log.e("Main.class" + "VIEWPORT, SW 1 ", vpSWSplit2[0]);
+                Log.e("Main.class" + "VIEWPORT, SW 2 ", vpSWSplit2[1]);
+                Log.e("Main.class" + "VIEWPORT, NE 1 ", vpNESplit2[0]);
+                Log.e("Main.class" + "VIEWPORT, NE 2 ", vpNESplit2[1]);
+
+                Log.i("Main.class" + "SEARCH", "place.toString():" + place.toString());
+                Log.i("Main.class" + "SEARCH", "place.getId():" + place.getId());
+                Log.i("Main.class" + "SEARCH", "place.getAddress():" + place.getAddress());
+                Log.i("Main.class" + "SEARCH", "place.getAttributions():" + place.getAttributions());
+                Log.i("Main.class" + "SEARCH", "place.getLatLng():" + place.getLatLng());
+                Log.i("Main.class" + "SEARCH", "place.getLocale():" + place.getLocale());
+                Log.i("Main.class" + "SEARCH", "place.getName():" + place.getName());
+                Log.i("Main.class" + "SEARCH", "place.getPhoneNumber():" + place.getPhoneNumber());
+                Log.i("Main.class" + "SEARCH", "place.getViewport():" + place.getViewport());
+
+                getId = place.getId();
+                getPriceLevel = place.getPriceLevel();
+
+
+                PlaceSelectionListener mPlaceListener = new PlaceSelectionListener() {
+                    @Override
+                    public void onPlaceSelected(Place place) {
+
+                        Log.i("Main.class" + "SEARCH", "onPlaceSelected");
+
+
+                    }
+
+                    @Override
+                    public void onError(Status status) {
+                        Log.i("Main.class" + "SEARCH", "onError");
+                    }
+                };
+                mPlaceListener.onPlaceSelected(place);
+
+            } else if (resultCode == RESULT_CANCELED) {
+
+                Log.d("Main", "Searching, RESULT CANCELED");
+
+            }
+
+        }   // Searching Place IntentBuilder
+
     }
 
 
@@ -1291,6 +2117,19 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
     }
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public Filter getFilter() {
+
+        Log.d("addTextChangedListener", "getFilter - ENTER");
+
+        return null;
+    }
+
 
     public class filePathThread extends Thread {
 
@@ -1372,6 +2211,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         super.onStop();
         Log.d("LifeCycle", "onStop - Enter");
 
+
     }
 
     /**
@@ -1401,6 +2241,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
     @Override
     public void onMapReady(GoogleMap map) {
+/*
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -1411,10 +2252,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-
-        ProgressWheel dial = new ProgressWheel(this);
-        dial.setBackgroundColor(Color.WHITE);
-        dial.spin();
 
 
         SharedPreferenceUtil preferenceUtil = new SharedPreferenceUtil(this);
@@ -1427,6 +2264,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
 
         mMap = map;
+        mMap.clear(); // CLEAR!
         mMap.setMyLocationEnabled(true);
 
 
@@ -1501,6 +2339,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                         .title(item2.getString("shopName"))
                         .snippet("SHOP OPEN : " + item2.getString("shopOpen") + "\nSHOP CLOSE : " + item2.getString("shopClose"));
                 Marker marker = mMap.addMarker(markerOptions);
+
                 marker.setTag(i);
                 String markerTag = String.valueOf(marker.getTag());
                 String a0 = item2.getString("id");
@@ -1574,8 +2413,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
             Log.d("maintest", "catch");
 
         }
+*/
 
-        dial.stopSpinning();
 
     }
 
@@ -1590,7 +2429,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
             Log.d("MARKER_TAG", "marker.getTag() :" + markerId);
             SharedPreferenceUtil pref = new SharedPreferenceUtil(Main.this);
-            pref.setSharedData  ("TAG", markerId);
+            pref.setSharedData("TAG", markerId);
             Intent intent = new Intent(Main.this, ShopDetail_Main.class);
             intent.putExtra("TAG", String.valueOf(marker.getTag()));
             startActivity(intent);
@@ -1708,4 +2547,141 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         }
 
     }
+
+    public static class AsyncMainNearbyLatLngReceive_MainSearch extends AsyncTask<Void, Integer, StringBuilder> {
+        public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
+        private String urlString;
+        private String params = "";
+        String TestVAR;
+        private MaterialDialog builder;
+        Context mContext;
+        StringBuilder jsonHtml;
+
+        AsyncMainNearbyLatLngReceive_MainSearch(String urlString, Context mContext) {
+            this.urlString = urlString;
+            this.mContext = mContext;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            builder = new MaterialDialog.Builder(mContext)
+                    .title("Connecting")
+                    .content("loading..")
+                    .progressIndeterminateStyle(true)
+                    .show();
+        }
+
+        @Override
+        protected StringBuilder doInBackground(Void... params) {
+            // TODO Auto-generated method stub
+
+            jsonHtml = new StringBuilder();
+            JSONArray jsonArray;
+            try {
+                URL phpUrl = new URL(urlString);
+                Log.d("MainSearch_onMapReady", "URL:" + urlString);
+
+                HttpURLConnection http = (HttpURLConnection) phpUrl.openConnection();
+                // 전송모드 설정(일반적인 POST방식)
+                http.setDefaultUseCaches(false);
+                http.setDoInput(true);
+                http.setDoOutput(true);
+                http.setRequestMethod("POST");
+
+                // content-type 설정
+                http.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
+
+                // 전송값 설정
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("lat_start").append("=").append(MAIN_SEARCH_LOCATION_NEAR_RIGHT_LAT).append("&");
+                buffer.append("lat_end").append("=").append(MAIN_SEARCH_LOCATION_FAR_LEFT_LAT).append("&");
+                buffer.append("lng_start").append("=").append(MAIN_SEARCH_LOCATION_FAR_LEFT_LNG).append("&");
+                buffer.append("lng_end").append("=").append(MAIN_SEARCH_LOCATION_NEAR_RIGHT_LNG).append("&");
+                buffer.append("placetype").append("=").append(USER_SELECT_PLACETYPE);
+
+                Log.d("MainSearch_onMapReady", "lat_start:" + MAIN_SEARCH_LOCATION_NEAR_RIGHT_LAT);
+                Log.d("MainSearch_onMapReady", "lat_end:" + MAIN_SEARCH_LOCATION_FAR_LEFT_LAT);
+                Log.d("MainSearch_onMapReady", "lng_start:" + MAIN_SEARCH_LOCATION_FAR_LEFT_LNG);
+                Log.d("MainSearch_onMapReady", "lng_end:" + MAIN_SEARCH_LOCATION_NEAR_RIGHT_LNG);
+                Log.d("MainSearch_onMapReady", "placetype:" + USER_SELECT_PLACETYPE);
+                // 서버로 전송
+                OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "UTF-8");
+                PrintWriter writer = new PrintWriter(outStream);
+                writer.write(buffer.toString());
+                writer.flush();
+                // 전송 결과값 받기
+                InputStreamReader inputStream = new InputStreamReader(http.getInputStream(), "UTF-8");
+                BufferedReader bufferReader = new BufferedReader(inputStream);
+                StringBuilder builder = new StringBuilder();
+                String str;
+                while ((str = bufferReader.readLine()) != null) {
+                    builder.append(str + "\n");
+                }
+                String result = builder.toString();
+                Log.d("MainSearch_onMapReady", "전송결과 : " + result);
+                jsonHtml = builder;
+                jsonHtml.toString().trim();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Log.e("MainSearch_onMapReady", "jsonHtml - " + jsonHtml);
+            try {
+                int i = 0;
+                Log.e("MainSearch_onMapReady", "jsonHtml - " + jsonHtml);
+                JSONObject jObject = new JSONObject(String.valueOf(jsonHtml));
+                jsonArray = jObject.getJSONArray("realreview");
+                JSONObject item = jsonArray.getJSONObject(i);
+                int length = jsonArray.length();
+
+                Log.d("MainSearch_onMapReady", "JSONObject jOcject:" + jObject);
+                Log.d("MainSearch_onMapReady", "JSONArray jsonArray :" + jsonArray);
+                Log.d("MainSearch_onMapReady", "JSONObject item:" + item);
+
+                Log.d("MainSearch_onMapReady", "JSONObject jOcject Length:" + jObject.length());
+                Log.d("MainSearch_onMapReady", "JSONArray jsonArray Length :" + jsonArray.length());
+                Log.d("MainSearch_onMapReady", "JSONArray jsonArray Length :" + item.length());
+
+/*
+                String getId = item.getString("id");
+                String getAddress = item.getString("address");
+                String getLat = item.getString("latitude");
+                String getLng = item.getString("longtitude");
+                String getviewportSouthWestLat = item.getString("viewportSouthWestLat");
+                String getViewportSouthWestLng = item.getString("viewportSouthWestLng");
+                String getViewportNorthEastLat = item.getString("viewportNorthEastLat");
+                String getViewportNorthEastLng = item.getString("viewportNorthEastLng");
+                String getShopName = item.getString("shopName");
+                String getShopOpen = item.getString("shopOpen");
+                String getShopClose = item.getString("shopClose");
+                String getShopTheme1 = item.getString("shopTheme1");
+                String getShopTheme2 = item.getString("shopTheme2");
+                String getShopTheme3 = item.getString("shopTheme3");
+                String getShopTheme4 = item.getString("shopTheme4");
+                String getShopTheme5 = item.getString("shopTheme5");
+                String getCallNumber = item.getString("callNumber");
+                String getIndexShopAdd = item.getString("indexShopAdd");
+                String getPermanentlyClosed = item.getString("permanentlyClosed");
+                String getPriceLevel = item.getString("priceLevel");
+
+                */
+                HTTP_RECEIVE_SHOPDATA = jsonHtml;
+
+            } catch (JSONException e) {
+                Log.d("MainSearch_onMapReady", "AsyncMainNearbyLatLngReceive_MainSearch CATCH");
+
+                e.printStackTrace();
+            }
+            return jsonHtml;
+        }
+
+        @Override
+        protected void onPostExecute(StringBuilder result) {
+            if (builder.isShowing()) builder.dismiss();
+        }
+
+    }
+
+
 }

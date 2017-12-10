@@ -54,14 +54,16 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
-                        <TextView
+                        <com.beardedhen.androidbootstrap.AwesomeTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:text="> 내 주변 추천 장소는?"
-                            android:textColor="#000000"
-                            android:textSize="17dp"
-                            android:textStyle="bold" />
+                            app:bootstrapText="{ty_arrow_move} 어디 가고 싶으세요?"
+                            app:typicon="ty_arrow_move"
+                            app:bootstrapBrand="primary"
+                            android:textStyle="bold"
+                            android:textAlignment="viewStart"
+                            />
 
                         <!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"-->
                         <!--android:name="com.google.android.gms.maps.MapFragment"-->
@@ -69,15 +71,14 @@
                         <!--android:layout_width="match_parent"-->
                         <!--android:layout_height="200dp"/>-->
 
-
+<!--
                         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                             xmlns:tools="http://schemas.android.com/tools"
                             android:id="@+id/mapView"
-                            android:name="com.google.android.gms.maps.SupportMapFragment"
-                            class="com.google.android.gms.maps.SupportMapFragment"
+                            android:name="com.google.android.gms.maps.MapFragment"
                             android:layout_width="match_parent"
                             android:layout_height="300dp"
-                            tools:context=".activity.Main" />
+                            tools:context=".activity.Main_Search" />-->
 
                         <!--<com.google.android.gms.maps.MapView-->
                         <!--android:id="@+id/mapView"-->
@@ -88,7 +89,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        >
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -133,13 +135,19 @@
 
                         </LinearLayout>
 
-                        <Button
+                        <com.beardedhen.androidbootstrap.BootstrapButton
                             android:id="@+id/nearbyShopAdd"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/border_alpha"
-                            android:text="가게 등록 신청하기" />
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignTop="@id/navigation"
+                            app:bootstrapBrand="regular"
+                            app:bootstrapSize="md"
+                            app:roundedCorners="false"
+                            app:buttonMode="regular"
+                            app:showOutline="false"
+                            app:bootstrapText="{fa-home} 우리동네 상점등록"
+                             />
 
 
                     </LinearLayout>
@@ -151,49 +159,68 @@
 
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/searchLinear"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ff0000"
+                android:orientation="vertical">
+
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:id="@+id/mainMeSearchLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:paddingLeft="15dp"
+                    android:textAlignment="viewStart"
+                    app:bootstrapBrand="primary"
+                    app:bootstrapSize="md"
+                    app:bootstrapText="{fa-map-pin} Location : "
+                    app:buttonMode="regular"
+                    app:roundedCorners="true"
+                    app:showOutline="false" />
+
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:id="@+id/mainMeSearchPlaceType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:textAlignment="viewStart"
+                    app:bootstrapBrand="primary"
+                    app:bootstrapSize="md"
+                    app:bootstrapText="{fa-map-signs} 원하는 장소타입 설정하기"
+                    app:buttonMode="regular"
+                    app:roundedCorners="true"
+                    app:showOutline="false" />
+
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/mainMeSearchPlaceTypeLV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/bootstrap_brand_secondary_border"
+                android:visibility="gone"
+
+                >
+
+            </ListView>
+
             <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/searchMap"
-                android:name="com.google.android.gms.maps.MapFragment"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context=".activity.Main" />
-
-            <!--android:name="com.google.android.gms.maps.MapFragment"-->
-
-            <com.arlib.floatingsearchview.FloatingSearchView
-                android:id="@+id/floating_search_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@id/floating_search_view2"
-                app:floatingSearch_close_search_on_keyboard_dismiss="true"
-                app:floatingSearch_leftActionMode="showSearch"
-                app:floatingSearch_menu="@menu/main_search"
-                app:floatingSearch_searchHint="Search Shop Type"
-                app:floatingSearch_showMenuAction="true"
-                app:floatingSearch_showSearchKey="false"
-                app:floatingSearch_suggestionsListAnimDuration="200" />
+                android:layout_height="match_parent" />
 
 
-            <com.arlib.floatingsearchview.FloatingSearchView
-                android:id="@+id/floating_search_view2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:floatingSearch_close_search_on_keyboard_dismiss="true"
-                app:floatingSearch_leftActionMode="showSearch"
-                app:floatingSearch_menu="@menu/main_search"
-                app:floatingSearch_searchHint="Search Shop Type"
-                app:floatingSearch_showMenuAction="true"
-                app:floatingSearch_showSearchKey="false"
-                app:floatingSearch_suggestionsListAnimDuration="200" />
-
-        </RelativeLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/meLinear"
@@ -205,8 +232,7 @@
             <android.support.v4.widget.NestedScrollView
                 android:id="@+id/meScrollView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
+                android:layout_height="match_parent">
 
 
                 <LinearLayout
@@ -218,16 +244,13 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="300dp"
-
-                        >
+                        android:layout_height="300dp">
 
                         <ImageView
                             android:id="@+id/meProfileImage"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            />
+                            android:layout_gravity="center" />
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -244,12 +267,12 @@
                             android:layout_height="wrap_content"
                             android:layout_above="@+id/meProfileUserId"
                             android:layout_alignParentEnd="true"
+                            android:layout_marginLeft="10dp"
                             android:text="UserNICK"
-                            android:textStyle="bold"
                             android:textAlignment="textStart"
                             android:textColor="#ffffff"
                             android:textSize="30sp"
-                            android:layout_marginLeft="10dp"/>
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/meProfileUserId"
@@ -323,7 +346,6 @@
                     </RelativeLayout>
 
 
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -334,143 +356,139 @@
                             android:id="@+id/mainMeBtnReview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:bootstrapText="{fa-commenting}    Reviews"
-                            android:textAlignment="textStart"
-                            app:bootstrapSize="xl"
-                            app:bootstrapBrand="secondary"
-                            app:roundedCorners="false"
-                            app:buttonMode="regular"
-                            app:showOutline="false"
                             android:layout_marginBottom="1dp"
-                            />
+                            android:textAlignment="textStart"
+                            app:bootstrapBrand="secondary"
+                            app:bootstrapSize="xl"
+                            app:bootstrapText="{fa-commenting}    Reviews"
+                            app:buttonMode="regular"
+                            app:roundedCorners="false"
+                            app:showOutline="false" />
 
                         <com.beardedhen.androidbootstrap.BootstrapButton
                             android:id="@+id/mainMeBtnQuestion"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:bootstrapText="{fa-question-circle}    Question"
-                            android:textAlignment="textStart"
-                            app:bootstrapSize="xl"
-                            app:bootstrapBrand="secondary"
-                            app:roundedCorners="false"
                             android:layout_marginBottom="1dp"
+                            android:textAlignment="textStart"
+                            app:bootstrapBrand="secondary"
+                            app:bootstrapSize="xl"
+                            app:bootstrapText="{fa-question-circle}    Question"
                             app:buttonMode="regular"
-                            app:showOutline="false"
-                            />
+                            app:roundedCorners="false"
+                            app:showOutline="false" />
 
                         <com.beardedhen.androidbootstrap.BootstrapButton
                             android:id="@+id/mainMeBtnTip"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:bootstrapText="{fa-tags}    Tip"
-                            android:textAlignment="textStart"
-                            app:bootstrapSize="xl"
-                            app:bootstrapBrand="secondary"
                             android:layout_marginBottom="1dp"
-                            app:roundedCorners="false"
+                            android:textAlignment="textStart"
+                            app:bootstrapBrand="secondary"
+                            app:bootstrapSize="xl"
+                            app:bootstrapText="{fa-tags}    Tip"
                             app:buttonMode="regular"
-                            app:showOutline="false"
-                            />
+                            app:roundedCorners="false"
+                            app:showOutline="false" />
 
                         <com.beardedhen.androidbootstrap.BootstrapButton
                             android:id="@+id/mainMeBtnBookmark"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:bootstrapText="{fa-bookmark}    Bookmark"
                             android:textAlignment="textStart"
+                            app:bootstrapBrand="secondary"
                             app:bootstrapSize="xl"
-                            app:bootstrapBrand="secondary"
-                            app:roundedCorners="false"
+                            app:bootstrapText="{fa-bookmark}    Bookmark"
                             app:buttonMode="regular"
-                            app:showOutline="false"
-                            />
+                            app:roundedCorners="false"
+                            app:showOutline="false" />
 
                     </LinearLayout>
-<!--
-                    <LinearLayout
-                        android:id="@+id/mainMeReviewLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#62aaaaaa"
-                        android:orientation="vertical">
+                    <!--
+                                        <LinearLayout
+                                            android:id="@+id/mainMeReviewLayout"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:background="#62aaaaaa"
+                                            android:orientation="vertical">
 
 
-                        <com.beardedhen.androidbootstrap.AwesomeTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="10dp"
-                            android:textAlignment="textStart"
-                            android:textColor="#000000"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            app:bootstrapBrand="secondary"
-                            app:bootstrapText="{fa-rss} MY REVIEW" />
+                                            <com.beardedhen.androidbootstrap.AwesomeTextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="10dp"
+                                                android:layout_marginTop="10dp"
+                                                android:textAlignment="textStart"
+                                                android:textColor="#000000"
+                                                android:textSize="20sp"
+                                                android:textStyle="bold"
+                                                app:bootstrapBrand="secondary"
+                                                app:bootstrapText="{fa-rss} MY REVIEW" />
 
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/mainMeMyFeedRV"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                                            <android.support.v7.widget.RecyclerView
+                                                android:id="@+id/mainMeMyFeedRV"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
 
-                            />
+                                                />
 
-                    </LinearLayout>
+                                        </LinearLayout>
 
-                            <LinearLayout
-                                android:id="@+id/mainMeQuestionLayout"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="#62aaaaaa"
-                                android:orientation="vertical">
-
-
-                                <com.beardedhen.androidbootstrap.AwesomeTextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginTop="10dp"
-                                    android:textAlignment="textStart"
-                                    android:textColor="#000000"
-                                    android:textSize="20sp"
-                                    android:textStyle="bold"
-                                    app:bootstrapBrand="secondary"
-                                    app:bootstrapText="{fa-question-circle} MY QUESTION" />
-
-                                <android.support.v7.widget.RecyclerView
-                                    android:id="@+id/mainMeQuestionRV"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="1dp" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/mainMeTipLayout"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="#62aaaaaa"
-                                android:orientation="vertical">
+                                                <LinearLayout
+                                                    android:id="@+id/mainMeQuestionLayout"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:background="#62aaaaaa"
+                                                    android:orientation="vertical">
 
 
-                                <com.beardedhen.androidbootstrap.AwesomeTextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginTop="10dp"
-                                    android:textAlignment="textStart"
-                                    android:textColor="#000000"
-                                    android:textSize="20sp"
-                                    android:textStyle="bold"
-                                    app:bootstrapBrand="secondary"
-                                    app:bootstrapText="{fa-tags} MY TIP" />
+                                                    <com.beardedhen.androidbootstrap.AwesomeTextView
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_marginLeft="10dp"
+                                                        android:layout_marginTop="10dp"
+                                                        android:textAlignment="textStart"
+                                                        android:textColor="#000000"
+                                                        android:textSize="20sp"
+                                                        android:textStyle="bold"
+                                                        app:bootstrapBrand="secondary"
+                                                        app:bootstrapText="{fa-question-circle} MY QUESTION" />
 
-                                <android.support.v7.widget.RecyclerView
-                                    android:id="@+id/mainMeTipRV"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="1dp" />
+                                                    <android.support.v7.widget.RecyclerView
+                                                        android:id="@+id/mainMeQuestionRV"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_marginTop="1dp" />
 
-                            </LinearLayout>-->
+                                                </LinearLayout>
+
+                                                <LinearLayout
+                                                    android:id="@+id/mainMeTipLayout"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:background="#62aaaaaa"
+                                                    android:orientation="vertical">
+
+
+                                                    <com.beardedhen.androidbootstrap.AwesomeTextView
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_marginLeft="10dp"
+                                                        android:layout_marginTop="10dp"
+                                                        android:textAlignment="textStart"
+                                                        android:textColor="#000000"
+                                                        android:textSize="20sp"
+                                                        android:textStyle="bold"
+                                                        app:bootstrapBrand="secondary"
+                                                        app:bootstrapText="{fa-tags} MY TIP" />
+
+                                                    <android.support.v7.widget.RecyclerView
+                                                        android:id="@+id/mainMeTipRV"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_marginTop="1dp" />
+
+                                                </LinearLayout>-->
 
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
