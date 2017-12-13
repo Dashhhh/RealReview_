@@ -16,6 +16,7 @@ import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Answer_Viewing_Adapter;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Answer_Viewing_Set;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
+import com.teamnova.ej.realreview.util.TransDateToSimple;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,7 +51,11 @@ public class ShopDetail_Answer_Viewing extends AppCompatActivity {
 
         init();
         listener();
-        initializingData();
+        try {
+            initializingData();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         adaptingData();
 
     }
@@ -72,7 +77,7 @@ public class ShopDetail_Answer_Viewing extends AppCompatActivity {
 
     }
 
-    private void initializingData() {
+    private void initializingData() throws JSONException {
 
         Bundle bundle = getIntent().getExtras();
         iNick = bundle.getString("nick");
@@ -83,6 +88,8 @@ public class ShopDetail_Answer_Viewing extends AppCompatActivity {
         iFollowerCnt = bundle.getString("followerCnt");
         iReviewCnt = bundle.getString("reviewCnt");
         iImageCnt = bundle.getString("imageCnt");
+
+
         Log.d("SeeAll", "iNick :" + iNick);
         Log.d("SeeAll", "iShopId :" + iShopId);
         Log.d("SeeAll", "iQuestionIdx :" + iQuestionIdx);
@@ -98,6 +105,9 @@ public class ShopDetail_Answer_Viewing extends AppCompatActivity {
         questionViewRegdate.setText(iRegdate);
         questionViewUserNick.setText(iNick);
         questionViewText.setText(iQuestion);
+        questionViewUserFollower.setText(iFollowerCnt);
+        questionViewReviewCount.setText(iReviewCnt);
+        questionViewImageCount.setText(iImageCnt);
 
 
     }
@@ -149,8 +159,31 @@ public class ShopDetail_Answer_Viewing extends AppCompatActivity {
                 String user_id = jsonObject.getString("user_id");
                 String replycount = jsonObject.getString("replycount");
                 String answer = jsonObject.getString("answer");
+                String follower_cnt = jsonObject.getString("follower_cnt");
+                String review_cnt = jsonObject.getString("review_cnt");
+                String image_cnt = jsonObject.getString("image_cnt");
+                TransDateToSimple transDate = new TransDateToSimple();
 
-                ShopDetail_Answer_Viewing_Set dataSet = new ShopDetail_Answer_Viewing_Set(type, idx, nick_imagepath, regdate, question_idx, nick, shop_id, user_id, answer, replycount);
+                String simpleDate = transDate.trans(jsonObject.getJSONObject("datediff"));
+                Log.d("SimpleDateCheck", "Before Parsing -  jsonObject1.getJSONObject(\"datediff\"):" + jsonObject.getJSONObject("datediff"));
+                Log.d("SimpleDateCheck", "After Parsing - simpleDate :" + simpleDate);
+
+
+                ShopDetail_Answer_Viewing_Set dataSet = new ShopDetail_Answer_Viewing_Set(
+                        type,
+                        idx,
+                        nick_imagepath,
+                        simpleDate,
+                        question_idx,
+                        nick,
+                        shop_id,
+                        user_id,
+                        answer,
+                        replycount,
+                        follower_cnt,
+                        review_cnt,
+                        image_cnt
+                );
                 data.add(dataSet);
 
 

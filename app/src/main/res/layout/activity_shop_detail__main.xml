@@ -218,38 +218,45 @@
                         android:id="@+id/shopDetailTopAddPhoto"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        app:bootstrapBrand="regular"
-                        app:bootstrapSize="md"
-                        app:bootstrapText="{fa-camera}\nAdd Photo"
-                        app:buttonMode="regular"
-                        app:roundedCorners="true"
-                        app:showOutline="true" />
-
-                    <com.beardedhen.androidbootstrap.BootstrapButton
-                        android:id="@+id/shopDetailCheckin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="1dp"
+                        android:layout_marginLeft="3dp"
                         android:layout_marginRight="1dp"
                         android:layout_weight="1"
-                        android:background="@drawable/shopdetail_check"
                         app:bootstrapBrand="regular"
                         app:bootstrapSize="md"
-                        app:bootstrapText="{fa_certificate}\nCheck-In"
+                        app:bootstrapText="{fa-camera} Add Photo"
                         app:buttonMode="regular"
                         app:roundedCorners="true"
                         app:showOutline="true" />
+                    <!--
 
+                                        <com.beardedhen.androidbootstrap.BootstrapButton
+                                            android:id="@+id/shopDetailCheckin"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginLeft="1dp"
+                                            android:layout_marginRight="1dp"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/shopdetail_check"
+                                            app:bootstrapBrand="regular"
+                                            app:bootstrapSize="md"
+                                            app:bootstrapText="{fa_certificate}\nCheck-In"
+                                            app:buttonMode="regular"
+                                            app:roundedCorners="true"
+                                            android:visibility="gone"
+                                            app:showOutline="true" />
+
+                    -->
                     <com.beardedhen.androidbootstrap.BootstrapButton
                         android:id="@+id/shopDetailBookmark"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="1dp"
                         android:layout_weight="1"
                         android:background="@drawable/shopdetail_bookmark"
                         app:bootstrapBrand="primary"
                         app:bootstrapSize="md"
-                        app:bootstrapText="{fa_bookmark}\nBookmark"
+                        app:bootstrapText="{fa_bookmark} Bookmark"
                         app:buttonMode="checkbox"
                         app:fontAwesomeIcon="fa_bookmark"
                         app:roundedCorners="true"
@@ -1072,6 +1079,54 @@
                 android:src="@drawable/border_alpha" />
 
             <LinearLayout
+                android:id="@+id/shopDetailReviewFirstLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
+                android:descendantFocusability="blocksDescendants"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:visibility="gone">
+
+                <com.beardedhen.androidbootstrap.AwesomeTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="bottom"
+                    android:textAlignment="center"
+                    android:textSize="100sp"
+                    app:bootstrapBrand="danger"
+                    app:bootstrapText="{fa-heartbeat}"
+                    app:typicon="ty_anchor" />
+
+                <com.beardedhen.androidbootstrap.AwesomeTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="bottom"
+                    android:textAlignment="center"
+                    android:textSize="15sp"
+                    app:bootstrapBrand="warning"
+                    app:bootstrapText="첫 번째 REVIEW의 주인공이 되어보세요!"
+                    app:fontAwesomeIcon="fa_exclamation_circle"
+                    app:typicon="ty_anchor" />
+
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:id="@+id/shopDetailReviewFirstBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    app:bootstrapBrand="primary"
+                    app:bootstrapSize="md"
+                    app:bootstrapText="{fa-sign-out} Review 쓰러 가기"
+                    app:buttonMode="regular"
+                    app:roundedCorners="true"
+                    app:showOutline="false" />
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -1275,6 +1330,54 @@
                     android:text="TIP"
                     android:textColor="#000000"
                     android:textSize="14sp" />
+
+
+                <LinearLayout
+                    android:id="@+id/shopDetailTipFirstLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
+                    android:descendantFocusability="blocksDescendants"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="30dp"
+                    android:visibility="gone">
+
+                    <com.beardedhen.androidbootstrap.AwesomeTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="bottom"
+                        android:textAlignment="center"
+                        android:textSize="100sp"
+                        app:bootstrapBrand="primary"
+                        app:bootstrapText="{fa-rocket}"
+                        app:typicon="ty_anchor" />
+
+                    <com.beardedhen.androidbootstrap.AwesomeTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="bottom"
+                        android:textAlignment="center"
+                        android:textSize="14sp"
+                        app:bootstrapBrand="warning"
+                        app:bootstrapText="당신만 아는 이 장소의 Tip을 써주세요{fa-heart}"
+                        app:fontAwesomeIcon="fa_exclamation_circle"
+                        app:typicon="ty_anchor" />
+
+                    <com.beardedhen.androidbootstrap.BootstrapButton
+                        android:id="@+id/shopDetailTipFirstBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        app:bootstrapBrand="primary"
+                        app:bootstrapSize="md"
+                        app:bootstrapText="{fa-sign-out} 첫 번째 TIP 쓰러 가기"
+                        app:buttonMode="regular"
+                        app:roundedCorners="true"
+                        app:showOutline="false" />
+                </LinearLayout>
 
 
                 <ImageView

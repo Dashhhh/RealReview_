@@ -14,8 +14,6 @@
         android:layout_height="200dp">
 
 
-
-
         <ImageView
             android:id="@+id/mainMeTipShopThumbnail"
             android:layout_width="match_parent"
@@ -35,9 +33,9 @@
             android:layout_alignStart="@+id/mainMeTipText"
             android:layout_below="@+id/mainMeTipShopName"
             android:layout_gravity="center|right"
+            android:layout_marginBottom="10dp"
             android:textSize="20sp"
             app:bootstrapBrand="success"
-            android:layout_marginBottom="10dp"
             app:bootstrapText="{fa-certificate}123123" />
 
         <TextView
@@ -82,16 +80,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:background="#000000"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:paddingLeft="10dp"
-            android:layout_below="@id/mainMeTipCheckinCount"
-            android:paddingTop="5dp"
+            android:layout_marginStart="26dp"
+            android:background="#000000"
+            android:maxLines="3"
             android:paddingBottom="5dp"
             android:paddingEnd="10dp"
-            android:layout_marginStart="21dp"
-            android:maxLines="3"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
             android:text="Tip text"
             android:textColor="#ffffff"
             android:textSize="13sp" />

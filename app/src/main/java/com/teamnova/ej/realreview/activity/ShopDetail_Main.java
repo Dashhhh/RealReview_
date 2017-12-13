@@ -49,8 +49,7 @@ import com.tangxiaolv.telegramgallery.GalleryActivity;
 import com.tangxiaolv.telegramgallery.GalleryConfig;
 import com.teamnova.ej.realreview.Asynctask.AsyncBookmarkDelete;
 import com.teamnova.ej.realreview.Asynctask.AsyncBookmarkInsert;
-import com.teamnova.ej.realreview.Asynctask.AsyncReviewUsefulDown;
-import com.teamnova.ej.realreview.Asynctask.AsyncReviewUsefulUp;
+import com.teamnova.ej.realreview.Asynctask.AsyncShopDetailBookmarkCheck;
 import com.teamnova.ej.realreview.Asynctask.AsyncShopDetailImageURLRequest;
 import com.teamnova.ej.realreview.Asynctask.AsyncShopPhotoSubmit;
 import com.teamnova.ej.realreview.Asynctask.AsyncTipRequest;
@@ -65,6 +64,7 @@ import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_Tip_Set;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Review_LV_Adapter;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Review_LV_Set;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
+import com.teamnova.ej.realreview.util.TransDateToSimple;
 import com.teamnova.ej.realreview.util.ValidateUtil;
 import com.xgc1986.parallaxPagerTransformer.ParallaxPagerTransformer;
 
@@ -93,11 +93,12 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     LinearLayout shopDetailProfile, shopDetailProfile2, shopDetailProfile3, shopDetailTipProfileLayout, shopDetailQuestionRoot, shopDetailQuestionAllRoot;
     SupportMapFragment mapFragmentDetail;
     android.support.v7.widget.AppCompatEditText shopDetailQuestion, shopDetailReview, shopDetailTip;
+
     ListView shopDetailLVReview;
     me.relex.circleindicator.CircleIndicator shopDetailIndicator;
     ImageView shopDetailQuestionUserImage, shopDetailAddReviewUserProfile, shopDetailReviewAddUserImage;
 
-    com.beardedhen.androidbootstrap.BootstrapButton shopDetailTopAddPhoto, shopDetailCheckin, shopDetailBookmark;
+    com.beardedhen.androidbootstrap.BootstrapButton shopDetailTopAddPhoto, shopDetailBookmark;
 
     SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
             .findFragmentById(R.id.mapFragmentDetail);
@@ -140,7 +141,12 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     com.beardedhen.androidbootstrap.BootstrapButton shopDetailQuestionAllBtn;
     public static String TITLE;
     public static String SHOP_ID;
-    private boolean bookmarkCheckResponse;
+
+
+
+    LinearLayout shopDetailTipFirstLayout, shopDetailReviewFirstLayout;
+    com.beardedhen.androidbootstrap.BootstrapButton shopDetailTipFirstBtn, shopDetailReviewFirstBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +158,18 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         init();
         listener();
         checkShopData();
+        try {
+            CheckBookmark();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapFragmentDetail);
@@ -159,13 +177,41 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    private void bookmark() {
+    private void CheckBookmark() throws InterruptedException, ExecutionException, TimeoutException, JSONException {
+        StringBuilder conn = null;
+        String urlParse = "http://222.122.203.55/realreview/shopimage/viewpagerImageResponse.php?id=" + defaultShopID + "&userid=" + defaulUserId;
+        conn = new AsyncShopDetailBookmarkCheck(urlParse).execute().get(10000, TimeUnit.MILLISECONDS);
+
+        /**
+         * Recycler View -> Bookmark Checker
+         * bookmarkListener true = checked,
+         * bookmarkListener false  = unchecked
+         */
+        String sConn = String.valueOf(conn);
+        JSONObject castingJO = new JSONObject(String.valueOf(sConn));
+        boolean bookmarkCheckResponse = false;
+        bookmarkCheckResponse = castingJO.getBoolean("bookmarkCheck");   // viewPager
+        Log.d("bookmarkChecked", "bookmarkListener boolean : " + String.valueOf(bookmarkCheckResponse));
+
+        if (bookmarkCheckResponse) {
+            shopDetailBookmark.setSelected(true);
+            Log.d("bookmarkChecked", "setChecked : true");
+        }
+        else {
+            shopDetailBookmark.setSelected(false);
+            Log.d("bookmarkChecked", "setChecked : false");
+        }
 
         shopDetailBookmark.setOnCheckedChangedListener(new BootstrapButton.OnCheckedChangedListener() {
             @Override
             public void OnCheckedChanged(BootstrapButton bootstrapButton, boolean isChecked) {
 
+
                 if (isChecked) {
+
+                    Log.d("shopDetailBookmark", "isChecked TRUE Enter");
+
+
                     /**
                      * Bookmark가 설정 되어 있으므로 BookmarkDelete
                      */
@@ -186,8 +232,10 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                     } catch (TimeoutException e) {
                         e.printStackTrace();
                     }
-                    bootstrapButton.setMarkdownText("{fa-bookmark}\nBookmark");
+                    bootstrapButton.setMarkdownText("{fa-bookmark} Bookmark");
                 } else {
+                    Log.d("shopDetailBookmark", "isChecked FALSE Enter");
+
                     /**
                      * Bookmark가 없으므로 BookmarkInsert
                      */
@@ -205,10 +253,17 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                     } catch (TimeoutException e) {
                         e.printStackTrace();
                     }
-                    bootstrapButton.setMarkdownText("{fa-bookmark}\nBookmark");
+                    bootstrapButton.setMarkdownText("{fa-bookmark} Bookmark");
                 }
             }
         });
+
+
+        /**
+         * Bookmark!!
+         */
+
+
     }
 
     private void init() {
@@ -228,12 +283,19 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailRVTitleTag = findViewById(R.id.shopDetailRVTitleTag);
         shopDetailRVImage = findViewById(R.id.shopDetailRVImage);
         shopDetailTopAddPhoto = findViewById(R.id.shopDetailTopAddPhoto);
-        shopDetailCheckin = findViewById(R.id.shopDetailCheckin);
+
         shopDetailBookmark = findViewById(R.id.shopDetailBookmark);
+
         mapAddress = findViewById(R.id.mapAddress);
         shopDetailCallBtn = findViewById(R.id.shopDetailCallBtn);
         shopDetailDirection = findViewById(R.id.shopDetailDirection);
+
+        /**
+         * Remove Menu URL BTN instead Website BTN
+         */
         shopDetailMenu = findViewById(R.id.shopDetailMenu);
+        shopDetailMenu.setVisibility(View.GONE);
+
         shopDetailWebsiteBtn = findViewById(R.id.shopDetailWebsiteBtn);
         shopDetailMessageBtn = findViewById(R.id.shopDetailMessageBtn);
         shopDetailProfile = findViewById(R.id.shopDetailProfile);
@@ -317,6 +379,46 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailQuestionRoot.setVisibility(View.GONE);
         shopDetailQuestionAllRoot = findViewById(R.id.shopDetailQuestionAllRoot);
         shopDetailQuestionAllBtn = findViewById(R.id.shopDetailQuestionAllBtn);
+
+        shopDetailTipFirstLayout = findViewById(R.id.shopDetailTipFirstLayout);
+        shopDetailTipFirstBtn = findViewById(R.id.shopDetailTipFirstBtn);
+
+        shopDetailTipFirstBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                SharedPreferenceUtil pref = new SharedPreferenceUtil(ShopDetail_Main.this);
+                Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Tip_Submit.class);
+                intent.putExtra("reviewTitle", title);
+                intent.putExtra("reviewShopId", defaultShopID);
+                intent.putExtra("reviewUserId", pref.getSharedData("isLogged_id"));
+                intent.putExtra("reviewUserNick", pref.getSharedData("isLogged_nick"));
+                startActivity(intent);
+
+            }
+        });
+
+
+        shopDetailReviewFirstLayout = findViewById(R.id.shopDetailReviewFirstLayout);
+        shopDetailReviewFirstBtn = findViewById(R.id.shopDetailReviewFirstBtn);
+        shopDetailReviewFirstBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                SharedPreferenceUtil pref = new SharedPreferenceUtil(ShopDetail_Main.this);
+                Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Review_Submit.class);
+                intent.putExtra("reviewTitle", title);
+                intent.putExtra("reviewShopId", defaultShopID);
+                intent.putExtra("reviewUserId", pref.getSharedData("isLogged_id"));
+                intent.putExtra("reviewUserNick", pref.getSharedData("isLogged_nick"));
+                startActivity(intent);
+
+            }
+        });
+
+
+
+
     }
 
     @Override
@@ -340,7 +442,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
 
         StringBuilder conn = null;
-        ProgressWheel progressDialog = new ProgressWheel(this);
 
 
         String urlParse = "http://222.122.203.55/realreview/shopimage/viewpagerImageResponse.php?id=" + defaultShopID + "&userid=" + defaulUserId;
@@ -370,7 +471,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
         try {
             dataSet = new ShopDetail_Main_Review_LV_Set();
-            conn = new AsyncShopDetailImageURLRequest(urlParse, progressDialog).execute().get(10000, TimeUnit.MILLISECONDS);
+            conn = new AsyncShopDetailImageURLRequest(urlParse).execute().get(10000, TimeUnit.MILLISECONDS);
             String sConn = String.valueOf(conn);
             Log.d("REVIEW_VIEWPAGER_URL", "sConn :" + sConn);
 
@@ -382,6 +483,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
             JSONObject reviewJSON = new JSONObject(sConn);
             JSONArray reviewJSONArray = reviewJSON.getJSONArray("info");
+
 
             if (fixJSON.length() == 0) {
 
@@ -428,24 +530,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 }
             }
 
-
-            /**
-             * Recycler View -> Bookmark Checker
-             * bookmark true = checked,
-             * bookmark false  = unchecked
-             */
-
-            bookmarkCheckResponse = false;
-            bookmarkCheckResponse = castingJO.getBoolean("bookmarkCheck");   // viewPager
-            Log.d("bookmarkChecked", "bookmark boolean : " + String.valueOf(bookmarkCheckResponse));
-
-            if (bookmarkCheckResponse) {
-                shopDetailBookmark.setSelected(true);
-                Log.d("bookmarkChecked", "setChecked : true");
-            } else {
-                shopDetailBookmark.setSelected(false);
-                Log.d("bookmarkChecked", "setChecked : false");
-            }
 
             /**
              * Recycler View -> PHOTO Parsing
@@ -553,6 +637,15 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
             */
 
+
+
+            if(reviewJSONArray.length() == 0) {
+                shopDetailReviewFirstLayout.setVisibility(View.VISIBLE);
+            } else {
+                shopDetailReviewFirstLayout.setVisibility(View.GONE);
+            }
+
+
             for (int i = 0; i < reviewJSONArray.length(); i++) {
                 JSONObject jsonObject1 = reviewJSONArray.getJSONObject(i);
                 Log.d("REVIEW_REVIEW", "jsonObject1 :" + jsonObject1);
@@ -603,10 +696,26 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 Log.d("REIVEW_REVIEW", "Casting Info - cool_selectable :" + i + "번 :" + selectableCool);
 
                 String getCountFollower = jsonObject1.getString("follower_cnt");
+                Log.d("REIVEW_REVIEW", "Casting Info - getCountFollower :" + i + "번 :" + getCountFollower);
+
                 String getCountReview = jsonObject1.getString("review_cnt");
+                Log.d("REIVEW_REVIEW", "Casting Info - getCountReview :" + i + "번 :" + getCountReview);
+
                 String getCountImage = jsonObject1.getString("image_cnt");
+                Log.d("REIVEW_REVIEW", "Casting Info - getCountImage :" + i + "번 :" + getCountImage);
 
 
+                /**
+                 *
+                 * Trans Date
+                 *  e.g
+                 *   before - 2017-12-11
+                 *   after - n + 초/분/시/일/월/년 전
+                 */
+                TransDateToSimple transDate = new TransDateToSimple();
+                String simpleDate = transDate.trans(jsonObject1.getJSONObject("datediff"));
+                Log.d("SimpleDateCheck", "Before Parsing -  jsonObject1.getJSONObject(\"datediff\"):" + jsonObject1.getJSONObject("datediff"));
+                Log.d("SimpleDateCheck", "After Parsing - simpleDate :" + simpleDate);
                 if (i <= 5) {
                     float ff = Float.parseFloat(getRating);
                     titleRatingPoint += ff;
@@ -624,14 +733,15 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 dataSet.titleImage = getProfileImageURL;
 */
 //                dataSet_addList.add(dataSet);
+
                     reviewLvAdapter.addItem(getReviewIdx, getProfileImageURL, getCountFollower, getCountReview, getCountImage, getReviewText,
-                            getRegdate, getUserId, getRating, getNick, ff, getProfileImageURL, getLocality, getNearby,
+                            simpleDate, getUserId, getRating, getNick, ff, getProfileImageURL, getLocality, getNearby,
                             getCountCool, getCountGood, getCountUseful,
                             selectableUseful, selectableGood, selectableCool);
                     Log.d("REIVEW_REVIEW", "Casting Info - reviewData (Array List) :" + i + "번 :" + reviewData.get(i));
                 }
-
             }
+
             if (reviewJSONArray.length() > 2) {
 
                 reviewPagingBtn.setVisibility(View.VISIBLE);
@@ -737,6 +847,12 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
         JSONArray jsonArray = tipConn.getJSONArray("tipresult");
 
+        if(jsonArray.length() == 0) {
+            shopDetailTipFirstLayout.setVisibility(View.VISIBLE);
+        } else {
+            shopDetailTipFirstLayout.setVisibility(View.GONE);
+        }
+
         for (int i = 0; i < jsonArray.length(); i++) {
 
             JSONObject getArray = jsonArray.getJSONObject(i);
@@ -753,7 +869,13 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             String getCountImage = getArray.getString("image_cnt");
 
 
-            ShopDetail_Main_RV_Tip_Set adapterSet = new ShopDetail_Main_RV_Tip_Set(imagepath, getCountFollower, getCountReview, getCountImage, tip, regdate, nick, nearby, locality, imagepath);
+            TransDateToSimple transDate = new TransDateToSimple();
+            String simpleDate = transDate.trans(getArray.getJSONObject("datediff"));
+            Log.d("SimpleDateCheck", "Before Parsing -  jsonObject1.getJSONObject(\"datediff\"):" + getArray.getJSONObject("datediff"));
+            Log.d("SimpleDateCheck", "After Parsing - simpleDate :" + simpleDate);
+
+
+            ShopDetail_Main_RV_Tip_Set adapterSet = new ShopDetail_Main_RV_Tip_Set(imagepath, getCountFollower, getCountReview, getCountImage, tip, simpleDate, nick, nearby, locality, imagepath);
             Log.d("TIP_ASYNC", "JSON Parsing...shopid  : " + shopid);
             Log.d("TIP_ASYNC", "JSON Parsing...userid  : " + userid);
             Log.d("TIP_ASYNC", "JSON Parsing...tip     : " + tip);
@@ -970,8 +1092,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailRVTitleTag.setOnClickListener(this);
         shopDetailRVImage.setOnClickListener(this);
         shopDetailTopAddPhoto.setOnClickListener(this);
-        shopDetailCheckin.setOnClickListener(this);
-        mapAddress.setOnClickListener(this);
         shopDetailCallBtn.setOnClickListener(this);
         shopDetailDirection.setOnClickListener(this);
         shopDetailMenu.setOnClickListener(this);
@@ -1142,14 +1262,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 break;
             }
 
-            case R.id.shopDetailCheckin: {
-
-
-
-
-                break;
-            }
-
             case R.id.mapAddress: {
 
                 Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Overview_Map.class);
@@ -1297,7 +1409,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
             case R.id.reviewPagingBtn: {
 
-                Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Review_Viewing.class);
+                Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Review_All.class);
                 intent.putExtra("SHOPID", defaultShopID);
                 startActivity(intent);
                 break;
@@ -1336,7 +1448,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         defaulDataSet();
         try {
             adapting();
-            bookmark();
+
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

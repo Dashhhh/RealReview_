@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
@@ -33,6 +34,9 @@ public class Intro extends AppCompatActivity implements LocationListener {
     Handler mhandler;
     Animation anime;
 
+
+
+    android.support.v7.widget.AppCompatImageView introBackground;
 
     //위치정보 객체
     LocationManager lm = null;
@@ -60,6 +64,8 @@ public class Intro extends AppCompatActivity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
         startAnim();
+        introBackground = findViewById(R.id.introBackground);
+        introBackground.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
 

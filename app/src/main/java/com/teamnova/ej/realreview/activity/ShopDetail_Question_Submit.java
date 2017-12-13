@@ -106,7 +106,7 @@ public class ShopDetail_Question_Submit extends AppCompatActivity implements Vie
                 } else {
 
                     Dialog_Default dial = new Dialog_Default(ShopDetail_Question_Submit.this);
-                    dial.tempCall("Question Submit WARNING", "Tip 내용을 입력한 후 확인을 눌러주세요.");
+                    dial.tempCall("Question Submit WARNING", "질문 내용을 입력한 후 확인을 눌러주세요.");
 
                 }
 

@@ -141,13 +141,15 @@
         <activity android:name=".activity.ShopDetail_Question_Answer_Submit" />
         <activity android:name=".activity.ShopDetail_AddWebsite" />
         <activity android:name=".activity.ShopDetail_PhotoView" />
-        <activity android:name=".activity.ShopDetail_Review_Viewing" />
+        <activity android:name=".activity.ShopDetail_Review_All" />
         <activity android:name=".activity.ShopDetail_Review_Modify" />
         <activity android:name=".activity._MaterialDialog" />
         <activity android:name=".activity.Main_Me_Reviews" />
         <activity android:name=".activity.Main_Me_Question" />
         <activity android:name=".activity.Main_Me_Tip" />
-        <activity android:name=".activity.Main_Me_Bookmark"></activity>
+        <activity android:name=".activity.Main_Me_Bookmark" />
+        <activity android:name=".activity.Z_NOTUSED_ShopDetail_Checkin" />
+        <activity android:name=".activity.Main_Search_Placetype"></activity>
     </application>
 
 </manifest>

@@ -19,12 +19,13 @@ import static android.content.ContentValues.TAG;
  * Created by ej on 2017-10-12.
  */
 
-public class AsyncShopDetailImageURLRequest extends AsyncTask<Void, Integer, StringBuilder> {
+public class AsyncShopDetailBookmarkCheck extends AsyncTask<Void, Integer, StringBuilder> {
     public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
     private String urlString;
     private String params = "";
+    String TestVAR;
 
-    public AsyncShopDetailImageURLRequest(String urlString) {
+    public AsyncShopDetailBookmarkCheck(String urlString) {
         this.urlString = urlString;
     }
 
@@ -42,7 +43,7 @@ public class AsyncShopDetailImageURLRequest extends AsyncTask<Void, Integer, Str
         JSONArray jsonArray;
         try {
             URL phpUrl = new URL(urlString);
-            Log.d("AsyncMainLatLngReceive", "URL:" + urlString);
+            Log.d("AsyncShopDetailBookmarkCheck", "URL:" + urlString);
 
             HttpURLConnection conn = (HttpURLConnection) phpUrl.openConnection();
             conn.setUseCaches(false);
@@ -63,28 +64,8 @@ public class AsyncShopDetailImageURLRequest extends AsyncTask<Void, Integer, Str
             e.printStackTrace();
         }
         jsonHtml.toString().trim();
-        Log.e("AsyncShopDetailImageURLRequest", "jsonHtml - " + jsonHtml);
+        Log.e("AsyncShopDetailBookmarkCheck", "RESULT - " + jsonHtml);
         int i = 0;
-//            JSONObject jObject = new JSONObject(String.valueOf(jsonHtml));
-//            jsonArray = jObject.getJSONArray("realreview");
-//            JSONObject item = jsonArray.getJSONObject(i);
-//            int length = jsonArray.length();
-//
-//
-//            String getshopImageUrl = item.getString("imagepath");
-//            String getReview = item.getString("review");
-//            String getDate = item.getString("regdate");
-//            String getUser = item.getString("id_user");
-//            String getRating = item.getString("rating");
-//
-//
-//            Log.d("AsyncShopDetailImageURLRequest", "JSONObject jOcject:" + jObject);
-//            Log.d("AsyncShopDetailImageURLRequest", "JSONArray jsonArray :" + jsonArray);
-//            Log.d("AsyncShopDetailImageURLRequest", "JSONObject item:" + item);
-//
-//            Log.d("AsyncShopDetailImageURLRequest", "JSONObject jOcject Length:" + jObject.length());
-//            Log.d("AsyncShopDetailImageURLRequest", "JSONArray jsonArray Length :" + jsonArray.length());
-//            Log.d("AsyncShopDetailImageURLRequest", "JSONArray jsonArray Length :" + item.length());
 
 
         return jsonHtml;

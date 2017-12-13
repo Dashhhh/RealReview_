@@ -41,6 +41,7 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -105,6 +106,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -113,7 +115,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class Main extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, LocationListener, GoogleApiClient.OnConnectionFailedListener, Filterable {
+public class Main extends AppCompatActivity
+        implements
+        View.OnClickListener,
+        OnMapReadyCallback,
+        LocationListener,
+        GoogleApiClient.OnConnectionFailedListener,
+        GoogleMap.OnMapClickListener,
+        GoogleMap.OnCameraMoveListener {
 
     public static String ID;
     public static final int PICK_FROM_CAMERA = 0;
@@ -127,6 +136,9 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     public static double LOCATION_FAR_LEFT_LNG = 0;
     public static double LOCATION_NEAR_RIGHT_LAT = 0;
     public static double LOCATION_NEAR_RIGHT_LNG = 0;
+
+    public static boolean PLACETYPE_SELECT_COMPLETE_CHECK = false;
+
 
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 3;
     int PLACE_PICKER_REQUEST = 4;
@@ -186,7 +198,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     ScrollView map_container, meScrollView;
     public static BottomNavigationView navigation;
     private GoogleMap mMap;
-    private GoogleMap mMap2 ;
+    private GoogleMap mMap2;
     TextView searchText, meProfileUserNick, meProfileUserAddress;
     com.beardedhen.androidbootstrap.AwesomeTextView meFollowerText, meReviewCount, mainMeImageCount;
     ImageView meProfileImage, followerCntImage, reviewCntImage, imageUploadCnt;
@@ -195,9 +207,11 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     private boolean mRequestingLocationUpdates;
     private LocationCallback mLocationCallback;
     private LocationRequest mLocationRequest;
-    com.beardedhen.androidbootstrap.BootstrapButton mainMeSearchLocation, mainMeSearchPlaceType, nearbyShopAdd;
-    ListView mainMeSearchPlaceTypeLV;
+    com.beardedhen.androidbootstrap.BootstrapButton mainMeSearchLocation, mainMeSearchPlaceType, nearbyShopAdd, mainMeSearchMyPosition, mainMeSearcRedoSearch;
     com.beardedhen.androidbootstrap.BootstrapButton mainMeBtnReview, mainMeBtnTip, mainMeBtnQuestion, mainMeBtnBookmark;
+
+    com.beardedhen.androidbootstrap.BootstrapButton mainNearbyRestaurant, mainNearbyCafe, mainNearbyHair, mainNearbyBars, mainNearbyHotel, mainNearbyDepartment;
+
     //    SupportMapFragment mapFragment;
 
     /**
@@ -253,6 +267,33 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     boolean setMapCheck2 = true;
     public SupportMapFragment searchFragment1;
     public SupportMapFragment searchFragment2;
+    private boolean addressTextFlag;
+    private int updateTerm = 30000;
+
+
+    /**
+     * @var
+     * userSearch == 0
+     *  - Define Location
+     *  
+     * userSearch == 1
+     *  - Define User Search
+     *  
+     * userSearch == 2
+     *  - Define Redo Search 
+     * 
+     */
+    public static int userSearch = 0;
+
+
+    /**
+     * @var
+     * userSearch == 1 || 2
+     * 위 조건일때 Google Map(Callback2())에 사용
+     */
+
+    public static double SEARCH_LAT;
+    public static double SEARCH_LNG;
 
 
     @Override
@@ -325,6 +366,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
         mainMeSearchLocation.setMarkdownText("{fa-map-pin} Location : " + LOCATION_ADDRESS);
 
+
     }   // onCreate
 
     private void init() {
@@ -341,7 +383,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 //
 //        MapFragment mapFragment = (MapFragment) getFragmentManager()
 //                .findFragmentById(R.id.mapView);
-//        mapFragment.getMapAsync(new Main_Search(this));
+//        mapFragment.getMapAsync(new Z_NOTUSED_Main_Search(this));
 /*
         searchFragment1 = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapView);
@@ -415,6 +457,30 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 //        mainMeTipRV = findViewById(R.id.mainMeTipRV);
 //        mainMeQuestionRV = findViewById(R.id.mainMeQuestionRV);
 
+        mainMeSearchMyPosition = findViewById(R.id.mainMeSearchMyPosition);
+        mainMeSearchMyPosition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userSearch = 0;
+                navigation.setSelectedItemId(R.id.navigation_search);
+            }
+        });
+
+
+        mainMeSearcRedoSearch = findViewById(R.id.mainMeSearcRedoSearch);
+        mainMeSearcRedoSearch.setVisibility(View.GONE);
+        mainMeSearcRedoSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                userSearch = 2;
+                navigation.setSelectedItemId(R.id.navigation_search);
+                mainMeSearcRedoSearch.setVisibility(View.GONE);
+
+            }
+        });
+
+
         nearbyShopAdd = findViewById(R.id.nearbyShopAdd);
         mainMeSearchLocation = findViewById(R.id.mainMeSearchLocation);
 
@@ -462,163 +528,54 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
 
         mainMeSearchPlaceType = findViewById(R.id.mainMeSearchPlaceType);
-        mainMeSearchPlaceTypeLV = findViewById(R.id.mainMeSearchPlaceTypeLV);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-        mainMeSearchPlaceTypeLV.setAdapter(adapter);
-
-        adapter.add("기타");
-        adapter.add("회계");
-        adapter.add("공항");
-        adapter.add("유원지");
-        adapter.add("수족관");
-        adapter.add("아트갤러리");
-        adapter.add("Atm");
-        adapter.add("제과점");
-        adapter.add("은행");
-        adapter.add("바");
-        adapter.add("뷰티살롱");
-        adapter.add("자전거상점");
-        adapter.add("서점");
-        adapter.add("볼링장");
-        adapter.add("버스정류장");
-        adapter.add("카페");
-        adapter.add("캠프장");
-        adapter.add("자동차딜러");
-        adapter.add("자동차렌탈");
-        adapter.add("자동차수리");
-        adapter.add("세차장");
-        adapter.add("카지노");
-        adapter.add("묘지");
-        adapter.add("교회");
-        adapter.add("시청");
-        adapter.add("의류매장");
-        adapter.add("편의점");
-        adapter.add("법원");
-        adapter.add("치과의사");
-        adapter.add("의사");
-        adapter.add("백화점");
-        adapter.add("전기");
-        adapter.add("전자상점");
-        adapter.add("대사관");
-        adapter.add("설립");
-        adapter.add("금융");
-        adapter.add("소방서");
-        adapter.add("꽃집");
-        adapter.add("음식");
-        adapter.add("장례식장");
-        adapter.add("가구점");
-        adapter.add("주유소");
-        adapter.add("일반계약자");
-        adapter.add("식료품점");
-        adapter.add("체육관");
-        adapter.add("모발관리");
-        adapter.add("하드웨어매장");
-        adapter.add("건강");
-        adapter.add("힌두사원");
-        adapter.add("가정용품점");
-        adapter.add("병원");
-        adapter.add("보험기관");
-        adapter.add("보석상");
-        adapter.add("세탁");
-        adapter.add("변호사");
-        adapter.add("도서관");
-        adapter.add("주류판매점");
-        adapter.add("지방정부청사");
-        adapter.add("자물쇠");
-        adapter.add("숙박");
-        adapter.add("식사제공");
-        adapter.add("식사테이크아웃");
-        adapter.add("모스크");
-        adapter.add("영화대여");
-        adapter.add("영화극장");
-        adapter.add("이사회사");
-        adapter.add("박물관");
-        adapter.add("나이트클럽");
-        adapter.add("화가");
-        adapter.add("공원");
-        adapter.add("주차");
-        adapter.add("애완동물가게");
-        adapter.add("약국");
-        adapter.add("물리치료사");
-        adapter.add("예배당의장소");
-        adapter.add("배관공");
-        adapter.add("경찰");
-        adapter.add("우체국");
-        adapter.add("부동산중개인");
-        adapter.add("레스토랑");
-        adapter.add("루핑계약자");
-        adapter.add("RV공원");
-        adapter.add("학교");
-        adapter.add("신발가게");
-        adapter.add("쇼핑몰");
-        adapter.add("스파");
-        adapter.add("경기장");
-        adapter.add("보관");
-        adapter.add("상점");
-        adapter.add("지하철역");
-        adapter.add("회당");
-        adapter.add("택시승차장");
-        adapter.add("기차역");
-        adapter.add("여행사");
-        adapter.add("대학");
-        adapter.add("수의진료");
-        adapter.add("동물원");
-        adapter.add("구어짐면적");
-        adapter.add("국가");
-        adapter.add("층");
-        adapter.add("지오코드");
-        adapter.add("교차점");
-        adapter.add("지역성");
-        adapter.add("자연지형지물");
-        adapter.add("이웃");
-        adapter.add("정치");
-        adapter.add("관심지점");
-        adapter.add("포스트박스");
-        adapter.add("전제");
-        adapter.add("방");
-        adapter.add("루트");
-        adapter.add("대중교통역");
-        adapter.add("abcde");
-        adapter.add("bcdef");
-
-        mainMeSearchPlaceType.addTextChangedListener(new TextWatcher() {
+        mainMeSearchPlaceType.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void afterTextChanged(Editable edit) {
-                // TODO : item filtering
-                String filterText = edit.toString();
-                if (filterText.length() > 0) {
+            public void onClick(View view) {
 
-                    Log.d("addTextChangedListener", "afterTextChanged - ENTER 1");
-                    mainMeSearchPlaceTypeLV.setFilterText(filterText);
-
-                } else {
-                    Log.d("addTextChangedListener", "afterTextChanged - ENTER 2");
-                    mainMeSearchPlaceTypeLV.clearTextFilter();
-                }
-
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                Log.d("addTextChangedListener", "beforeTextChanged - ENTER");
+                Intent intent = new Intent(Main.this, Main_Search_Placetype.class);
+                startActivity(intent);
 
             }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String filterText = s.toString();
-                if (filterText.length() > 0) {
-                    Log.d("addTextChangedListener", "onTextChanged - ENTER 1");
-                    mainMeSearchPlaceTypeLV.setFilterText(filterText);
-                } else {
-                    Log.d("addTextChangedListener", "onTextChanged - ENTER 2");
-                    mainMeSearchPlaceTypeLV.clearTextFilter();
-                }
-                adapter.notifyDataSetChanged();
-            }
-
         });
+
+//        mainMeSearchPlaceType.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void afterTextChanged(Editable edit) {
+//                // TODO : item filtering
+//                String filterText = edit.toString();
+//                if (filterText.length() > 0) {
+//
+//                    Log.d("addTextChangedListener", "afterTextChanged - ENTER 1");
+//                    mainMeSearchPlaceTypeLV.setFilterText(filterText);
+//
+//                } else {
+//                    Log.d("addTextChangedListener", "afterTextChanged - ENTER 2");
+//                    mainMeSearchPlaceTypeLV.clearTextFilter();
+//                }
+//
+//                adapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                Log.d("addTextChangedListener", "beforeTextChanged - ENTER");
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                String filterText = s.toString();
+//                if (filterText.length() > 0) {
+//                    Log.d("addTextChangedListener", "onTextChanged - ENTER 1");
+//                    mainMeSearchPlaceTypeLV.setFilterText(filterText);
+//                } else {
+//                    Log.d("addTextChangedListener", "onTextChanged - ENTER 2");
+//                    mainMeSearchPlaceTypeLV.clearTextFilter();
+//                }
+//                adapter.notifyDataSetChanged();
+//            }
+//
+//        });
 
         toolbar = findViewById(R.id.main_toolbar);
 
@@ -673,6 +630,71 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                 startActivity(intent);
             }
         });
+
+
+        mainNearbyRestaurant = findViewById(R.id.mainNearbyRestaurant);
+        mainNearbyCafe = findViewById(R.id.mainNearbyCafe);
+        mainNearbyHair = findViewById(R.id.mainNearbyHair);
+        mainNearbyBars = findViewById(R.id.mainNearbyBars);
+        mainNearbyHotel = findViewById(R.id.mainNearbyHotel);
+        mainNearbyDepartment = findViewById(R.id.mainNearbyDepartment);
+
+        mainNearbyRestaurant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                USER_SELECT_PLACETYPE = "레스토랑";
+                userSearch = 0;
+                mainMeSearchPlaceType.setMarkdownText("{fa-map-signs} 장소 타입 : 레스토랑");
+                navigation.setSelectedItemId(R.id.navigation_search);
+            }
+        });
+        mainNearbyCafe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                USER_SELECT_PLACETYPE = "카페";
+                mainMeSearchPlaceType.setMarkdownText("{fa-map-signs} 장소 타입 : 카페");
+                userSearch = 0;
+                navigation.setSelectedItemId(R.id.navigation_search);
+            }
+        });
+        mainNearbyHair.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                USER_SELECT_PLACETYPE = "뷰티 살롱";
+                mainMeSearchPlaceType.setMarkdownText("{fa-map-signs} 장소 타입 : 뷰티 살롱");
+                userSearch = 0;
+                navigation.setSelectedItemId(R.id.navigation_search);
+            }
+        });
+        mainNearbyBars.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                USER_SELECT_PLACETYPE = "바";
+                mainMeSearchPlaceType.setMarkdownText("{fa-map-signs} 장소 타입 : 바");
+                userSearch = 0;
+                navigation.setSelectedItemId(R.id.navigation_search);
+            }
+        });
+        mainNearbyHotel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                USER_SELECT_PLACETYPE = "숙박";
+                mainMeSearchPlaceType.setMarkdownText("{fa-map-signs} 장소 타입 : 숙박");
+                userSearch = 0;
+                navigation.setSelectedItemId(R.id.navigation_search);
+            }
+        });
+        mainNearbyDepartment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                USER_SELECT_PLACETYPE = "백화점";
+                mainMeSearchPlaceType.setMarkdownText("{fa-map-signs} 장소 타입 : 백화점");
+                userSearch = 0;
+                navigation.setSelectedItemId(R.id.navigation_search);
+            }
+        });
+
+
     }
 
     public OnMapReadyCallback onMapReadyCallback1() {
@@ -699,6 +721,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                 if (locationFlag.equals("TRUE"))
 
                 {
+                    navigation.setSelectedItemId(R.id.navigation_search);
                     navigation.setSelectedItemId(R.id.navigation_nearby);
                     preferenceUtil.setSharedData("LOCATION_FLAG", "FALSE");
                 }
@@ -865,10 +888,27 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         };
     }
 
+
+    /**
+     * OnMapReadyCallBack1() NOT USED
+     * - Can't Controlled Marker Into Map
+     * - Main Screen "Search" Tab -> Map used OnMapReadyCallBack2()
+     *
+     * @var - Position Flag
+     * : Location Search => userSearch = 0;
+     * : User Search => userSearch = true;
+     */
+
+
     public OnMapReadyCallback onMapReadyCallback2() {
         return new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
+
+                onCameraMove();
+
+
+                Log.d("MainSearch_onMapReady2Enter", " - ENTER");
 
 
                 builder = new MaterialDialog.Builder(Main.this)
@@ -882,6 +922,18 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                     mapReadyCallBackFlag = false;
                 }
                 mMap2.clear();
+
+
+                mMap2.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+                    @Override
+                    public void onCameraMove() {
+
+                        Log.d("setOnCameraMoveListener", "Enter");
+                        if (mainMeSearcRedoSearch.getVisibility() == View.GONE) mainMeSearcRedoSearch.setVisibility(View.VISIBLE);
+                    }
+                });
+
+
                 if (ActivityCompat.checkSelfPermission(Main.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Main.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
@@ -892,53 +944,104 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                     // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
-                mMap2.setMyLocationEnabled(true);
-
-                String cameraPosition = String.valueOf(mMap2.getCameraPosition());
-                Log.d("MainSearch_onMapReady2", "cameraPosition :" + cameraPosition);
-
-                LatLng myPosition = new LatLng(MY_POSITION_LAT, MY_POSITION_LNG);
-
-                mMap2.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 16));
-                Log.d("MainSearch_onMapReady2", "mMap2.getProjection().toScreenLocation(myPosition) :" + mMap2.getProjection().toScreenLocation(myPosition));
-
-//        mMap2.animateCamera(CameraUpdateFactory.zoomTo(17));
-                String  sFarLeft = String.valueOf(mMap2.getProjection().getVisibleRegion().farLeft);
-                String sNearRight = String.valueOf(mMap2.getProjection().getVisibleRegion().nearRight);
-                Log.d("onMapReadyCallback2", "sFarLeft :" + sFarLeft);
-                Log.d("onMapReadyCallback2", "sNearRight :" + sNearRight);
-                String[] splitFarLeft = sFarLeft.split("\\(", 0);
-                String[] splitNearRight = sNearRight.split("\\(", 0);
-
-                String[] split2FarLeft = splitFarLeft[1].split(",", 0);
-                String[] split2NearRight = splitNearRight[1].split(",", 0);
-
-                String[] split3FarLeft = split2FarLeft[1].split("\\)", 0);
-                String[] split3NearRight = split2NearRight[1].split("\\)", 0);
-
-//                resultFarLeftLat = split2FarLeft[0];
-//                resultFarLeftLng = split3FarLeft[0];
-//                resultNearRightLat = split2NearRight[0];
-//                resultNearRightLng = split3NearRight[0];
+//                mMap2.setMyLocationEnabled(true);
 
 
-                MAIN_SEARCH_LOCATION_FAR_LEFT_LAT = split2FarLeft[0];
-                MAIN_SEARCH_LOCATION_FAR_LEFT_LNG = split3FarLeft[0];
-                MAIN_SEARCH_LOCATION_NEAR_RIGHT_LAT = split2NearRight[0];
-                MAIN_SEARCH_LOCATION_NEAR_RIGHT_LNG = split3NearRight[0];
+                /**
+                 * Default Position, Location API
+                 * Google 검색 전 기본 값 (지역 : 현재위치, 장소타입 : "관심 지점" (ALL)
+                 */
 
-                Log.d("MainSearch_onMapReady", "SPLIT CHECK LOCATION FAR - NEAR, split2FarLeft " + split2FarLeft[0]);
-                Log.d("MainSearch_onMapReady", "SPLIT CHECK LOCATION FAR - NEAR, split2FarLeft " + split3FarLeft[0]);
-                Log.d("MainSearch_onMapReady", "SPLIT CHECK LOCATION FAR - NEAR, split2NearRight " + split2NearRight[0]);
-                Log.d("MainSearch_onMapReady", "SPLIT CHECK LOCATION FAR - NEAR, split2NearRight " + split3NearRight[0]);
-                Log.d("MainSearch_onMapReady", "FarLeft:" + sFarLeft);
-                Log.d("MainSearch_onMapReady", "NearRight:" + sNearRight);
+                if (userSearch == 0) {
+
+                    String cameraPosition = String.valueOf(mMap2.getCameraPosition());
+                    Log.d("MainSearch_onMapReady2", "cameraPosition :" + cameraPosition);
+                    LatLng myPosition = new LatLng(MY_POSITION_LAT, MY_POSITION_LNG);
+                    mMap2.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 17));
+                    Log.d("MainSearch_onMapReady2", "mMap2.getProjection().toScreenLocation(myPosition) :" + mMap2.getProjection().toScreenLocation(myPosition));
+                    String sFarLeft = String.valueOf(mMap2.getProjection().getVisibleRegion().farLeft);
+                    String sNearRight = String.valueOf(mMap2.getProjection().getVisibleRegion().nearRight);
+                    Log.d("onMapReadyCallback2", "sFarLeft :" + sFarLeft);
+                    Log.d("onMapReadyCallback2", "sNearRight :" + sNearRight);
+
+                    String[] splitFarLeft = sFarLeft.split("\\(", 0);
+                    String[] splitNearRight = sNearRight.split("\\(", 0);
+
+                    String[] split2FarLeft = splitFarLeft[1].split(",", 0);
+                    String[] split2NearRight = splitNearRight[1].split(",", 0);
+
+                    String[] split3FarLeft = split2FarLeft[1].split("\\)", 0);
+                    String[] split3NearRight = split2NearRight[1].split("\\)", 0);
+
+                    MAIN_SEARCH_LOCATION_FAR_LEFT_LAT = split2FarLeft[0];
+                    MAIN_SEARCH_LOCATION_FAR_LEFT_LNG = split3FarLeft[0];
+                    MAIN_SEARCH_LOCATION_NEAR_RIGHT_LAT = split2NearRight[0];
+                    MAIN_SEARCH_LOCATION_NEAR_RIGHT_LNG = split3NearRight[0];
+
+                    Log.d("MainSearch_onMapReady", "SPLIT CHECK LOCATION FAR - NEAR, split2FarLeft " + split2FarLeft[0]);
+                    Log.d("MainSearch_onMapReady", "SPLIT CHECK LOCATION FAR - NEAR, split2FarLeft " + split3FarLeft[0]);
+                    Log.d("MainSearch_onMapReady", "SPLIT CHECK LOCATION FAR - NEAR, split2NearRight " + split2NearRight[0]);
+                    Log.d("MainSearch_onMapReady", "SPLIT CHECK LOCATION FAR - NEAR, split2NearRight " + split3NearRight[0]);
+                    Log.d("MainSearch_onMapReady", "FarLeft:" + sFarLeft);
+                    Log.d("MainSearch_onMapReady", "NearRight:" + sNearRight);
+
+                    mainMeSearchLocation.setMarkdownText("{fa-map-pin} Location : " + LOCATION_ADDRESS);
+
+                } else if (userSearch == 1){
+
+                    String cameraPosition = String.valueOf(mMap2.getCameraPosition());
+                    Log.d("MainSearch_onMapReady2", "cameraPosition :" + cameraPosition);
+                    LatLng myPosition = new LatLng(SEARCH_LAT, SEARCH_LNG);
+//                    mMap2.animateCamera();
+                    mMap2.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 17));
+                    Log.d("MainSearch_onMapReady2", "mMap2.getProjection().toScreenLocation(myPosition) :" + mMap2.getProjection().toScreenLocation(myPosition));
+
+                } else if(userSearch == 2) {
+
+                    String sFarLeft = String.valueOf(mMap2.getProjection().getVisibleRegion().farLeft);
+                    String sNearRight = String.valueOf(mMap2.getProjection().getVisibleRegion().nearRight);
+                    Log.d("onMapReadyCallback2", "sFarLeft :" + sFarLeft);
+                    Log.d("onMapReadyCallback2", "sNearRight :" + sNearRight);
+
+                    String[] splitFarLeft = sFarLeft.split("\\(", 0);
+                    String[] splitNearRight = sNearRight.split("\\(", 0);
+
+                    String[] split2FarLeft = splitFarLeft[1].split(",", 0);
+                    String[] split2NearRight = splitNearRight[1].split(",", 0);
+
+                    String[] split3FarLeft = split2FarLeft[1].split("\\)", 0);
+                    String[] split3NearRight = split2NearRight[1].split("\\)", 0);
+
+                    MAIN_SEARCH_LOCATION_FAR_LEFT_LAT = split2FarLeft[0];
+                    MAIN_SEARCH_LOCATION_FAR_LEFT_LNG = split3FarLeft[0];
+                    MAIN_SEARCH_LOCATION_NEAR_RIGHT_LAT = split2NearRight[0];
+                    MAIN_SEARCH_LOCATION_NEAR_RIGHT_LNG = split3NearRight[0];
+
+                    Log.d("MainSearch_onMapReady", "SPLIT CHECK LOCATION FAR - NEAR, split2FarLeft " + split2FarLeft[0]);
+                    Log.d("MainSearch_onMapReady", "SPLIT CHECK LOCATION FAR - NEAR, split2FarLeft " + split3FarLeft[0]);
+                    Log.d("MainSearch_onMapReady", "SPLIT CHECK LOCATION FAR - NEAR, split2NearRight " + split2NearRight[0]);
+                    Log.d("MainSearch_onMapReady", "SPLIT CHECK LOCATION FAR - NEAR, split2NearRight " + split3NearRight[0]);
+                    Log.d("MainSearch_onMapReady", "FarLeft:" + sFarLeft);
+                    Log.d("MainSearch_onMapReady", "NearRight:" + sNearRight);
+                    mainMeSearcRedoSearch.setVisibility(View.GONE);
+
+                }
 
 
-//                LOCATION_FAR_LEFT_LAT   = Double.parseDouble(split2FarLeft[0]);
-//                LOCATION_FAR_LEFT_LNG   = Double.parseDouble(split3FarLeft[0]);
-//                LOCATION_NEAR_RIGHT_LAT = Double.parseDouble(split2NearRight[0]);
-//                LOCATION_NEAR_RIGHT_LNG = Double.parseDouble(split3NearRight[0]);
+                /**
+
+
+
+                 @var - ViewPort
+                 "lat_start=" + MAIN_SEARCH_LOCATION_NEAR_RIGHT_LAT
+                 "lat_end=" + MAIN_SEARCH_LOCATION_FAR_LEFT_LAT
+                 "lng_start=" + MAIN_SEARCH_LOCATION_FAR_LEFT_LNG
+                 "lng_end=" + MAIN_SEARCH_LOCATION_NEAR_RIGHT_LNG
+
+                 @var - Placetype
+                 "placetype=" + USER_SELECT_PLACETYPE
+
+                 */
 
 
                 String url = "http://222.122.203.55/realreview/mainSearch.php?";
@@ -947,21 +1050,25 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                 try {
                     Log.d("MainSearch_onMapReady2", "ENTER CALLBACK2");
                     conn = new AsyncMainNearbyLatLngReceive_MainSearch(urlMerge, Main.this).execute().get(5000, TimeUnit.MILLISECONDS);
-                    Log.d("MainSearch_onMapReady2", "conn - " + conn);
                     JSONObject castingJO = new JSONObject(String.valueOf(conn));
-                    Log.d("MainSearch_onMapReady2", "1 - castingJO :" + castingJO);
                     JSONArray fixJSON = castingJO.getJSONArray("mainSearch");
+                    Log.d("MainSearch_onMapReady2", "conn - " + conn);
+                    Log.d("MainSearch_onMapReady2", "1 - castingJO :" + castingJO);
                     Log.d("MainSearch_onMapReady2", "2 - fixJSON :" + fixJSON);
 
 
                     MarkerOptions markerOptions = new MarkerOptions();
 
+                    fixShopDataList_MainSearch.clear();
                     for (int i = 0; i < fixJSON.length(); i++) {
                         JSONObject item = fixJSON.getJSONObject(i);
                         fixShopDataList_MainSearch.add(String.valueOf(item));
+
                         Log.d("MainSearch_onMapReady2", "JSON_CHECK, 3 - item :" + i + "번 :" + item);
 
+
                         onMapCallBack2 = new JSONObject(fixShopDataList_MainSearch.get(i));
+                        Log.d("MainSearch_onMapReady2", "onMApCallBack2" + onMapCallBack2);
                         String sLat = onMapCallBack2.getString("latitude");
                         String sLng = onMapCallBack2.getString("longtitude");
                         double dLat = Double.parseDouble(sLat);
@@ -969,9 +1076,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                         LatLng latLng = new LatLng(dLat, dLng);
                         markerOptions.position(latLng)
                                 .title(onMapCallBack2.getString("shopName"))
-                                .snippet("SHOP OPEN : " + onMapCallBack2.getString("shopOpen") + "\nSHOP CLOSE : " + onMapCallBack2.getString("shopClose"))
+                                .snippet("SHOP OPEN : " + onMapCallBack2.getString("shopOpen") + "\nSHOP CLOSE : " + onMapCallBack2.getString("shopClose"));
 
-                        ;
                         Marker marker = mMap2.addMarker(markerOptions);
                         marker.setTag(i);
                         String markerTag = String.valueOf(marker.getTag());
@@ -995,12 +1101,9 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                         Log.d("MainSearch_onMapReady2", "2 - a1 :" + a1);
                         Log.d("MainSearch_onMapReady2", "2 - a3 :" + a3);
                         Log.d("MainSearch_onMapReady2", "2 - a4 :" + a4);
-
-
                         String websiteNullCheck = onMapCallBack2.getString("webSite");
 
                         SharedPreferenceUtil pref = new SharedPreferenceUtil(Main.this);
-
                         pref.setSharedData("ID" + markerTag, onMapCallBack2.getString("id"));
                         pref.setSharedData("TITLE" + markerTag, onMapCallBack2.getString("shopName"));
                         pref.setSharedData("ADDRESS" + markerTag, onMapCallBack2.getString("address"));
@@ -1074,33 +1177,12 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                         searchLinear.setVisibility(View.VISIBLE);
                         meLinear.setVisibility(View.GONE);
 
-
-                        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem menuItem) {
-                                switch (menuItem.getItemId()) {
-
-                                    case R.id.navigation_search: {
-                                        Log.d("MainSearch_onMapReady2", "Switch onMenuItemClick - onMapReadyCallback2");
-                                        Log.d("MainSearch_onMapReady2", "Switch onMenuItemClick - mMap2.getProjection().getVisibleRegion()" + mMap2.getProjection().getVisibleRegion());
-                                        onMapReadyCallback2().onMapReady(mMap2);
-
-                                    }
-                                }
-
-                                return false;
-                            }
-                        });
-
-//                      mainMeSearchLocation.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
-//                            @Override
-//                            public void onSearchTextChanged(String oldQuery, final String newQuery) {
-//
-//                                //get suggestions based on newQuery
-//                                //pass them on to the search view
-//                                mainMeSearchLocation.swapSuggestions(new ArrayList<SearchSuggestion>());
-//                            }
-//                        });
+                        searchFragment2 = (SupportMapFragment) getSupportFragmentManager()
+                                .findFragmentById(R.id.searchMap);
+                        searchFragment2.getMapAsync(onMapReadyCallback2());
+                        GoogleMapOptions mapOptions2 = new GoogleMapOptions();
+                        mapOptions2.useViewLifecycleInFragment(true);
+                        searchFragment2 = SupportMapFragment.newInstance(mapOptions2);
 
 
                         return true;
@@ -1463,6 +1545,19 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         //위치정보 - Activity LifeCycle 관련 메서드는 무조건 상위 메서드 호출 필요
         /** 이 화면이 불릴 때, 일시정지 해제 처리*/
 
+
+        if (PLACETYPE_SELECT_COMPLETE_CHECK) {
+            navigation.setSelectedItemId(R.id.navigation_search);
+            if (USER_SELECT_PLACETYPE.equals("관심 지점")) {
+                mainMeSearchPlaceType.setMarkdownText("{fa-map-signs} 장소 타입 : 근처에 등록 된 모든 상점");
+
+            } else {
+                mainMeSearchPlaceType.setMarkdownText("{fa-map-signs} 장소 타입 : " + USER_SELECT_PLACETYPE);
+            }
+
+            PLACETYPE_SELECT_COMPLETE_CHECK = false;
+        }
+
         //위치정보 객체에 이벤트 연결
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -1474,15 +1569,30 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        lm.requestLocationUpdates(provider, 5000, 1, this);
 
+        /**
+         * Issue
+         * @LocationUpdateTermControl
+         * Location Update 갱신주기 제어 안됨
+         * 우선 30초 주기로 고정(Miliseconds)
+         */
+
+
+//        if (addressTextFlag) {
+//            updateTerm = 30000;
+//        } else {
+//            updateTerm = 30000;
+//        }
+//        lm.requestLocationUpdates(provider, updateTerm, 1, this);
+
+        Log.d("LocationUpdateTermCheck", "UpdateTerm - Miliseconds : " + updateTerm);
 
         if (UPLOAD_FLAG) {
 
             new Thread(new Runnable() {
                 public void run() {
                     uploadFile(imagePath);
-                    Log.e("UploadFile Start -> UrParseImage:", imagePath);
+                    Log.e("uploadFile", "UploadFile Start -> UrParseImage:" + imagePath);
                 }
             }).start();
 
@@ -1600,7 +1710,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         Location location = lm.getLastKnownLocation(provider);
 
         if (location == null) {
-            Toast.makeText(this, "사용가능한 위치 정보 제공자가 없습니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Provider Check..", Toast.LENGTH_SHORT).show();
         } else {
             //최종 위치에서 부터 이어서 GPS 시작...
             onLocationChanged(location);
@@ -1622,28 +1732,62 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
         String checkAddress = getAddress(myPosition_lat, myPosition_lng);
         ArrayList<String> check = new ArrayList<>();
-        check.add(0, String.valueOf(checkAddress));
-        if (!check.get(0).equals("null")) {
-            String[] splitAddress = checkAddress.split(" ", 0);
+        String[] splitAddress = checkAddress.split(" ", 0);
+        check.addAll(Arrays.asList(splitAddress));
+//        check.add(String.valueOf(checkAddress));
+        Log.d("MYLOG", "check.size(); :" + check.size());
+        addressTextFlag = true;
+
+        if (!check.get(0).equals("null") || !check.get(1).equals("null") || !check.get(2).equals("null")) {
+            splitAddress = checkAddress.split(" ", 0);
             LOCATION_ADDRESS = "";
             for (int a = 0; a < splitAddress.length; a++) {
                 Log.d("MYLOG", "Address Split :" + splitAddress[a]);
-                if (a >= 2) {
+                if (a >= 2 && !String.valueOf(splitAddress[a]).equals("null")) {
                     LOCATION_ADDRESS += splitAddress[a] + " ";
                 }
+                addressTextFlag = true;
+
+                if (String.valueOf(splitAddress[a]).equals("null")) {
+                    Log.d("MYLOG", "splitAddress [" + a + "] : " + splitAddress[a]);
+                    addressTextFlag = false;
+                    break;
+                }
+
             }
             Log.d("MYLOG", "Adress Result(LOCATION_ADDRESS :" + LOCATION_ADDRESS);
-            mainMeSearchLocation.setMarkdownText("{fa-map-pin} Location : " + LOCATION_ADDRESS);
-        } else {
-            mainMeSearchLocation.setMarkdownText("{fa-map-pin} Location : 현재위치를 확인 할 수 없습니다. 잠시 후 재시도 합니다.");
         }
-        check.clear();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Log.d("updateTerm", "addressTextFlag : " + addressTextFlag);
+        Log.d("updateTerm", "updateTerm : " + updateTerm);
+
+        if (userSearch == 0) {
+            if (addressTextFlag) {
+                mainMeSearchLocation.setMarkdownText("{fa-map-pin} Location : " + LOCATION_ADDRESS);
+                updateTerm = 30000;
+            } else {
+                mainMeSearchLocation.setMarkdownText("{fa-map-pin} Location : 현재위치를 확인 할 수 없습니다. 잠시 후 재시도 합니다...");
+                updateTerm = 30000;
+            }
+//        lm.requestLocationUpdates(provider, updateTerm, 1, this);
+            check.clear();
+        }
 
         MY_POSITION_LAT = location.getLatitude();
         MY_POSITION_LNG = location.getLongitude();
-
         LOCATION_USER_LAT = MY_POSITION_LAT;
         LOCATION_USER_LNG = MY_POSITION_LNG;
+
+
         Log.d("MYLOG", "MY_POSITION_LAT :" + MY_POSITION_LAT + "," + MY_POSITION_LNG);
         Log.d("MYLOG", "LOCATION_USER_LAT :" + LOCATION_USER_LAT + "," + LOCATION_USER_LNG);
 
@@ -1711,6 +1855,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
         if (imagePath.isEmpty()) {
             Glide.with(Main.this)
+
                     .load("http://222.122.203.55/realreview/signup/profiledefault/homeme_default.jpg")
                     .into(meProfileImage);
             meProfileImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -1718,6 +1863,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         } else {
             Glide.with(Main.this)
                     .load(imagePath)
+                    .thumbnail(0.6f)
                     .into(meProfileImage);
             meProfileImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
@@ -1867,9 +2013,9 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
             }
         }
 
-        if (requestCode == PLACE_PICKER_REQUEST) {
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-
+                userSearch = 1;
 
                 Place place = PlacePicker.getPlace(this, data);
 
@@ -1910,8 +2056,9 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                 Log.e("Main.class" + "defaultTitle -> aa0[0]", aa1[0]);
 
                 //Lat Lng Result
-                String lat = aa0[1];
-                String lng = aa1[0];
+
+                SEARCH_LAT = Double.parseDouble(aa0[1]);
+                SEARCH_LNG = Double.parseDouble(aa1[0]);
 
 
                 /**
@@ -1932,20 +2079,19 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
 
                 // Viewport Result
-                String vpSWSplitResultLat = vpSWSplit2[0];
-                String vpSWSplitResultLng = vpSWSplit2[1];
-                String vpNESplitResultLat = vpNESplit2[0];
-                String vpNESplitResultLng = vpNESplit2[1];
+                MAIN_SEARCH_LOCATION_NEAR_RIGHT_LAT = vpSWSplit2[0];
+                MAIN_SEARCH_LOCATION_FAR_LEFT_LNG = vpSWSplit2[1];
+                MAIN_SEARCH_LOCATION_FAR_LEFT_LAT = vpNESplit2[0];
+                MAIN_SEARCH_LOCATION_NEAR_RIGHT_LNG = vpNESplit2[1];
 
+
+/*
                 SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
-
-                pref.setSharedData("SEARCH_Lat", lat);
-                pref.setSharedData("SEARCH_Lng", lng);
                 pref.setSharedData("SEARCH_SW_Lat", vpSWSplitResultLat);
                 pref.setSharedData("SEARCH_SW_Lng", vpSWSplitResultLng);
                 pref.setSharedData("SEARCH_NE_Lat", vpNESplitResultLat);
                 pref.setSharedData("SEARCH_NE_Lng", vpNESplitResultLng);
-
+*/
 
                 Log.e("Main.class" + "VIEWPORT, SW 1 ", vpSWSplit2[0]);
                 Log.e("Main.class" + "VIEWPORT, SW 2 ", vpSWSplit2[1]);
@@ -1962,9 +2108,12 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                 Log.i("Main.class" + "SEARCH", "place.getPhoneNumber():" + place.getPhoneNumber());
                 Log.i("Main.class" + "SEARCH", "place.getViewport():" + place.getViewport());
 
+
+                mainMeSearchLocation.setMarkdownText("{fa-map-pin} Location : " + place.getAddress());
+
                 getId = place.getId();
                 getPriceLevel = place.getPriceLevel();
-
+                navigation.setSelectedItemId(R.id.navigation_search);
 
                 PlaceSelectionListener mPlaceListener = new PlaceSelectionListener() {
                     @Override
@@ -2015,6 +2164,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     public int uploadFile(String sourceFileUri) {
 
         String fileName = sourceFileUri;
+        Log.e("uploadFile", "fileUri : " + fileName);
 
         HttpURLConnection conn = null;
         DataOutputStream dos = null;
@@ -2023,7 +2173,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
         String boundary = "*****";
         int bytesRead, bytesAvailable, bufferSize;
         byte[] buffer;
-        int maxBufferSize = 1 * 1024 * 1024;
+        int maxBufferSize = 8 * 1024 * 1024;
         File sourceFile = new File(sourceFileUri);
 
         if (!sourceFile.isFile()) {
@@ -2042,20 +2192,20 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
                 // Open a HTTP  connection to  the URL
                 conn = (HttpURLConnection) url.openConnection();
-                Log.e("SERVER URL :", String.valueOf(url));
+                Log.e("uploadFile", "SERVER URL : " + String.valueOf(url));
                 conn.setDoInput(true); // Allow Inputs
                 conn.setDoOutput(true); // Allow Outputs
                 conn.setUseCaches(false); // Don't use a Cached Copy
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Connection", "Keep-Alive");
-                conn.setRequestProperty("ENCTYPE", "multipart/form-reviewArrayData");
-                conn.setRequestProperty("Content-Type", "multipart/form-reviewArrayData;boundary=" + boundary);
+                conn.setRequestProperty("ENCTYPE", "multipart/form-data");
+                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
                 conn.setRequestProperty("uploaded_file", fileName);
 
                 dos = new DataOutputStream(conn.getOutputStream());
 
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-reviewArrayData; name=\"uploaded_file\";filename=\""
+                dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
                         + fileName + "\"" + lineEnd);
 
                 dos.writeBytes(lineEnd);
@@ -2090,7 +2240,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
 
                 if (serverResponseCode == 200) {
 
-                    Log.e("SERVER RESPONSE CODE", String.valueOf(serverResponseCode));
+                    Log.e("uploadFile", "SERVER RESPONSE CODE" + String.valueOf(serverResponseCode));
 
                 }
 
@@ -2103,9 +2253,10 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
             } catch (MalformedURLException ex) {
 
                 ex.printStackTrace();
-                Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
+                Log.e("uploadFile", "Upload file to server, " + "error: " + ex.getMessage(), ex);
+
             } catch (Exception e) {
-                Log.e("Upload file to server Exception", "Exception : " + e.getMessage(), e);
+                Log.e("uploadFile", "Upload file to server Exception, " + "Exception : " + e.getMessage(), e);
             }
             return serverResponseCode;
 
@@ -2123,11 +2274,17 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     }
 
     @Override
-    public Filter getFilter() {
+    public void onMapClick(LatLng latLng) {
 
-        Log.d("addTextChangedListener", "getFilter - ENTER");
+        Log.d("Main-onMapClick", "Enter");
 
-        return null;
+
+    }
+
+    @Override
+    public void onCameraMove() {
+
+        Log.d("onCameraMove", "Enter");
     }
 
 
@@ -2631,7 +2788,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
                 int i = 0;
                 Log.e("MainSearch_onMapReady", "jsonHtml - " + jsonHtml);
                 JSONObject jObject = new JSONObject(String.valueOf(jsonHtml));
-                jsonArray = jObject.getJSONArray("realreview");
+                jsonArray = jObject.getJSONArray("mainSearch");
                 JSONObject item = jsonArray.getJSONObject(i);
                 int length = jsonArray.length();
 

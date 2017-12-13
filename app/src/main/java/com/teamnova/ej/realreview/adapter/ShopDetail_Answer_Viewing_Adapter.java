@@ -48,9 +48,9 @@ public class ShopDetail_Answer_Viewing_Adapter extends RecyclerView.Adapter<Shop
 
 
         holder.questionViewText.setText(dataSet.getAnswer());
-        holder.questionViewImageCount.setText("0");
-        holder.questionViewReviewCount.setText("0");
-        holder.questionViewUserFollower.setText("0");
+        holder.questionViewImageCount.setText(dataSet.getImage_cnt());
+        holder.questionViewReviewCount.setText(dataSet.getReview_cnt());
+        holder.questionViewUserFollower.setText(dataSet.getFollower_cnt());
         holder.questionViewRegdate.setMarkdownText("{fa-clock-o} "+dataSet.getRegdate());
         holder.questionViewUserNick.setText(dataSet.getNick());
 

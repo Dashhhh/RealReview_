@@ -18,6 +18,7 @@ import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_QuestionAll_Adapter
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_QuestionAll_Set;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_QuestionAll_Viewholder;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
+import com.teamnova.ej.realreview.util.TransDateToSimple;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -128,11 +129,31 @@ public class ShopDetail_Question_All extends AppCompatActivity {
                 String metooCount = getArray.getString("metooCount");
                 String imagepath = getArray.getString("imagepath");
 
+                String follower_cnt = getArray.getString("follower_cnt");
+                String review_cnt = getArray.getString("review_cnt");
+                String image_cnt = getArray.getString("image_cnt");
 
 
-                ShopDetail_Main_RV_QuestionAll_Set adapterSet = new ShopDetail_Main_RV_QuestionAll_Set
-                        ("", "0", "0", "0", question, regdate, nick, idx,
-                                answerCount, metooCount, curious, imagepath);
+
+                TransDateToSimple transDate = new TransDateToSimple();
+                String simpleDate = transDate.trans(getArray.getJSONObject("datediff"));
+                Log.d("SimpleDateCheck", "Before Parsing -  jsonObject1.getJSONObject(\"datediff\"):" + getArray.getJSONObject("datediff"));
+                Log.d("SimpleDateCheck", "After Parsing - simpleDate :" + simpleDate);
+
+                ShopDetail_Main_RV_QuestionAll_Set adapterSet = new ShopDetail_Main_RV_QuestionAll_Set(
+                        "",
+                        follower_cnt,
+                        review_cnt,
+                        image_cnt,
+                        question,
+                        simpleDate,
+                        nick,
+                        idx,
+                        answerCount,
+                        metooCount,
+                        curious,
+                        imagepath
+                );
                 Log.d("QUESTION_RV", "JSON Parsing...shopid  : " + shopid);
                 Log.d("QUESTION_RV", "JSON Parsing...userid  : " + userid);
                 Log.d("QUESTION_RV", "JSON Parsing...regdate : " + regdate);

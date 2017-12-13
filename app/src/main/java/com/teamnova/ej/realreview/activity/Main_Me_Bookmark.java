@@ -37,9 +37,15 @@ public class Main_Me_Bookmark extends AppCompatActivity {
         setContentView(R.layout.activity_main__me__bookmark);
 
         init();
+
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         apdapting();
-
-
     }
 
     private void init() {

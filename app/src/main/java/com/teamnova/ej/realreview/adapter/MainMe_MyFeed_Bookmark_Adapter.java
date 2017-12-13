@@ -76,6 +76,11 @@ public class MainMe_MyFeed_Bookmark_Adapter extends RecyclerView.Adapter<MainMe_
         });
 
 
+        /**
+         * Nearby와 기능이 겹쳐서 Check-In 제거
+         */
+        holder.mainMeBookmarkCheckinCount.setVisibility(View.GONE);
+
 
     }
 

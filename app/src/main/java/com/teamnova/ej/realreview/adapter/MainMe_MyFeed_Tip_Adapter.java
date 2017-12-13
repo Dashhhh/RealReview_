@@ -66,6 +66,12 @@ public class MainMe_MyFeed_Tip_Adapter extends RecyclerView.Adapter<MainMe_MyFee
         Log.d("ASYNCMyFeed_TIP", "getData.tip : " + getData.tip);
 
 
+        /**
+         * Nearby와 중복되어 Check-In 제거
+         */
+
+        holder.mainMeTipCheckinCount.setVisibility(View.GONE);
+
     }
 
     @Override

@@ -8,12 +8,19 @@
     android:orientation="vertical"
     tools:context=".activity.Intro">
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/introBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/mainbackground" />
+        android:background="@drawable/t_street1"
+        />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#73000000" />
 
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/introProgress"

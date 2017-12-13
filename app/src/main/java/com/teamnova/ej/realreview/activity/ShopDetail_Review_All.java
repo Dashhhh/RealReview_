@@ -18,6 +18,7 @@ import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_QuestionAll_Set;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_ReviewAll_Adapter;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_ReviewAll_Set;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Review_LV_Set;
+import com.teamnova.ej.realreview.util.TransDateToSimple;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +29,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class ShopDetail_Review_Viewing extends AppCompatActivity {
+public class ShopDetail_Review_All extends AppCompatActivity {
 
 
     android.support.v7.widget.RecyclerView reviewAllRV;
@@ -119,8 +120,13 @@ public class ShopDetail_Review_Viewing extends AppCompatActivity {
                 String getCountReview = jsonObject1.getString("review_cnt");
                 String getCountImage = jsonObject1.getString("image_cnt");
 
+                TransDateToSimple transDate = new TransDateToSimple();
+                String simpleDate = transDate.trans(jsonObject1.getJSONObject("datediff"));
+                Log.d("SimpleDateCheck", "Before Parsing -  jsonObject1.getJSONObject(\"datediff\"):" + jsonObject1.getJSONObject("datediff"));
+                Log.d("SimpleDateCheck", "After Parsing - simpleDate :" + simpleDate);
 
-                ShopDetail_Main_RV_ReviewAll_Set setData = new ShopDetail_Main_RV_ReviewAll_Set(getReviewIdx, getProfileImageURL,getCountFollower, getCountReview, getCountImage, getReviewText, getRegdate,getUserId, getRating, 0.0f, getNick, getNearby, getLocality, getCountCool, getCountUseful, getCountGood, selectableUseful, selectableGood, selectableCool);
+
+                ShopDetail_Main_RV_ReviewAll_Set setData = new ShopDetail_Main_RV_ReviewAll_Set(getReviewIdx, getProfileImageURL,getCountFollower, getCountReview, getCountImage, getReviewText, simpleDate,getUserId, getRating, 0.0f, getNick, getNearby, getLocality, getCountCool, getCountUseful, getCountGood, selectableUseful, selectableGood, selectableCool);
                 data.add(setData);
 //
 //                reviewLvAdapter.addItem(getReviewIdx, getProfileImageURL, getCountFollower, getCountReview, getCountImage, getReviewText,

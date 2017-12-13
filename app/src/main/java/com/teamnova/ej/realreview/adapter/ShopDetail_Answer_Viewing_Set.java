@@ -16,12 +16,28 @@ public class ShopDetail_Answer_Viewing_Set {
     private String id_shop;
     private String id_user;
     private String replycount;
+    private String imagepath;
+    private String follower_cnt;
+    private String review_cnt;
+    private String image_cnt;
 
 
     public ShopDetail_Answer_Viewing_Set() {
     }
 
-    public ShopDetail_Answer_Viewing_Set(String type, String idx, String nick_imagepath, String regdate, String question_idx, String nick, String id_shop, String id_user, String answer, String replycount) {
+    public ShopDetail_Answer_Viewing_Set(String type,
+                                         String idx,
+                                         String nick_imagepath,
+                                         String regdate,
+                                         String question_idx,
+                                         String nick,
+                                         String id_shop,
+                                         String id_user,
+                                         String answer,
+                                         String replycount,
+                                         String follower_cnt,
+                                         String review_cnt,
+                                         String image_cnt) {
         this.type = type;
         this.idx = idx;
         this.nick_imagepath = nick_imagepath;
@@ -32,7 +48,12 @@ public class ShopDetail_Answer_Viewing_Set {
         this.id_user = id_user;
         this.answer = answer;
         this.replycount = replycount;
+        this.follower_cnt = follower_cnt;
+        this.review_cnt = review_cnt;
+        this.image_cnt = image_cnt;
+
     }
+
 
     public String getQuestion_idx() {
         return question_idx;
@@ -112,5 +133,37 @@ public class ShopDetail_Answer_Viewing_Set {
 
     public void setReplycount(String replycount) {
         this.replycount = replycount;
+    }
+
+    public String getImagepath() {
+        return imagepath;
+    }
+
+    public void setImagepath(String imagepath) {
+        this.imagepath = imagepath;
+    }
+
+    public String getFollower_cnt() {
+        return follower_cnt;
+    }
+
+    public void setFollower_cnt(String follower_cnt) {
+        this.follower_cnt = follower_cnt;
+    }
+
+    public String getReview_cnt() {
+        return review_cnt;
+    }
+
+    public void setReview_cnt(String review_cnt) {
+        this.review_cnt = review_cnt;
+    }
+
+    public String getImage_cnt() {
+        return image_cnt;
+    }
+
+    public void setImage_cnt(String image_cnt) {
+        this.image_cnt = image_cnt;
     }
 }

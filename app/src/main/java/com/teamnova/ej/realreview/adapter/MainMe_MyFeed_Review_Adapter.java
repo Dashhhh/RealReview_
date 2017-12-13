@@ -115,6 +115,14 @@ public class MainMe_MyFeed_Review_Adapter extends RecyclerView.Adapter<MainMe_My
             holder.mainMeUsefulState.setVisibility(View.GONE);
         }
 
+
+        /**
+         *
+         * Nearby 기능과 중복되어 Check-In 제거
+         *
+         */
+        holder.mainMeCheckinCount.setVisibility(View.GONE);
+
     }
 
 

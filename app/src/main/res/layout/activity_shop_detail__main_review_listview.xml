@@ -132,13 +132,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        app:bootstrapSize="xs" />
+                        app:bootstrapSize="sm" />
 
                     <com.beardedhen.androidbootstrap.BootstrapBadge
                         android:id="@+id/mainMeLocality"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:bootstrapSize="xs" />
+                        app:bootstrapSize="sm" />
 
 
                 </LinearLayout>

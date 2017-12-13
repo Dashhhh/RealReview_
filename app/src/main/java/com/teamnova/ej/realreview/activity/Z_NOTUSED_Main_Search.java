@@ -49,7 +49,7 @@ import static com.teamnova.ej.realreview.activity.Main.navigation;
  * Created by ej on 2017-10-12.
  */
 
-public class Main_Search extends FragmentActivity implements View.OnClickListener, OnMapReadyCallback, LocationListener {
+public class Z_NOTUSED_Main_Search extends FragmentActivity implements View.OnClickListener, OnMapReadyCallback, LocationListener {
 
     Context mContext;
     GoogleMap mMap;
@@ -77,10 +77,10 @@ public class Main_Search extends FragmentActivity implements View.OnClickListene
     public static String MAIN_SEARCH_SEARCh_POSITION_LNG;
 
 
-    public Main_Search() {
+    public Z_NOTUSED_Main_Search() {
     }
 
-    public Main_Search(Context mContext) {
+    public Z_NOTUSED_Main_Search(Context mContext) {
         this.mContext = mContext;
     }
 
