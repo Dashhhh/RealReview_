@@ -392,6 +392,7 @@ public class Main extends AppCompatActivity
         mapOptions.useViewLifecycleInFragment(true);
         searchFragment1 = SupportMapFragment.newInstance(mapOptions);
 */
+/*
 
         searchFragment2 = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.searchMap);
@@ -400,6 +401,7 @@ public class Main extends AppCompatActivity
         mapOptions2.useViewLifecycleInFragment(true);
         searchFragment2 = SupportMapFragment.newInstance(mapOptions2);
 
+*/
 
         /**
          *
@@ -697,6 +699,15 @@ public class Main extends AppCompatActivity
 
     }
 
+
+    /**
+     *
+     * Google Map 두 개를 하나의 Activity에서 사용하면
+     * 사용은 되지만 제어가 안됨
+     *  - Marker Position Random으로 마구 튐
+     *
+     */
+/*
     public OnMapReadyCallback onMapReadyCallback1() {
         return new OnMapReadyCallback() {
             @Override
@@ -887,6 +898,7 @@ public class Main extends AppCompatActivity
             }
         };
     }
+*/
 
 
     /**
@@ -905,12 +917,7 @@ public class Main extends AppCompatActivity
             @Override
             public void onMapReady(GoogleMap googleMap) {
 
-                onCameraMove();
-
-
                 Log.d("MainSearch_onMapReady2Enter", " - ENTER");
-
-
                 builder = new MaterialDialog.Builder(Main.this)
                         .title("Connecting")
                         .content("loading..")
@@ -1546,6 +1553,11 @@ public class Main extends AppCompatActivity
         /** 이 화면이 불릴 때, 일시정지 해제 처리*/
 
 
+        /**
+         *
+         * 장소 분류 "선택 완료" 후 1회 실행
+         * "관심 지점" -> 분류 전체를 뜻함
+         */
         if (PLACETYPE_SELECT_COMPLETE_CHECK) {
             navigation.setSelectedItemId(R.id.navigation_search);
             if (USER_SELECT_PLACETYPE.equals("관심 지점")) {
@@ -1560,7 +1572,6 @@ public class Main extends AppCompatActivity
 
         //위치정보 객체에 이벤트 연결
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
