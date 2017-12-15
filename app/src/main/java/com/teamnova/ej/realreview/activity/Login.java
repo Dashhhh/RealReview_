@@ -204,7 +204,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 break;
             }
             case R.id.loginSignIn: {
-                Intent intent = new Intent(getApplicationContext(), Signup1.class);
+                Intent intent = new Intent(getApplicationContext(), Signup1_Check_ID_PW.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

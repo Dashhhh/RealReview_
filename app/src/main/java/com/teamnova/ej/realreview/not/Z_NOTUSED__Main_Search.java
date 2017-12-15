@@ -1,4 +1,4 @@
-package com.teamnova.ej.realreview.activity;
+package com.teamnova.ej.realreview.not;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -10,31 +10,32 @@ import android.widget.LinearLayout;
 
 import com.teamnova.ej.realreview.R;
 
-public class Z_NOTUSED__Main_Me extends AppCompatActivity implements View.OnClickListener {
+public class Z_NOTUSED__Main_Search extends AppCompatActivity implements View.OnClickListener {
+
     LinearLayout bottomNearby, bottomSearch, bottomMe, bottomMore;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.z_notused__activity_main_me);
+        setContentView(R.layout.z_notused__activity_main_search);
+
         init();
         listener();
     }
 
-
     private void init() {
-
         bottomNearby = findViewById(R.id.bottomNearby);
-        bottomSearch = findViewById(R.id.bottomSearch);
-//        bottomMe = (LinearLayout) findViewById(R.id.bottomMe);
+//        bottomSearch = (LinearLayout) findViewById(R.id.bottomSearch);
+        bottomMe = findViewById(R.id.bottomMe);
         bottomMore = findViewById(R.id.bottomMore);
 
     }
 
     private void listener() {
         bottomNearby.setOnClickListener(this);
-        bottomSearch.setOnClickListener(this);
-//        bottomMe.setOnClickListener(this);
+//        bottomSearch.setOnClickListener(this);
+        bottomMe.setOnClickListener(this);
         bottomMore.setOnClickListener(this);
 
     }
@@ -44,25 +45,25 @@ public class Z_NOTUSED__Main_Me extends AppCompatActivity implements View.OnClic
 
         switch (view.getId()) {
             case R.id.bottomNearby: {
-                Intent intent = new Intent(Z_NOTUSED__Main_Me.this, Z_NOTUSED__Main_Nearby.class);
+                Intent intent = new Intent(Z_NOTUSED__Main_Search.this, Z_NOTUSED__Main_Nearby.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.bottomSearch: {
-                Intent intent = new Intent(Z_NOTUSED__Main_Me.this, Z_NOTUSED__Main_Search.class);
-                startActivity(intent);
-                break;
-            }
-
-//            case R.id.bottomMe: {
-//                Intent intent = new Intent(Z_NOTUSED__Main_Me.this, Z_NOTUSED__Main_Me.class);
+//            case R.id.bottomSearch: {
+//                Intent intent = new Intent(Z_NOTUSED__Main_Search.this, Z_NOTUSED__Main_Search.class);
 //                startActivity(intent);
 //                break;
 //            }
 
+            case R.id.bottomMe: {
+                Intent intent = new Intent(Z_NOTUSED__Main_Search.this, Z_NOTUSED__Main_Me.class);
+                startActivity(intent);
+                break;
+            }
+
             case R.id.bottomMore: {
-                Intent intent = new Intent(Z_NOTUSED__Main_Me.this, Z_NOTUSED__Main_More.class);
+                Intent intent = new Intent(Z_NOTUSED__Main_Search.this, Z_NOTUSED__Main_More.class);
                 startActivity(intent);
                 break;
             }
@@ -96,5 +97,4 @@ public class Z_NOTUSED__Main_Me extends AppCompatActivity implements View.OnClic
                 .create()
                 .show();
     }
-
 }

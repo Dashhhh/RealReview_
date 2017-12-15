@@ -1,4 +1,4 @@
-package com.teamnova.ej.realreview.activity;
+package com.teamnova.ej.realreview.not;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

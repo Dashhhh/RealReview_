@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.teamnova.ej.realreview.activity.Z_NOTUSED_ShopDetail_Checkin"
+    tools:context="com.teamnova.ej.realreview.not.Z_NOTUSED_ShopDetail_Checkin"
     tools:layout_editor_absoluteY="25dp">
 
 

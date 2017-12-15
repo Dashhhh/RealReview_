@@ -27,7 +27,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Signup2 extends AppCompatActivity implements View.OnClickListener {
+public class Signup2_Check_Nick extends AppCompatActivity implements View.OnClickListener {
 
     ImageView sign2Image;
     EditText sign2Nick;
@@ -81,7 +81,7 @@ public class Signup2 extends AppCompatActivity implements View.OnClickListener {
                         if (tempNick2 == null || tempNick2 == "") {
                             SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
                             pref.setSharedData("SIGNIN_NICK", nick);
-                            Intent intent = new Intent(Signup2.this, Signup3.class);
+                            Intent intent = new Intent(Signup2_Check_Nick.this, Signup3_UserAddress.class);
                             startActivity(intent);
 
                         } else {
@@ -118,7 +118,7 @@ public class Signup2 extends AppCompatActivity implements View.OnClickListener {
 //                        if (!tempNick.equals(tempNick2)) {
 //                            SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
 //                            pref.setSharedData("SIGNIN_NICK",nick);
-//                            Intent intent = new Intent(Signup2.this, Signup3.class);
+//                            Intent intent = new Intent(Signup2_Check_Nick.this, Signup3_UserAddress.class);
 //                            startActivity(intent);
 //                        } else if (!tempNick.isEmpty()) {
 //                            Dialog_Default dial = new Dialog_Default(this);

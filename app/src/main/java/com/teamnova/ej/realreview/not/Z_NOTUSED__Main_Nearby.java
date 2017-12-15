@@ -1,4 +1,4 @@
-package com.teamnova.ej.realreview.activity;
+package com.teamnova.ej.realreview.not;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;

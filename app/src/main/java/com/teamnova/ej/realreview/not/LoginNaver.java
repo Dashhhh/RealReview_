@@ -1,15 +1,15 @@
-package com.teamnova.ej.realreview.activity;
+package com.teamnova.ej.realreview.not;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.teamnova.ej.realreview.R;
 
-public class LoginKakao extends AppCompatActivity {
+public class LoginNaver extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_kakao);
+        setContentView(R.layout.activity_login_naver);
     }
 }

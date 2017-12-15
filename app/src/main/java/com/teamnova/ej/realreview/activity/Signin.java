@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.teamnova.ej.realreview.R;
+import com.teamnova.ej.realreview.not.ForgotPassword;
 
 public class Signin extends AppCompatActivity implements View.OnClickListener {
 
@@ -55,7 +56,7 @@ public class Signin extends AppCompatActivity implements View.OnClickListener {
                 break;
             }
             case R.id.signupBtn: {
-                Intent intent = new Intent(Signin.this, Signup1.class);
+                Intent intent = new Intent(Signin.this, Signup1_Check_ID_PW.class);
                 startActivity(intent);
                 break;
             }

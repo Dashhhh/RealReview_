@@ -1,31 +1,28 @@
-package com.teamnova.ej.realreview.activity;
+/*
+package com.teamnova.ej.realreview.not;
 
 import android.Manifest;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.pnikosis.materialishprogress.ProgressWheel;
-import com.teamnova.ej.realreview.R;
+import com.teamnova.ej.realreview.activity.Main;
+import com.teamnova.ej.realreview.activity.ShopDetail_Main;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
 import org.json.JSONArray;
@@ -43,11 +40,12 @@ import static com.teamnova.ej.realreview.activity.Main.LOCATION_NEAR_RIGHT_LAT;
 import static com.teamnova.ej.realreview.activity.Main.LOCATION_NEAR_RIGHT_LNG;
 import static com.teamnova.ej.realreview.activity.Main.MY_POSITION_LAT;
 import static com.teamnova.ej.realreview.activity.Main.MY_POSITION_LNG;
-import static com.teamnova.ej.realreview.activity.Main.navigation;
 
+*/
 /**
  * Created by ej on 2017-10-12.
- */
+ *//*
+
 
 public class Z_NOTUSED_Main_Search extends FragmentActivity implements View.OnClickListener, OnMapReadyCallback, LocationListener {
 
@@ -87,6 +85,7 @@ public class Z_NOTUSED_Main_Search extends FragmentActivity implements View.OnCl
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+*/
 /*
         SharedPreferenceUtil preferenceUtil = new SharedPreferenceUtil(mContext);
         String locationFlag = preferenceUtil.getSharedData("LOCATION_FLAG");
@@ -95,7 +94,8 @@ public class Z_NOTUSED_Main_Search extends FragmentActivity implements View.OnCl
             navigation.setSelectedItemId(R.id.navigation_nearby);
             preferenceUtil.setSharedData("LOCATION_FLAG", "FALSE");
         }
-*/
+*//*
+
 
         mMap = googleMap;
         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -300,3 +300,4 @@ public class Z_NOTUSED_Main_Search extends FragmentActivity implements View.OnCl
 
 
 }
+*/

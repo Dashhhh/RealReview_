@@ -2,17 +2,9 @@ package com.teamnova.ej.realreview.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -27,24 +19,21 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.util.Dialog_Default;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-public class Signup3  extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener{
+public class Signup3_UserAddress extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener{
 
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     int PLACE_PICKER_REQUEST = 1;
     MapView mapView;
     GoogleApiClient mGoogleApiClient;
 
-    String TAG = "Signup3.class";
+    String TAG = "Signup3_UserAddress.class";
     String getId = "";
     String getAddress = "";
     String getName = "";
@@ -222,15 +211,15 @@ public class Signup3  extends FragmentActivity implements OnMapReadyCallback, Go
 
 
 
-                Log.i(TAG + "Signup3", "place.toString():" + place.toString());
-                Log.i(TAG + "Signup3", "place.getId():" + place.getId());
-                Log.i(TAG + "Signup3", "place.getAddress():" + place.getAddress());
-                Log.i(TAG + "Signup3", "place.getAttributions():" + place.getAttributions());
-                Log.i(TAG + "Signup3", "place.getLatLng():" + place.getLatLng());
-                Log.i(TAG + "Signup3", "place.getLocale():" + place.getLocale());
-                Log.i(TAG + "Signup3", "place.getName():" + place.getName());
-                Log.i(TAG + "Signup3", "place.getPhoneNumber():" + place.getPhoneNumber());
-                Log.i(TAG + "Signup3", "place.getViewport():" + place.getViewport());
+                Log.i(TAG + "Signup3_UserAddress", "place.toString():" + place.toString());
+                Log.i(TAG + "Signup3_UserAddress", "place.getId():" + place.getId());
+                Log.i(TAG + "Signup3_UserAddress", "place.getAddress():" + place.getAddress());
+                Log.i(TAG + "Signup3_UserAddress", "place.getAttributions():" + place.getAttributions());
+                Log.i(TAG + "Signup3_UserAddress", "place.getLatLng():" + place.getLatLng());
+                Log.i(TAG + "Signup3_UserAddress", "place.getLocale():" + place.getLocale());
+                Log.i(TAG + "Signup3_UserAddress", "place.getName():" + place.getName());
+                Log.i(TAG + "Signup3_UserAddress", "place.getPhoneNumber():" + place.getPhoneNumber());
+                Log.i(TAG + "Signup3_UserAddress", "place.getViewport():" + place.getViewport());
 
                 getId = place.getId();
                 getPriceLevel = place.getPriceLevel();
@@ -239,9 +228,9 @@ public class Signup3  extends FragmentActivity implements OnMapReadyCallback, Go
 
 /*
                 LatLngBounds mPlace = PlacePicker.getLatLngBounds(data);
-                Log.i(TAG + "Signup3", "mPlace.toString() : " + mPlace.toString());
-                Log.i(TAG + "Signup3", "mPlace.getClass() : " + mPlace.getClass());
-                Log.i(TAG + "Signup3", "mPlace.getCenter() : " + mPlace.getCenter());
+                Log.i(TAG + "Signup3_UserAddress", "mPlace.toString() : " + mPlace.toString());
+                Log.i(TAG + "Signup3_UserAddress", "mPlace.getClass() : " + mPlace.getClass());
+                Log.i(TAG + "Signup3_UserAddress", "mPlace.getCenter() : " + mPlace.getCenter());
 */
 
 
@@ -251,14 +240,14 @@ public class Signup3  extends FragmentActivity implements OnMapReadyCallback, Go
                     @Override
                     public void onPlaceSelected(Place place) {
 
-                        Log.i(TAG + "Signup3", "onPlaceSelected");
+                        Log.i(TAG + "Signup3_UserAddress", "onPlaceSelected");
 
 
                     }
 
                     @Override
                     public void onError(Status status) {
-                        Log.i(TAG + "Signup3", "onError");
+                        Log.i(TAG + "Signup3_UserAddress", "onError");
                     }
                 };
                 mPlaceListener.onPlaceSelected(place);
@@ -268,7 +257,7 @@ public class Signup3  extends FragmentActivity implements OnMapReadyCallback, Go
                 startActivity(intent);
 
             } else if (resultCode == RESULT_CANCELED) {
-                Intent intent = new Intent(Signup3.this, Signup2.class);
+                Intent intent = new Intent(Signup3_UserAddress.this, Signup2_Check_Nick.class);
                 startActivity(intent);
             }
         }

@@ -19,8 +19,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -33,7 +31,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -63,7 +60,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -74,9 +70,6 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.teamnova.ej.realreview.R;
-import com.teamnova.ej.realreview.adapter.MainMe_MyFeed_Question_Set;
-import com.teamnova.ej.realreview.adapter.MainMe_MyFeed_Review_Set;
-import com.teamnova.ej.realreview.adapter.MainMe_MyFeed_Tip_Set;
 import com.teamnova.ej.realreview.util.Dialog_Default;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
@@ -109,9 +102,12 @@ import java.util.concurrent.TimeoutException;
 
 
 /**
+ *  0. 주 목적
+ *      0-1.    상점을 검색하기 위한 ACTIVITY
+ *      0-2.    LOGIN USER PROFILE 제공
  *
- * 1. Login 직후 첫 Main화면
- * 2. 
+ *  1. Activity Stack
+ *      1-1.    Login.class -> CLEAR STACK (Back Button -> Exit App)
  *
  */
 
@@ -124,26 +120,90 @@ public class Main extends AppCompatActivity
         GoogleMap.OnMapClickListener,
         GoogleMap.OnCameraMoveListener {
 
-    public static String ID;
+
+    /**
+     * onActivity Result 변수
+     * @var PICK_FROM_CAMERA    - Choice 'Camera'
+     * @var PICK_FROM_ALBUM     - Choice 'Album'
+     * @var CROP_FROM_CAMERA    - CROP IMAGE [Camera || Image Event 이후 Crop으로]
+     *
+     */
     public static final int PICK_FROM_CAMERA = 0;
     public static final int PICK_FROM_ALBUM = 1;
     public static final int CROP_FROM_CAMERA = 2;
+
+
+    /**
+     * Image Upload Flag
+     * @var UPLOAD_FLAG    - onResume Lifecycle로 Flag설정, 변수의 상태 유지를 위해 Static 선언
+     *
+     */
     public static boolean UPLOAD_FLAG = false;
 
+
+    /**
+     * LOCATION API VAR
+     * @var LOCATION_USER_LAT, LOCATION_USER_LNG
+     *      : LOCATION API Provider에서 얻은 Lat, Lng.
+     *      : 30초 주기로 갱신
+     */
     public static double LOCATION_USER_LAT = 0;
     public static double LOCATION_USER_LNG = 0;
+
+
+
+    /**
+     * LOCATION API VAR
+     * @var LOCATION_FAR_LEFT_LAT, LOCATION_FAR_LEFT_LNG
+     * @var LOCATION_NEAR_RIGHT_LAT, LOCATION_NEAR_RIGHT_LNG
+     *
+     *      : onMapReadyCallback -> Map Viewport 좌상/우하 Lat, Lng
+     */
     public static double LOCATION_FAR_LEFT_LAT = 0;
     public static double LOCATION_FAR_LEFT_LNG = 0;
     public static double LOCATION_NEAR_RIGHT_LAT = 0;
     public static double LOCATION_NEAR_RIGHT_LNG = 0;
+
+    /**
+     * LOCATION API VAR
+     * @var PLACETYPE_SELECT_COMPLETE_CHECK
+     *      : Main_Search_PLacetype.class -> 상점 분류 검색 위한 FLAG
+     *      : Main_Search_PLacetype.class에서 검색 완료 후 True
+     *      : Main.class에서 상점 분류 적용 후 False (onMapreadyCallback)
+     */
 
     public static boolean PLACETYPE_SELECT_COMPLETE_CHECK = false;
 
 
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 3;
     int PLACE_PICKER_REQUEST = 4;
-    MapView mapView;
+
+
+    /**
+     * LOCATION API VAR
+     * @var mGoogleApiClient
+     *      : PLACE_DETECTION_API & GEO_DATA_API 사용 선언
+     */
+
     GoogleApiClient mGoogleApiClient;
+
+
+    /**
+     *
+     * 상점관련 정보를 넘기기 위한 변수 (Main.class -> ShopDetail_Main.class)
+     *
+     * @var getId
+     * @var getAddress
+     * @var getName
+     * @var getPhoneNumber
+     * @var getWebsiteUri
+     * @var getLatLng
+     * @var getViewport
+     * @var getLocale
+     * @var getPlaceTypes
+     * @var getAttribution
+     *
+     */
     String getId = "";
     String getAddress = "";
     String getName = "";
@@ -158,46 +218,44 @@ public class Main extends AppCompatActivity
     float getRating = 0;
 
 
+    /**
+     * Camera 사용 후 Image 상대주소 가져옴 (contents://...)
+     * FilePath Method 통해 절대주소 가져옴 (file://...)
+     */
     private Uri mImageCaptureUri;
+
+
     /**
      * filePath Upload Thread Var
      */
-    Handler mHandler = new Handler(Looper.getMainLooper());
     String login_url = "http://222.122.203.55/realreview/signup/profileimagepath.php?";
     String strAnd = "&", strId = "id=", strPw = "pw=", strNick = "nick=",
             strPath = "profile_image_path=", urlParse;
     String UrParseImage = "";
-    private static String TAG = "phptest_MainActivity";
-    private static final String TAG_JSON = "realreview";
-    private static final String TAG_NICK = "nick";
-    private static final String TAG_NAME = "name";
-    private static final String TAG_ADDRESS = "address";
-    String tempNick, tempNick2;
-
 
     /**
      * Server Thread Var
      */
     int serverResponseCode = 0;
     ProgressBar dialog = null;
-    /**********  File Path *************/
+
+    /**
+     * File Path VAR (ONLY Using TEST)
+     */
     final String uploadFilePath = "storage/emulated/0/Pictures/";//경로를 모르겠으면, 갤러리 어플리케이션 가서 메뉴->상세 정보
     final String uploadFileName = "Instagram/IMG_20170715_043200_310.jpg"; //전송하고자하는 파일 이름
-    TextView messageText;
-    Button uploadButton;
-    String realPath = "";
     String upLoadServerUri = "http://222.122.203.55/realreview/signup/uploadtoserver.php";  // Set Image File at The SERVER
+
+
     /**
-     * VAR
+     * Layout Binding Var
      */
 
-    LinearLayout nearbyLinear, meLinear, meLinearSecond, meProfileStateLayout, meMLinearMyFeed;
-    LinearLayout searchLinear;
+    public static BottomNavigationView navigation;
+    LinearLayout nearbyLinear, meLinear, meLinearSecond, meProfileStateLayout, meMLinearMyFeed, searchLinear;
     RecyclerView mainMeMyFeedRV, mainMeQuestionRV, mainMeTipRV;
     FrameLayout content;
     ScrollView map_container, meScrollView;
-    public static BottomNavigationView navigation;
-    private GoogleMap mMap;
     private GoogleMap mMap2;
     TextView searchText, meProfileUserNick, meProfileUserAddress;
     com.beardedhen.androidbootstrap.AwesomeTextView meFollowerText, meReviewCount, mainMeImageCount;
@@ -207,17 +265,27 @@ public class Main extends AppCompatActivity
     private boolean mRequestingLocationUpdates;
     private LocationCallback mLocationCallback;
     private LocationRequest mLocationRequest;
-    com.beardedhen.androidbootstrap.BootstrapButton mainMeSearchLocation, mainMeSearchPlaceType, nearbyShopAdd, mainMeSearchMyPosition, mainMeSearcRedoSearch;
-    com.beardedhen.androidbootstrap.BootstrapButton mainMeBtnReview, mainMeBtnTip, mainMeBtnQuestion, mainMeBtnBookmark;
+    com.beardedhen.androidbootstrap.BootstrapButton
+            mainMeSearchLocation,
+            mainMeSearchPlaceType,
+            nearbyShopAdd,
+            mainMeSearchMyPosition,
+            mainMeSearcRedoSearch,
+            mainMeBtnReview,
+            mainMeBtnTip,
+            mainMeBtnQuestion,
+            mainMeBtnBookmark,
+            mainNearbyRestaurant,
+            mainNearbyCafe,
+            mainNearbyHair,
+            mainNearbyBars,
+            mainNearbyHotel,
+            mainNearbyDepartment;
 
-    com.beardedhen.androidbootstrap.BootstrapButton mainNearbyRestaurant, mainNearbyCafe, mainNearbyHair, mainNearbyBars, mainNearbyHotel, mainNearbyDepartment;
-
-    //    SupportMapFragment mapFragment;
 
     /**
-     * Receive Location Data
+     * Receive Location Data Var
      */
-
 
     //위치정보 객체
     LocationManager lm = null;
@@ -231,30 +299,25 @@ public class Main extends AppCompatActivity
     private String resultFarLeftLat;
     private String resultFarLeftLng;
 
-    public static String locationJson = "";
     public static double MY_POSITION_LAT;
     public static double MY_POSITION_LNG;
 
     public static StringBuilder HTTP_RECEIVE_SHOPDATA;
 
-    public String replaceTest = "";
-    ArrayList<String> fixShopDataList = new ArrayList<>();
     ArrayList<String> fixShopDataList_MainSearch = new ArrayList<>();
-    ArrayList<String> keyShopDataList = new ArrayList<>();
-    ArrayList<String> valueShopDataList = new ArrayList<>();
-    private JSONObject item2;
     private JSONObject onMapCallBack2;
     private String modifyProfileImagePath;
     private MaterialDialog builder;
     private Toolbar toolbar;
     private TextView meProfileUserId;
-    public ArrayList<MainMe_MyFeed_Review_Set> reviewArrayData = new ArrayList<>();
-    public ArrayList<MainMe_MyFeed_Question_Set> questionArrayData = new ArrayList<>();
-    public ArrayList<MainMe_MyFeed_Tip_Set> tipArrayData = new ArrayList<>();
     private String myFeedURL = "http://222.122.203.55/realreview/myFeed/myFeed.php";
     public static String LOCATION_ADDRESS = "";
     public static String USER_SELECT_PLACETYPE = "관심 지점";
 
+
+    /**
+     * User 'Addresss Search' VAR
+     */
     public static String MAIN_SEARCH_LOCATION_FAR_LEFT_LAT;
     public static String MAIN_SEARCH_LOCATION_FAR_LEFT_LNG;
     public static String MAIN_SEARCH_LOCATION_NEAR_RIGHT_LAT;
@@ -263,13 +326,13 @@ public class Main extends AppCompatActivity
     public static String MAIN_SEARCH_SEARCh_POSITION_LNG;
     private boolean mapReadyCallBackFlag = true;
     private boolean mapReadyCallBackFlag_Main = true;
+
     boolean setMapCheck1 = true;
     boolean setMapCheck2 = true;
-    public SupportMapFragment searchFragment1;
+
     public SupportMapFragment searchFragment2;
     private boolean addressTextFlag;
     private int updateTerm = 30000;
-
 
     /**
      * @var userSearch == 0
@@ -370,49 +433,6 @@ public class Main extends AppCompatActivity
 
         SharedPreferenceUtil pref = new SharedPreferenceUtil(getApplicationContext());
 
-
-//
-//        mMapFragment = MapFragment.newInstance();
-//        FragmentTransaction fragmentTransaction =
-//                getFragmentManager().beginTransaction();
-//        fragmentTransaction.add(R.id.mapView, mMapFragment);
-//        fragmentTransaction.commit();
-//
-//        MapFragment mapFragment = (MapFragment) getFragmentManager()
-//                .findFragmentById(R.id.mapView);
-//        mapFragment.getMapAsync(new Z_NOTUSED_Main_Search(this));
-/*
-        searchFragment1 = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.mapView);
-        searchFragment1.getMapAsync(onMapReadyCallback1());
-        GoogleMapOptions mapOptions = new GoogleMapOptions();
-        mapOptions.useViewLifecycleInFragment(true);
-        searchFragment1 = SupportMapFragment.newInstance(mapOptions);
-*/
-/*
-
-        searchFragment2 = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.searchMap);
-        searchFragment2.getMapAsync(onMapReadyCallback2());
-        GoogleMapOptions mapOptions2 = new GoogleMapOptions();
-        mapOptions2.useViewLifecycleInFragment(true);
-        searchFragment2 = SupportMapFragment.newInstance(mapOptions2);
-
-*/
-
-        /**
-         *
-         * Map add
-         *
-         */
-
-//        mMapFragment = MapFragment.newInstance();
-//        FragmentTransaction fragmentTransaction =
-//                getFragmentManager().beginTransaction();
-//        fragmentTransaction.add(R.id.searchLinear, mMapFragment);
-//        fragmentTransaction.commit();
-
-
         searchLinear = findViewById(R.id.searchLinear);
         nearbyLinear = findViewById(R.id.nearbyLinear);
         meLinear = findViewById(R.id.meLinear);
@@ -444,10 +464,6 @@ public class Main extends AppCompatActivity
         mainMeImageCount.setMarkdownText("{fa-camera} " + pref.getSharedData("isLogged_imageCnt"));
 
         meProfileImage = findViewById(R.id.meProfileImage);
-//        mainMeMyFeedRV = findViewById(R.id.mainMeMyFeedRV);
-//        mainMeQuestionRV = findViewById(R.id.mainMeQuestionRV);
-//        mainMeTipRV = findViewById(R.id.mainMeTipRV);
-
 
         /**
          * User Profile -> REVIEW, QUESTION, TIP 나누지 않고 MY FEED로 한번에 보이기
@@ -536,45 +552,6 @@ public class Main extends AppCompatActivity
 
             }
         });
-
-//        mainMeSearchPlaceType.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void afterTextChanged(Editable edit) {
-//                // TODO : item filtering
-//                String filterText = edit.toString();
-//                if (filterText.length() > 0) {
-//
-//                    Log.d("addTextChangedListener", "afterTextChanged - ENTER 1");
-//                    mainMeSearchPlaceTypeLV.setFilterText(filterText);
-//
-//                } else {
-//                    Log.d("addTextChangedListener", "afterTextChanged - ENTER 2");
-//                    mainMeSearchPlaceTypeLV.clearTextFilter();
-//                }
-//
-//                adapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                Log.d("addTextChangedListener", "beforeTextChanged - ENTER");
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                String filterText = s.toString();
-//                if (filterText.length() > 0) {
-//                    Log.d("addTextChangedListener", "onTextChanged - ENTER 1");
-//                    mainMeSearchPlaceTypeLV.setFilterText(filterText);
-//                } else {
-//                    Log.d("addTextChangedListener", "onTextChanged - ENTER 2");
-//                    mainMeSearchPlaceTypeLV.clearTextFilter();
-//                }
-//                adapter.notifyDataSetChanged();
-//            }
-//
-//        });
 
         toolbar = findViewById(R.id.main_toolbar);
 
@@ -698,11 +675,9 @@ public class Main extends AppCompatActivity
 
 
     /**
-     *
      * Google Map 두 개를 하나의 Activity에서 사용하면
      * 사용은 되지만 제어가 안됨
      *  - Marker Position Random으로 마구 튐
-     *
      */
 /*
     public OnMapReadyCallback onMapReadyCallback1() {
@@ -1033,9 +1008,6 @@ public class Main extends AppCompatActivity
 
 
                 /**
-
-
-
                  @var - ViewPort
                  "lat_start=" + MAIN_SEARCH_LOCATION_NEAR_RIGHT_LAT
                  "lat_end=" + MAIN_SEARCH_LOCATION_FAR_LEFT_LAT
@@ -1044,9 +1016,7 @@ public class Main extends AppCompatActivity
 
                  @var - Placetype
                  "placetype=" + USER_SELECT_PLACETYPE
-
                  */
-
 
                 String url = "http://222.122.203.55/realreview/mainSearch.php?";
                 String urlMerge = url + "lat_start=" + MAIN_SEARCH_LOCATION_NEAR_RIGHT_LAT + "&lat_end=" + MAIN_SEARCH_LOCATION_FAR_LEFT_LAT + "&lng_start=" + MAIN_SEARCH_LOCATION_FAR_LEFT_LNG + "&lng_end=" + MAIN_SEARCH_LOCATION_NEAR_RIGHT_LNG + "&placetype=" + USER_SELECT_PLACETYPE;
@@ -1160,6 +1130,8 @@ public class Main extends AppCompatActivity
             }
         };
     }
+
+
 
     private void defineBottomNavi() {
 
@@ -2615,7 +2587,7 @@ public class Main extends AppCompatActivity
         private MaterialDialog builder;
         Context mContext;
 
-        AsyncMainNearbyLatLngReceive(String urlString, Context mContext) {
+        public AsyncMainNearbyLatLngReceive(String urlString, Context mContext) {
             this.urlString = urlString;
             this.mContext = mContext;
         }

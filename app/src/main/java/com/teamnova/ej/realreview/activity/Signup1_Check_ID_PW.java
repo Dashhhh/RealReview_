@@ -27,7 +27,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Signup1 extends AppCompatActivity implements View.OnClickListener {
+public class Signup1_Check_ID_PW extends AppCompatActivity implements View.OnClickListener {
 
     EditText sign1Id, sign1Password, sign1PasswordCheck;
     Button sign1Next;
@@ -92,7 +92,7 @@ public class Signup1 extends AppCompatActivity implements View.OnClickListener {
                                 SharedPreferenceUtil pref = new SharedPreferenceUtil(this);
                                 pref.setSharedData("SIGNIN_ID", id);
                                 pref.setSharedData("SIGNIN_PW", password);
-                                Intent intent = new Intent(Signup1.this, Signup2.class);
+                                Intent intent = new Intent(Signup1_Check_ID_PW.this, Signup2_Check_Nick.class);
                                 startActivity(intent);
                             } else if (!password.equals(passwordCheck)) {
 //                                DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {

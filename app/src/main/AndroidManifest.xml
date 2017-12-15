@@ -58,13 +58,13 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".activity.Login" />
         <activity
-            android:name=".activity.Signup1"
+            android:name=".activity.Signup1_Check_ID_PW"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".activity.Signup2"
+            android:name=".activity.Signup2_Check_Nick"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".activity.Signup3"
+            android:name=".activity.Signup3_UserAddress"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".activity.Signup4"
@@ -74,23 +74,23 @@
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".activity.ForgotPassword"
+            android:name=".not.ForgotPassword"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".activity.LoginFacebook"
+            android:name=".not.LoginFacebook"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".activity.LoginNaver"
+            android:name=".not.LoginNaver"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".activity.LoginKakao"
+            android:name=".not.LoginKakao"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".activity.Z_NOTUSED__Main_Nearby" />
+        <activity android:name=".not.Z_NOTUSED__Main_Nearby" />
         <activity android:name=".activity._DemoTest" />
         <activity android:name=".activity._FacebookHashKey" />
-        <activity android:name=".activity.Z_NOTUSED__Main_Search" />
-        <activity android:name=".activity.Z_NOTUSED__Main_Me" />
-        <activity android:name=".activity.Z_NOTUSED__Main_More" />
+        <activity android:name=".not.Z_NOTUSED__Main_Search" />
+        <activity android:name=".not.Z_NOTUSED__Main_Me" />
+        <activity android:name=".not.Z_NOTUSED__Main_More" />
         <activity
             android:name=".activity.Main"
             android:configChanges="orientation|screenSize"
@@ -148,7 +148,7 @@
         <activity android:name=".activity.Main_Me_Question" />
         <activity android:name=".activity.Main_Me_Tip" />
         <activity android:name=".activity.Main_Me_Bookmark" />
-        <activity android:name=".activity.Z_NOTUSED_ShopDetail_Checkin" />
+        <activity android:name=".not.Z_NOTUSED_ShopDetail_Checkin" />
         <activity android:name=".activity.Main_Search_Placetype"></activity>
     </application>
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.teamnova.ej.realreview.activity.Z_NOTUSED__Main_Me">
+    tools:context="com.teamnova.ej.realreview.not.Z_NOTUSED__Main_Me">
 
     <ScrollView
         android:layout_width="match_parent"
