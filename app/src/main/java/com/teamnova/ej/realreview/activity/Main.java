@@ -107,6 +107,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+
+/**
+ *
+ * 1. Login 직후 첫 Main화면
+ * 2. 
+ *
+ */
+
 public class Main extends AppCompatActivity
         implements
         View.OnClickListener,
@@ -264,26 +272,23 @@ public class Main extends AppCompatActivity
 
 
     /**
-     * @var
-     * userSearch == 0
-     *  - Define Location
-     *  
-     * userSearch == 1
-     *  - Define User Search
-     *  
-     * userSearch == 2
-     *  - Define Redo Search 
-     * 
+     * @var userSearch == 0
+     *  - Location API 기준 Lat/Lng
+
+     * @var userSearch == 1
+     *  - Google 검색 기준 Lat/Lng
+
+     * @var userSearch == 2
+     *  - REDO Search 기준 Lat/Lng
      */
     public static int userSearch = 0;
 
 
     /**
-     * @var
-     * userSearch == 1 || 2
-     * 위 조건일때 Google Map(Callback2())에 사용
+     * userSearch == 1 || 2 -> Google Map(Callback2()) Map Viewport 정보 받기 위한 Center LAT, LNG
+     * @var SEARCH_LAT
+     * @var SEARCH_LNG
      */
-
     public static double SEARCH_LAT;
     public static double SEARCH_LNG;
 
