@@ -254,24 +254,6 @@ public class Signup4 extends AppCompatActivity implements View.OnClickListener {
                 conn.disconnect();
             }
             }
-//            jsonHtml.toString().trim();
-//            Log.e(TAG, "jsonHtml - " + jsonHtml);
-//            try {
-//                int i = 0;
-//                JSONObject jObject = new JSONObject(String.valueOf(jsonHtml));
-//                JSONArray jsonArray = jObject.getJSONArray(TAG_JSON);
-//                JSONObject item = jsonArray.getJSONObject(i);
-//                String getNick = item.getString(TAG_NICK);
-//                tempNick2 = getNick;
-//                Log.e(TAG, "jObject - " + jObject);
-//                Log.e(TAG, "jsonArray - " + jsonArray);
-//                Log.e(TAG, "item - " + item);
-//                Log.e(TAG, "getNick - " + getNick);
-//                Log.e(TAG, "tempNick2 -- getNick - " + tempNick2);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//            show(jsonHtml.toString());
          catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (MalformedURLException e) {

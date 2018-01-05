@@ -70,6 +70,7 @@ public class Dialog_Default {
         new MaterialDialog.Builder(mContext)
                 .title(title)
                 .content(text)
+                .autoDismiss(true)
                 .progress(true, 0)
                 .show();
 

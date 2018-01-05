@@ -41,12 +41,19 @@ public class AsyncBookmarkDelete extends AsyncTask<Void, Integer, Void> {
     }
 
     @Override
+    protected void onProgressUpdate(Integer... values) {
+        super.onProgressUpdate(values);
+
+    }
+
+    @Override
     protected void onPreExecute() {
+
         builder = new MaterialDialog.Builder(mContext)
                 .title("Connecting")
                 .content("loading..")
                 .progressIndeterminateStyle(true)
-                .show();
+                .build();
 
     }
 

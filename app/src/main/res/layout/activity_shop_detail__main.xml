@@ -36,7 +36,6 @@
                     app:ci_drawable_unselected="@drawable/page_select"
                     app:ci_gravity="center"
                     app:ci_orientation="horizontal"
-
                     />
 
 
@@ -49,7 +48,6 @@
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
                 android:orientation="vertical">
-
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -126,6 +124,28 @@
                         app:spanCount="5">
                         <!--TODO INFLATE : 외곽선-->
 
+
+                    </android.support.v7.widget.RecyclerView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/shopDetailRVCheckin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:contentDescription="Checkin User"
+                        android:padding="10dp"
+                        android:textAlignment="center"
+                        app:layoutManager="StaggeredGridLayoutManager"
+                        app:spanCount="5">
 
                     </android.support.v7.widget.RecyclerView>
 
@@ -227,25 +247,23 @@
                         app:buttonMode="regular"
                         app:roundedCorners="true"
                         app:showOutline="true" />
-                    <!--
 
-                                        <com.beardedhen.androidbootstrap.BootstrapButton
-                                            android:id="@+id/shopDetailCheckin"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:layout_marginLeft="1dp"
-                                            android:layout_marginRight="1dp"
-                                            android:layout_weight="1"
-                                            android:background="@drawable/shopdetail_check"
-                                            app:bootstrapBrand="regular"
-                                            app:bootstrapSize="md"
-                                            app:bootstrapText="{fa_certificate}\nCheck-In"
-                                            app:buttonMode="regular"
-                                            app:roundedCorners="true"
-                                            android:visibility="gone"
-                                            app:showOutline="true" />
+                    <com.beardedhen.androidbootstrap.BootstrapButton
+                        android:id="@+id/shopDetailCheckin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shopdetail_check"
+                        android:visibility="gone"
+                        app:bootstrapBrand="regular"
+                        app:bootstrapSize="md"
+                        app:bootstrapText="{fa_certificate} Check-In"
+                        app:buttonMode="regular"
+                        app:roundedCorners="true"
+                        app:showOutline="true" />
 
-                    -->
                     <com.beardedhen.androidbootstrap.BootstrapButton
                         android:id="@+id/shopDetailBookmark"
                         android:layout_width="wrap_content"

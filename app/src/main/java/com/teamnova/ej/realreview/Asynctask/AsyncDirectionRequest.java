@@ -50,8 +50,7 @@ public class AsyncDirectionRequest extends AsyncTask<Void, Integer, JSONObject> 
                 .title("Connecting")
                 .content("loading..")
                 .progressIndeterminateStyle(true)
-                .show();
-
+                .build();
     }
 
     @Override
@@ -124,7 +123,6 @@ public class AsyncDirectionRequest extends AsyncTask<Void, Integer, JSONObject> 
             e.printStackTrace();
         }
 
-
         return jsonObject;
 
     }
@@ -138,5 +136,6 @@ public class AsyncDirectionRequest extends AsyncTask<Void, Integer, JSONObject> 
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
+
     }
 }

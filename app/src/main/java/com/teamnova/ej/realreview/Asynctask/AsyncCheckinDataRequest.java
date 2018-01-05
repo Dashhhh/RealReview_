@@ -20,29 +20,25 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static com.teamnova.ej.realreview.activity.Intro.HOST_ADDRESS;
+
 /**
  * Created by ej on 2017-10-26.
  */
 
-public class AsyncMyFeedRequest extends AsyncTask<Void, Integer, JSONObject> {
+public class AsyncCheckinDataRequest extends AsyncTask<Void, Integer, JSONObject> {
 
 
-    public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
-    private String urlString;
+    private String urlString = HOST_ADDRESS + "checkin/checkin_request.php?";
     private String params = "";
+    String TestVAR;
     private Context mContext;
+    private String shopId;
     private MaterialDialog builder;
 
-    public AsyncMyFeedRequest(String urlString, Context mContext) {
-        this.urlString = urlString;
+    public AsyncCheckinDataRequest(String shopId, Context mContext) {
         this.mContext = mContext;
-    }
-
-    @Override
-    protected void onProgressUpdate(Integer... values) {
-        super.onProgressUpdate(values);
-
-
+        this.shopId = shopId;
     }
 
     @Override
@@ -51,8 +47,9 @@ public class AsyncMyFeedRequest extends AsyncTask<Void, Integer, JSONObject> {
         builder = new MaterialDialog.Builder(mContext)
                 .title("Connecting")
                 .content("loading..")
+                .autoDismiss(true)
                 .progressIndeterminateStyle(true)
-                .build();
+                .show();
     }
 
     @Override
@@ -71,7 +68,7 @@ public class AsyncMyFeedRequest extends AsyncTask<Void, Integer, JSONObject> {
 
             URL url = new URL(urlString);
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
-            Log.d("ASYNCMyFeed", "URL : " + url);
+            Log.d("AsyncCheckinRequest", "URL : " + url);
 
             // 전송모드 설정(일반적인 POST방식)
             http.setDefaultUseCaches(false);
@@ -85,7 +82,7 @@ public class AsyncMyFeedRequest extends AsyncTask<Void, Integer, JSONObject> {
             SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
             // 전송값 설정
             StringBuffer buffer = new StringBuffer();
-            buffer.append("userid").append("=").append(pref.getSharedData("isLogged_id"));
+            buffer.append("id_shop").append("=").append(ShopDetail_Main.SHOP_ID);
 
             // 서버로 전송
             OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "UTF-8");
@@ -102,9 +99,9 @@ public class AsyncMyFeedRequest extends AsyncTask<Void, Integer, JSONObject> {
                 builder.append(str + "\n");
             }
             result = builder.toString();
-            Log.d("ASYNCMyFeed", "전송결과 : " + result);
-            Log.d("ASYNCMyFeed", "http.getResponseCode() : " + http.getResponseCode());
-            Log.d("ASYNCMyFeed", "http.getResponseMessage() : " + http.getResponseMessage());
+            Log.d("AsyncCheckinRequest", "전송결과 : " + result);
+            Log.d("AsyncCheckinRequest", "http.getResponseCode() : " + http.getResponseCode());
+            Log.d("AsyncCheckinRequest", "http.getResponseMessage() : " + http.getResponseMessage());
 
             jsonObject = new JSONObject(result);
 
@@ -116,7 +113,6 @@ public class AsyncMyFeedRequest extends AsyncTask<Void, Integer, JSONObject> {
             e.printStackTrace();
         }
 
-
         return jsonObject;
 
     }
@@ -126,29 +122,4 @@ public class AsyncMyFeedRequest extends AsyncTask<Void, Integer, JSONObject> {
         super.onPostExecute(result);
         builder.dismiss();
     }
-
-    /**
-     * Map 형식으로 Key와 Value를 셋팅한다.
-     *
-     * @param key   : 서버에서 사용할 변수명
-     * @param value : 변수명에 해당하는 실제 값
-     * @return
-     */
-    private static String setValue(String key, String value) {
-        return "Content-Disposition: form-data; name=\"" + key + "\"\r\n\r\n"
-                + value + "\r\n";
-    }
-
-    /**
-     * 업로드할 파일에 대한 메타 데이터를 설정한다.
-     *
-     * @param key      : 서버에서 사용할 파일 변수명
-     * @param fileName : 서버에서 저장될 파일명
-     * @return
-     */
-    private static String setFile(String key, String fileName) {
-        return "Content-Disposition: form-data; name=\"" + key
-                + "\";filename=\"" + fileName + "\"\r\n";
-    }
-
 }

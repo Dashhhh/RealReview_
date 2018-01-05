@@ -30,7 +30,7 @@ public class AsyncReviewGoodDown extends AsyncTask<Void, Integer, Void> {
     private String iShopID, iUserID, iIdx, iNick;
     private String userLocationCheckResult;
     String parseUrlParameter = "http://222.122.203.55/realreview/reviewScore/reviewGoodDown.php?";
-    private MaterialDialog builder;
+        private MaterialDialog builder;
 
 
     public AsyncReviewGoodDown(String iShopID, String iUserID, String iNick, String iIdx, Context mContext) {

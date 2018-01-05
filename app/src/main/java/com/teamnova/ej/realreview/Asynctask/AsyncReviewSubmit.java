@@ -63,10 +63,12 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
              */
 
 
-            if (LOCATION_USER_LAT > LOCATION_NEAR_RIGHT_LAT &&
-                    LOCATION_USER_LAT < LOCATION_FAR_LEFT_LAT &&
-                    LOCATION_USER_LNG > LOCATION_FAR_LEFT_LNG &&
-                    LOCATION_USER_LNG < LOCATION_NEAR_RIGHT_LNG) {
+            if (
+                    LOCATION_USER_LAT > LOCATION_NEAR_RIGHT_LAT &&
+                            LOCATION_USER_LAT < LOCATION_FAR_LEFT_LAT &&
+                            LOCATION_USER_LNG > LOCATION_FAR_LEFT_LNG &&
+                            LOCATION_USER_LNG < LOCATION_NEAR_RIGHT_LNG
+                    ) {
                 userLocationCheckResult = "1";    // TRUE
                 Log.d("ASYNC_TIP", "Nearby True");
             } else {
@@ -109,12 +111,11 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
             Log.d("ASYNC_TIP", "Locality, NE_Lng " + NE_Lng);
 
 
-
 //        if (    lat > SW_Lng &&
 //                lat < NE_Lng &&
 //                lng > NE_Lat &&
 //                lng < SW_Lat )
-            if (    shopLat > SW_Lat &&
+            if (shopLat > SW_Lat &&
                     shopLat < NE_Lat &&
                     shopLng > SW_Lng &&
                     shopLng < NE_Lng) {
@@ -436,7 +437,7 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
      * @param value : 변수명에 해당하는 실제 값
      * @return
      */
-    public static String setValue(String key, String value) {
+    public String setValue(String key, String value) {
         return "Content-Disposition: form-data; name=\"" + key + "\"\r\n\r\n"
                 + value + "\r\n";
     }
@@ -448,7 +449,7 @@ public class AsyncReviewSubmit extends AsyncTask<Void, Integer, Void> {
      * @param fileName : 서버에서 저장될 파일명
      * @return
      */
-    public static String setFile(String key, String fileName) {
+    public String setFile(String key, String fileName) {
         return "Content-Disposition: form-data; name=\"" + key
                 + "\";filename=\"" + fileName + "\"\r\n";
     }

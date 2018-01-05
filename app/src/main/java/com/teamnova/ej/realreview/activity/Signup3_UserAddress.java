@@ -186,6 +186,8 @@ public class Signup3_UserAddress extends FragmentActivity implements OnMapReadyC
                 pref.setSharedData("SIGNUP_SW_Lng", vpSWSplitResultLng);
                 pref.setSharedData("SIGNUP_NE_Lat", vpNESplitResultLat);
                 pref.setSharedData("SIGNUP_NE_Lng", vpNESplitResultLng);
+                pref.setSharedData("SIGNIN_ADDRESS", String.valueOf(place.getAddress()));
+
 
 
 

@@ -52,7 +52,6 @@ public class ShopDetail_Review_Submit extends AppCompatActivity implements View.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_detail__review__submit);
 
-
         getBundleData();
         init();
         listener();
@@ -184,22 +183,12 @@ public class ShopDetail_Review_Submit extends AppCompatActivity implements View.
 
                         Dialog_Default dial = new Dialog_Default(this);
                         dial.callMaterialDefault("Warning", "하나 이상의 사진을 넣어주세요.");
-
-
-
                     }
-
-
-
                 } else {
 
                     Dialog_Default dial = new Dialog_Default(this);
                     dial.callMaterialDefault("Warning", "내용을 입력해 주세요");
-
                 }
-
-
-
 
                 break;
 

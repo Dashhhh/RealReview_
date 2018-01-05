@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.teamnova.ej.realreview.activity.ShopDetail_Main;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
 import org.json.JSONException;
@@ -20,22 +19,30 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static com.teamnova.ej.realreview.activity.Intro.HOST_ADDRESS;
+import static com.teamnova.ej.realreview.activity.Main.LOCATION_USER_LAT;
+import static com.teamnova.ej.realreview.activity.Main.LOCATION_USER_LNG;
+import static com.teamnova.ej.realreview.activity.ShopDetail_Checkin_Submit.RESULT_CHECKIN_UPLOAD_RETURN_FILEIMAGENAME;
+import static com.teamnova.ej.realreview.activity.ShopDetail_Main.SHOP_ID;
+
 /**
  * Created by ej on 2017-10-26.
  */
 
-public class AsyncMyFeedRequest extends AsyncTask<Void, Integer, JSONObject> {
+public class AsyncCheckinUpload_Text extends AsyncTask<Void, Integer, JSONObject> {
 
 
-    public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
-    private String urlString;
+    private final String imageURL;
+    private String urlString = HOST_ADDRESS + "/checkin/checkin_upload_text.php?";
     private String params = "";
     private Context mContext;
     private MaterialDialog builder;
+    private String userText;
 
-    public AsyncMyFeedRequest(String urlString, Context mContext) {
-        this.urlString = urlString;
+    public AsyncCheckinUpload_Text(Context mContext, String userText, String imageURL) {
         this.mContext = mContext;
+        this.userText = userText;
+        this.imageURL = imageURL;
     }
 
     @Override
@@ -51,6 +58,7 @@ public class AsyncMyFeedRequest extends AsyncTask<Void, Integer, JSONObject> {
         builder = new MaterialDialog.Builder(mContext)
                 .title("Connecting")
                 .content("loading..")
+                .autoDismiss(true)
                 .progressIndeterminateStyle(true)
                 .build();
     }
@@ -71,7 +79,7 @@ public class AsyncMyFeedRequest extends AsyncTask<Void, Integer, JSONObject> {
 
             URL url = new URL(urlString);
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
-            Log.d("ASYNCMyFeed", "URL : " + url);
+            Log.d("AsyncCheckin", "URL : " + url);
 
             // 전송모드 설정(일반적인 POST방식)
             http.setDefaultUseCaches(false);
@@ -82,10 +90,34 @@ public class AsyncMyFeedRequest extends AsyncTask<Void, Integer, JSONObject> {
             // content-type 설정
             http.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
 
+
+            /**
+             *
+
+             id_shop
+             id_user
+             nick
+             description
+             imageurl
+             locationLat
+             locationLng
+             regdate
+
+             *
+             *
+             */
+
+
             SharedPreferenceUtil pref = new SharedPreferenceUtil(mContext);
             // 전송값 설정
             StringBuffer buffer = new StringBuffer();
-            buffer.append("userid").append("=").append(pref.getSharedData("isLogged_id"));
+            buffer.append("id_shop").append("=").append(SHOP_ID).append("&");
+            buffer.append("id_user").append("=").append(pref.getSharedData("isLogged_id")).append("&");
+            buffer.append("nick").append("=").append(pref.getSharedData("isLogged_nick")).append("&");
+            buffer.append("description").append("=").append(userText).append("&");
+            buffer.append("imageurl").append("=").append(imageURL).append("&");
+            buffer.append("locationLat").append("=").append(LOCATION_USER_LAT).append("&");
+            buffer.append("locationLng").append("=").append(LOCATION_USER_LNG);
 
             // 서버로 전송
             OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "UTF-8");
@@ -102,11 +134,12 @@ public class AsyncMyFeedRequest extends AsyncTask<Void, Integer, JSONObject> {
                 builder.append(str + "\n");
             }
             result = builder.toString();
-            Log.d("ASYNCMyFeed", "전송결과 : " + result);
-            Log.d("ASYNCMyFeed", "http.getResponseCode() : " + http.getResponseCode());
-            Log.d("ASYNCMyFeed", "http.getResponseMessage() : " + http.getResponseMessage());
+            Log.d("AsyncCheckinRequest", "전송결과 result: " + result);
+            Log.d("AsyncCheckinRequest", "http.getResponseCode() : " + http.getResponseCode());
+            Log.d("AsyncCheckinRequest", "http.getResponseMessage() : " + http.getResponseMessage());
 
             jsonObject = new JSONObject(result);
+            Log.d("AsyncCheckinRequest", "전송결과 jsonObject : " + jsonObject);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();

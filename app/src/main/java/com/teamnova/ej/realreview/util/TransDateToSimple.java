@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 public class TransDateToSimple {
 
-    String date;
+    private String date;
 
     public TransDateToSimple() {
     }

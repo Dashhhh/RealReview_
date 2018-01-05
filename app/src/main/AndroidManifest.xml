@@ -16,6 +16,38 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
 
+    <!--
+    android.hardware.camera                         : Open CV 관련
+    android.hardware.camera.autofocus               : Open CV 관련
+    android.hardware.camera.front                   : Open CV 관련
+    android.hardware.camera.front.autofocus         : Open CV 관련
+    supports-screens android:resizeable="true"      : Open CV 관련
+        android:smallScreens="true"                 : Open CV 관련
+        android:normalScreens="true"                : Open CV 관련
+        android:largeScreens="true"                 : Open CV 관련
+        android:anyDensity="true"                   : Open CV 관련
+    -->
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.front.autofocus"
+        android:required="false" />
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/default_review"
@@ -149,7 +181,23 @@
         <activity android:name=".activity.Main_Me_Tip" />
         <activity android:name=".activity.Main_Me_Bookmark" />
         <activity android:name=".not.Z_NOTUSED_ShopDetail_Checkin" />
-        <activity android:name=".activity.Main_Search_Placetype"></activity>
+        <activity android:name=".activity.Main_Search_Placetype" />
+
+
+        <activity
+            android:name=".activity.ShopDetail_Checkin_Submit"
+             />
+
+
+        <!--
+            android:screenOrientation="landscape"              - Open Cv로 인해 추가
+            android:configChanges="keyboardHidden|orientation" - Open Cv로 인해 추가
+        -->
+
+        <activity android:name=".activity.ShopDetail_Checkin_OpenCV"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="landscape"
+            />
     </application>
 
 </manifest>

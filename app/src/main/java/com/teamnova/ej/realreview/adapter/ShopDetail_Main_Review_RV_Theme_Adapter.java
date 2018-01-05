@@ -15,12 +15,12 @@ import java.util.ArrayList;
  * Created by ej on 2017-10-26.
  */
 
-public class ShopDetail_MainReview_RV_Theme_Adapter extends RecyclerView.Adapter<ShopDetail_MainReview_RV_Theme_Viewholder>{
+public class ShopDetail_Main_Review_RV_Theme_Adapter extends RecyclerView.Adapter<ShopDetail_Main_Review_RV_Theme_Viewholder>{
 
     Context mContext;
-    ArrayList<ShopDetail_MainReview_RV_Theme_Set> data;
+    ArrayList<ShopDetail_Main_Review_RV_Theme_Set> data;
 
-    public ShopDetail_MainReview_RV_Theme_Adapter(Context mContext, ArrayList<ShopDetail_MainReview_RV_Theme_Set> data) {
+    public ShopDetail_Main_Review_RV_Theme_Adapter(Context mContext, ArrayList<ShopDetail_Main_Review_RV_Theme_Set> data) {
         this.mContext = mContext;
         if(data == null) {
             this.data = new ArrayList<>();
@@ -30,18 +30,18 @@ public class ShopDetail_MainReview_RV_Theme_Adapter extends RecyclerView.Adapter
     }
 
     @Override
-    public ShopDetail_MainReview_RV_Theme_Viewholder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ShopDetail_Main_Review_RV_Theme_Viewholder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d("DETAIL_THEME", "onCreateViewHolder - Enter");
 
         View v = LayoutInflater.from(mContext).inflate(R.layout.activity_shop_detail__main_theme_recycler, parent, false);
 
-        return new ShopDetail_MainReview_RV_Theme_Viewholder(v);
+        return new ShopDetail_Main_Review_RV_Theme_Viewholder(v);
     }
 
     @Override
-    public void onBindViewHolder(ShopDetail_MainReview_RV_Theme_Viewholder holder, int position) {
+    public void onBindViewHolder(ShopDetail_Main_Review_RV_Theme_Viewholder holder, int position) {
         Log.d("DETAIL_THEME", "onBindViewHolder - Enter");
-        ShopDetail_MainReview_RV_Theme_Set setTheme = data.get(position);
+        ShopDetail_Main_Review_RV_Theme_Set setTheme = data.get(position);
         holder.shopDetailTopThemeText.setText(setTheme.getsTheme());
         Log.d("DETAIL_THEME","setTheme.getsTheme() :"+setTheme.getsTheme());
 

@@ -102,13 +102,12 @@ import java.util.concurrent.TimeoutException;
 
 
 /**
- *  0. 주 목적
- *      0-1.    상점을 검색하기 위한 ACTIVITY
- *      0-2.    LOGIN USER PROFILE 제공
- *
- *  1. Activity Stack
- *      1-1.    Login.class -> CLEAR STACK (Back Button -> Exit App)
- *
+ * 0. 주 목적
+ * 0-1.    상점을 검색하기 위한 ACTIVITY
+ * 0-2.    LOGIN USER PROFILE 제공
+ * <p>
+ * 1. Activity Stack
+ * 1-1.    Login.class -> CLEAR STACK (Back Button -> Exit App)
  */
 
 public class Main extends AppCompatActivity
@@ -123,10 +122,10 @@ public class Main extends AppCompatActivity
 
     /**
      * onActivity Result 변수
+     *
      * @var PICK_FROM_CAMERA    - Choice 'Camera'
      * @var PICK_FROM_ALBUM     - Choice 'Album'
      * @var CROP_FROM_CAMERA    - CROP IMAGE [Camera || Image Event 이후 Crop으로]
-     *
      */
     public static final int PICK_FROM_CAMERA = 0;
     public static final int PICK_FROM_ALBUM = 1;
@@ -135,29 +134,30 @@ public class Main extends AppCompatActivity
 
     /**
      * Image Upload Flag
-     * @var UPLOAD_FLAG    - onResume Lifecycle로 Flag설정, 변수의 상태 유지를 위해 Static 선언
      *
+     * @var UPLOAD_FLAG    - onResume Lifecycle로 Flag설정, 변수의 상태 유지를 위해 Static 선언
      */
     public static boolean UPLOAD_FLAG = false;
 
 
     /**
      * LOCATION API VAR
+     *
      * @var LOCATION_USER_LAT, LOCATION_USER_LNG
-     *      : LOCATION API Provider에서 얻은 Lat, Lng.
-     *      : 30초 주기로 갱신
+     * : LOCATION API Provider에서 얻은 Lat, Lng.
+     * : 30초 주기로 갱신
      */
     public static double LOCATION_USER_LAT = 0;
     public static double LOCATION_USER_LNG = 0;
 
 
-
     /**
      * LOCATION API VAR
+     *
      * @var LOCATION_FAR_LEFT_LAT, LOCATION_FAR_LEFT_LNG
      * @var LOCATION_NEAR_RIGHT_LAT, LOCATION_NEAR_RIGHT_LNG
-     *
-     *      : onMapReadyCallback -> Map Viewport 좌상/우하 Lat, Lng
+     * <p>
+     * : onMapReadyCallback -> Map Viewport 좌상/우하 Lat, Lng
      */
     public static double LOCATION_FAR_LEFT_LAT = 0;
     public static double LOCATION_FAR_LEFT_LNG = 0;
@@ -166,10 +166,11 @@ public class Main extends AppCompatActivity
 
     /**
      * LOCATION API VAR
+     *
      * @var PLACETYPE_SELECT_COMPLETE_CHECK
-     *      : Main_Search_PLacetype.class -> 상점 분류 검색 위한 FLAG
-     *      : Main_Search_PLacetype.class에서 검색 완료 후 True
-     *      : Main.class에서 상점 분류 적용 후 False (onMapreadyCallback)
+     * : Main_Search_PLacetype.class -> 상점 분류 검색 위한 FLAG
+     * : Main_Search_PLacetype.class에서 검색 완료 후 True
+     * : Main.class에서 상점 분류 적용 후 False (onMapreadyCallback)
      */
 
     public static boolean PLACETYPE_SELECT_COMPLETE_CHECK = false;
@@ -181,15 +182,15 @@ public class Main extends AppCompatActivity
 
     /**
      * LOCATION API VAR
+     *
      * @var mGoogleApiClient
-     *      : PLACE_DETECTION_API & GEO_DATA_API 사용 선언
+     * : PLACE_DETECTION_API & GEO_DATA_API 사용 선언
      */
 
     GoogleApiClient mGoogleApiClient;
 
 
     /**
-     *
      * 상점관련 정보를 넘기기 위한 변수 (Main.class -> ShopDetail_Main.class)
      *
      * @var getId
@@ -202,7 +203,6 @@ public class Main extends AppCompatActivity
      * @var getLocale
      * @var getPlaceTypes
      * @var getAttribution
-     *
      */
     String getId = "";
     String getAddress = "";
@@ -336,19 +336,18 @@ public class Main extends AppCompatActivity
 
     /**
      * @var userSearch == 0
-     *  - Location API 기준 Lat/Lng
-
+     * - Location API 기준 Lat/Lng
      * @var userSearch == 1
-     *  - Google 검색 기준 Lat/Lng
-
+     * - Google 검색 기준 Lat/Lng
      * @var userSearch == 2
-     *  - REDO Search 기준 Lat/Lng
+     * - REDO Search 기준 Lat/Lng
      */
     public static int userSearch = 0;
 
 
     /**
      * userSearch == 1 || 2 -> Google Map(Callback2()) Map Viewport 정보 받기 위한 Center LAT, LNG
+     *
      * @var SEARCH_LAT
      * @var SEARCH_LNG
      */
@@ -908,7 +907,8 @@ public class Main extends AppCompatActivity
                     public void onCameraMove() {
 
                         Log.d("setOnCameraMoveListener", "Enter");
-                        if (mainMeSearcRedoSearch.getVisibility() == View.GONE) mainMeSearcRedoSearch.setVisibility(View.VISIBLE);
+                        if (mainMeSearcRedoSearch.getVisibility() == View.GONE)
+                            mainMeSearcRedoSearch.setVisibility(View.VISIBLE);
                     }
                 });
 
@@ -966,7 +966,7 @@ public class Main extends AppCompatActivity
 
                     mainMeSearchLocation.setMarkdownText("{fa-map-pin} Location : " + LOCATION_ADDRESS);
 
-                } else if (userSearch == 1){
+                } else if (userSearch == 1) {
 
                     String cameraPosition = String.valueOf(mMap2.getCameraPosition());
                     Log.d("MainSearch_onMapReady2", "cameraPosition :" + cameraPosition);
@@ -975,7 +975,7 @@ public class Main extends AppCompatActivity
                     mMap2.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 17));
                     Log.d("MainSearch_onMapReady2", "mMap2.getProjection().toScreenLocation(myPosition) :" + mMap2.getProjection().toScreenLocation(myPosition));
 
-                } else if(userSearch == 2) {
+                } else if (userSearch == 2) {
 
                     String sFarLeft = String.valueOf(mMap2.getProjection().getVisibleRegion().farLeft);
                     String sNearRight = String.valueOf(mMap2.getProjection().getVisibleRegion().nearRight);
@@ -1132,7 +1132,6 @@ public class Main extends AppCompatActivity
     }
 
 
-
     private void defineBottomNavi() {
 
         BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -1221,29 +1220,6 @@ public class Main extends AppCompatActivity
                 startActivity(intent);
                 break;
             }
-
-/*
-            case R.id.mainMeBtnReview :{
-                Intent intent = new Intent (Main.this, Main_Me_Reviews.class);
-                startActivity(intent);
-                break;
-            }
-            case R.id.mainMeBtnTip :{
-                Intent intent = new Intent (Main.this, Main_Me_Tip.class);
-                startActivity(intent);
-                break;
-            }
-            case R.id.mainMeBtnQuestion :{
-                Intent intent = new Intent (Main.this, Main_Me_Question.class);
-                startActivity(intent);
-                break;
-            }
-            case R.id.mainMeBtnBookmark :{
-                Intent intent = new Intent (Main.this, Main_Me_Bookmark.class);
-                startActivity(intent);
-                break;
-            }
-*/
 
 
         }
@@ -1518,9 +1494,6 @@ public class Main extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         Log.d("LifeCycle", "onResume - Enter");
-        //위치정보 - Activity LifeCycle 관련 메서드는 무조건 상위 메서드 호출 필요
-        /** 이 화면이 불릴 때, 일시정지 해제 처리*/
-
 
         /**
          *
@@ -1613,13 +1586,6 @@ public class Main extends AppCompatActivity
 
     private void startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
 
@@ -1678,13 +1644,6 @@ public class Main extends AppCompatActivity
 
         /**마지막으로  조회했던 위치 얻기*/
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         Location location = lm.getLastKnownLocation(provider);
@@ -1738,13 +1697,6 @@ public class Main extends AppCompatActivity
             Log.d("MYLOG", "Adress Result(LOCATION_ADDRESS :" + LOCATION_ADDRESS);
         }
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         Log.d("updateTerm", "addressTextFlag : " + addressTextFlag);
@@ -1925,19 +1877,7 @@ public class Main extends AppCompatActivity
                 // 이후에 이미지 크롭 어플리케이션을 호출하게 됩니다.
                 Intent intent = new Intent("com.android.camera.action.CROP");
                 intent.setDataAndType(mImageCaptureUri, "image/*");
-
-//                intent.putExtra("outputX", 1000);
-//                intent.putExtra("outputY", 1000);
-//                intent.putExtra("aspectX", 1);
-//                intent.putExtra("aspectY", 1);
-//                intent.putExtra("scale", true);
                 intent.putExtra("return-reviewArrayData", true);
-
-//                    realPath = getPath(mImageCaptureUri);
-//                    UrParseImage = realPath;
-//                    String fileName = new File(realPath).getName();
-//                    realPath = fileName;
-
                 startActivityForResult(intent, CROP_FROM_CAMERA);
                 break;
             }
@@ -1970,24 +1910,15 @@ public class Main extends AppCompatActivity
                     fileName = listFiles[0].getName();
 
                 File file = new File(Environment.getExternalStorageDirectory() + "/dcim/" + fileName);
-
-//                Log.e("CAMERA RECENT FILE :", String.valueOf(file));
-//                Log.e("CAMERA RECENT FILE(String) :", fileName);
                 Log.e("mImageCaptureUri Value --->>> :", String.valueOf(mImageCaptureUri));
 
 
                 imagePath = getPath(mImageCaptureUri);
                 Log.e("Image Path:", imagePath);
 
-//                        uploadFile("/storage/emulated/0/dcim/Camera/7495c41036542d76bfe7aef7d9746641.jpg");
                 UPLOAD_FLAG = true;
 
                 // 임시 파일 삭제
-//                File f = new File(mImageCaptureUri.getPath());
-//
-//                if (f.exists()) {
-//                    f.delete();
-//                }
 
                 break;
             }
@@ -2192,7 +2123,6 @@ public class Main extends AppCompatActivity
 
                 // create a buffer of  maximum size
                 bytesAvailable = fileInputStream.available();
-
                 bufferSize = Math.min(bytesAvailable, maxBufferSize);
                 buffer = new byte[bufferSize];
 
@@ -2575,10 +2505,6 @@ public class Main extends AppCompatActivity
     };
 
 
-    /**
-     * Created by ej on 2017-10-12.
-     */
-
     public static class AsyncMainNearbyLatLngReceive extends AsyncTask<Void, Integer, StringBuilder> {
         public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
         private String urlString;
@@ -2780,29 +2706,6 @@ public class Main extends AppCompatActivity
                 Log.d("MainSearch_onMapReady", "JSONArray jsonArray Length :" + jsonArray.length());
                 Log.d("MainSearch_onMapReady", "JSONArray jsonArray Length :" + item.length());
 
-/*
-                String getId = item.getString("id");
-                String getAddress = item.getString("address");
-                String getLat = item.getString("latitude");
-                String getLng = item.getString("longtitude");
-                String getviewportSouthWestLat = item.getString("viewportSouthWestLat");
-                String getViewportSouthWestLng = item.getString("viewportSouthWestLng");
-                String getViewportNorthEastLat = item.getString("viewportNorthEastLat");
-                String getViewportNorthEastLng = item.getString("viewportNorthEastLng");
-                String getShopName = item.getString("shopName");
-                String getShopOpen = item.getString("shopOpen");
-                String getShopClose = item.getString("shopClose");
-                String getShopTheme1 = item.getString("shopTheme1");
-                String getShopTheme2 = item.getString("shopTheme2");
-                String getShopTheme3 = item.getString("shopTheme3");
-                String getShopTheme4 = item.getString("shopTheme4");
-                String getShopTheme5 = item.getString("shopTheme5");
-                String getCallNumber = item.getString("callNumber");
-                String getIndexShopAdd = item.getString("indexShopAdd");
-                String getPermanentlyClosed = item.getString("permanentlyClosed");
-                String getPriceLevel = item.getString("priceLevel");
-
-                */
                 HTTP_RECEIVE_SHOPDATA = jsonHtml;
 
             } catch (JSONException e) {

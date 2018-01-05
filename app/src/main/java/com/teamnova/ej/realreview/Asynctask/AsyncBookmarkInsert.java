@@ -39,13 +39,19 @@ public class AsyncBookmarkInsert extends AsyncTask<Void, Integer, Void> {
     }
 
     @Override
-    protected void onPreExecute() {
-
+    protected void onProgressUpdate(Integer... values) {
+        super.onProgressUpdate(values);
         builder = new MaterialDialog.Builder(mContext)
                 .title("Connecting")
                 .content("loading..")
+                .autoDismiss(true)
                 .progressIndeterminateStyle(true)
-                .show();
+                .build();
+
+    }
+
+    @Override
+    protected void onPreExecute() {
 
     }
 
@@ -78,9 +84,9 @@ public class AsyncBookmarkInsert extends AsyncTask<Void, Integer, Void> {
 
             // 전송값 설정
             StringBuffer buffer = new StringBuffer();
-            buffer.append("id_shop").      append("=").append(iShopID).append("&");
-            buffer.append("id_user").      append("=").append(iUserID).append("&");
-            buffer.append("nick").         append("=").append(iNick);
+            buffer.append("id_shop").append("=").append(iShopID).append("&");
+            buffer.append("id_user").append("=").append(iUserID).append("&");
+            buffer.append("nick").append("=").append(iNick);
 
             // 서버로 전송
             OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "UTF-8");
@@ -111,7 +117,6 @@ public class AsyncBookmarkInsert extends AsyncTask<Void, Integer, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        builder.dismiss();
     }
 
     /**

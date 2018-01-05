@@ -11,14 +11,14 @@ import com.teamnova.ej.realreview.R;
  * Created by ej on 2017-10-26.
  */
 
-public class ShopDetail_MainReview_RV_Theme_Viewholder extends RecyclerView.ViewHolder{
+public class ShopDetail_Main_Review_RV_Theme_Viewholder extends RecyclerView.ViewHolder{
 
     LinearLayout shopDetailTopThemeRoot;
     android.support.v7.widget.CardView shopDetailTopThemeCard;
     TextView shopDetailTopThemeText;
 
 
-    public ShopDetail_MainReview_RV_Theme_Viewholder(View itemView) {
+    public ShopDetail_Main_Review_RV_Theme_Viewholder(View itemView) {
         super(itemView);
         shopDetailTopThemeRoot = itemView.findViewById(R.id.shopDetailTopThemeRoot);
         shopDetailTopThemeText = itemView.findViewById(R.id.shopDetailTopThemeText);

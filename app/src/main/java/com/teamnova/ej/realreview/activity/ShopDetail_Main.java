@@ -44,18 +44,16 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
-import com.pnikosis.materialishprogress.ProgressWheel;
 import com.tangxiaolv.telegramgallery.GalleryActivity;
 import com.tangxiaolv.telegramgallery.GalleryConfig;
 import com.teamnova.ej.realreview.Asynctask.AsyncBookmarkDelete;
 import com.teamnova.ej.realreview.Asynctask.AsyncBookmarkInsert;
+import com.teamnova.ej.realreview.Asynctask.AsyncCheckinDataRequest;
 import com.teamnova.ej.realreview.Asynctask.AsyncShopDetailBookmarkCheck;
 import com.teamnova.ej.realreview.Asynctask.AsyncShopDetailImageURLRequest;
 import com.teamnova.ej.realreview.Asynctask.AsyncShopPhotoSubmit;
 import com.teamnova.ej.realreview.Asynctask.AsyncTipRequest;
 import com.teamnova.ej.realreview.R;
-import com.teamnova.ej.realreview.adapter.ShopDetail_MainReview_RV_Theme_Adapter;
-import com.teamnova.ej.realreview.adapter.ShopDetail_MainReview_RV_Theme_Set;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Adapter_Backup;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_Photo_Adapter;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_Photo_Set;
@@ -63,6 +61,11 @@ import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_Tip_Adapter;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_RV_Tip_Set;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Review_LV_Adapter;
 import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Review_LV_Set;
+import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Review_RV_Checkin_Adapter;
+import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Review_RV_Checkin_Set;
+import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Review_RV_Theme_Adapter;
+import com.teamnova.ej.realreview.adapter.ShopDetail_Main_Review_RV_Theme_Set;
+import com.teamnova.ej.realreview.util.Dialog_Default;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 import com.teamnova.ej.realreview.util.TransDateToSimple;
 import com.teamnova.ej.realreview.util.ValidateUtil;
@@ -78,6 +81,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import static com.teamnova.ej.realreview.activity.Main.LOCATION_USER_LAT;
+import static com.teamnova.ej.realreview.activity.Main.LOCATION_USER_LNG;
+
 
 public class ShopDetail_Main extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
 
@@ -88,7 +94,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     TextView shopDetailUserFollowerCount, shopDetailUserReviewCount, shopDetailTipuserImageCount, shopDetailTipUserNick;
     ImageView shopDetailTipUserImage;
     android.support.v7.widget.AppCompatRatingBar shopDetailTitleRating, shopDetailRatingReview, shopDetailRatingReview2;
-    android.support.v7.widget.RecyclerView shopDetailRVTitleTag, shopDetailRVImage, shopDetailTipRV;
+    android.support.v7.widget.RecyclerView shopDetailRVTitleTag, shopDetailRVImage, shopDetailTipRV, shopDetailRVCheckin;
     Button mapAddress, shopDetailCallBtn, shopDetailDirection, shopDetailMenu, shopDetailWebsiteBtn, shopDetailMessageBtn;
     LinearLayout shopDetailProfile, shopDetailProfile2, shopDetailProfile3, shopDetailTipProfileLayout, shopDetailQuestionRoot, shopDetailQuestionAllRoot;
     SupportMapFragment mapFragmentDetail;
@@ -98,7 +104,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     me.relex.circleindicator.CircleIndicator shopDetailIndicator;
     ImageView shopDetailQuestionUserImage, shopDetailAddReviewUserProfile, shopDetailReviewAddUserImage;
 
-    com.beardedhen.androidbootstrap.BootstrapButton shopDetailTopAddPhoto, shopDetailBookmark;
+    com.beardedhen.androidbootstrap.BootstrapButton shopDetailTopAddPhoto, shopDetailCheckin, shopDetailBookmark;
 
     SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
             .findFragmentById(R.id.mapFragmentDetail);
@@ -119,7 +125,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     private String title;
 
 
-    String defaultShopID, defaultTitle, defaultAddress, defaultLat, defaultLng, defaultVSWLat, defaultVSWLng, defaultVNELat, defaultVNELng, defaultTimeOpen, defaultTimeClose, defaultTheme1, defaultTheme2, defaultTheme3, defaultTheme4, defaultTheme5, defaultCall, defaultWeb;
+    String defaultShopID, defaultTitle, defaultAddress, defaultLat, defaultLng, defaultViewport_SWLat, defaultViewport_SWLng, defaultViewport_NELat, defaultViewport_NELng, defaultTimeOpen, defaultTimeClose, defaultTheme1, defaultTheme2, defaultTheme3, defaultTheme4, defaultTheme5, defaultCall, defaultWeb;
     private ArrayList<String> shopImageIdList = new ArrayList<>();
     private JSONObject item2;
     private GoogleMap mMap;
@@ -134,7 +140,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     String defaulUserId;
     private ArrayList<ShopDetail_Main_RV_Photo_Set> imageRVList = new ArrayList<>();
     Button reviewPagingBtn;
-    private ArrayList<ShopDetail_MainReview_RV_Theme_Set> themeList = new ArrayList<>();
+    private ArrayList<ShopDetail_Main_Review_RV_Theme_Set> themeList = new ArrayList<>();
+    private ArrayList<ShopDetail_Main_Review_RV_Checkin_Set> checkinList = new ArrayList<>();
     private ArrayList<ShopDetail_Main_RV_Tip_Set> tipList = new ArrayList<>();
     private ArrayList<Uri> topPhotoUriList;
     private int reqCode = 1;
@@ -142,6 +149,16 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     public static String TITLE;
     public static String SHOP_ID;
 
+
+    /**
+     * 앱 사용자의 얼굴을 찍어 인증샷을 남기는 "체크인 기능"에 대한 승인여부
+     * 상점의 뷰 포트 범위 내에 들어와 있을 경우 : true
+     * 상점의 뷰 포트 범위 내에 들어와 있지 않을 경우 || 위치가 불확실한 경우 : false
+     *
+     * ShopDetail_Main.activity 초기 진입 시 setCheckInFlag() 내에서 false로 초기화 시킨다.
+     *
+     */
+    public static boolean CHECK_IN_SUBMIT_ACCEPT = false;
 
 
     LinearLayout shopDetailTipFirstLayout, shopDetailReviewFirstLayout;
@@ -158,6 +175,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         init();
         listener();
         checkShopData();
+        setCheckInFlag();
         try {
             CheckBookmark();
         } catch (InterruptedException e) {
@@ -174,6 +192,154 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapFragmentDetail);
         mapFragment.getMapAsync(this);
+
+    }
+
+    private void initCheckin() {
+
+
+
+        checkinList.clear();
+        StaggeredGridLayoutManager checkinLayoutSet = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
+        ShopDetail_Main_Review_RV_Checkin_Adapter shopDetailRVCheckinAdapter = new ShopDetail_Main_Review_RV_Checkin_Adapter(this, checkinList);
+        shopDetailRVCheckin.setHasFixedSize(true);
+        shopDetailRVCheckin.setLayoutManager(checkinLayoutSet);
+        shopDetailRVCheckin.setAdapter(shopDetailRVCheckinAdapter);
+
+        JSONObject checkinData_JSON;
+
+        try {
+            checkinData_JSON = new AsyncCheckinDataRequest(SHOP_ID, this).execute().get(10000, TimeUnit.MILLISECONDS);
+            Log.d("AsyncCheckinRequest", "Checkin Data JSON(RAW) : " + checkinData_JSON);
+
+            JSONArray checkinData_JSON_parse_questionresult = checkinData_JSON.getJSONArray("checkinResult");
+            Log.d("AsyncCheckinRequest", "checkinData_JSON_parse_questionresult : " + checkinData_JSON_parse_questionresult);
+
+
+            for(int i=0; i < checkinData_JSON_parse_questionresult.length(); i++) {
+                
+                JSONObject checkinData_JSON_parse_questionresult_second = checkinData_JSON_parse_questionresult.getJSONObject(i);
+                
+                String idx = checkinData_JSON_parse_questionresult_second.getString("idx");
+                String id_shop = checkinData_JSON_parse_questionresult_second.getString("id_shop");
+                String id_user = checkinData_JSON_parse_questionresult_second.getString("id_user");
+                String nick = checkinData_JSON_parse_questionresult_second.getString("nick");
+                String description = checkinData_JSON_parse_questionresult_second.getString("description");
+                String imageurl = checkinData_JSON_parse_questionresult_second.getString("imageurl");
+                String locationLat = checkinData_JSON_parse_questionresult_second.getString("locationLat");
+                String locationLng = checkinData_JSON_parse_questionresult_second.getString("locationLng");
+                String regdate = checkinData_JSON_parse_questionresult_second.getString("regdate");
+
+                TransDateToSimple transDate = new TransDateToSimple();
+                String simpleDate = transDate.trans(checkinData_JSON_parse_questionresult_second.getJSONObject("regdate"));
+                Log.d("AsyncCheckinRequest", "Before Parsing -  jsonObject1.getJSONObject(\"datediff\"):" + checkinData_JSON_parse_questionresult_second.getJSONObject("regdate"));
+                Log.d("AsyncCheckinRequest", "After Parsing - simpleDate :" + simpleDate);
+
+                ShopDetail_Main_Review_RV_Checkin_Set checkinData_setObject = new ShopDetail_Main_Review_RV_Checkin_Set(
+                        idx,
+                        id_shop,
+                        id_user,
+                        nick,
+                        description,
+                        imageurl,
+                        locationLat,
+                        locationLng,
+                        simpleDate
+                );
+                checkinList.add(checkinData_setObject);
+            }
+
+            shopDetailRVCheckinAdapter.notifyDataSetChanged();
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ;
+
+
+
+    }
+
+    private void setCheckInFlag() {
+
+
+        /**
+         * CONDITION - below if
+         * USER LOCATION, VIEW PORT 내에 들어오는 조건
+         */
+
+
+        /**
+         * @var CHECK_IN_SUBMIT_ACCEPT : true 일 경우 Check-in 기능 진입 가능
+         */
+        CHECK_IN_SUBMIT_ACCEPT = false;
+
+        double defaultViewport_NELatCasting = Double.parseDouble(defaultViewport_NELat);
+        double defaultViewport_SWLatCasting = Double.parseDouble(defaultViewport_SWLat);
+        double defaultViewport_SWLngCasting = Double.parseDouble(defaultViewport_SWLng);
+        double defaultViewport_NELngCasting = Double.parseDouble(defaultViewport_NELng);
+
+
+
+
+        Log.d("shopDetail_CheckinAccept", "LOCATION_USER_LAT > defaultViewport_NELatCasting :" + String.valueOf(LOCATION_USER_LAT > defaultViewport_NELatCasting));
+        Log.d("shopDetail_CheckinAccept", "LOCATION_USER_LAT < defaultViewport_SWLatCasting :" + String.valueOf(LOCATION_USER_LAT < defaultViewport_SWLatCasting));
+        Log.d("shopDetail_CheckinAccept", "LOCATION_USER_LNG > defaultViewport_SWLngCasting :" + String.valueOf(LOCATION_USER_LNG > defaultViewport_SWLngCasting));
+        Log.d("shopDetail_CheckinAccept", "LOCATION_USER_LNG < defaultViewport_NELngCasting :" + String.valueOf(LOCATION_USER_LNG < defaultViewport_NELngCasting));
+
+
+        Log.d("shopDetail_CheckinAccept", "LOCATION_USER_LAT : " + String.valueOf(LOCATION_USER_LAT));
+        Log.d("shopDetail_CheckinAccept", "defaultViewport_NELatCasting : " + String.valueOf(defaultViewport_NELatCasting));
+        Log.d("shopDetail_CheckinAccept", "LOCATION_USER_LAT : " + String.valueOf(LOCATION_USER_LAT));
+        Log.d("shopDetail_CheckinAccept", "defaultViewport_SWLatCasting : " + String.valueOf(defaultViewport_SWLatCasting));
+        Log.d("shopDetail_CheckinAccept", "LOCATION_USER_LNG : " + String.valueOf(LOCATION_USER_LNG));
+        Log.d("shopDetail_CheckinAccept", "defaultViewport_SWLngCasting : " + String.valueOf(defaultViewport_SWLngCasting));
+        Log.d("shopDetail_CheckinAccept", "LOCATION_USER_LNG : " + String.valueOf(LOCATION_USER_LNG));
+        Log.d("shopDetail_CheckinAccept", "defaultViewport_NELngCasting : " + String.valueOf(defaultViewport_NELngCasting));
+
+
+        if (
+                LOCATION_USER_LAT > defaultViewport_SWLatCasting &&
+                LOCATION_USER_LAT < defaultViewport_NELatCasting &&
+                LOCATION_USER_LNG > defaultViewport_SWLngCasting &&
+                LOCATION_USER_LNG < defaultViewport_NELngCasting
+            ) {
+            CHECK_IN_SUBMIT_ACCEPT = true;    // TRUE
+            Log.d("shopDetail_CheckinAccept", "True");
+
+
+        } else {
+            CHECK_IN_SUBMIT_ACCEPT = false;    // FALSE
+            Log.d("shopDetail_CheckinAccept", "False");
+        }
+
+
+        shopDetailCheckin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(CHECK_IN_SUBMIT_ACCEPT){
+
+                    Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Checkin_Submit.class);
+                    startActivity(intent);
+
+                } else {
+
+                    Dialog_Default dial = new Dialog_Default(ShopDetail_Main.this);
+                    dial.callMaterialDefault("Warning", "상점 근처에서만 Check-In이 가능 합니다!");
+
+                }
+
+
+            }
+        });
+
 
     }
 
@@ -196,8 +362,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         if (bookmarkCheckResponse) {
             shopDetailBookmark.setSelected(true);
             Log.d("bookmarkChecked", "setChecked : true");
-        }
-        else {
+        } else {
             shopDetailBookmark.setSelected(false);
             Log.d("bookmarkChecked", "setChecked : false");
         }
@@ -263,7 +428,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
          * Bookmark!!
          */
 
-
     }
 
     private void init() {
@@ -283,6 +447,15 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailRVTitleTag = findViewById(R.id.shopDetailRVTitleTag);
         shopDetailRVImage = findViewById(R.id.shopDetailRVImage);
         shopDetailTopAddPhoto = findViewById(R.id.shopDetailTopAddPhoto);
+
+        /**
+         * Check-In 기능 작동 조건
+         *  - 무조건 상점의 범위 내에 있어야 한다. 상점의 범위라 함은 등록 된 상점의 Viewport 범위 이내이다.
+         *  - 상점의 범위에 들어 올 경우 다음의 변수가 True로 변한다.
+         *
+         *
+         */
+        shopDetailCheckin = findViewById(R.id.shopDetailCheckin);
 
         shopDetailBookmark = findViewById(R.id.shopDetailBookmark);
 
@@ -321,6 +494,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         shopDetailUserReviewCount = findViewById(R.id.shopDetailUserReviewCount);
         shopDetailTipuserImageCount = findViewById(R.id.shopDetailTipuserImageCount);
         shopDetailTipUserNick = findViewById(R.id.shopDetailTipUserNick);
+
+        shopDetailRVCheckin = findViewById(R.id.shopDetailRVCheckin);
 
         /**
          * Tip User Layout Setting
@@ -415,8 +590,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
             }
         });
-
-
 
 
     }
@@ -638,8 +811,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             */
 
 
-
-            if(reviewJSONArray.length() == 0) {
+            if (reviewJSONArray.length() == 0) {
                 shopDetailReviewFirstLayout.setVisibility(View.VISIBLE);
             } else {
                 shopDetailReviewFirstLayout.setVisibility(View.GONE);
@@ -794,7 +966,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
         themeList.clear();
         StaggeredGridLayoutManager themeLayoutSet = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
-        ShopDetail_MainReview_RV_Theme_Adapter shopDetailRVTitleAdapter = new ShopDetail_MainReview_RV_Theme_Adapter(this, themeList);
+        ShopDetail_Main_Review_RV_Theme_Adapter shopDetailRVTitleAdapter = new ShopDetail_Main_Review_RV_Theme_Adapter(this, themeList);
         shopDetailRVTitleTag.setHasFixedSize(true);
         shopDetailRVTitleTag.setLayoutManager(themeLayoutSet);
         shopDetailRVTitleTag.setAdapter(shopDetailRVTitleAdapter);
@@ -819,7 +991,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             Log.d("DETAIL_THEME", "pref.getSharedData THEME" + i + "번 :" + pref.getSharedData("THEME" + i));
             if (!pref.getSharedData("THEME" + i + markerTag).equals("")) {
                 if (!pref.getSharedData("THEME" + i + markerTag).equals("설립")) {
-                    ShopDetail_MainReview_RV_Theme_Set themeSet = new ShopDetail_MainReview_RV_Theme_Set(pref.getSharedData("THEME" + i + markerTag));
+                    ShopDetail_Main_Review_RV_Theme_Set themeSet = new ShopDetail_Main_Review_RV_Theme_Set(pref.getSharedData("THEME" + i + markerTag));
                     Log.d("DETAIL_THEME", "in! pref.getSharedData THEME" + i + "번 :" + pref.getSharedData("THEME" + i + markerTag));
 //                    themeSet.setsTheme(pref.getSharedData("THEME"+i+markerTag));
                     themeList.add(themeSet);
@@ -847,7 +1019,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
         JSONArray jsonArray = tipConn.getJSONArray("tipresult");
 
-        if(jsonArray.length() == 0) {
+        if (jsonArray.length() == 0) {
             shopDetailTipFirstLayout.setVisibility(View.VISIBLE);
         } else {
             shopDetailTipFirstLayout.setVisibility(View.GONE);
@@ -959,10 +1131,10 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         defaultAddress = pref.getSharedData("ADDRESS" + tagCheck);
         defaultLat = pref.getSharedData("LAT" + tagCheck);
         defaultLng = pref.getSharedData("LNG" + tagCheck);
-        defaultVSWLat = pref.getSharedData("V_SW_LAT" + tagCheck);
-        defaultVSWLng = pref.getSharedData("V_SW_LNG" + tagCheck);
-        defaultVNELat = pref.getSharedData("V_NE_LAT" + tagCheck);
-        defaultVNELng = pref.getSharedData("V_NE_LNG" + tagCheck);
+        defaultViewport_SWLat = pref.getSharedData("V_SW_LAT" + tagCheck);
+        defaultViewport_SWLng = pref.getSharedData("V_SW_LNG" + tagCheck);
+        defaultViewport_NELat = pref.getSharedData("V_NE_LAT" + tagCheck);
+        defaultViewport_NELng = pref.getSharedData("V_NE_LNG" + tagCheck);
         defaultTimeOpen = pref.getSharedData("OPEN" + tagCheck);
         defaultTimeClose = pref.getSharedData("CLOSE" + tagCheck);
         defaultTheme1 = pref.getSharedData("THEME1" + tagCheck);
@@ -985,10 +1157,10 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         Log.d("MARKER_TAG", "ADDRESS :" + defaultAddress);
         Log.d("MARKER_TAG", "LAT :" + defaultLat);
         Log.d("MARKER_TAG", "LNG :" + defaultLng);
-        Log.d("MARKER_TAG", "V_SW_LAT :" + defaultVSWLat);
-        Log.d("MARKER_TAG", "V_SW_LNG :" + defaultVSWLng);
-        Log.d("MARKER_TAG", "V_NE_LAT :" + defaultVNELat);
-        Log.d("MARKER_TAG", "V_NE_LNG :" + defaultVNELng);
+        Log.d("MARKER_TAG", "V_SW_LAT :" + defaultViewport_SWLat);
+        Log.d("MARKER_TAG", "V_SW_LNG :" + defaultViewport_SWLng);
+        Log.d("MARKER_TAG", "V_NE_LAT :" + defaultViewport_NELat);
+        Log.d("MARKER_TAG", "V_NE_LNG :" + defaultViewport_NELng);
         Log.d("MARKER_TAG", "OPEN :" + defaultTimeOpen);
         Log.d("MARKER_TAG", "CLOSE :" + defaultTimeClose);
         Log.d("MARKER_TAG", "THEME1 :" + defaultTheme1);
@@ -1448,6 +1620,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         defaulDataSet();
         try {
             adapting();
+            initCheckin();
 
 
         } catch (InterruptedException e) {

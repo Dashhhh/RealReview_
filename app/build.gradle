@@ -12,20 +12,41 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
+    sourceSets {
+        main {
+            jni.srcDirs = []
+            jniLibs.srcDir('src/main/jniLibs')
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
 //            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+//    sourceSets.main {
+//        jni.srcDirs = []
+//        jniLibs.srcDir 'src/main/jniLibs'
+//        jniLibs.srcDir 'src/main/OpenCV-android-sdk/samples/face-detection/jni'
+//    }
+// jniLibs.srcDir 'src/main/JniLibs'
+//    externalNativeBuild {
+//        ndkBuild {
+////            path '../../../../../../OpenCV-android-sdk/samples/face-detection/jni/Android.mk'
+////            path '/src/main/openCVLibrary340/samples/face-detection/jni/Android.mk'
+//            path '/src/main/openCVLibrary340/src/main/OpenCV-android-sdk/samples/face-detection/jni/Android.mk'
+////            path 'C:\\Users\\ej\\StudioProjects\\RealReview_\\openCVLibrary340\\src\\main\\OpenCV-android-sdk\\samples\\face-detection\\jni'
+////            path '/src/main/openCVLibrary340/src/main/OpenCV-android-sdk/samples/face-detection/jni/Android.mk'
+//        }
+//    }
+//    externalNativeBuild {
+//        ndkBuild {
+//            path '../../../../../OpenCV-android-sdk/samples/face-detection/jni/Android.mk'
+//        }
+//    }
 }
-
-
-
-
-
-
-
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -66,11 +87,10 @@ dependencies {
     compile 'com.afollestad.material-dialogs:core:0.9.5.0'
     compile 'com.github.arimorty:floatingsearchview:2.1.1'
     compile 'com.otaliastudios:cameraview:1.4.1'
-
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
     testCompile 'junit:junit:4.12'
     implementation 'com.android.support:appcompat-v7:27.0.1'
     implementation 'com.android.support:design:27.0.1'
+    implementation project(':openCVLibrary340')
 }

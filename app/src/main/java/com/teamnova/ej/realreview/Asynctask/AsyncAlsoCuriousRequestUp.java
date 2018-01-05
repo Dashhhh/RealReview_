@@ -52,6 +52,7 @@ public class AsyncAlsoCuriousRequestUp extends AsyncTask<Void, Integer, Void> {
         builder = new MaterialDialog.Builder(mContext)
                 .title("Connecting")
                 .content("loading..")
+                .autoDismiss(true)
                 .progressIndeterminateStyle(true)
                 .show();
 

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/shopDetailOpencvRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.teamnova.ej.realreview.activity.ShopDetail_Checkin_OpenCV">
+
+
+    <com.teamnova.ej.realreview.util_opencv.TakePicture
+        android:id="@+id/fd_activity_surface_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/bootstrapButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        app:bootstrapBrand="regular"
+        app:bootstrapSize="md"
+        app:bootstrapText="{fa-smile-o} 자신의 얼굴과 함께 인증샷을 찍어주세요!"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="false" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/shopDetail_Opencv_takePicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        app:bootstrapBrand="primary"
+        app:bootstrapSize="xl"
+        app:bootstrapText="{fa-camera}"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="false" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/shopDetail_Opencv_flip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/shopDetail_Opencv_takePicture"
+        android:layout_alignTop="@+id/shopDetail_Opencv_VIEW_MODE_CANNY"
+        app:bootstrapBrand="primary"
+        app:bootstrapSize="xl"
+        app:bootstrapText="{fa-refresh}"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="false" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/shopDetail_Opencv_VIEW_MODE_RGBA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/shopDetail_Opencv_takePicture"
+        android:layout_alignStart="@+id/shopDetail_Opencv_VIEW_MODE_GRAY"
+        app:bootstrapBrand="primary"
+        app:bootstrapSize="md"
+        app:bootstrapText="기본"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="false" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/shopDetail_Opencv_VIEW_MODE_GRAY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/shopDetail_Opencv_takePicture"
+        android:layout_alignStart="@+id/shopDetail_Opencv_VIEW_MODE_CANNY"
+        app:bootstrapBrand="primary"
+        app:bootstrapSize="md"
+        app:bootstrapText="GRAY"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="false" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/shopDetail_Opencv_VIEW_MODE_CANNY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/shopDetail_Opencv_VIEW_MODE_GRAY"
+        android:layout_margin="10dp"
+        app:bootstrapBrand="primary"
+        app:bootstrapSize="md"
+        app:bootstrapText="CANNY"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="false" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/shopDetail_Opencv_VIEW_MODE_BLUR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/shopDetail_Opencv_VIEW_MODE_CANNY"
+        app:bootstrapBrand="primary"
+        app:bootstrapSize="md"
+        app:bootstrapText="BLUR"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="false" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/shopDetail_Opencv_VIEW_MODE_LAPLACIAN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/shopDetail_Opencv_VIEW_MODE_BLUR"
+        app:bootstrapBrand="primary"
+        app:bootstrapText="라플라시안"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="false" />
+
+
+</RelativeLayout>

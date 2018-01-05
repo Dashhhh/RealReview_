@@ -393,9 +393,10 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
         String boundary = "*****";
         int bytesRead, bytesAvailable, bufferSize;
         byte[] buffer;
-        int maxBufferSize = 1 * 1024 * 1024;
+        int maxBufferSize = 4 * 1024 * 1024;
         File sourceFile = new File(sourceFileUri);
 
+       Log.e("uploadFile", "sourceFileUri : " + sourceFileUri);
         if (!sourceFile.isFile()) {
 
             dialog.dismiss();
@@ -419,7 +420,7 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
 
                 // Open a HTTP  connection to  the URL
                 conn = (HttpURLConnection) url.openConnection();
-                Log.e("SERVER URL :", String.valueOf(url));
+                Log.e("uploadFile", "URL : "+String.valueOf(url));
                 conn.setDoInput(true); // Allow Inputs
                 conn.setDoOutput(true); // Allow Outputs
                 conn.setUseCaches(false); // Don't use a Cached Copy
@@ -547,8 +548,8 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
                 HttpURLConnection conn = (HttpURLConnection) phpUrl.openConnection();
 //                conn.setConnectTimeout(10000);
                 conn.setUseCaches(false);
-                Log.e("phpURL", "phpURL:" + phpUrl);
-                Log.e("urlParse", "urlParse:" + urlParse);
+                Log.e("filePathThread", "phpURL:" + phpUrl);
+                Log.e("filePathThread", "urlParse:" + urlParse);
                 conn.connect();
                 int responseStatusCode = conn.getResponseCode();
                 Log.e(TAG, "response code - " + responseStatusCode);

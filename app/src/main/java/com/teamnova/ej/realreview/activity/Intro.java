@@ -32,14 +32,27 @@ import java.util.Locale;
 
 
 /**
- * APP 초기 정보 Setting
- * - Shop Category
- * - User Location Check
- * - Android Permission
+ *
+ * Intro.Activity
+ *  - 주 목적
+ *      : User에게 로고를 보여준다
+ *      : 초기 정보를 Loading (Setting) 한다.
+ *        그 정보는 아래와 같다.
+ *
+ *          APP 초기 정보 Setting
+ *          - Shop Category
+ *               App 내에서 상점 분류에 사용되는 카테고리를 정의한다. (e.g. 식료품점, 관심지점, 제과점...)
+ *          - User Location Check
+ *               User의 위치정보를 확인하고 대략적인 주소와 (e.g. "서울특별시 강서구 화곡동 XXX-XX") Latitude, Longtitude 확인할 수 있다.
+ *               단, 위치에 대한 확인이 Null 값이 들어오는 경우가 상당하다.
+ *          - Android Permission
  */
 
 
 public class Intro extends AppCompatActivity implements LocationListener {
+
+    public static final String HOST_ADDRESS = "http://222.122.203.55/realreview/";
+
     Handler mhandler;
     Animation anime;
 
@@ -148,12 +161,19 @@ public class Intro extends AppCompatActivity implements LocationListener {
                 .check();
 
 
+
         takePlaceTypeMap();
 
         anime = AnimationUtils.loadAnimation(this, R.anim.rise_up);
         anime.setFillAfter(true);
         Log.d("LOCATION_PROVIDER_CHECK", "mhandler CHECK");
 
+
+        /**
+         * 일정 시간 후 자동으로 화면이 바뀌는 Thread
+         * 목적 - 위치정보 확인과 초기 상점 정보 입력, 퍼미션 Check로 총 3가지 확인 후 넘어감.
+         * PostDelayed()는 일정 시간이 지난 후에 진행이 되는 코드이다.
+         */
         mhandler = new Handler();
         mhandler.postDelayed(new Runnable() {
             @Override
@@ -200,16 +220,17 @@ public class Intro extends AppCompatActivity implements LocationListener {
 
         //위치정보 객체에 이벤트 연결
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         } else {
 
+            /**
+             * requestLocationUpdates(provider, 2000, 1, this);
+             * @param provider - Phone 내의 Provider List 정보를 담고 있는 변수
+             * @param minTime - 위치정보 갱신주기. 초기설정 2초 (단위 Milisecond)
+             * @param minDistance - 최소 오차 범위
+             * @param listener - onLocationChanged(), onProviderDisabled(), onProviderEnabled(), onStatusChanged() 와 같은 Listener 위치. 현재 메인 클래스 내에 있기 때문에 this로 설정
+             *
+             */
             lm.requestLocationUpdates(provider, 2000, 1, this);
         }
     }
@@ -301,6 +322,12 @@ public class Intro extends AppCompatActivity implements LocationListener {
 
     }
 
+
+    /**
+     *  takePlaceTypeMap()
+     *      @method Define "Shop Place Type"
+     *      항상 사용 되는 분류는 "관심 지점" 이다. "ALL"에 해당되는 분류이다.
+     */
     private void takePlaceTypeMap() {
 
         SharedPreferenceUtil pref = new SharedPreferenceUtil(this);

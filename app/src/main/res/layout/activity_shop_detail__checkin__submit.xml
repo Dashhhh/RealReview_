@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:opencv="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.teamnova.ej.realreview.activity.ShopDetail_Checkin_Submit">
+
+
+    <ImageView
+        android:id="@+id/shopDetail_Checkin_Opencv_getFaceImage"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="horizontal">
+
+        <org.opencv.android.JavaCameraView
+            android:id="@+id/tutorial1_activity_java_surface_view"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            opencv:camera_id="back"
+            opencv:show_fps="false"
+
+            />
+
+        <com.beardedhen.androidbootstrap.BootstrapEditText
+            android:id="@+id/shopDetail_Checkin_Opencv_review"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:bootstrapBrand="regular"
+            app:bootstrapSize="md"
+            android:hint="간단한 소감을 남겨주세요\ne.g.) 너무 맛있게 먹고 갑니다!"
+            />
+
+
+
+    </LinearLayout>
+
+
+
+    <ImageView
+        android:id="@+id/shopDetail_Checkin_Opencv_faceImage"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+
+        />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/shopDetail_Checkin_Opencv_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:bootstrapBrand="primary"
+        app:bootstrapSize="md"
+        app:bootstrapText="{fa-paper-plane} 제출"
+        />
+
+
+</LinearLayout>
