@@ -13,12 +13,11 @@
         android:id="@+id/shopDetail_Checkin_Opencv_getFaceImage"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_margin="20dp"
         android:orientation="horizontal">
 
@@ -28,23 +27,30 @@
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             opencv:camera_id="back"
-            opencv:show_fps="false"
+            opencv:show_fps="false" />
 
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:id="@+id/tutorial1_activity_java_surface_view_cover"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="#32000000"
+            android:textSize="15sp"
+            app:bootstrapBrand="info"
+            app:bootstrapText="{fa-smile-o} {fa-plus} {fa-camera}\n사진을\n추가하세요"
             />
 
         <com.beardedhen.androidbootstrap.BootstrapEditText
             android:id="@+id/shopDetail_Checkin_Opencv_review"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="match_parent"
-            app:bootstrapBrand="regular"
-            app:bootstrapSize="md"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/tutorial1_activity_java_surface_view"
             android:hint="간단한 소감을 남겨주세요\ne.g.) 너무 맛있게 먹고 갑니다!"
-            />
+            app:bootstrapBrand="regular"
+            app:bootstrapSize="md" />
 
 
-
-    </LinearLayout>
-
+    </RelativeLayout>
 
 
     <ImageView
@@ -60,8 +66,7 @@
         android:layout_height="wrap_content"
         app:bootstrapBrand="primary"
         app:bootstrapSize="md"
-        app:bootstrapText="{fa-paper-plane} 제출"
-        />
+        app:bootstrapText="{fa-paper-plane} 제출" />
 
 
 </LinearLayout>

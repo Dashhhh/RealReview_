@@ -8,18 +8,48 @@
     tools:context=".activity.Signup1_Check_ID_PW">
 
 
-    <ImageView
+    <com.beardedhen.androidbootstrap.AwesomeTextView
         android:id="@+id/sign4Image"
         android:layout_width="180dp"
         android:layout_height="180dp"
-        android:layout_marginTop="51dp"
-        android:src="@drawable/ic_vpn_key_black_100dp"
+        android:textSize="70sp"
+        app:bootstrapBrand="primary"
+        app:bootstrapText="{fa-thumbs-up}"
+        app:layout_constraintBottom_toTopOf="@+id/sign4_welcomeText"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.69"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1" />
+
+
+    <com.beardedhen.androidbootstrap.AwesomeTextView
+        android:id="@+id/sign4_welcomeText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:bootstrapBrand="regular"
+        app:bootstrapText="어서오세요!"
+        app:layout_constraintBottom_toTopOf="@+id/sign4_welcomeText2"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <com.beardedhen.androidbootstrap.AwesomeTextView
+        android:id="@+id/sign4_welcomeText2"
+        android:layout_width="match_parent"
+        android:layout_height="21dp"
+        android:layout_marginBottom="80dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:bootstrapBrand="regular"
+        app:bootstrapText="다음을 눌러서 프로필 사진을 등록해 보세요!{fa-smile-o}"
+        app:layout_constraintBottom_toTopOf="@+id/sign4Next"
+        tools:layout_editor_absoluteX="0dp" />
 
     <EditText
         android:id="@+id/sign4Phone"
@@ -31,6 +61,7 @@
         android:layout_marginRight="26dp"
         android:layout_marginStart="26dp"
         android:background="#eeeeee"
+        android:visibility="gone"
         android:ems="10"
         android:hint="인증 받을 핸드폰 번호를 입력하세요"
         android:inputType="textEmailAddress"
@@ -58,6 +89,7 @@
         android:background="#eeeeee"
         android:ems="10"
         android:hint="인증번호를 입력하세요"
+        android:visibility="gone"
         android:inputType="textPassword"
         android:paddingLeft="10dp"
         android:textColor="#000000"
@@ -95,6 +127,7 @@
         android:id="@+id/sign4CertiRequest"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_marginBottom="173dp"
         android:layout_marginEnd="27dp"
         android:layout_marginLeft="27dp"

@@ -8,17 +8,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.not.ForgotPassword;
 
 public class Signin extends AppCompatActivity implements View.OnClickListener {
 
-    Button loginBtn, signupBtn, loginForFacebook, loginForNaver, loginForKakao, demoTest;
+    Button loginForFacebook, loginForNaver, loginForKakao, demoTest;
     TextView forgotPassword;
+
+    com.beardedhen.androidbootstrap.BootstrapButton loginBtn, signupBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TypefaceProvider.registerDefaultIconSets();
         setContentView(R.layout.activity_signin);
 
         init();

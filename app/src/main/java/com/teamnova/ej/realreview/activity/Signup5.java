@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
@@ -137,20 +136,26 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
                                 messageText.setText("uploading started.....");
                             }
                         });
-
-//                        uploadFile(uploadFilePath + "" + uploadFileName);
                         uploadFile(UrParseImage);
-                        Log.e("UploadFile Start -> UrParseImage:",UrParseImage);
+                        Log.e("UploadFile Start -> UrParseImage:", UrParseImage);
                     }
                 }).start();
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(800);
                     filePathThread fpt = new filePathThread();
                     fpt.start();
                     fpt.join();
                 } catch (UnsupportedEncodingException | InterruptedException e) {
                     e.printStackTrace();
                 }
+
+                String profileImageUrl = "http://222.122.203.55/realreview/signup/upload/";
+                profileImageUrl += realPath;
+                SharedPreferenceUtil pref = new SharedPreferenceUtil(Signup5.this);
+                pref.setSharedData("isLogged_profileImagePath", profileImageUrl);
+                Log.e("sign5", "profile Image Url Check, profileImageUrl : " + profileImageUrl);
+                Log.e("sign5", "profile Image Url Check, realPath : " + realPath);
+
 
 
                 Intent intent = new Intent(Signup5.this, Main.class);
@@ -184,7 +189,6 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
         startActivityForResult(Intent.createChooser(intent, "실행 할 카메라 선택"), PICK_FROM_CAMERA);
 
     }
-
 
 //    /*
 //     * 참고 해볼곳
@@ -221,7 +225,7 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
 
                 mImageCaptureUri = data.getData();
                 FILEPATH_COUNT += 2;
-                Toast.makeText(this, "PICK_FROM_ALBUM" + FILEPATH_COUNT, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "PICK_FROM_ALBUM" + FILEPATH_COUNT, Toast.LENGTH_SHORT).show();
 //                realPath = getRealPathFromURI(mImageCaptureUri);
 
             }
@@ -229,7 +233,7 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
             case PICK_FROM_CAMERA: {
                 // 이미지를 가져온 이후의 리사이즈할 이미지 크기를 결정합니다.
                 // 이후에 이미지 크롭 어플리케이션을 호출하게 됩니다.
-                Toast.makeText(this, "PICK_FROM_CAMERA!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "PICK_FROM_CAMERA!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent("com.android.camera.action.CROP");
                 intent.setDataAndType(mImageCaptureUri, "image/*");
 
@@ -240,10 +244,13 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
                 intent.putExtra("scale", true);
                 intent.putExtra("return-data", true);
                 if (FILEPATH_COUNT != 2) {
-                    Log.e("REA::::::::::BEFORE",realPath);
+                    Log.e("mImageCaptureUri", "Before, realPath : " + realPath);
+
                     realPath = getPath(mImageCaptureUri);
                     UrParseImage = realPath;
-                    Log.e("REA::::::::::AFTER",realPath);
+
+                    Log.e("mImageCaptureUri", "After, realPath : " + realPath);
+
                     String fileName = new File(realPath).getName();
                     Log.e("mImageCaptureUri", "getRealPathFromURI > FILE NAME " + fileName);
                     realPath = fileName;
@@ -261,7 +268,7 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
                 // 이미지뷰에 이미지를 보여준다거나 부가적인 작업 이후에
                 // 임시 파일을 삭제합니다.
                 final Bundle extras = data.getExtras();
-                Toast.makeText(this, "CROP FROM CAMERA!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "CROP FROM CAMERA!", Toast.LENGTH_SHORT).show();
                 if (extras != null) {
                     Bitmap photo = extras.getParcelable("data");
 //                    sign5Camera.setBackground(new ShapeDrawable(new OvalShape()));
@@ -396,7 +403,7 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
         int maxBufferSize = 4 * 1024 * 1024;
         File sourceFile = new File(sourceFileUri);
 
-       Log.e("uploadFile", "sourceFileUri : " + sourceFileUri);
+        Log.e("uploadFile", "sourceFileUri : " + sourceFileUri);
         if (!sourceFile.isFile()) {
 
             dialog.dismiss();
@@ -420,7 +427,7 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
 
                 // Open a HTTP  connection to  the URL
                 conn = (HttpURLConnection) url.openConnection();
-                Log.e("uploadFile", "URL : "+String.valueOf(url));
+                Log.e("uploadFile", "URL : " + String.valueOf(url));
                 conn.setDoInput(true); // Allow Inputs
                 conn.setDoOutput(true); // Allow Outputs
                 conn.setUseCaches(false); // Don't use a Cached Copy
@@ -474,8 +481,7 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
                                     + upLoadServerUri;
 
                             messageText.setText(msg);
-                            Toast.makeText(Signup5.this, "File Upload Complete.",
-                                    Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(Signup5.this, "File Upload Complete.", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -493,8 +499,7 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
                 runOnUiThread(new Runnable() {
                     public void run() {
                         messageText.setText("MalformedURLException Exception : check script url.");
-                        Toast.makeText(Signup5.this, "MalformedURLException",
-                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(Signup5.this, "MalformedURLException", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -507,8 +512,7 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
                 runOnUiThread(new Runnable() {
                     public void run() {
                         messageText.setText("Got Exception : see logcat ");
-                        Toast.makeText(Signup5.this, "Got Exception : see logcat ",
-                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(Signup5.this, "Got Exception : see logcat ", Toast.LENGTH_SHORT).show();
                     }
                 });
                 Log.e("Upload file to server Exception", "Exception : " + e.getMessage(), e);
@@ -531,10 +535,10 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
             SharedPreferenceUtil pref = new SharedPreferenceUtil(Signup5.this);
             strId += pref.getSharedData("SIGNIN_ID");
             String strPathEncode = realPath;
-            Log.e("filePathThread","FILE PATH THREAD - RealPath :"+realPath);
+            Log.e("filePathThread", "FILE PATH THREAD - RealPath :" + realPath);
             String tempPath = URLEncoder.encode(strPathEncode, "UTF-8");
             strPath += tempPath;
-            Log.e("filePathThread","STR - FILE PATH THREAD - strPath :"+strPath);
+            Log.e("filePathThread", "STR - FILE PATH THREAD - strPath :" + strPath);
 
             urlParse = login_url + strId + strAnd + strPath;
 
@@ -559,7 +563,7 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
             }
 
             SharedPreferenceUtil pref = new SharedPreferenceUtil(getApplicationContext());
-            pref.setSharedData("SIGNIN_ID","");
+            pref.setSharedData("SIGNIN_ID", "");
 
         }
     }
@@ -569,6 +573,7 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
         super.onStop();
 
     }
+
     /**
      * Called when the activity has detected the user's press of the back
      * key.  The default implementation simply finishes the current activity,
@@ -594,7 +599,6 @@ public class Signup5 extends AppCompatActivity implements View.OnClickListener {
                 .create()
                 .show();
     }
-
 
 
 }

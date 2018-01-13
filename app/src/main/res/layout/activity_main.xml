@@ -8,23 +8,23 @@
     android:orientation="vertical"
     tools:context="com.teamnova.ej.realreview.activity.Main">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/main_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark"
-        app:layout_scrollFlags="scroll|enterAlways">
+    <!--<android.support.v7.widget.Toolbar-->
+        <!--android:id="@+id/main_toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="?attr/colorPrimary"-->
+        <!--android:theme="@style/ThemeOverlay.AppCompat.Dark"-->
+        <!--app:layout_scrollFlags="scroll|enterAlways">-->
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-        </RelativeLayout>
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
 
 
-    </android.support.v7.widget.Toolbar>
+        <!--</RelativeLayout>-->
+
+
+    <!--</android.support.v7.widget.Toolbar>-->
 
     <FrameLayout
         android:id="@+id/content"
@@ -214,7 +214,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#ff0000"
+                android:background="#ffffff"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -226,7 +226,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="7"
-                        android:background="#ff0000"
+                        android:background="#ffffff"
                         android:orientation="vertical">
 
                         <com.beardedhen.androidbootstrap.BootstrapButton
@@ -238,8 +238,9 @@
                             android:layout_marginRight="3dp"
                             android:layout_marginTop="2dp"
                             android:paddingLeft="15dp"
+                            android:textColor="#000000"
                             android:textAlignment="viewStart"
-                            app:bootstrapBrand="success"
+                            app:bootstrapBrand="primary"
                             app:bootstrapSize="md"
                             app:bootstrapText="{fa-map-pin} Location : "
                             app:buttonMode="regular"
@@ -256,7 +257,7 @@
                             android:layout_marginTop="2dp"
                             android:paddingLeft="15dp"
                             android:textAlignment="viewStart"
-                            app:bootstrapBrand="success"
+                            app:bootstrapBrand="primary"
                             app:bootstrapSize="md"
                             app:bootstrapText="{fa-map-signs} 장소 타입 : 근처에 등록 된 모든 상점"
                             app:buttonMode="regular"
@@ -349,7 +350,7 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="300dp">
+                        android:layout_height="360dp">
 
                         <ImageView
                             android:id="@+id/meProfileImage"
@@ -468,7 +469,8 @@
                             app:bootstrapText="{fa-commenting}    Reviews"
                             app:buttonMode="regular"
                             app:roundedCorners="false"
-                            app:showOutline="false" />
+                            app:showOutline="false"
+                            />
 
                         <com.beardedhen.androidbootstrap.BootstrapButton
                             android:id="@+id/mainMeBtnQuestion"

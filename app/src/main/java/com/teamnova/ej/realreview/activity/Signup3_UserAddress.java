@@ -52,6 +52,9 @@ public class Signup3_UserAddress extends FragmentActivity implements OnMapReadyC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup3);
 
+//        Dialog_Default dial = new Dialog_Default(this);
+//        dial.tempCall("거주지 선택", "주로 있는 장소를 검색 후 선택 해 주세요\n참고) 살고있는 장소, 자주가는 장소");
+
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -70,6 +73,7 @@ public class Signup3_UserAddress extends FragmentActivity implements OnMapReadyC
         } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
         }
+
 
 
 
@@ -98,11 +102,6 @@ public class Signup3_UserAddress extends FragmentActivity implements OnMapReadyC
     @Override
     protected void onStart() {
         super.onStart();
-
-
-        Dialog_Default dial = new Dialog_Default(this);
-        dial.tempCall("거주지 선택", "주로 있는 장소를 검색 후 선택 해 주세요\n참고) 살고있는 장소, 자주가는 장소");
-
 
     }
 

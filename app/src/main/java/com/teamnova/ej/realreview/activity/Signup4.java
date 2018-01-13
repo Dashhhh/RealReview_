@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.teamnova.ej.realreview.R;
 import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 
@@ -33,9 +34,12 @@ import java.util.Date;
 
 public class Signup4 extends AppCompatActivity implements View.OnClickListener {
 
-    ImageView sign4Image;
+    com.beardedhen.androidbootstrap.AwesomeTextView sign4Image;
     EditText sign4Phone, sign4CertiNumber;
     Button sign4Next, sign4CertiRequest;
+
+    com.beardedhen.androidbootstrap.AwesomeTextView sign4_welcomeText, sign4_welcomeText2;
+
     public boolean activityFlag = false;
     Handler mHandler = new Handler(Looper.getMainLooper());
     String login_url = "http://222.122.203.55/realreview/signup/register.php?";
@@ -79,6 +83,7 @@ public class Signup4 extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TypefaceProvider.registerDefaultIconSets();
         setContentView(R.layout.activity_signup4);
 
         init();
@@ -98,6 +103,8 @@ public class Signup4 extends AppCompatActivity implements View.OnClickListener {
         sign4CertiNumber = findViewById(R.id.sign4CertiNumber);
         sign4Next = findViewById(R.id.sign4Next);
         sign4CertiRequest = findViewById(R.id.sign4CertiRequest);
+        sign4_welcomeText = findViewById(R.id.sign4_welcomeText);
+        sign4_welcomeText2 = findViewById(R.id.sign4_welcomeText2);
 
     }   // init()
 
@@ -157,9 +164,9 @@ public class Signup4 extends AppCompatActivity implements View.OnClickListener {
                 pref.setSharedData("isLogged_NE_Lng", tempNELng);
 
 //                pref.setSharedData("SIGNIN_ID","");
-                pref.setSharedData("SIGNIN_PW","");
-                pref.setSharedData("SIGNIN_NICK","");
-                pref.setSharedData("SIGNIN_ADDRESS","");
+                pref.setSharedData("SIGNIN_PW", "");
+                pref.setSharedData("SIGNIN_NICK", "");
+                pref.setSharedData("SIGNIN_ADDRESS", "");
                 Intent intent = new Intent(Signup4.this, Signup5.class);
 
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -209,11 +216,11 @@ public class Signup4 extends AppCompatActivity implements View.OnClickListener {
             //Add ViewPort Var
             urlParse +=
                     "&lat=" + pref.getSharedData("SIGNUP_Lat")
-                    + "&lng=" + pref.getSharedData("SIGNUP_Lng")
-                    + "&SW_Lat=" + pref.getSharedData("SIGNUP_SW_Lat")
-                    + "&SW_Lng=" + pref.getSharedData("SIGNUP_SW_Lng")
-                    + "&NE_Lat=" + pref.getSharedData("SIGNUP_NE_Lat")
-                    + "&NE_Lng=" + pref.getSharedData("SIGNUP_NE_Lng");
+                            + "&lng=" + pref.getSharedData("SIGNUP_Lng")
+                            + "&SW_Lat=" + pref.getSharedData("SIGNUP_SW_Lat")
+                            + "&SW_Lng=" + pref.getSharedData("SIGNUP_SW_Lng")
+                            + "&NE_Lat=" + pref.getSharedData("SIGNUP_NE_Lat")
+                            + "&NE_Lng=" + pref.getSharedData("SIGNUP_NE_Lng");
 
             Log.d("Position", "SIGNUP_Lat :" + pref.getSharedData("SIGNUP_Lat"));
             Log.d("Position", "SIGNUP_Lng :" + pref.getSharedData("SIGNUP_Lng"));
@@ -251,17 +258,17 @@ public class Signup4 extends AppCompatActivity implements View.OnClickListener {
                     Log.d("Position", "jsonHtml :" + jsonHtml);
 
                     br.close();
-                conn.disconnect();
-            }
-            }
-         catch (UnsupportedEncodingException e) {
+                    conn.disconnect();
+                }
+            } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }}
+        }
+    }
 
     public class idCheckThread extends Thread {
 

@@ -2,6 +2,7 @@ package com.teamnova.ej.realreview.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.bumptech.glide.Glide;
 import com.teamnova.ej.realreview.Asynctask.AsyncCheckinUpload_Text;
@@ -57,10 +59,12 @@ public class ShopDetail_Checkin_Submit extends AppCompatActivity implements Came
     private static final String TAG_OPENCV = "OCVSample::Activity";
 
     private CameraBridgeViewBase mOpenCvCameraView;
+    private com.beardedhen.androidbootstrap.AwesomeTextView mOpenCvCameraView_Cover;
     private boolean mIsJavaCamera = true;
     private MenuItem mItemSwitchCamera = null;
     private ImageView shopDetail_Checkin_Opencv_faceImage;
     com.beardedhen.androidbootstrap.BootstrapButton shopDetail_Checkin_Opencv_submit;
+
     com.beardedhen.androidbootstrap.BootstrapEditText shopDetail_Checkin_Opencv_review;
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
@@ -111,6 +115,9 @@ public class ShopDetail_Checkin_Submit extends AppCompatActivity implements Came
         mOpenCvCameraView = findViewById(R.id.tutorial1_activity_java_surface_view);
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
 
+        mOpenCvCameraView_Cover = findViewById(R.id.tutorial1_activity_java_surface_view_cover);
+
+
         shopDetail_Checkin_Opencv_submit = findViewById(R.id.shopDetail_Checkin_Opencv_submit);
         shopDetail_Checkin_Opencv_review = findViewById(R.id.shopDetail_Checkin_Opencv_review);
 
@@ -121,7 +128,8 @@ public class ShopDetail_Checkin_Submit extends AppCompatActivity implements Came
     private void listener() {
 
         mOpenCvCameraView.setCvCameraViewListener(this);
-        mOpenCvCameraView.setOnClickListener(new View.OnClickListener() {
+
+        mOpenCvCameraView_Cover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShopDetail_Checkin_Submit.this, ShopDetail_Checkin_OpenCV.class);
@@ -134,9 +142,16 @@ public class ShopDetail_Checkin_Submit extends AppCompatActivity implements Came
             @Override
             public void onClick(View view) {
 
-                int conn;
-                //                    conn = new AsyncCheckinUpload_Image(ShopDetail_Checkin_Submit.this, FILEPATH_FACEDETECT_IMAGE).execute().get(10000, TimeUnit.MILLISECONDS);
+                final MaterialDialog builder;
+                builder = new MaterialDialog.Builder(ShopDetail_Checkin_Submit.this)
+                        .title("Check-in, Submit")
+                        .content("Send to Server")
+                        .autoDismiss(true)
+                        .progressIndeterminateStyle(true)
+                        .show();
 
+
+                int conn; // Server에 이미지 파일을 올리고 난 후 Http Responsecode를 리턴받기 위해 선언함 (ref. HTTP_OK = 200)
 
                 new Thread(new Runnable() {
                     public void run() {
@@ -146,16 +161,6 @@ public class ShopDetail_Checkin_Submit extends AppCompatActivity implements Came
                         Log.e("uploadFile", "UploadFile Start -> UrParseImage:" + RESULT_CHECKIN_UPLOAD_RETURN_FILEIMAGENAME);
                     }
                 }).start();
-
-//                    if(conn == HTTP_OK){
-//                        JSONObject textUpload = new JSONObject(String.valueOf(conn));
-//                        JSONArray textUpload_toArray =  textUpload.getJSONArray("checkin_result");
-//
-//                        textUpload = new AsyncCheckinUpload_Text(ShopDetail_Checkin_Submit.this, shopDetail_Checkin_Opencv_review.getText().toString(), );
-//                    }
-
-//                    Log.d("OpenCV_Check", "AsyncCheckinUpload_Image, Response code" + conn);
-
 
                 JSONObject asyncResult_afterCheckinDataSubmit;
                 try {
@@ -168,9 +173,15 @@ public class ShopDetail_Checkin_Submit extends AppCompatActivity implements Came
                         asyncResult_afterCheckinDataSubmit = new AsyncCheckinUpload_Text(
                                 ShopDetail_Checkin_Submit.this,
                                 userDescriptionText,
-                                HOST_ADDRESS + "checkin/upload/" + FILENAME_FACEDETECT_IMAGE )
+                                HOST_ADDRESS + "checkin/upload/" + FILENAME_FACEDETECT_IMAGE)
                                 .execute().get(10000, TimeUnit.MILLISECONDS);
-                        finish();
+
+                        Handler mHandler = new Handler();
+                        mHandler.postDelayed(new Runnable() {
+                            public void run() {
+                                finish();
+                            }
+                        }, 1000);
 
                     } else {
                         Dialog_Default dial = new Dialog_Default(ShopDetail_Checkin_Submit.this);

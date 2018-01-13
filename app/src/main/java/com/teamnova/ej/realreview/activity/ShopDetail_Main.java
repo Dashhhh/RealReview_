@@ -85,6 +85,27 @@ import static com.teamnova.ej.realreview.activity.Main.LOCATION_USER_LAT;
 import static com.teamnova.ej.realreview.activity.Main.LOCATION_USER_LNG;
 
 
+
+
+/**
+ * @author devil1032@gmail.com, Dashhh
+ * @Create 2017/12/25
+ * @Description : 상점의 상세정보를 볼 수 있는 액티비티이다. 이 앱에서 제공하는 리뷰, 팁과 같은 모든 컨텐츠는 모두 이 액티비티로 부터 출발한다.
+ *
+ * : 주 목적은 다음과 같다
+ * - 선택한 상점 관련 이미지 제공 (사용자가 업로드한 이미지 제공)
+ * - Review 남기기
+ * - Tip 남기기
+ * - Question 남기기
+ * - 상점 사진 업로드
+ * - 찾아가기 기능
+ * - 웹 사이트 URL 제공 (3인의 유저가 똑같은 URL을 올릴 경우 자동으로 등록이 됨)
+ * - 전화걸기
+ * - 문자보내기
+ *
+ *
+ */
+
 public class ShopDetail_Main extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
 
 
@@ -96,7 +117,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     android.support.v7.widget.AppCompatRatingBar shopDetailTitleRating, shopDetailRatingReview, shopDetailRatingReview2;
     android.support.v7.widget.RecyclerView shopDetailRVTitleTag, shopDetailRVImage, shopDetailTipRV, shopDetailRVCheckin;
     Button mapAddress, shopDetailCallBtn, shopDetailDirection, shopDetailMenu, shopDetailWebsiteBtn, shopDetailMessageBtn;
-    LinearLayout shopDetailProfile, shopDetailProfile2, shopDetailProfile3, shopDetailTipProfileLayout, shopDetailQuestionRoot, shopDetailQuestionAllRoot;
+    LinearLayout shopDetailProfile, shopDetailProfile2, shopDetailProfile3, shopDetailTipProfileLayout, shopDetailQuestionRoot, shopDetailQuestionAllRoot, shopDetailCheckinRootLayout;
     SupportMapFragment mapFragmentDetail;
     android.support.v7.widget.AppCompatEditText shopDetailQuestion, shopDetailReview, shopDetailTip;
 
@@ -249,6 +270,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 checkinList.add(checkinData_setObject);
             }
 
+            if(checkinData_JSON_parse_questionresult.length() == 0) shopDetailCheckinRootLayout.setVisibility(View.GONE);
+            Log.d("AsyncCheckinRequest", "checkinData_JSON_parse_questionresult.length() : " + checkinData_JSON_parse_questionresult.length());
             shopDetailRVCheckinAdapter.notifyDataSetChanged();
 
         } catch (InterruptedException e) {
@@ -371,11 +394,9 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             @Override
             public void OnCheckedChanged(BootstrapButton bootstrapButton, boolean isChecked) {
 
-
                 if (isChecked) {
 
                     Log.d("shopDetailBookmark", "isChecked TRUE Enter");
-
 
                     /**
                      * Bookmark가 설정 되어 있으므로 BookmarkDelete
@@ -590,6 +611,10 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
             }
         });
+
+
+        shopDetailCheckinRootLayout = findViewById(R.id.shopDetailCheckinRootLayout);
+
 
 
     }
@@ -1001,8 +1026,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             } else {
                 break;
             }
-
-
         }
 
         tipList.clear();

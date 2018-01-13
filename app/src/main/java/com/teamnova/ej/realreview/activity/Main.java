@@ -308,7 +308,7 @@ public class Main extends AppCompatActivity
     private JSONObject onMapCallBack2;
     private String modifyProfileImagePath;
     private MaterialDialog builder;
-    private Toolbar toolbar;
+//    private Toolbar toolbar;
     private TextView meProfileUserId;
     private String myFeedURL = "http://222.122.203.55/realreview/myFeed/myFeed.php";
     public static String LOCATION_ADDRESS = "";
@@ -552,16 +552,12 @@ public class Main extends AppCompatActivity
             }
         });
 
-        toolbar = findViewById(R.id.main_toolbar);
-
-        setSupportActionBar(toolbar);
-
-        ActionBar actionBar = getSupportActionBar();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
-        toolbar.setTitle("REAL REVIEW");
-        actionBar.setTitle("actionbar");
+//        toolbar = findViewById(R.id.main_toolbar);
+//        setSupportActionBar(toolbar);
+//        ActionBar actionBar = getSupportActionBar();
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//        toolbar.setTitle("REAL REVIEW");
+//        actionBar.setTitle("actionbar");
 
 
         mainMeBtnReview = findViewById(R.id.mainMeBtnReview);
@@ -2052,7 +2048,6 @@ public class Main extends AppCompatActivity
 
     }
 
-
     public String getPath(Uri uri) {
         // uri가 null일경우 null반환
         if (uri == null) {
@@ -2267,8 +2262,6 @@ public class Main extends AppCompatActivity
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            SharedPreferenceUtil pref = new SharedPreferenceUtil(getApplicationContext());
 
         }
     }

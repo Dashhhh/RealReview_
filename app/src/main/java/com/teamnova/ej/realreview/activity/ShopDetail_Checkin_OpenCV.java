@@ -46,6 +46,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+
+
+/**
+ * @author devil1032@gmail.com, Dashhh
+ * @Create 2017/12/25
+ * @Description : Check in 기능에서 얼굴을 검출하고 촬영하는 액티비티이다.
+ *
+ * : 주 목적은 다음과 같다
+ * - 서버에 "Check in" 글 등록을 위한 이미지 획득 (얼굴 검출 후에만 이미지 촬영 됨)
+ * - OpenCV를 이용해 인물의 얼굴 사진 촬영 및 필터 적용 및 Image저장 (SD Card에 저장한다.)
+ *
+ */
 public class ShopDetail_Checkin_OpenCV extends Activity implements CvCameraViewListener2, Camera.PictureCallback, View.OnClickListener {
 
     private static final String TAG = "OCVSample::Activity";
@@ -118,27 +130,25 @@ public class ShopDetail_Checkin_OpenCV extends Activity implements CvCameraViewL
     private MenuItem mItemPreviewFeatures;
 
     /**
-     * @var FLIP_FLAG - Camera
+     * @var FLIP_FLAG_FRONT - Camera
      * 전면/후면 전환을 위한 기준 변수
      * onCameraFrame()에서 Core.flip()을 통해 이용된다.
      * shopDetail_Opencv_flip.button을 누르게 되면 true || false가 전환 된다.
      * 기본 값은 false 이다. (후면 카메라 = false)
      * <p>
-     * FLIP_FLAG = true
+     * FLIP_FLAG_FRONT = true
      * - 위 조건 일때에는 카메라가 전면으로 바뀐다
      * <p>
-     * FLIP_FLAG = false
+     * FLIP_FLAG_FRONT = false
      * - 위 조건 일때에는 카메라가 후변으로 바뀐다 (기본 값)
      */
-    boolean FLIP_FLAG = false;
+    boolean FLIP_FLAG_FRONT = false;
 
 
     /**
      * @var FILEPATH_FACEDETECT_IMAGE - 얼굴인식 촬영 후 이미지 경로를 저장하는 변수
      * ex) emulate/storage/0/realreview/filenama.jpg
-     *
      * @var FILEPATH_FACEDETECT_IMAGE - 얼굴인식 촬영 후 이미지 파일명을 저장하는 변수
-     *
      */
     public static String FILEPATH_FACEDETECT_IMAGE = "nothing";
     public static String FILENAME_FACEDETECT_IMAGE = "";
@@ -216,6 +226,7 @@ public class ShopDetail_Checkin_OpenCV extends Activity implements CvCameraViewL
             }
         }
     };
+    private boolean RECT_FLAG = true;
 
 
     public ShopDetail_Checkin_OpenCV() {
@@ -236,8 +247,8 @@ public class ShopDetail_Checkin_OpenCV extends Activity implements CvCameraViewL
 
         /**
          * 아래 코드는 Activity에 나오는 ActionBar 및 상태바까지 모두 없애는 코드이다.
-         * OpenCV는 화면 방향에 따라 얼굴인식이 안될 수 있기 때문에(안되기 때문에) 상태바만 나오게 만들고 주석 처리한다.
-         * 상태바만 나오게 하는 코드는 Manifest -> Activity Theme   를 통해 설정했다.
+         * OpenCV는 화면 방향에 따라 얼굴인식이 안될 수 있기 때문에(안되기 때문에) 상태바만 나오게 만들기 위해 (명시적으로 핸드폰 방향을 사용자에게 알리기 위해) 주석 처리한다.
+         * 상태바만 나오게 하는 코드는 Manifest -> Activity Theme 를 통해 설정했다.
          */
 /*
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -270,10 +281,16 @@ public class ShopDetail_Checkin_OpenCV extends Activity implements CvCameraViewL
                  * onCameraFrame()에서 한번만 실행 된 후 false로 변경 된다.
                  * "true" 일때에만 Camera가 전환된다.
                  */
-                if (FLIP_FLAG) {
-                    FLIP_FLAG = false;
+                if (FLIP_FLAG_FRONT) {
+                    FLIP_FLAG_FRONT = false;
+                    mOpenCvCameraView.disableView();
+                    mOpenCvCameraView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_FRONT);
+                    mOpenCvCameraView.enableView();
                 } else {
-                    FLIP_FLAG = true;
+                    FLIP_FLAG_FRONT = true;
+                    mOpenCvCameraView.disableView();
+                    mOpenCvCameraView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_BACK);
+                    mOpenCvCameraView.enableView();
                 }
             }
         });
@@ -284,7 +301,14 @@ public class ShopDetail_Checkin_OpenCV extends Activity implements CvCameraViewL
             @Override
             public void onClick(View view) {
 
+
                 if (countFace != 0) {
+
+                    /**
+                     * 사진 촬영을 위해 얼굴 인식이 되는 영역 (네모 박스) 제거
+                     */
+                    RECT_FLAG = false;
+
                     final MaterialDialog builder;
                     builder = new MaterialDialog.Builder(ShopDetail_Checkin_OpenCV.this)
                             .title("Save Image")
@@ -301,37 +325,21 @@ public class ShopDetail_Checkin_OpenCV extends Activity implements CvCameraViewL
                      *  - "/storage/emulated/..." 로 시작되는 주소는 "/sdcard/..."  와 동일하다.
                      */
                     String fileName = Environment.getExternalStorageDirectory().getPath() + "/dcim/camera/reviewer_" + currentDateandTime + ".jpg";
-                    /*
-                    String fileName2 = Environment.getDataDirectory().getPath() +
-                            "/realreview/reviewer_" + currentDateandTime + ".jpg";
-                    String fileName3 = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                            "/realreview/reviewer_" + currentDateandTime + ".jpg";
-                    Log.d("FILECHECK", "onClick! File Check :" + fileName2);
-                    Log.d("FILECHECK", "onClick! File Check :" + fileName3);
-                    */
-
-
-//                    mOpenCvCameraView.takePictures(fileName);
 
                     /**
                      * mRgba MAT -> Mat to Bitmap
                      * Bitmap -> File
                      * File uri!
-                     *
                      */
 
 
                     Bitmap bmp = null;
                     try {
-                        //Imgproc.cvtColor(seedsImage, tmp, Imgproc.COLOR_RGB2BGRA);
                         bmp = Bitmap.createBitmap(mRgba.cols(), mRgba.rows(), Bitmap.Config.ARGB_8888);
                         Utils.matToBitmap(mRgba, bmp);
                     } catch (CvException e) {
                         Log.d("Exception", e.getMessage());
                     }
-
-
-//                    saveBitmaptoJpeg(bmp, "realreview", "reviewer_" + currentDateandTime + ".jpg");
                     saveBitmaptoJpeg(bmp, "realreview", "reviewer_" + currentDateandTime);
 
 
@@ -350,25 +358,13 @@ public class ShopDetail_Checkin_OpenCV extends Activity implements CvCameraViewL
                      * PostDelayed()를 통해 이미지 처리하는 시간을 확보한다.
                      */
                     Handler mHandler = new Handler();
+
                     mHandler.postDelayed(new Runnable() {
                         public void run() {
+                            RECT_FLAG = true;
                             finish();
                         }
-                    }, 3000);
-
-/*
-                    mOpenCvCameraView.buildDrawingCache();
-                    Bitmap captureView = mOpenCvCameraView.getDrawingCache();
-                    FileOutputStream fos;
-                    try {
-                        fos = new FileOutputStream(Environment.getExternalStorageDirectory().toString()+"/capture.jpeg");
-                        captureView.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getApplicationContext(), "Captured!", Toast.LENGTH_LONG).show();
-*/
-
+                    }, 2000);
                 } else {
                     Toast.makeText(ShopDetail_Checkin_OpenCV.this, "최소 하나의 얼굴은 나와야 합니다!", Toast.LENGTH_SHORT).show();
                 }
@@ -414,11 +410,14 @@ public class ShopDetail_Checkin_OpenCV extends Activity implements CvCameraViewL
 
     /**
      * Image SDCard Save (input Bitmap -> saved file JPEG)
-     * Writer intruder(Kwangseob Kim)
      *
      * @param bitmap : input bitmap file
      * @param folder : input folder name
      * @param name   : output file name
+     *
+     *               OpenCV를 통해 받은 Matrix를 Bitmap으로 변환한 후 저장하는 메서드이다.
+     *               단순히 저장만 하는 메서드임.
+     *               변환 과정은 메서드 호출 부분에 있음
      */
 
     public static void saveBitmaptoJpeg(Bitmap bitmap, String folder, String name) {
@@ -533,13 +532,11 @@ public class ShopDetail_Checkin_OpenCV extends Activity implements CvCameraViewL
                 // input frame has gray scale format
                 Imgproc.cvtColor(inputFrame.gray(), mRgba, Imgproc.COLOR_GRAY2BGR, 4);
                 break;
-
             }
             case VIEW_MODE_CANNY: {
                 // input frame has gray scale format
                 mRgba = inputFrame.rgba();
                 Imgproc.Canny(inputFrame.gray(), mIntermediateMat, 80, 100);
-                Imgproc.cvtColor(mIntermediateMat, mRgba, Imgproc.COLOR_GRAY2RGBA, 4);
                 break;
             }
             case VIEW_MODE_GAUSSIANBLUR: {
@@ -551,23 +548,27 @@ public class ShopDetail_Checkin_OpenCV extends Activity implements CvCameraViewL
                 //                mNativeDetector.findFeatures(mGray.getNativeObjAddr(), mRgba.getNativeObjAddr());
 
                 Log.d("BlurCheck", String.valueOf(mRgba.size()));
-                org.opencv.core.Size blurSize = new Size(3,3);
-                Imgproc.GaussianBlur(inputFrame.rgba(), mRgba, blurSize, 11, 11);
-                Imgproc.cvtColor(mIntermediateMat, mRgba, Imgproc.COLOR_GRAY2RGBA, 4);
+                org.opencv.core.Size blurSize = new Size(3, 3);
+                Imgproc.GaussianBlur(inputFrame.rgba(), mRgba, blurSize, 20,20);
                 break;
             }
             case VIEW_MODE_LAPLACIAN: {
-                Imgproc.Laplacian(inputFrame.rgba(), mRgba, 10);
-                Imgproc.cvtColor(mIntermediateMat, mRgba, Imgproc.COLOR_GRAY2RGBA, 4);
+                Imgproc.Laplacian(inputFrame.rgba(), mRgba, CvType.CV_8U, 3, 1, 1);
                 break;
             }
         }
 
-        if (FLIP_FLAG) {
+        if (!FLIP_FLAG_FRONT) {
             /**
              * 버튼 (변수명 : shopDetail_Opencv_flip) 을 누를때마다 카메라의 앞 뒤가 바뀐다.
+             * 0 : 후면
+             * 1 : 전면
+             *
+             * Core.flip(); 주석 처리한 이유
+             *  - Frame을 단순히 좌우만 뒤집기 때문에 얼굴 인식 방향과 맞지 않다. 사카메라에 담긴 얼굴이 좌측으로 갈때 얼굴 인식 네모범위는 우측으로 가게 된다.
+             *  ref) 화면의 방향을 바꾸는 메소드이다 (전, 후면 카메라 방향전환이 아님).
              */
-            Core.flip(mRgba, mRgbaF, 1);
+//            Core.flip(mRgba, mRgba, 1);
         }
 
         if (mAbsoluteFaceSize == 0) {
@@ -596,12 +597,18 @@ public class ShopDetail_Checkin_OpenCV extends Activity implements CvCameraViewL
             Log.e(TAG, "Detection method is not selected!");
         }
 
-        Rect[] facesArray = faces.toArray();
-        for (int i = 0; i < facesArray.length; i++)
-            Imgproc.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 1);
-        countFace = facesArray.length;
-        Log.e(TAG, "countFace : " + countFace);
 
+        /**
+         * @var Rect[] facesArray - 얼굴 검출 후 갯수 카운팅. 카메라를 통해 들어온 프레임에 따라서 계속해서 업데이트된다.
+         * @var countFace - 최종적으로 얼굴 갯수를 int형으로 받는다. 실제의 얼굴 갯수는 이 변수에 담긴다.
+         */
+        if (RECT_FLAG) {
+            Rect[] facesArray = faces.toArray();
+            for (int i = 0; i < facesArray.length; i++)
+                Imgproc.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 1);
+            countFace = facesArray.length;
+            Log.e(TAG, "countFace : " + countFace);
+        }
 
 
 //        Imgcodecs.imread()
@@ -623,8 +630,6 @@ public class ShopDetail_Checkin_OpenCV extends Activity implements CvCameraViewL
         for (int i = 0; i < effects.size(); i++) {
             Log.d("EFFECTCHECK", effects.get(i));
         }
-
-
         return true;
     }
 
@@ -682,6 +687,9 @@ public class ShopDetail_Checkin_OpenCV extends Activity implements CvCameraViewL
         }
     }
 
+    /**
+     * @param fileName - 촬영할 사진의 파일명을 정의한다. 한번 정의되면 바뀔일이 없기 때문에 final로 선언한다.
+     */
     public void takePictures(final String fileName) {
         Log.i(TAG, "Taking picture");
         this.mPictureFileName = fileName;
@@ -723,6 +731,4 @@ public class ShopDetail_Checkin_OpenCV extends Activity implements CvCameraViewL
             }
         }
     }
-
-
 }
