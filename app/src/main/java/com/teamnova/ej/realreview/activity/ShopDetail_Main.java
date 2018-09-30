@@ -85,13 +85,11 @@ import static com.teamnova.ej.realreview.activity.Main.LOCATION_USER_LAT;
 import static com.teamnova.ej.realreview.activity.Main.LOCATION_USER_LNG;
 
 
-
-
 /**
  * @author devil1032@gmail.com, Dashhh
  * @Create 2017/12/25
  * @Description : 상점의 상세정보를 볼 수 있는 액티비티이다. 이 앱에서 제공하는 리뷰, 팁과 같은 모든 컨텐츠는 모두 이 액티비티로 부터 출발한다.
- *
+ * <p>
  * : 주 목적은 다음과 같다
  * - 선택한 상점 관련 이미지 제공 (사용자가 업로드한 이미지 제공)
  * - Review 남기기
@@ -102,8 +100,6 @@ import static com.teamnova.ej.realreview.activity.Main.LOCATION_USER_LNG;
  * - 웹 사이트 URL 제공 (3인의 유저가 똑같은 URL을 올릴 경우 자동으로 등록이 됨)
  * - 전화걸기
  * - 문자보내기
- *
- *
  */
 
 public class ShopDetail_Main extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
@@ -175,9 +171,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
      * 앱 사용자의 얼굴을 찍어 인증샷을 남기는 "체크인 기능"에 대한 승인여부
      * 상점의 뷰 포트 범위 내에 들어와 있을 경우 : true
      * 상점의 뷰 포트 범위 내에 들어와 있지 않을 경우 || 위치가 불확실한 경우 : false
-     *
+     * <p>
      * ShopDetail_Main.activity 초기 진입 시 setCheckInFlag() 내에서 false로 초기화 시킨다.
-     *
      */
     public static boolean CHECK_IN_SUBMIT_ACCEPT = false;
 
@@ -219,7 +214,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
     private void initCheckin() {
 
 
-
         checkinList.clear();
         StaggeredGridLayoutManager checkinLayoutSet = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
         ShopDetail_Main_Review_RV_Checkin_Adapter shopDetailRVCheckinAdapter = new ShopDetail_Main_Review_RV_Checkin_Adapter(this, checkinList);
@@ -237,10 +231,10 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             Log.d("AsyncCheckinRequest", "checkinData_JSON_parse_questionresult : " + checkinData_JSON_parse_questionresult);
 
 
-            for(int i=0; i < checkinData_JSON_parse_questionresult.length(); i++) {
-                
+            for (int i = 0; i < checkinData_JSON_parse_questionresult.length(); i++) {
+
                 JSONObject checkinData_JSON_parse_questionresult_second = checkinData_JSON_parse_questionresult.getJSONObject(i);
-                
+
                 String idx = checkinData_JSON_parse_questionresult_second.getString("idx");
                 String id_shop = checkinData_JSON_parse_questionresult_second.getString("id_shop");
                 String id_user = checkinData_JSON_parse_questionresult_second.getString("id_user");
@@ -270,7 +264,8 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
                 checkinList.add(checkinData_setObject);
             }
 
-            if(checkinData_JSON_parse_questionresult.length() == 0) shopDetailCheckinRootLayout.setVisibility(View.GONE);
+            if (checkinData_JSON_parse_questionresult.length() == 0)
+                shopDetailCheckinRootLayout.setVisibility(View.GONE);
             Log.d("AsyncCheckinRequest", "checkinData_JSON_parse_questionresult.length() : " + checkinData_JSON_parse_questionresult.length());
             shopDetailRVCheckinAdapter.notifyDataSetChanged();
 
@@ -284,7 +279,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             e.printStackTrace();
         }
         ;
-
 
 
     }
@@ -309,8 +303,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
         double defaultViewport_NELngCasting = Double.parseDouble(defaultViewport_NELng);
 
 
-
-
         Log.d("shopDetail_CheckinAccept", "LOCATION_USER_LAT > defaultViewport_NELatCasting :" + String.valueOf(LOCATION_USER_LAT > defaultViewport_NELatCasting));
         Log.d("shopDetail_CheckinAccept", "LOCATION_USER_LAT < defaultViewport_SWLatCasting :" + String.valueOf(LOCATION_USER_LAT < defaultViewport_SWLatCasting));
         Log.d("shopDetail_CheckinAccept", "LOCATION_USER_LNG > defaultViewport_SWLngCasting :" + String.valueOf(LOCATION_USER_LNG > defaultViewport_SWLngCasting));
@@ -329,10 +321,10 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
         if (
                 LOCATION_USER_LAT > defaultViewport_SWLatCasting &&
-                LOCATION_USER_LAT < defaultViewport_NELatCasting &&
-                LOCATION_USER_LNG > defaultViewport_SWLngCasting &&
-                LOCATION_USER_LNG < defaultViewport_NELngCasting
-            ) {
+                        LOCATION_USER_LAT < defaultViewport_NELatCasting &&
+                        LOCATION_USER_LNG > defaultViewport_SWLngCasting &&
+                        LOCATION_USER_LNG < defaultViewport_NELngCasting
+                ) {
             CHECK_IN_SUBMIT_ACCEPT = true;    // TRUE
             Log.d("shopDetail_CheckinAccept", "True");
 
@@ -347,7 +339,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(View view) {
 
-                if(CHECK_IN_SUBMIT_ACCEPT){
+                if (CHECK_IN_SUBMIT_ACCEPT) {
 
                     Intent intent = new Intent(ShopDetail_Main.this, ShopDetail_Checkin_Submit.class);
                     startActivity(intent);
@@ -614,7 +606,6 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
 
 
         shopDetailCheckinRootLayout = findViewById(R.id.shopDetailCheckinRootLayout);
-
 
 
     }
@@ -1081,9 +1072,7 @@ public class ShopDetail_Main extends AppCompatActivity implements View.OnClickLi
             Log.d("TIP_ASYNC", "JSON Parsing...imagepath    : " + imagepath);
 
             tipList.add(0, adapterSet);
-
         }
-
     }
 
     public void listViewHeightSet(BaseAdapter listAdapter, ListView listView) {

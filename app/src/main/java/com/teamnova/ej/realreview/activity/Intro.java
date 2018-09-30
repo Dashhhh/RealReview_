@@ -31,40 +31,34 @@ import java.util.Locale;
 
 
 /**
- *
  * Intro.Activity
- *  - 주 목적
- *      : User에게 로고를 보여준다
- *      : 초기 정보를 Loading (Setting) 한다.
- *        그 정보는 아래와 같다.
- *
- *          APP 초기 정보 Setting
- *          - Shop Category
- *               App 내에서 상점 분류에 사용되는 카테고리를 정의한다. (e.g. 식료품점, 관심지점, 제과점...)
- *          - User Location Check
- *               User의 위치정보를 확인하고 대략적인 주소와 (e.g. "서울특별시 강서구 화곡동 XXX-XX") Latitude, Longtitude 확인할 수 있다.
- *               단, 위치에 대한 확인이 Null 값이 들어오는 경우가 상당하다.
- *          - Android Permission
+ * - 주 목적
+ * : User에게 로고를 보여준다
+ * : 초기 정보를 Loading (Setting) 한다.
+ * 그 정보는 아래와 같다.
+ * <p>
+ * APP 초기 정보 Setting
+ * - Shop Category
+ * App 내에서 상점 분류에 사용되는 카테고리를 정의한다. (e.g. 식료품점, 관심지점, 제과점...)
+ * - User Location Check
+ * User의 위치정보를 확인하고 대략적인 주소와 (e.g. "서울특별시 강서구 화곡동 XXX-XX") Latitude, Longtitude 확인할 수 있다.
+ * 단, 위치에 대한 확인이 Null 값이 들어오는 경우가 상당하다.
+ * - Android Permission
  */
 
 
 public class Intro extends AppCompatActivity implements LocationListener {
 
     public static final String HOST_ADDRESS = "http://222.122.203.55/realreview/";
-
+    public static String MYLOCATION;
     Handler mhandler;
     Animation anime;
-
     android.support.v7.widget.AppCompatImageView introBackground;
-
     //위치정보 객체
     LocationManager lm = null;
     //위치정보 장치 이름
     String provider = null;
-
     com.wang.avi.AVLoadingIndicatorView introProgress;
-
-    public static String MYLOCATION;
 
     void startAnim() {
         introProgress = findViewById(R.id.introProgress);
@@ -160,7 +154,6 @@ public class Intro extends AppCompatActivity implements LocationListener {
                 .check();
 
 
-
         takePlaceTypeMap();
 
         anime = AnimationUtils.loadAnimation(this, R.anim.rise_up);
@@ -231,14 +224,17 @@ public class Intro extends AppCompatActivity implements LocationListener {
              *
              */
             lm.requestLocationUpdates(provider, 2000, 1, this);
+
+
         }
     }
+
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        lm.removeUpdates(this);
+//        lm.removeUpdates(this);
 
     }
 
@@ -323,9 +319,10 @@ public class Intro extends AppCompatActivity implements LocationListener {
 
 
     /**
-     *  takePlaceTypeMap()
-     *      @method Define "Shop Place Type"
-     *      항상 사용 되는 분류는 "관심 지점" 이다. "ALL"에 해당되는 분류이다.
+     * takePlaceTypeMap()
+     *
+     * @method Define "Shop Place Type"
+     * 항상 사용 되는 분류는 "관심 지점" 이다. "ALL"에 해당되는 분류이다.
      */
     private void takePlaceTypeMap() {
 

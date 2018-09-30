@@ -26,7 +26,7 @@ import com.teamnova.ej.realreview.util.SharedPreferenceUtil;
 import java.util.Iterator;
 import java.util.List;
 
-public class ShopAdd1 extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
+    public class ShopAdd1 extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
 
     int PLACE_PICKER_REQUEST = 1;
 
